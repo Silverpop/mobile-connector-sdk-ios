@@ -57,7 +57,7 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
 EngageSDK includes a sample project within the Example subdirectory. In order to build the project, you must install the dependencies via CocoaPods. To do so:
 
     $ gem install cocoapods # If necessary
-    $ git clone git@github.com:ehirelabs/engage-sdk-ios.git
+    $ git clone git@github.com:Silverpop/engage-sdk-ios.git
     $ cd engage-sdk-ios/Example
     $ pod install
     $ touch EngageSDKDemo/sample-config.h

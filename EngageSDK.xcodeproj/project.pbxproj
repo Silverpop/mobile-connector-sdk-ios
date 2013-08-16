@@ -1,0 +1,526 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7A3B2BEAEEC2479281F513DD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D76863C004B4A1AAEE87550 /* libPods.a */; };
+		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
+		B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
+		B2B18282178B59400097EE6A /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18281178B59400097EE6A /* SenTestingKit.framework */; };
+		B2B18284178B59400097EE6A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18283178B59400097EE6A /* UIKit.framework */; };
+		B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
+		B2B18288178B59400097EE6A /* libEngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B1826F178B59400097EE6A /* libEngageSDK.a */; };
+		B2B1828E178B59400097EE6A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2B1828C178B59400097EE6A /* InfoPlist.strings */; };
+		B2C2A90517A9919C0058311A /* EngageClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A8F717A9919C0058311A /* EngageClient.m */; };
+		B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A8F917A9919C0058311A /* EngageConfig.m */; };
+		B2C2A90717A9919C0058311A /* ResultDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A8FC17A9919C0058311A /* ResultDictionary.m */; };
+		B2C2A90817A9919C0058311A /* UBF.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A8FE17A9919C0058311A /* UBF.m */; };
+		B2C2A90917A9919C0058311A /* UBFClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90017A9919C0058311A /* UBFClient.m */; };
+		B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90217A9919C0058311A /* XMLAPI.m */; };
+		B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90417A9919C0058311A /* XMLAPIClient.m */; };
+		B2E6A8CB17A1A22E0007EE20 /* XMLAPITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6A8CA17A1A22E0007EE20 /* XMLAPITests.m */; };
+		B2E6A8CE17A1A5490007EE20 /* UBFTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6A8CD17A1A5490007EE20 /* UBFTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B2B18286178B59400097EE6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B2B18267178B59400097EE6A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B2B1826E178B59400097EE6A;
+			remoteInfo = EngageSDK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B2B1826D178B59400097EE6A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		3D76863C004B4A1AAEE87550 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		B26FCA3D17A9868300629BC9 /* EngageResponseXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageResponseXML.h; sourceTree = "<group>"; };
+		B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageResponseXML.m; sourceTree = "<group>"; };
+		B2B1826F178B59400097EE6A /* libEngageSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEngageSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2B18272178B59400097EE6A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		B2B18276178B59400097EE6A /* EngageSDK-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EngageSDK-Prefix.pch"; sourceTree = "<group>"; };
+		B2B18280178B59400097EE6A /* EngageSDKTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EngageSDKTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2B18281178B59400097EE6A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		B2B18283178B59400097EE6A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		B2B1828B178B59400097EE6A /* EngageSDKTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EngageSDKTests-Info.plist"; sourceTree = "<group>"; };
+		B2B1828D178B59400097EE6A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B2C2A8F617A9919C0058311A /* EngageClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageClient.h; sourceTree = "<group>"; };
+		B2C2A8F717A9919C0058311A /* EngageClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageClient.m; sourceTree = "<group>"; };
+		B2C2A8F817A9919C0058311A /* EngageConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageConfig.h; sourceTree = "<group>"; };
+		B2C2A8F917A9919C0058311A /* EngageConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConfig.m; sourceTree = "<group>"; };
+		B2C2A8FA17A9919C0058311A /* EngageSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageSDK.h; sourceTree = "<group>"; };
+		B2C2A8FB17A9919C0058311A /* ResultDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultDictionary.h; sourceTree = "<group>"; };
+		B2C2A8FC17A9919C0058311A /* ResultDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultDictionary.m; sourceTree = "<group>"; };
+		B2C2A8FD17A9919C0058311A /* UBF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBF.h; sourceTree = "<group>"; };
+		B2C2A8FE17A9919C0058311A /* UBF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBF.m; sourceTree = "<group>"; };
+		B2C2A8FF17A9919C0058311A /* UBFClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFClient.h; sourceTree = "<group>"; };
+		B2C2A90017A9919C0058311A /* UBFClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFClient.m; sourceTree = "<group>"; };
+		B2C2A90117A9919C0058311A /* XMLAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAPI.h; sourceTree = "<group>"; };
+		B2C2A90217A9919C0058311A /* XMLAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPI.m; sourceTree = "<group>"; };
+		B2C2A90317A9919C0058311A /* XMLAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAPIClient.h; sourceTree = "<group>"; };
+		B2C2A90417A9919C0058311A /* XMLAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIClient.m; sourceTree = "<group>"; };
+		B2E6A8C917A1A22E0007EE20 /* XMLAPITests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAPITests.h; sourceTree = "<group>"; };
+		B2E6A8CA17A1A22E0007EE20 /* XMLAPITests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPITests.m; sourceTree = "<group>"; };
+		B2E6A8CC17A1A5490007EE20 /* UBFTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFTests.h; sourceTree = "<group>"; };
+		B2E6A8CD17A1A5490007EE20 /* UBFTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B2B1826C178B59400097EE6A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */,
+				7A3B2BEAEEC2479281F513DD /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B2B1827C178B59400097EE6A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2B18282178B59400097EE6A /* SenTestingKit.framework in Frameworks */,
+				B2B18284178B59400097EE6A /* UIKit.framework in Frameworks */,
+				B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */,
+				B2B18288178B59400097EE6A /* libEngageSDK.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B26FCA3A17A9868300629BC9 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				B26FCA3D17A9868300629BC9 /* EngageResponseXML.h */,
+				B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		B2B18266178B59400097EE6A = {
+			isa = PBXGroup;
+			children = (
+				B2B18274178B59400097EE6A /* EngageSDK */,
+				B2B18289178B59400097EE6A /* EngageSDKTests */,
+				B2B18271178B59400097EE6A /* Frameworks */,
+				B2B18270178B59400097EE6A /* Products */,
+				6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		B2B18270178B59400097EE6A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B2B1826F178B59400097EE6A /* libEngageSDK.a */,
+				B2B18280178B59400097EE6A /* EngageSDKTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B2B18271178B59400097EE6A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B2B18272178B59400097EE6A /* Foundation.framework */,
+				B2B18281178B59400097EE6A /* SenTestingKit.framework */,
+				B2B18283178B59400097EE6A /* UIKit.framework */,
+				3D76863C004B4A1AAEE87550 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B2B18274178B59400097EE6A /* EngageSDK */ = {
+			isa = PBXGroup;
+			children = (
+				B2C2A8F517A9919C0058311A /* Public */,
+				B26FCA3A17A9868300629BC9 /* Private */,
+				B2B18275178B59400097EE6A /* Supporting Files */,
+			);
+			path = EngageSDK;
+			sourceTree = "<group>";
+		};
+		B2B18275178B59400097EE6A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B2B18276178B59400097EE6A /* EngageSDK-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B2B18289178B59400097EE6A /* EngageSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				B2B1828A178B59400097EE6A /* Supporting Files */,
+				B2E6A8C917A1A22E0007EE20 /* XMLAPITests.h */,
+				B2E6A8CA17A1A22E0007EE20 /* XMLAPITests.m */,
+				B2E6A8CC17A1A5490007EE20 /* UBFTests.h */,
+				B2E6A8CD17A1A5490007EE20 /* UBFTests.m */,
+			);
+			path = EngageSDKTests;
+			sourceTree = "<group>";
+		};
+		B2B1828A178B59400097EE6A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B2B1828B178B59400097EE6A /* EngageSDKTests-Info.plist */,
+				B2B1828C178B59400097EE6A /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B2C2A8F517A9919C0058311A /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				B2C2A8FA17A9919C0058311A /* EngageSDK.h */,
+				B2C2A8F817A9919C0058311A /* EngageConfig.h */,
+				B2C2A8F917A9919C0058311A /* EngageConfig.m */,
+				B2C2A8F617A9919C0058311A /* EngageClient.h */,
+				B2C2A8F717A9919C0058311A /* EngageClient.m */,
+				B2C2A8FF17A9919C0058311A /* UBFClient.h */,
+				B2C2A90017A9919C0058311A /* UBFClient.m */,
+				B2C2A90317A9919C0058311A /* XMLAPIClient.h */,
+				B2C2A90417A9919C0058311A /* XMLAPIClient.m */,
+				B2C2A8FD17A9919C0058311A /* UBF.h */,
+				B2C2A8FE17A9919C0058311A /* UBF.m */,
+				B2C2A90117A9919C0058311A /* XMLAPI.h */,
+				B2C2A90217A9919C0058311A /* XMLAPI.m */,
+				B2C2A8FB17A9919C0058311A /* ResultDictionary.h */,
+				B2C2A8FC17A9919C0058311A /* ResultDictionary.m */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B2B1826E178B59400097EE6A /* EngageSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B2B18294178B59400097EE6A /* Build configuration list for PBXNativeTarget "EngageSDK" */;
+			buildPhases = (
+				A63D0B7422A041F49B2EEFA4 /* Check Pods Manifest.lock */,
+				B2B1826B178B59400097EE6A /* Sources */,
+				B2B1826C178B59400097EE6A /* Frameworks */,
+				B2B1826D178B59400097EE6A /* CopyFiles */,
+				BAD040B135AD46F3A2AA544E /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EngageSDK;
+			productName = EngageSDK;
+			productReference = B2B1826F178B59400097EE6A /* libEngageSDK.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		B2B1827F178B59400097EE6A /* EngageSDKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B2B18297178B59400097EE6A /* Build configuration list for PBXNativeTarget "EngageSDKTests" */;
+			buildPhases = (
+				B2B1827B178B59400097EE6A /* Sources */,
+				B2B1827C178B59400097EE6A /* Frameworks */,
+				B2B1827D178B59400097EE6A /* Resources */,
+				B2B1827E178B59400097EE6A /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B2B18287178B59400097EE6A /* PBXTargetDependency */,
+			);
+			name = EngageSDKTests;
+			productName = EngageSDKTests;
+			productReference = B2B18280178B59400097EE6A /* EngageSDKTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B2B18267178B59400097EE6A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = Silverpop;
+			};
+			buildConfigurationList = B2B1826A178B59400097EE6A /* Build configuration list for PBXProject "EngageSDK" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B2B18266178B59400097EE6A;
+			productRefGroup = B2B18270178B59400097EE6A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B2B1826E178B59400097EE6A /* EngageSDK */,
+				B2B1827F178B59400097EE6A /* EngageSDKTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B2B1827D178B59400097EE6A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2B1828E178B59400097EE6A /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A63D0B7422A041F49B2EEFA4 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B2B1827E178B59400097EE6A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		BAD040B135AD46F3A2AA544E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B2B1826B178B59400097EE6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */,
+				B2C2A90517A9919C0058311A /* EngageClient.m in Sources */,
+				B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */,
+				B2C2A90717A9919C0058311A /* ResultDictionary.m in Sources */,
+				B2C2A90817A9919C0058311A /* UBF.m in Sources */,
+				B2C2A90917A9919C0058311A /* UBFClient.m in Sources */,
+				B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */,
+				B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B2B1827B178B59400097EE6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2E6A8CB17A1A22E0007EE20 /* XMLAPITests.m in Sources */,
+				B2E6A8CE17A1A5490007EE20 /* UBFTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B2B18287178B59400097EE6A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B2B1826E178B59400097EE6A /* EngageSDK */;
+			targetProxy = B2B18286178B59400097EE6A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B2B1828C178B59400097EE6A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B2B1828D178B59400097EE6A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B2B18292178B59400097EE6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B2B18293178B59400097EE6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B2B18295178B59400097EE6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
+			buildSettings = {
+				DSTROOT = /tmp/EngageSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		B2B18296178B59400097EE6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
+			buildSettings = {
+				DSTROOT = /tmp/EngageSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		B2B18298178B59400097EE6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
+				INFOPLIST_FILE = "EngageSDKTests/EngageSDKTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		B2B18299178B59400097EE6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
+				INFOPLIST_FILE = "EngageSDKTests/EngageSDKTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B2B1826A178B59400097EE6A /* Build configuration list for PBXProject "EngageSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B2B18292178B59400097EE6A /* Debug */,
+				B2B18293178B59400097EE6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B2B18294178B59400097EE6A /* Build configuration list for PBXNativeTarget "EngageSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B2B18295178B59400097EE6A /* Debug */,
+				B2B18296178B59400097EE6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B2B18297178B59400097EE6A /* Build configuration list for PBXNativeTarget "EngageSDKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B2B18298178B59400097EE6A /* Debug */,
+				B2B18299178B59400097EE6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B2B18267178B59400097EE6A /* Project object */;
+}

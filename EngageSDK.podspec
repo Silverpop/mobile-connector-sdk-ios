@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name            = 'EngageSDK'
   s.version         = '0.1'
-  s.summary         = 'Silverpop Engage SDK for iOS'
+  s.summary         = 'Silverpop Engage SDK for iOS.'
   s.homepage        = 'https://github.com/Silverpop/engage-sdk-ios'
   s.authors         = { 'Silverpop Development' => 'engineeringmanagement@silverpop.com' }
   s.license         = { :type => 'Apache 2.0', :file => 'License.txt' }

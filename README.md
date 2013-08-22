@@ -1,7 +1,7 @@
 engage-sdk-ios
 ==============
 
-Silverpop Engage SDK for iOS
+Silverpop Engage SDK for iOS (a.k.a. the "Silverpop Mobile Connector")
 
 ## Simple Engage Database wrapper for iOS 
 
@@ -63,13 +63,18 @@ EngageSDK includes a sample project within the Example subdirectory. In order to
     $ touch EngageSDKDemo/sample-config.h
     $ open EngageSDKDemo.xcworkspace
 
-Open the EngageSDKDemo/sample-config.h file and paste the `#define` code from [Getting Started](#getting-started) below.
+Open the EngageSDKDemo/sample-config.h file and paste the `#define` code from [Environment Setup](#environment-setup) below.
 
 Once installation has finished, you can build and run the EngageSDKDemo project within your simulator or iPhone device.
 
 Once you understand how the Demo project is configured via CocoaPods and implemented using the EngageSDK, you are ready to integrate the EngageSDK with your new or existing Xcode iPhone project.
 
 ## Getting Started 
+The first thing you will want to do is contact your Relationship Manager at Silverpop and ask for the "Silverpop Mobile Connector".  They will assist in getting your Engage account provisioned for Universal Behaviors -- the new flexible event tracking system that is the backbone of tracked mobile app behaviors.
+
+Next, you can follow the instructions in this readme file, or as an additional offer, we've put together a short 10 minute tutorial that will walk you through the download, installation, and configuration process to get your app up and running.  [Click here](https://kb.silverpop.com/kb/engage/Silverpop_Mobile_Connector_-_***NEW***/Video_Tutorial%3A_Up_and_Running_in_10_mins!) to watch that video tutorial within our KnowledgeBase.
+
+## Environment Setup
 The best way to begin is by using [CocoaPods](https://github.com/cocoapods/cocoapods). Follow the instructions offered at the CocoaPods website to install CocoaPods using Ruby Gems. 
 
 
@@ -300,3 +305,6 @@ Events are cached and sent in larger batches for efficiency. The timing of the a
 ```objective-c
 [[UBFClient client] postEventCache];
 ```
+
+### Further Questions, Issues, or Comments?
+We have setup a [forum on our Silverpop Community](http://community.silverpop.com/t5/Silverpop-Mobile-Connector/bd-p/Mobile) for fostering collaboration in both sharing success stories and tackling problems together.  We invite you to share your thoughts, questions, and stories there.

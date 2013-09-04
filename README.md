@@ -81,7 +81,7 @@ The best way to begin is by using [CocoaPods](https://github.com/cocoapods/cocoa
 Using an new or existing iPhone project within Xcode, create a new C header file. We will use this file to define important constant configuration data for the EngageSDK library. Copy and paste the following lines between `#define` and `#endif`:
 
 ```objective-c
-#define ENGAGE_BASE_URL (@"YOUR ENGAGE POD OR PILOT URL")
+#define ENGAGE_BASE_URL (@"YOUR ENGAGE POD API URL")
 #define ENGAGE_CLIENT_ID (@"YOUR CLIENT ID GOES HERE")
 #define ENGAGE_SECRET (@"YOUR SECRET GOES HERE")
 #define ENGAGE_REFRESH_TOKEN (@"YOUR REFRESH TOKEN HERE")

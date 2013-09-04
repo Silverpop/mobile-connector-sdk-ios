@@ -88,11 +88,11 @@ Using an new or existing iPhone project within Xcode, create a new C header file
 #define ENGAGE_LIST_ID (@"YOUR LIST ID")
 
 // if your database uses a unique key different from Recipient/Contact ID
-#define ENGAGE_SYNC_FIELD (@"YOUR SYNC FIELD COLUMN NAME GOES HERE")
+#define ENGAGE_SYNC_COLUMN (@"YOUR SYNC COLUMN NAME GOES HERE")
 
 // For supporting the merging of anonymous activity with registered users
 // merge columns must be created manually with Engage Database portal 
-#define ENGAGE_MERGE_COLUMN (@"YOUR MERGE COLUMN NAME GOES HERE")
+#define ENGAGE_MERGE_COLUMN_NAME (@"YOUR MERGE COLUMN NAME GOES HERE")
 ```
 
 Configure the defines with your values and save changes and close your project if it is open. 

@@ -30,6 +30,7 @@ Once you have configured your client, you should connect to the Engage OAuth 2 p
 }];
 ```
 
+
 Post an XMLAPI resource using a helper e.g. SelectRecipientData
 
 ```objective-c
@@ -51,6 +52,12 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
     NSLog(@"SERVICE FAIL");
 }];
 ```
+
+## Before You Release Your App
+
+### Important Note: Increase Token Limits for Production Apps
+
+There are currently limits placed on the number of Access Tokens that can be generated per hour per instance of Engage.  This number is easily increased, however, before deploying your app publicly, you must contact your Relationship Manager or Sales Rep regarding your intention to use this connector and that you will need to have your OAuth Access Token rate limit increased.
 
 ## Demo
 

@@ -43,9 +43,9 @@ __strong static XMLAPIClient *_sharedClient = nil;
         [self postPath:@"/XMLAPI" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             ResultDictionary *ERXML = [EngageResponseXML decode:responseObject];
             success(ERXML);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            failure(error);
-        }];
+         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             failure(error);
+         }];
     };
     
     if (self.credential.isExpired) {

@@ -123,4 +123,50 @@
     return [UBF createEventWithCode:@"17" params:namedEvent];
 }
 
++ (id)receivedNotification:(NSDictionary *)params {
+    
+    NSString *displayedMessage = nil;
+    if ([[[params objectForKey:@"aps"] objectForKey:@"alert"] isKindOfClass:[NSString class]]) {
+        displayedMessage = [[params objectForKey:@"aps"] objectForKey:@"alert"];
+    } else {
+        displayedMessage = [[[params objectForKey:@"aps"] objectForKey:@"alert"] objectForKey:@"body"];
+    }
+    
+    NSMutableDictionary *namedEvent = [NSMutableDictionary dictionaryWithObject:displayedMessage forKey:@"Displayed Message"];
+    [namedEvent setObject:@"" forKey:@"Latitude"];
+    [namedEvent setObject:@"" forKey:@"Longitude"];
+    [namedEvent setObject:@"" forKey:@"Call To Action"];
+    [namedEvent setObject:params forKey:@"Payload"];
+    [namedEvent setObject:@"" forKey:@"Tags"];
+    [namedEvent setObject:@"" forKey:@"Current Campaign"];
+    [namedEvent setObject:@"" forKey:@"Active Campaigns"];
+    
+    return [UBF createEventWithCode:@"18" params:namedEvent];
+}
+
++ (id)openedNotification:(NSDictionary *)params {
+    
+    NSString *displayedMessage = nil;
+    if ([[[params objectForKey:@"aps"] objectForKey:@"alert"] isKindOfClass:[NSString class]]) {
+        displayedMessage = [[params objectForKey:@"aps"] objectForKey:@"alert"];
+    } else {
+        displayedMessage = [[[params objectForKey:@"aps"] objectForKey:@"alert"] objectForKey:@"body"];
+    }
+    
+    NSMutableDictionary *namedEvent = [NSMutableDictionary dictionaryWithObject:displayedMessage forKey:@"Displayed Message"];
+    [namedEvent setObject:@"" forKey:@"Latitude"];
+    [namedEvent setObject:@"" forKey:@"Longitude"];
+    [namedEvent setObject:@"" forKey:@"Call To Action"];
+    [namedEvent setObject:params forKey:@"Payload"];
+    [namedEvent setObject:@"" forKey:@"Tags"];
+    [namedEvent setObject:@"" forKey:@"Current Campaign"];
+    [namedEvent setObject:@"" forKey:@"Active Campaigns"];
+    
+    return [UBF createEventWithCode:@"19" params:namedEvent];
+}
+
++ (id)openedURL:(NSURL *)notificationUrl params:(NSDictionary *)params {
+    return [UBF createEventWithCode:@"20" params:params];
+}
+
 @end

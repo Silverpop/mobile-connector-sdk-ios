@@ -10,6 +10,7 @@
 #import "UBF.h"
 #import <AFNetworking/AFHTTPRequestOperation.h>
 #import <UIKit/UIKit.h>
+#import "EngageEvent.h"
 
 NSString * const kEngageClientInstalled = @"engageClientInstalled";
 
@@ -24,6 +25,8 @@ NSString * const kEngageClientInstalled = @"engageClientInstalled";
 @property NSInteger queueSize;
 @property NSInteger minCode;
 @property(nonatomic) NSTimeInterval sessionTimeout;
+
+@property (nonatomic, strong) MobileDeepLinking *mobileDeepLinking;
 
 @end
 
@@ -47,7 +50,7 @@ __strong static UBFClient *_sharedClient = nil;
         _sharedClient.events = [NSMutableArray array];
         _sharedClient.queueSize = 3; // three events trigger post
         _sharedClient.minCode = 15; // Session Ended event code
-        _sharedClient.sessionTimeout = 300; // 5 minutes
+        _sharedClient.sessionTimeout = 30; // 5 minutes
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *installed = [defaults objectForKey:kEngageClientInstalled];
@@ -88,10 +91,39 @@ __strong static UBFClient *_sharedClient = nil;
                                                                                                             sinceDate:[NSDate date]];
                                                           [_sharedClient postEventCache];
                                                       }];
+        
+        
+        [[EngageLocalEventStore sharedInstance] deleteExpiredLocalEvents];
+        
+        //Check for events that have not yet been posted
+        NSArray *unpostedLocalEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
+        NSLog(@"Re-queueing %lu unposted local events to Silverpop from events local store", (unsigned long)[unpostedLocalEvents count]);
+        for (EngageEvent *unpostedEvent in unpostedLocalEvents) {
+            [_sharedClient trackEngageEvent:unpostedEvent];
+        }
+        
+        NSLog(@"Creating MobileDeepLinking client");
+        _sharedClient.mobileDeepLinking = [MobileDeepLinking sharedInstance];
+        NSLog(@"Created the instance now applying some routes to it!");
+        
+        void (^handleOpenUrlBlock) (NSDictionary *params);
+        //Creates the callback block that will be invoked on the app open url
+        handleOpenUrlBlock = ^(NSDictionary * params) {
+            NSLog(@"POSTing UBF event to Silverpop as a result of handling OpenURL with Params -> %@", params);
+            NSLog(@"BOOM!!!");
+        };
+        
+        [_sharedClient.mobileDeepLinking registerHandlerWithName:@"postSilverpop" handler:handleOpenUrlBlock];
+
     });
     return _sharedClient;
 }
 
+- (void) routeUsingUrl:(NSURL *)url
+{
+    NSLog(@"UBFClient routing url %@", url);
+    [_sharedClient.mobileDeepLinking routeUsingUrl:url];
+}
 + (instancetype)client
 {
     return _sharedClient;
@@ -109,12 +141,34 @@ __strong static UBFClient *_sharedClient = nil;
 }
 
 - (void)trackingEvent:(NSDictionary *)event {
-    [_events addObject:event];
+    NSLog(@"TrackingEvent %@", event.description);
+    EngageEvent *engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event];
+    NSLog(@"saveUBFEvent has successfully been invoked!");
+    [self trackEngageEvent:engageEvent];
+}
+
+- (void)trackEngageEvent:(EngageEvent *)engageEvent {
+
+    //This method won't work as is because the current core data table structure does not have a
+//    NSLog(@"Checking if ManagedEvent has been inserted or not");
+//    if (!engageEvent.isInserted) {
+//        [[[EngageLocalEventStore sharedInstance] managedObjectContext] insertObject:engageEvent];
+//        NSError *error;
+//        if (![[[EngageLocalEventStore sharedInstance] managedObjectContext] save:&error]) {
+//            NSLog(@"Unable to save UBFEvent %@ to EngageLocalEventStore. Silverpop HTTP Post will still be attempted.", engageEvent.description);
+//        }
+//        
+//        //Debug logging to make sure this works as expected
+//        NSLog(@"DEBUG ENGAGEEVENT SHOULD NOW BE INSERTED %s", engageEvent.isInserted ? "true" : "false");
+//    }
+//    NSLog(@"Done checking if the ManagedEvent has been inserted or not");
     
-    NSString *code = [event valueForKeyPath:@"eventTypeCode"];
+    [_events addObject:engageEvent];
+    
+    NSNumber *eventTypeCode = engageEvent.eventType;
     // if we have queued at least 3 events
     // or we have reached end of session
-    if (_events.count > _queueSize || [code integerValue] > _minCode) {
+    if (_events.count > _queueSize || [eventTypeCode integerValue] > _minCode) {
         // post events to service
         [self postEventCache];
     }
@@ -122,32 +176,31 @@ __strong static UBFClient *_sharedClient = nil;
 
 - (void)postEventCache {
     if (_events.count == 0) return;
-    
-    NSArray *eventsCache = [_events copy];
+    NSArray *engageEventsCache = [_events copy];
     [_events removeAllObjects];
-    
-    NSDictionary *params = @{ @"events" : eventsCache };
-    
-    [self setParameterEncoding:AFJSONParameterEncoding];
-    
-    [self postPath:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",[operation debugDescription]);
-        NSLog(@"%@",[responseObject debugDescription]);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"%@",[operation debugDescription]);
-        NSLog(@"%@",[error debugDescription]);
-        
-        NSLog(@"-----CACHED FAILED OPERATION-----");
-        // requeue to be retried later
-        [_events addObjectsFromArray:eventsCache];
-    }];
+    [self enqueueEngageEvent:engageEventsCache];
 }
 
 - (void)enqueueEvent:(NSDictionary *)event {
+    //Save event to EngageLocalEventStore
+    [[EngageLocalEventStore sharedInstance] saveUBFEvent:event];
+    
     [_events addObject:event];
-    NSArray *eventsCache = [_events copy];
+    NSArray *engageEventsCache = [_events copy];
     [_events removeAllObjects];
+    [self enqueueEngageEvent:engageEventsCache];
+}
+
+- (void)enqueueEngageEvent:(NSArray *)engageEvents {
+    //We need to convert the list of "tracked" EngageEvent objects back to their original format for submission
+    NSError *error;
+    NSMutableArray *eventsCache = [[NSMutableArray alloc] init];
+    for (EngageEvent *event in engageEvents) {
+        NSDictionary *originalEventData = [NSJSONSerialization JSONObjectWithData:[event.eventJson dataUsingEncoding:NSUTF8StringEncoding]
+                                                                   options:kNilOptions
+                                                                     error:&error];
+        [eventsCache addObject:originalEventData];
+    }
     
     NSDictionary *params = @{ @"events" : eventsCache };
     
@@ -155,24 +208,28 @@ __strong static UBFClient *_sharedClient = nil;
     
     NSMutableURLRequest *request = [self requestWithMethod:@"POST" path:@"/rest/events/submission" parameters:params];
     AFHTTPRequestOperation *operation =
-    [self HTTPRequestOperationWithRequest:request
-                                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                         NSLog(@"%@",[operation debugDescription]);
-                                         NSLog(@"%@",[responseObject debugDescription]);
-                                     }
-                                     failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                         NSLog(@"%@",[operation debugDescription]);
-                                         NSLog(@"%@",[error debugDescription]);
-                                         
-                                         NSArray *ops = [[self operationQueue] operations];
-                                         if (![ops containsObject:operation]) {
-                                             NSLog(@"-----REQUEUED FAILED OPERATION-----");
-                                             // requeue operation if it failed
-                                             [self enqueueHTTPRequestOperation:operation];
-                                         }
-                                         
-                                     }];
-    
+    [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"UBF EVENTS WERE SUCCESSFULLY POSTED TO SILVERPOP! With ResponseObject %@", responseObject);
+        NSLog(@"%@",[operation debugDescription]);
+        NSLog(@"%@",[responseObject debugDescription]);
+        
+        // Mark the EngageObjects as posted in the EngageLocalEventStore.
+        for (EngageEvent *event in engageEvents) {
+            event.eventHasPosted = [[NSNumber alloc] initWithInt:1];
+        }
+        NSError *saveError;
+        if (![[[EngageLocalEventStore sharedInstance] managedObjectContext] save:&saveError]) {
+            NSLog(@"EngageUBFEvents were successfully posted to Silverpop but there was a problem marking them as posted in the EngageLocalEventStore: %@", [saveError description]);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@",[operation debugDescription]);
+        NSLog(@"%@",[error debugDescription]);
+        
+        NSLog(@"-----CACHED FAILED OPERATION-----");
+        // requeue to be retried later
+        [_events addObjectsFromArray:engageEvents];
+    }];
     
     [self enqueueHTTPRequestOperation:operation];
 }

@@ -7,6 +7,7 @@
 //
 
 #import "AFOAuth2Client.h"
+#import "EngageLocalEventStore.h"
 
 typedef enum {
     EngagePilot,

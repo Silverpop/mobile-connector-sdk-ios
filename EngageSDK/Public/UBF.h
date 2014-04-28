@@ -17,5 +17,8 @@
 + (id)goalAbandoned:(NSString *)goalName params:(NSDictionary *)params;
 + (id)goalCompleted:(NSString *)goalName params:(NSDictionary *)params;
 + (id)namedEvent:(NSString *)eventName params:(NSDictionary *)params;
++ (id)receivedNotification:(NSDictionary *)params;
++ (id)openedNotification:(NSDictionary *)params;
++ (id)openedURL:(NSDictionary *)params;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "EngageClient.h"
+#import <MobileDeepLinking-iOS/MobileDeepLinking.h>
 
 @interface UBFClient : EngageClient
 
@@ -20,5 +21,7 @@
 - (void)trackingEvent:(NSDictionary *)event;
 - (void)postEventCache;
 - (void)enqueueEvent:(NSDictionary *)event;
+
+- (void)routeUsingUrl:(NSURL *)url;
 
 @end

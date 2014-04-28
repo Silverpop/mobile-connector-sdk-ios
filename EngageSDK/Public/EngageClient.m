@@ -7,6 +7,7 @@
 //
 
 #import "EngageClient.h"
+#import "AFHTTPClient.h"
 
 #define EXCEPTION(msg) \
     ([NSException exceptionWithName:NSInternalInconsistencyException \
@@ -38,19 +39,26 @@
             secret:(NSString *)secret
              token:(NSString *)refreshToken
 {
+    
     NSURL *baseUrl = [NSURL URLWithString:host];
     
     if (self = [super initWithBaseURL:baseUrl clientID:clientId secret:secret]) {
-        
+        NSLog(@"InitWithBaseURL has finished");
         _clientId = clientId;
         _secret = secret;
         _refreshToken = refreshToken;
+        
+//        [self setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+//            NSLog(@"NetworkReachability status has changed!");
+//        }];
     }
+    
     return self;
 }
 
 - (void)connectSuccess:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure {
+    NSLog(@"Connect success method has been invoked");
     [self setParameterEncoding:AFFormURLParameterEncoding];
     [self authenticateUsingOAuthWithPath:@"/oauth/token"
                             refreshToken:_refreshToken

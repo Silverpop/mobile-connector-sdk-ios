@@ -1,0 +1,29 @@
+{
+    "logging": "true", /* must be a string data type */
+    "defaultRoute": {
+        "handlers": [
+            "postSilverpop"
+        ]
+    },
+    "routes": {
+        "test/:testId": {
+            "handlers": [
+                         "postSilverpop"
+                         ],
+            "routeParameters": {
+                "testId": {
+                    "required": "true",
+                    "regex": "[0-9]"
+                },
+                "utmSource": {
+                    
+                }
+            }
+        },
+        "addToCart/:productId": {
+            "handlers": [
+                         "postSilverpop"
+                         ]
+        }
+    }
+}

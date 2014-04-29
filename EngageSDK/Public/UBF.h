@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface UBF : NSObject
 
@@ -17,7 +18,8 @@
 + (id)goalAbandoned:(NSString *)goalName params:(NSDictionary *)params;
 + (id)goalCompleted:(NSString *)goalName params:(NSDictionary *)params;
 + (id)namedEvent:(NSString *)eventName params:(NSDictionary *)params;
-+ (id)receivedNotification:(NSDictionary *)params;
++ (id)receivedLocalNotification:(UILocalNotification *)localNotification;
++ (id)receivedPushNotification:(NSDictionary *)params;
 + (id)openedNotification:(NSDictionary *)params;
 + (id)openedURL:(NSDictionary *)params;
 

@@ -8,7 +8,7 @@
 
 #import "EngageLocalEventStore.h"
 
-#define MAX_EVENTS_AGE_IN_DAYS 30
+#define MAX_EVENTS_AGE_IN_DAYS 0
 #define ENGAGE_EVENT_CORE_DATA @"EngageEvent"
 #define UNPOSTED_EVENT_REQUEST_NAME @"UnpostedEvents"
 #define EXPIRED_EVENT_REQUEST_NAME @"ExpiredEvents"
@@ -67,7 +67,8 @@
     for (NSManagedObject *managedObj in results) {
         [self.managedObjectContext deleteObject:managedObj];
     }
-    if (![self.managedObjectContext save:&error]) {
+
+    if ([self.managedObjectContext save:&error]) {
         NSLog(@"%du expired local events were purged from the local events store : %d days old from today %@",
               deletedEvents, MAX_EVENTS_AGE_IN_DAYS, [[NSDate alloc] init]);
     } else {
@@ -83,7 +84,7 @@
     engageEvent.eventType = myNumber;
     engageEvent.eventJson = [self createJsonStringFromDictionary:event];
     engageEvent.eventHasPosted = [[NSNumber alloc] initWithInt:0];
-    engageEvent.eventDate = [[NSDate alloc] init];
+    engageEvent.eventDate = [NSDate date];
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
@@ -175,21 +176,21 @@
 }
 
 
-- (void)createFetchRequestTemplates:(NSManagedObjectModel *)managedObjectModel {
-    NSFetchRequest *unpostedEventsTemplate = [[NSFetchRequest alloc] init];
-    NSEntityDescription *engageEventEntity = [[managedObjectModel entitiesByName] objectForKey:ENGAGE_EVENT_CORE_DATA];
-    [unpostedEventsTemplate setEntity:engageEventEntity];
-    
-    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventHasPosted < 1) OR (eventHasPosted = nil)"];
-    [unpostedEventsTemplate setPredicate:predicateTemplate];
-    
-    NSFetchRequest *expiredEventsTemplate = [[NSFetchRequest alloc] init];
-    [expiredEventsTemplate setEntity:engageEventEntity];
-    [expiredEventsTemplate setPredicate:[self predicateToRetrieveExpiredEventsFromDate:[[NSDate alloc] init]]];
-    
-    [managedObjectModel setFetchRequestTemplate:unpostedEventsTemplate forName:UNPOSTED_EVENT_REQUEST_NAME];
-    [managedObjectModel setFetchRequestTemplate:expiredEventsTemplate forName:EXPIRED_EVENT_REQUEST_NAME];
-}
+//- (void)createFetchRequestTemplates:(NSManagedObjectModel *)managedObjectModel {
+//    NSFetchRequest *unpostedEventsTemplate = [[NSFetchRequest alloc] init];
+//    NSEntityDescription *engageEventEntity = [[managedObjectModel entitiesByName] objectForKey:ENGAGE_EVENT_CORE_DATA];
+//    [unpostedEventsTemplate setEntity:engageEventEntity];
+//    
+//    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventHasPosted < 1) OR (eventHasPosted = nil)"];
+//    [unpostedEventsTemplate setPredicate:predicateTemplate];
+//    
+//    NSFetchRequest *expiredEventsTemplate = [[NSFetchRequest alloc] init];
+//    [expiredEventsTemplate setEntity:engageEventEntity];
+//    [expiredEventsTemplate setPredicate:[self predicateToRetrieveExpiredEventsFromDate:[[NSDate alloc] init]]];
+//    
+//    [managedObjectModel setFetchRequestTemplate:unpostedEventsTemplate forName:UNPOSTED_EVENT_REQUEST_NAME];
+//    [managedObjectModel setFetchRequestTemplate:expiredEventsTemplate forName:EXPIRED_EVENT_REQUEST_NAME];
+//}
 
 
 - (NSPredicate *) predicateToRetrieveExpiredEventsFromDate:(NSDate *)aDate {
@@ -209,11 +210,14 @@
     
     // build a NSDate for oldest date we want to keep in the local store
     NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
-    [offsetComponents setDay:-MAX_EVENTS_AGE_IN_DAYS];
+    //[offsetComponents setDay:-MAX_EVENTS_AGE_IN_DAYS];
+    [offsetComponents setDay:-100];
     NSDate *oldestDate = [gregorian dateByAddingComponents:offsetComponents toDate:thisDate options:0];
     
+    NSLog(@"Oldest Date is %@", oldestDate);
+    
     // build the predicate
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"eventDate < %@", oldestDate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"eventDate <= %@", oldestDate];
     
     return predicate;
 }

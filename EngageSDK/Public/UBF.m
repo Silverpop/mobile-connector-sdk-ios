@@ -123,7 +123,7 @@
     return [UBF createEventWithCode:@"17" params:namedEvent];
 }
 
-+ (id)receivedNotification:(NSDictionary *)params {
++ (id)receivedPushNotification:(NSDictionary *)params {
     
     NSString *displayedMessage = nil;
     if ([[[params objectForKey:@"aps"] objectForKey:@"alert"] isKindOfClass:[NSString class]]) {
@@ -168,6 +168,21 @@
 + (id)openedURL:(NSDictionary *)params {
     NSLog(@"HERE");
     return [UBF createEventWithCode:@"20" params:params];
+}
+
+
++ (id)receivedLocalNotification:(UILocalNotification *)localNotification {
+    
+    NSMutableDictionary *namedEvent = [[NSMutableDictionary alloc] init];
+    [namedEvent setObject:@"" forKey:@"Latitude"];
+    [namedEvent setObject:@"" forKey:@"Longitude"];
+    [namedEvent setObject:[localNotification alertAction] forKey:@"Call To Action"];
+    [namedEvent setObject:[localNotification alertBody] forKey:@"Payload"];
+    [namedEvent setObject:[localNotification userInfo] forKey:@"Tags"];
+    [namedEvent setObject:@"" forKey:@"Current Campaign"];
+    [namedEvent setObject:@"" forKey:@"Active Campaigns"];
+    
+    return [UBF createEventWithCode:@"21" params:namedEvent];
 }
 
 @end

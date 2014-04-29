@@ -25,9 +25,10 @@
 - (void)enqueueEvent:(NSDictionary *)event;
 
 - (void)routeUsingUrl:(NSURL *)url;
-
 - (void) addHandlersDictionaryToMobileDeepLinking:(NSDictionary *)handlers;
-- (void) receivedNotification:(NSDictionary *)params;
+
+- (void) receivedLocalNotification:(UILocalNotification *)localNotification;
+- (void) receivedPushNotification:(NSDictionary *)params;
 - (void) openedNotification:(NSDictionary *)params;
 
 @end

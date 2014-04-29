@@ -54,16 +54,11 @@ __strong static UBFClient *_sharedClient = nil;
         _sharedClient.minCode = 15; // Session Ended event code
         _sharedClient.sessionTimeout = 30; // 5 minutes
         
-        NSLog(@"Starting connection ...");
-        
         //Perform the login to the system.
         [_sharedClient connectSuccess:^(AFOAuthCredential *credential) {
-            NSLog(@"OK LETS TRY TO PUSH STUFF NOW!");
             [_sharedClient postEventCache];
             success(credential);
         } failure:failure];
-        
-        NSLog(@"Should not show up before connection success!!!");
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *installed = [defaults objectForKey:kEngageClientInstalled];
@@ -203,8 +198,7 @@ __strong static UBFClient *_sharedClient = nil;
     
     NSDictionary *params = @{ @"events" : eventsCache };
     
-    //[self setParameterEncoding:AFJSONParameterEncoding];
-    
+    self.requestSerializer = [AFJSONRequestSerializer serializer];
     [self POST:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[operation debugDescription]);
         NSLog(@"%@",[responseObject debugDescription]);
@@ -241,9 +235,14 @@ __strong static UBFClient *_sharedClient = nil;
     }
 }
 
-- (void) receivedNotification:(NSDictionary *)params {
-    NSLog(@"Tracking UBF event from Received Notification with Params -> %@", params);
-    [self trackingEvent:[UBF receivedNotification:params]];
+- (void) receivedLocalNotification:(UILocalNotification *)localNotification {
+    NSLog(@"Received Local notification with AlertBody %@", [localNotification alertBody]);
+    [self trackingEvent:[UBF receivedLocalNotification:localNotification]];
+}
+
+- (void) receivedPushNotification:(NSDictionary *)params {
+    NSLog(@"Tracking UBF event from Received Push Notification with Params -> %@", params);
+    [self trackingEvent:[UBF receivedPushNotification:params]];
 }
 
 - (void) openedNotification:(NSDictionary *)params {

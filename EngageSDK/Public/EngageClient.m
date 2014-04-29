@@ -42,8 +42,6 @@
     NSURL *baseUrl = [NSURL URLWithString:host];
     
     if (self = [super initWithBaseURL:baseUrl clientID:clientId secret:secret]) {
-        self.requestSerializer = [AFJSONRequestSerializer serializer];
-        NSLog(@"InitWithBaseURL has finished");
         _clientId = clientId;
         _secret = secret;
         _refreshToken = refreshToken;
@@ -66,8 +64,7 @@
 
 - (void)connectSuccess:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure {
-    NSLog(@"Attempting to perform OAuth2 authentication now");
-    [self authenticateUsingOAuthWithURLString:@"https://loginpilot.silverpop.com/oauth/token"
+    [self authenticateUsingOAuthWithURLString:@"http://pilot.silverpop.com/oauth/token"
                             refreshToken:_refreshToken
                                  success:^(AFOAuthCredential *credential) {
                                         self.credential = credential;

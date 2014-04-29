@@ -14,7 +14,9 @@
 + (instancetype)createClient:(NSString *)clientId
                       secret:(NSString *)secret
                        token:(NSString *)refreshToken
-                        host:(NSString *)hostUrl;
+                        host:(NSString *)hostUrl
+              connectSuccess:(void (^)(AFOAuthCredential *credential))success
+                     failure:(void (^)(NSError *error))failure;
 
 + (instancetype)client;
 
@@ -23,5 +25,9 @@
 - (void)enqueueEvent:(NSDictionary *)event;
 
 - (void)routeUsingUrl:(NSURL *)url;
+
+- (void) addHandlersDictionaryToMobileDeepLinking:(NSDictionary *)handlers;
+- (void) receivedNotification:(NSDictionary *)params;
+- (void) openedNotification:(NSDictionary *)params;
 
 @end

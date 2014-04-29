@@ -42,7 +42,9 @@ __strong static UBFClient *_sharedClient = nil;
 + (instancetype)createClient:(NSString *)clientId
                       secret:(NSString *)secret
                        token:(NSString *)refreshToken
-                        host:(NSString *)hostUrl {
+                        host:(NSString *)hostUrl
+              connectSuccess:(void (^)(AFOAuthCredential *credential))success
+                     failure:(void (^)(NSError *error))failure {
     
     static dispatch_once_t pred = 0;
     dispatch_once(&pred, ^{
@@ -51,6 +53,17 @@ __strong static UBFClient *_sharedClient = nil;
         _sharedClient.queueSize = 3; // three events trigger post
         _sharedClient.minCode = 15; // Session Ended event code
         _sharedClient.sessionTimeout = 30; // 5 minutes
+        
+        NSLog(@"Starting connection ...");
+        
+        //Perform the login to the system.
+        [_sharedClient connectSuccess:^(AFOAuthCredential *credential) {
+            NSLog(@"OK LETS TRY TO PUSH STUFF NOW!");
+            [_sharedClient postEventCache];
+            success(credential);
+        } failure:failure];
+        
+        NSLog(@"Should not show up before connection success!!!");
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *installed = [defaults objectForKey:kEngageClientInstalled];
@@ -92,38 +105,28 @@ __strong static UBFClient *_sharedClient = nil;
                                                           [_sharedClient postEventCache];
                                                       }];
         
-        
         [[EngageLocalEventStore sharedInstance] deleteExpiredLocalEvents];
         
-        //Check for events that have not yet been posted
+        //Check for UBFEvents that have not yet been posted
         NSArray *unpostedLocalEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
         NSLog(@"Re-queueing %lu unposted local events to Silverpop from events local store", (unsigned long)[unpostedLocalEvents count]);
         for (EngageEvent *unpostedEvent in unpostedLocalEvents) {
             [_sharedClient trackEngageEvent:unpostedEvent];
         }
         
-        NSLog(@"Creating MobileDeepLinking client");
+        //Create MobileDeepLinking instance and register handler for capture URL data to post to Silverpop
         _sharedClient.mobileDeepLinking = [MobileDeepLinking sharedInstance];
-        NSLog(@"Created the instance now applying some routes to it!");
-        
-        void (^handleOpenUrlBlock) (NSDictionary *params);
-        //Creates the callback block that will be invoked on the app open url
-        handleOpenUrlBlock = ^(NSDictionary * params) {
-            NSLog(@"POSTing UBF event to Silverpop as a result of handling OpenURL with Params -> %@", params);
-            NSLog(@"BOOM!!!");
-        };
-        
-        [_sharedClient.mobileDeepLinking registerHandlerWithName:@"postSilverpop" handler:handleOpenUrlBlock];
+        [_sharedClient.mobileDeepLinking registerHandlerWithName:@"postSilverpop" handler:^(NSDictionary *properties) {
+            NSLog(@"POSTing to Silverpop as a result of handling OpenURL with Params -> %@", properties);
+            id ubfResult = [UBF openedURL:properties];
+            NSLog(@"UBFResult of %@", ubfResult);
+            [_sharedClient trackingEvent:ubfResult];
+        }];
 
     });
     return _sharedClient;
 }
 
-- (void) routeUsingUrl:(NSURL *)url
-{
-    NSLog(@"UBFClient routing url %@", url);
-    [_sharedClient.mobileDeepLinking routeUsingUrl:url];
-}
 + (instancetype)client
 {
     return _sharedClient;
@@ -141,28 +144,11 @@ __strong static UBFClient *_sharedClient = nil;
 }
 
 - (void)trackingEvent:(NSDictionary *)event {
-    NSLog(@"TrackingEvent %@", event.description);
     EngageEvent *engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event];
-    NSLog(@"saveUBFEvent has successfully been invoked!");
     [self trackEngageEvent:engageEvent];
 }
 
 - (void)trackEngageEvent:(EngageEvent *)engageEvent {
-
-    //This method won't work as is because the current core data table structure does not have a
-//    NSLog(@"Checking if ManagedEvent has been inserted or not");
-//    if (!engageEvent.isInserted) {
-//        [[[EngageLocalEventStore sharedInstance] managedObjectContext] insertObject:engageEvent];
-//        NSError *error;
-//        if (![[[EngageLocalEventStore sharedInstance] managedObjectContext] save:&error]) {
-//            NSLog(@"Unable to save UBFEvent %@ to EngageLocalEventStore. Silverpop HTTP Post will still be attempted.", engageEvent.description);
-//        }
-//        
-//        //Debug logging to make sure this works as expected
-//        NSLog(@"DEBUG ENGAGEEVENT SHOULD NOW BE INSERTED %s", engageEvent.isInserted ? "true" : "false");
-//    }
-//    NSLog(@"Done checking if the ManagedEvent has been inserted or not");
-    
     [_events addObject:engageEvent];
     
     NSNumber *eventTypeCode = engageEvent.eventType;
@@ -192,6 +178,19 @@ __strong static UBFClient *_sharedClient = nil;
 }
 
 - (void)enqueueEngageEvent:(NSArray *)engageEvents {
+    
+    if (self.credential == nil || [self.credential isExpired]) {
+        NSLog(@"Client is not currently logged in so we need to wait on posting for now ...");
+        return;
+    } else {
+        NSLog(@"Client has valid credentials so we will continue and post to the engage API");
+    }
+    
+    if ([engageEvents count] <= 0) {
+        NSLog(@"No events available to be pushed to engage");
+        return;
+    }
+    
     //We need to convert the list of "tracked" EngageEvent objects back to their original format for submission
     NSError *error;
     NSMutableArray *eventsCache = [[NSMutableArray alloc] init];
@@ -204,12 +203,9 @@ __strong static UBFClient *_sharedClient = nil;
     
     NSDictionary *params = @{ @"events" : eventsCache };
     
-    [self setParameterEncoding:AFJSONParameterEncoding];
+    //[self setParameterEncoding:AFJSONParameterEncoding];
     
-    NSMutableURLRequest *request = [self requestWithMethod:@"POST" path:@"/rest/events/submission" parameters:params];
-    AFHTTPRequestOperation *operation =
-    [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"UBF EVENTS WERE SUCCESSFULLY POSTED TO SILVERPOP! With ResponseObject %@", responseObject);
+    [self POST:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[operation debugDescription]);
         NSLog(@"%@",[responseObject debugDescription]);
         
@@ -230,8 +226,30 @@ __strong static UBFClient *_sharedClient = nil;
         // requeue to be retried later
         [_events addObjectsFromArray:engageEvents];
     }];
-    
-    [self enqueueHTTPRequestOperation:operation];
 }
+
+- (void) routeUsingUrl:(NSURL *)url
+{
+    [_sharedClient.mobileDeepLinking routeUsingUrl:url];
+}
+
+
+- (void) addHandlersDictionaryToMobileDeepLinking:(NSDictionary *)handlers {
+    NSLog(@"Registering %ld handlers to mobile deep linking library", (unsigned long)[handlers count]);
+    for (id key in handlers) {
+        [self.mobileDeepLinking registerHandlerWithName:key handler:[handlers objectForKey:key]];
+    }
+}
+
+- (void) receivedNotification:(NSDictionary *)params {
+    NSLog(@"Tracking UBF event from Received Notification with Params -> %@", params);
+    [self trackingEvent:[UBF receivedNotification:params]];
+}
+
+- (void) openedNotification:(NSDictionary *)params {
+    NSLog(@"Tracking UBF from Opened notification with params -> %@", params);
+    [self trackingEvent:[UBF openedNotification:params]];
+}
+
 
 @end

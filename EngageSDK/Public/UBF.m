@@ -165,7 +165,8 @@
     return [UBF createEventWithCode:@"19" params:namedEvent];
 }
 
-+ (id)openedURL:(NSURL *)notificationUrl params:(NSDictionary *)params {
++ (id)openedURL:(NSDictionary *)params {
+    NSLog(@"HERE");
     return [UBF createEventWithCode:@"20" params:params];
 }
 

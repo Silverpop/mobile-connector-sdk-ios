@@ -7,7 +7,6 @@
 //
 
 #import "EngageClient.h"
-#import "AFHTTPClient.h"
 
 #define EXCEPTION(msg) \
     ([NSException exceptionWithName:NSInternalInconsistencyException \
@@ -43,14 +42,23 @@
     NSURL *baseUrl = [NSURL URLWithString:host];
     
     if (self = [super initWithBaseURL:baseUrl clientID:clientId secret:secret]) {
+        self.requestSerializer = [AFJSONRequestSerializer serializer];
         NSLog(@"InitWithBaseURL has finished");
         _clientId = clientId;
         _secret = secret;
         _refreshToken = refreshToken;
         
-//        [self setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-//            NSLog(@"NetworkReachability status has changed!");
-//        }];
+        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            NSLog(@"NetworkReachability status has changed! AFNetworkReachabilityManager is reporting a Status of %ld for base url %@", status, [self baseURL]);
+            if (status == AFNetworkReachabilityStatusNotReachable) {
+                NSLog(@"Suspending HTTP Operations for UBF events since we don't have network access");
+                [[self operationQueue] setSuspended:YES];
+            } else {
+                NSLog(@"Resuming HTTP Operations for UBF as we have regained internet access");
+                [[self operationQueue] setSuspended:NO];
+            }
+        }];
+        [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     }
     
     return self;
@@ -58,15 +66,14 @@
 
 - (void)connectSuccess:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure {
-    NSLog(@"Connect success method has been invoked");
-    [self setParameterEncoding:AFFormURLParameterEncoding];
-    [self authenticateUsingOAuthWithPath:@"/oauth/token"
+    NSLog(@"Attempting to perform OAuth2 authentication now");
+    [self authenticateUsingOAuthWithURLString:@"https://loginpilot.silverpop.com/oauth/token"
                             refreshToken:_refreshToken
                                  success:^(AFOAuthCredential *credential) {
-                                     self.credential = credential;
-                                     success(credential);
+                                        self.credential = credential;
+                                        success(credential);
                                  }
-                                 failure:failure];
+                                failure:failure];
 }
 
 @end

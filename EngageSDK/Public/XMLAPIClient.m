@@ -40,7 +40,7 @@ __strong static XMLAPIClient *_sharedClient = nil;
     void (^postResource)() = ^() {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[api envelope], @"xml", nil];
         
-        [self postPath:@"/XMLAPI" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self POST:@"/XMLAPI" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             ResultDictionary *ERXML = [EngageResponseXML decode:responseObject];
             success(ERXML);
          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

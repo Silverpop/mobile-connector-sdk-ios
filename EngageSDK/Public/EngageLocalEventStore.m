@@ -67,16 +67,17 @@
     for (NSManagedObject *managedObj in results) {
         [self.managedObjectContext deleteObject:managedObj];
     }
-    NSLog(@"%du expired local events were purged from the local events store : %d days old from today %@",
-          deletedEvents, MAX_EVENTS_AGE_IN_DAYS, [[NSDate alloc] init]);
-    
-    [self.managedObjectContext save:&error];
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"%du expired local events were purged from the local events store : %d days old from today %@",
+              deletedEvents, MAX_EVENTS_AGE_IN_DAYS, [[NSDate alloc] init]);
+    } else {
+        NSLog(@"Error while deleting expired ubf events from local events store %@", error);
+    }
 }
 
 -(EngageEvent *)saveUBFEvent:(NSDictionary *)event {
-    NSLog(@"Creating Managed EngageEvent");
     EngageEvent *engageEvent = [NSEntityDescription insertNewObjectForEntityForName:@"EngageEvent" inManagedObjectContext:[EngageLocalEventStore sharedInstance].managedObjectContext];
-    NSLog(@"Managed EngageEvent object created!");
+
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
     NSNumber *myNumber = [f numberFromString:[event objectForKey:@"eventTypeCode"]];
     engageEvent.eventType = myNumber;

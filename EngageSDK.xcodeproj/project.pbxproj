@@ -7,12 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		190AB177190E8F2100C19FCE /* libPods-MobileDeepLinking-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 190AB176190E8F2100C19FCE /* libPods-MobileDeepLinking-iOS.a */; };
 		190D7CDA1907360000432B88 /* EngageEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 190D7CD91907360000432B88 /* EngageEvent.m */; };
 		19153DD7190817F10086631B /* EngageLocalEventStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 19153DD6190817F10086631B /* EngageLocalEventStore.m */; };
-		1916728A19070072001F25C9 /* EngageQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1916728919070072001F25C9 /* EngageQueueManager.m */; };
 		1916728F1907063F001F25C9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1916728E1907063F001F25C9 /* CoreData.framework */; };
-		19453D60190AACA00006B5B2 /* NotificationRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 19453D5F190AACA00006B5B2 /* NotificationRouter.m */; };
 		19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
 		7A3B2BEAEEC2479281F513DD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D76863C004B4A1AAEE87550 /* libPods.a */; };
 		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
@@ -62,11 +59,7 @@
 		190D7CD91907360000432B88 /* EngageEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEvent.m; sourceTree = "<group>"; };
 		19153DD5190817F10086631B /* EngageLocalEventStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageLocalEventStore.h; sourceTree = "<group>"; };
 		19153DD6190817F10086631B /* EngageLocalEventStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageLocalEventStore.m; sourceTree = "<group>"; };
-		1916728819070072001F25C9 /* EngageQueueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageQueueManager.h; sourceTree = "<group>"; };
-		1916728919070072001F25C9 /* EngageQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageQueueManager.m; sourceTree = "<group>"; };
 		1916728E1907063F001F25C9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		19453D5E190AACA00006B5B2 /* NotificationRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationRouter.h; sourceTree = "<group>"; };
-		19453D5F190AACA00006B5B2 /* NotificationRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationRouter.m; sourceTree = "<group>"; };
 		19D24B7219088D6900855BC7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3D76863C004B4A1AAEE87550 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -106,7 +99,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				190AB177190E8F2100C19FCE /* libPods-MobileDeepLinking-iOS.a in Frameworks */,
 				19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */,
 				1916728F1907063F001F25C9 /* CoreData.framework in Frameworks */,
 				B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */,
@@ -213,8 +205,6 @@
 		B2C2A8F517A9919C0058311A /* Public */ = {
 			isa = PBXGroup;
 			children = (
-				1916728819070072001F25C9 /* EngageQueueManager.h */,
-				1916728919070072001F25C9 /* EngageQueueManager.m */,
 				B2C2A8FA17A9919C0058311A /* EngageSDK.h */,
 				B2C2A8F817A9919C0058311A /* EngageConfig.h */,
 				B2C2A8F917A9919C0058311A /* EngageConfig.m */,
@@ -234,8 +224,6 @@
 				190D7CD91907360000432B88 /* EngageEvent.m */,
 				19153DD5190817F10086631B /* EngageLocalEventStore.h */,
 				19153DD6190817F10086631B /* EngageLocalEventStore.m */,
-				19453D5E190AACA00006B5B2 /* NotificationRouter.h */,
-				19453D5F190AACA00006B5B2 /* NotificationRouter.m */,
 				190AB173190E876700C19FCE /* MobileDeepLinkingConfig.json */,
 			);
 			path = Public;
@@ -374,7 +362,6 @@
 				190D7CDA1907360000432B88 /* EngageEvent.m in Sources */,
 				B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */,
 				B2C2A90517A9919C0058311A /* EngageClient.m in Sources */,
-				19453D60190AACA00006B5B2 /* NotificationRouter.m in Sources */,
 				B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */,
 				B2C2A90717A9919C0058311A /* ResultDictionary.m in Sources */,
 				B2C2A90817A9919C0058311A /* UBF.m in Sources */,
@@ -382,7 +369,6 @@
 				B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */,
 				19153DD7190817F10086631B /* EngageLocalEventStore.m in Sources */,
 				B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */,
-				1916728A19070072001F25C9 /* EngageQueueManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +463,7 @@
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
@@ -494,6 +481,7 @@
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",

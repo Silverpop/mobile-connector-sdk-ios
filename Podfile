@@ -1,4 +1,5 @@
-platform :ios, "6.0"
-pod "AFNetworking", "~> 1.0"
-pod "AFOAuth2Client", "~> 0.1"
+platform :ios, "7.0"
+pod "AFNetworking", "~> 2.2.3"
+#pod 'AFOAuth2Client', :git => 'https://github.com/mlwelles/AFOAuth2Client'
+pod 'AFOAuth2Client@phoenixplatform', '~> 0.1'
 pod 'MobileDeepLinking-iOS', '~> 0.2'

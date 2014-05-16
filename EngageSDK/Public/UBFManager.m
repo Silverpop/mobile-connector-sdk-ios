@@ -11,31 +11,42 @@
 #import "UBFClient.h"
 #import "EngageConfig.h"
 #import "EngageDeepLinkManager.h"
-#import "sample-config.h"           //You must create a "sample-config.h" file following the guidelines from the README
 
 @implementation UBFManager
 
-+ (id)sharedInstance
-{
-    static dispatch_once_t pred;
-    static UBFManager *sharedInstance = nil;
-    dispatch_once(&pred, ^
-    {
-        sharedInstance = [[UBFManager alloc] init];
+__strong static UBFManager *_sharedInstance = nil;
+
++ (instancetype)createClient:(NSString *)clientId
+                      secret:(NSString *)secret
+                       token:(NSString *)refreshToken
+                        host:(NSString *)hostUrl
+              connectSuccess:(void (^)(AFOAuthCredential *credential))success
+                     failure:(void (^)(NSError *error))failure {
+    
+    static dispatch_once_t pred = 0;
+    dispatch_once(&pred, ^{
+        _sharedInstance = [[UBFManager alloc] init];
         
-        [UBFClient createClient:ENGAGE_CLIENT_ID
-                         secret:ENGAGE_SECRET
-                          token:ENGAGE_REFRESH_TOKEN
-                           host:ENGAGE_BASE_URL
+        [UBFClient createClient:clientId
+                         secret:secret
+                          token:refreshToken
+                           host:hostUrl
                  connectSuccess:^(AFOAuthCredential *credential) {
                      NSLog(@"Successfully established connection to Engage API");
                  } failure:^(NSError *error) {
                      NSLog(@"Failed to establish connection to Engage API .... %@", error);
                  }];
-        
-        
     });
-    return sharedInstance;
+    
+    return _sharedInstance;
+}
+
++ (id)sharedInstance
+{
+    if (_sharedInstance == nil) {
+        [NSException raise:@"UBFManager sharedInstance is null" format:@"UBFManager sharedInstance is null. You must first create an UBFManager instance"];
+    }
+    return _sharedInstance;
 }
 
 - (NSURL *) trackEvent:(NSDictionary *)event {

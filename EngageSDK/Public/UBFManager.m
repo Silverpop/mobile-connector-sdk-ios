@@ -11,7 +11,7 @@
 #import "UBFClient.h"
 #import "EngageConfig.h"
 #import "EngageDeepLinkManager.h"
-#import "sample-config.h"
+#import "sample-config.h"           //You must create a "sample-config.h" file following the guidelines from the README
 
 @implementation UBFManager
 

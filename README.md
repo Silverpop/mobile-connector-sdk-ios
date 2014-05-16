@@ -94,6 +94,11 @@ Using an new or existing iPhone project within Xcode, create a new C header file
 #define ENGAGE_REFRESH_TOKEN (@"YOUR REFRESH TOKEN HERE")
 #define ENGAGE_LIST_ID (@"YOUR LIST ID")
 
+//Param macros default to the values listed below. You can change them if you wish 
+#define CURRENT_CAMPAIGN_PARAM_NAME @"CurrentCampaign"
+#define CALL_TO_ACTION_PARAM_NAME @"CallToAction"
+#define CAMPAIGN_EXTERNAL_EXPIRATION_DATETIME_PARAM @"CampaignEndTimeStamp"
+
 // if your database uses a unique key different from Recipient/Contact ID
 #define ENGAGE_SYNC_COLUMN_NAME (@"YOUR SYNC COLUMN NAME GOES HERE")
 
@@ -311,17 +316,104 @@ Both local and push notifications require that the user of the SDK enable their 
 ```objective-c
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    [[UBFClient client] receivedLocalNotification:notification];
+    [[UBFManager sharedInstance] handleLocalNotificationReceivedEvents:notification withParams:nil];
 }
 ```
 
 #### Push Notification Received
 ```objective-c
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo 
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)pushNotification 
 {
-    [[UBFClient client] receivedPushNotification:userInfo];
+    [[UBFManager sharedInstance] handlePushNotificationReceivedEvents:pushNotification];
 }
 ```
+
+#### Application Opened by clicking Notification - Application AppDelegate class
+```objective-c
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    if (launchOptions != nil) {
+        // Launched from push notification or local notification
+        NSDictionary *notification = nil;
+        if ([launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]) {
+            notification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+        } else if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
+            notification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+        } else {
+            //Other application logic
+        }
+        
+        [[UBFManager sharedInstance] handleNotificationOpenedEvents:notification];
+    }
+}
+```
+
+#### Application Opened by clicking external DeepLink - Application AppDelegate class snippet
+```objective-c
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    NSURL *ubfEventUid = [[UBFManager sharedInstance] handleExternalURLOpenedEvents:url];
+}
+```
+
+#### DeepLink Configuration
+Deep linking is handled in the EngageSDK by leveraging the [MobileDeepLinking](http://mobiledeeplinking.org) library. **You must create a MobileDeepLinkingConfig.json file** in your application. MobileDeepLinkingConfig.json is the definition of how EngageSDK will parse the parameters from the DeepLinks presented to your app and ultimately are sent as part of UBF events. Complete configuration can be found on the [MobileDeepLinking website](http://mobiledeeplinking.org). At a minimum you must define a "handler" to handle the parsing of the URLs. The EngageSDK handler is named "postSilverpop" and a sample configuration is found below. At a minimum you should include the "defaultRoute" section from the sample below to your MobileDeepLinkingConfig.json file. You can also register your own custom handlers with MobileDeepLinking and add them to the list of handlers in the configuration file.
+
+```json
+{
+    "logging": "true",
+    "defaultRoute": {
+        "handlers": [
+            "postSilverpop"
+        ]
+    },
+    "routes": {
+        "test/:testId": {
+            "handlers": [
+                         "postSilverpop"
+                         ],
+            "routeParameters": {
+                "testId": {
+                    "required": "true",
+                    "regex": "[0-9]"
+                },
+                "CurrentCampaign": {
+                    "required": "false"
+                },
+                "utmSource": {
+                    "required": "false"
+                }
+            }
+        },
+        "campaign/:CurrentCampaign": {
+            "handlers": [
+                "postSilverpop"
+            ],
+            "routeParameters": {
+                "CurrentCampaign": {
+                    "required": "true"
+                },
+                "CampaignEndTimeStamp": {
+                    "required": "false"
+                }
+            }
+        }
+    }
+}
+```
+
+#### Current Campaigns
+If you noticed the configuration value above has a parameter with a value of "CurrentCampaign". The #define macro of ```#define CURRENT_CAMPAIGN_PARAM_NAME @"CurrentCampaign"``` also has a default value of "CurrentCampaign". When a URL is opened and the UBFManager is invoked the CURRENT_CAMPAIGN_PARAM_NAME value is used to search the parameters for a match. If a match is found then the value of that parameter is set as the "Campaign Name" for all subsequent UBF events that are posted to Engage. Campaigns have a default expiration time of 86400 seconds (1 day) after they are set via opened url of push notification. If that value is not desirable you may also supply a ```objective-c #define CAMPAIGN_EXTERNAL_EXPIRATION_DATETIME_PARAM @"CampaignEndTimeStamp"``` value which is a standard linux timestamp for when you want the campaign specified to expire. [Here](http://www.timestampgenerator.com) is a handy timestamp tool for calculating those values. **Timestamps should be GMT**
+
+
+#### CurrentCampaign and CampaignEndTimeStamp Deeplink Examples
+Below are some deep link examples assuming that your application is configured to open for a URL containing a host value of "Silverpop".
+
+```objective-c
+Silverpop://campaign/TestCurrentCampaign?CampaignEndTimeStamp=1419465600    //Campaign Name set to "TestCurrentCampaign" and Expires on December 25th 2014 at 12AM
+Silverpop://campaign/TestCurrentCampaign   //Campaign Name set to "TestCurrentCampaign" and Expires 1 Day after the URL is opened in the application
+Silverpop://campaign/TestCurrentCampaign?CampaignEndTimeStamp=30931200    //Campaign Name set to "TestCurrentCampaign" and Expires on December 25th 1970 at 12AM. So campaign is never activated
+```
+
 
 ### Posting events to Universal Behaviors service
 

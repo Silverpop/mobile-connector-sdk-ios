@@ -19,11 +19,30 @@ __strong static XMLAPIClient *_sharedClient = nil;
 + (instancetype)createClient:(NSString *)clientId
                       secret:(NSString *)secret
                        token:(NSString *)refreshToken
-                        host:(NSString *)hostUrl {
+                        host:(NSString *)hostUrl
+              connectSuccess:(void (^)(AFOAuthCredential *credential))success
+                     failure:(void (^)(NSError *error))failure {
     
     static dispatch_once_t pred = 0;
     dispatch_once(&pred, ^{
         _sharedClient = [[self alloc] initWithHost:hostUrl clientId:clientId secret:secret token:refreshToken];
+        
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        
+        //Perform the login to the system.
+        [_sharedClient connectSuccess:^(AFOAuthCredential *credential) {
+            success(credential);
+            dispatch_semaphore_signal(semaphore);
+        } failure:^(NSError *error) {
+            failure(error);
+            dispatch_semaphore_signal(semaphore);
+        }];
+        
+        while (dispatch_semaphore_wait(semaphore, DISPATCH_TIME_NOW))
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                                     beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+        
+        NSLog(@"XMLAPI OAuth2 authentication complete");
     });
     return _sharedClient;
 }
@@ -39,6 +58,9 @@ __strong static XMLAPIClient *_sharedClient = nil;
     
     void (^postResource)() = ^() {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[api envelope], @"xml", nil];
+        
+        [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [self.credential accessToken]] forHTTPHeaderField:@"Authorization"];
+        self.responseSerializer = [AFXMLParserResponseSerializer serializer];
         
         [self POST:@"/XMLAPI" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             ResultDictionary *ERXML = [EngageResponseXML decode:responseObject];

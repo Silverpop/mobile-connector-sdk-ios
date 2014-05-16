@@ -15,7 +15,10 @@
 + (instancetype)createClient:(NSString *)clientId
                       secret:(NSString *)secret
                        token:(NSString *)refreshToken
-                        host:(NSString *)hostUrl;
+                        host:(NSString *)hostUrl
+              connectSuccess:(void (^)(AFOAuthCredential *credential))success
+                     failure:(void (^)(NSError *error))failure;
+
 
 + (instancetype)client;
 

@@ -47,12 +47,9 @@
         _refreshToken = refreshToken;
         
         [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            NSLog(@"NetworkReachability status has changed! AFNetworkReachabilityManager is reporting a Status of %ld for base url %@", status, [self baseURL]);
             if (status == AFNetworkReachabilityStatusNotReachable) {
-                NSLog(@"Suspending HTTP Operations for UBF events since we don't have network access");
                 [[self operationQueue] setSuspended:YES];
             } else {
-                NSLog(@"Resuming HTTP Operations for UBF as we have regained internet access");
                 [[self operationQueue] setSuspended:NO];
             }
         }];
@@ -64,7 +61,7 @@
 
 - (void)connectSuccess:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure {
-    [self authenticateUsingOAuthWithURLString:@"http://pilot.silverpop.com/oauth/token"
+    [self authenticateUsingOAuthWithURLString:@"/oauth/token"
                             refreshToken:_refreshToken
                                  success:^(AFOAuthCredential *credential) {
                                         self.credential = credential;

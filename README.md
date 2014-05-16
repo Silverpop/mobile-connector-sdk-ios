@@ -304,6 +304,25 @@ EngageSDK implements predefined Session events for Universal Behaviors. Sessions
 [[UBFClient client] trackingEvent:[UBF namedEvent:@"PLAYER LOADED" params:@{ @"Event Source View" : @"HomeViewController", @"Event Tags" : @"MVSTERMIND,Underground" }]];
 ```
 
+#### Notifications
+Both local and push notifications require that the user of the SDK enable their application for subscribing and listening for the notifications. These hooks for the notifications are defined inside your application's UIApplicationDelegage (AppDelegate) implementation class. Full reference for those hooks can be found [here] (https://developer.apple.com/library/ios/documentation/uikit/reference/uiapplicationdelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIApplicationDelegate). Examples of using the local and push notification hooks are found below.
+
+#### Local Notification Received
+```objective-c
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    [[UBFClient client] receivedLocalNotification:notification];
+}
+```
+
+#### Push Notification Received
+```objective-c
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo 
+{
+    [[UBFClient client] receivedPushNotification:userInfo];
+}
+```
+
 ### Posting events to Universal Behaviors service
 
 Events are cached and sent in larger batches for efficiency. The timing of the automated dispatches varies but usually occur when the app is sent to the background. If you would like to control when events are posted, you can tell the UBFClient to post any cached events.

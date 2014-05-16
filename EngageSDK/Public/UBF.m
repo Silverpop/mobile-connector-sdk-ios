@@ -10,6 +10,9 @@
 #import "EngageConfig.h"
 #import <sys/utsname.h>
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <CoreLocation/CLLocationManager.h>
+
 
 @interface UBF ()
 
@@ -51,7 +54,7 @@
                                     @"App Version" : appVersion,
                                     @"Device Id" : deviceId,
                                     @"Primary User Id" : [EngageConfig primaryUserId],
-                                    @"Anonymous Id" : [EngageConfig anonymousId] };
+                                    @"Anonymous Id" : [EngageConfig anonymousId]};
         
         self.coreTemplate = [NSMutableDictionary dictionaryWithDictionary:template];
     }
@@ -81,7 +84,7 @@
     NSString *eventTimestamp = [rfc3339DateFormatter stringFromDate:date];
     
     // reformat dictionary to universal format
-    for (id key in ubf.coreTemplate) {
+    for (id key in ubf.coreTemplate) {        
         id attribute = @{ @"name" : key,
                           @"value" : [ubf.coreTemplate objectForKey:key] };
         [attributes addObject:attribute];
@@ -94,33 +97,57 @@
 
 
 + (id)installed:(NSDictionary *)params {
-    return [UBF createEventWithCode:@"12" params:params];
+    NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+    [mutParams setObject:[EngageConfig lastCampaign] forKey:@"Last Campaign"];
+    return [UBF createEventWithCode:@"12" params:mutParams];
 }
 
-+ (id)sessionStarted:(NSDictionary *)params {
-    return [UBF createEventWithCode:@"13" params:params];
++ (id)sessionStarted:(NSDictionary *)params withCampaign:(NSString *)campaignName {
+    NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+
+    if (campaignName != nil && [campaignName length] > 0) {
+        [EngageConfig storeCurrentCampaign:campaignName withExpirationTimestamp:nil];
+    } else {
+        NSLog(@"SessionStarted with empty CampaignName. Not storing value and using previous campaign name value");
+    }
+
+    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    return [UBF createEventWithCode:@"13" params:mutParams];
 }
 
 + (id)sessionEnded:(NSDictionary *)params {
-    return [UBF createEventWithCode:@"14" params:params];
+    NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    return [UBF createEventWithCode:@"14" params:mutParams];
 }
 
 + (id)goalAbandoned:(NSString *)goalName params:(NSDictionary *)params {
-    NSMutableDictionary *goalAbandoned = [NSMutableDictionary dictionaryWithObject:goalName forKey:@"Goal Name"];
-    [goalAbandoned addEntriesFromDictionary:params];
-    return [UBF createEventWithCode:@"15" params:goalAbandoned];
+    NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+    [mutParams setObject:goalName forKey:@"Goal Name"];
+    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    return [UBF createEventWithCode:@"15" params:mutParams];
 }
 
 + (id)goalCompleted:(NSString *)goalName params:(NSDictionary *)params {
-    NSMutableDictionary *goalCompleted = [NSMutableDictionary dictionaryWithObject:goalName forKey:@"Goal Name"];
-    [goalCompleted addEntriesFromDictionary:params];
-    return [UBF createEventWithCode:@"16" params:goalCompleted];
+    NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+    [mutParams setObject:goalName forKey:@"Goal Name"];
+    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    return [UBF createEventWithCode:@"16" params:mutParams];
 }
 
 + (id)namedEvent:(NSString *)eventName params:(NSDictionary *)params {
-    NSMutableDictionary *namedEvent = [NSMutableDictionary dictionaryWithObject:eventName forKey:@"Event Name"];
-    [namedEvent addEntriesFromDictionary:params];
-    return [UBF createEventWithCode:@"17" params:namedEvent];
+    NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+    [mutParams setObject:eventName forKey:@"Event Name"];
+    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    return [UBF createEventWithCode:@"17" params:mutParams];
+}
+
++ (id)receivedLocalNotification:(UILocalNotification *)localNotification withParams:(NSDictionary *)params {
+    NSMutableDictionary *locNotEvent = [self populateEventCommonParams:params];
+    [locNotEvent setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    [locNotEvent setObject:[localNotification alertAction] forKey:@"Call To Action"];
+    [locNotEvent setObject:[localNotification alertBody] forKey:@"Displayed Message"];
+    return [UBF createEventWithCode:@"48" params:locNotEvent];
 }
 
 + (id)receivedPushNotification:(NSDictionary *)params {
@@ -132,16 +159,16 @@
         displayedMessage = [[[params objectForKey:@"aps"] objectForKey:@"alert"] objectForKey:@"body"];
     }
     
-    NSMutableDictionary *namedEvent = [NSMutableDictionary dictionaryWithObject:displayedMessage forKey:@"Displayed Message"];
-    [namedEvent setObject:@"" forKey:@"Latitude"];
-    [namedEvent setObject:@"" forKey:@"Longitude"];
-    [namedEvent setObject:@"" forKey:@"Call To Action"];
-    [namedEvent setObject:params forKey:@"Payload"];
-    [namedEvent setObject:@"" forKey:@"Tags"];
-    [namedEvent setObject:@"" forKey:@"Current Campaign"];
-    [namedEvent setObject:@"" forKey:@"Active Campaigns"];
+    NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    [mutParams setObject:displayedMessage forKey:@"Displayed Message"];
+    if ([params objectForKey:CALL_TO_ACTION_PARAM_NAME]) {
+        [mutParams setObject:[params objectForKey:CALL_TO_ACTION_PARAM_NAME] forKey:@"Call To Action"];
+    } else {
+        [mutParams setObject:@"" forKey:@"Call To Action"];
+    }
     
-    return [UBF createEventWithCode:@"18" params:namedEvent];
+    return [UBF createEventWithCode:@"48" params:mutParams];
 }
 
 + (id)openedNotification:(NSDictionary *)params {
@@ -153,36 +180,69 @@
         displayedMessage = [[[params objectForKey:@"aps"] objectForKey:@"alert"] objectForKey:@"body"];
     }
     
-    NSMutableDictionary *namedEvent = [NSMutableDictionary dictionaryWithObject:displayedMessage forKey:@"Displayed Message"];
-    [namedEvent setObject:@"" forKey:@"Latitude"];
-    [namedEvent setObject:@"" forKey:@"Longitude"];
-    [namedEvent setObject:@"" forKey:@"Call To Action"];
-    [namedEvent setObject:params forKey:@"Payload"];
-    [namedEvent setObject:@"" forKey:@"Tags"];
-    [namedEvent setObject:@"" forKey:@"Current Campaign"];
-    [namedEvent setObject:@"" forKey:@"Active Campaigns"];
+    NSMutableDictionary *openedNotificationEvent = [self populateEventCommonParams:params];
+    [openedNotificationEvent setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    [openedNotificationEvent setObject:displayedMessage forKey:@"Displayed Message"];
+    if ([params objectForKey:CALL_TO_ACTION_PARAM_NAME]) {
+        [openedNotificationEvent setObject:[params objectForKey:CALL_TO_ACTION_PARAM_NAME] forKey:@"Call To Action"];
+    } else {
+        [openedNotificationEvent setObject:@"" forKey:@"Call To Action"];
+    }
     
-    return [UBF createEventWithCode:@"19" params:namedEvent];
+    return [UBF createEventWithCode:@"49" params:openedNotificationEvent];
 }
 
-+ (id)openedURL:(NSDictionary *)params {
-    NSLog(@"HERE");
-    return [UBF createEventWithCode:@"20" params:params];
++ (NSMutableDictionary *) populateEventCommonParams:(NSDictionary *)params {
+    NSMutableDictionary *mutParams = [[NSMutableDictionary alloc] init];
+    mutParams = [self addLocationToParams:mutParams];
+    mutParams = [self addDelimitedTagsToParams:mutParams];
+    return mutParams;
 }
 
-
-+ (id)receivedLocalNotification:(UILocalNotification *)localNotification {
-    
-    NSMutableDictionary *namedEvent = [[NSMutableDictionary alloc] init];
-    [namedEvent setObject:@"" forKey:@"Latitude"];
-    [namedEvent setObject:@"" forKey:@"Longitude"];
-    [namedEvent setObject:[localNotification alertAction] forKey:@"Call To Action"];
-    [namedEvent setObject:[localNotification alertBody] forKey:@"Payload"];
-    [namedEvent setObject:[localNotification userInfo] forKey:@"Tags"];
-    [namedEvent setObject:@"" forKey:@"Current Campaign"];
-    [namedEvent setObject:@"" forKey:@"Active Campaigns"];
-    
-    return [UBF createEventWithCode:@"21" params:namedEvent];
++ (NSMutableDictionary *) addDelimitedTagsToParams:(NSMutableDictionary *)params
+{
+    if (params) {
+        if ([params objectForKey:@"Tags"]) {
+            id tagsParam = [params objectForKey:@"Tags"];
+            if ([tagsParam isKindOfClass:[NSArray class]]) {
+                [params setObject:[tagsParam componentsJoinedByString:@","] forKey:@"Tags"];
+            } else {
+                [params setObject:@"" forKey:@"Tags"];
+            }
+        }
+    }
+    return params;
 }
+
++ (NSMutableDictionary *) addLocationToParams:(NSMutableDictionary *)existingParams {
+    
+    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+    //locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.distanceFilter = kCLDistanceFilterNone;
+    [locationManager startUpdatingLocation];
+    CLLocation *location = [locationManager location];
+    CLLocationCoordinate2D coordinate = [location coordinate];
+    
+    NSString *latitude = [NSString stringWithFormat:@"%f", coordinate.latitude];
+    NSString *longitude = [NSString stringWithFormat:@"%f", coordinate.longitude];
+    
+    if (![existingParams objectForKey:@"Longitude"]) {
+        [existingParams setObject:longitude forKey:@"Longitude"];
+    }
+    if (![existingParams objectForKey:@"Latitude"]) {
+        [existingParams setObject:latitude forKey:@"Latitude"];
+    }
+    
+//    if (![existingParams objectForKey:@"Location Name"]) {
+//        [existingParams setObject:@"" forKey:@"Location Name"];
+//    }
+//    if (![existingParams objectForKey:@"Location Address"]) {
+//        [existingParams setObject:@"" forKey:@"Location Address"];
+//    }
+    
+    return existingParams;
+}
+
 
 @end

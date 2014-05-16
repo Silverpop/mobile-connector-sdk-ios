@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "EngageEvent.h"
+#import "EngageConfig.h"
 
 @interface EngageLocalEventStore : NSObject
 
@@ -17,6 +18,12 @@
 - (NSArray *) findUnpostedEvents;
 - (void) deleteExpiredLocalEvents;
 - (EngageEvent *)saveUBFEvent:(NSDictionary *)event;
+- (EngageEvent *)findEngageEventWithIdentifier:(NSURL *)urlIdentifier;
+- (NSArray *)findEngageEventsWithStatus:(int)eventStatus;
+
+// Utility methods
+- (NSUInteger) countForEventType:(NSNumber *)eventType;
+- (NSUInteger) deleteAllUBFEvents;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;

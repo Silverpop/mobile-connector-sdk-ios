@@ -13,7 +13,7 @@
 
 @dynamic eventType;
 @dynamic eventJson;
-@dynamic eventHasPosted;
+@dynamic eventStatus;
 @dynamic eventDate;
 
 @end

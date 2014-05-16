@@ -30,12 +30,11 @@
     return response;
 }
 
-+(ResultDictionary *) decode:(id)responseObject {
++(ResultDictionary *) decode:(id)xmlParser {
     EngageResponseXML *engageRes = [EngageResponseXML new];
     // parse the response
-    NSXMLParser *parser = [[NSXMLParser alloc] initWithData:responseObject];
-    [parser setDelegate:engageRes];
-    if ([parser parse]) {
+    [xmlParser setDelegate:engageRes];
+    if ([xmlParser parse]) {
         id obj = [engageRes.dictionaryStack objectAtIndex:0];
         ResultDictionary *result = [[ResultDictionary alloc] initWithDictionary:obj];
         return result;

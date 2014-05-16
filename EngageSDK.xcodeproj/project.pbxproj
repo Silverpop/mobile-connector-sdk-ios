@@ -10,11 +10,26 @@
 		190D7CDA1907360000432B88 /* EngageEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 190D7CD91907360000432B88 /* EngageEvent.m */; };
 		19153DD7190817F10086631B /* EngageLocalEventStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 19153DD6190817F10086631B /* EngageLocalEventStore.m */; };
 		1916728F1907063F001F25C9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1916728E1907063F001F25C9 /* CoreData.framework */; };
+		191970761924FB1500C75CD8 /* TestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 191970751924FB1500C75CD8 /* TestUtils.m */; };
+		191970791925030900C75CD8 /* UBFManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 191970781925030900C75CD8 /* UBFManager.m */; };
+		1919707E1925064A00C75CD8 /* EngageEventLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1919707D1925064A00C75CD8 /* EngageEventLocationManager.m */; };
+		1919708519251EA700C75CD8 /* EngageDeepLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1919708419251EA700C75CD8 /* EngageDeepLinkManager.m */; };
+		19197087192531E300C75CD8 /* XMLAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19197086192531E300C75CD8 /* XMLAPIClientTests.m */; };
+		194C94B119216032004B8851 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1916728E1907063F001F25C9 /* CoreData.framework */; };
+		194C94B51921612C004B8851 /* UBFClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 194C94B41921612C004B8851 /* UBFClientTests.m */; };
+		194C94B819216CB0004B8851 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
+		199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */; };
+		19BFF1E51923AC5F004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
+		19BFF1E61923AC67004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
+		19BFF1E81923BFAE004686B7 /* UBFTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1E71923BFAE004686B7 /* UBFTests.m */; };
+		19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1E91923DE77004686B7 /* NotificationTests.m */; };
+		19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */; };
 		19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
+		19E06F961922540F008139E1 /* MobileDeepLinkingConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 19E06F951922540F008139E1 /* MobileDeepLinkingConfig.json */; };
 		7A3B2BEAEEC2479281F513DD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D76863C004B4A1AAEE87550 /* libPods.a */; };
+		A4B1270A55EF467497DA2A61 /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
 		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
 		B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
-		B2B18282178B59400097EE6A /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18281178B59400097EE6A /* SenTestingKit.framework */; };
 		B2B18284178B59400097EE6A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18283178B59400097EE6A /* UIKit.framework */; };
 		B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
 		B2B18288178B59400097EE6A /* libEngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B1826F178B59400097EE6A /* libEngageSDK.a */; };
@@ -26,8 +41,6 @@
 		B2C2A90917A9919C0058311A /* UBFClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90017A9919C0058311A /* UBFClient.m */; };
 		B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90217A9919C0058311A /* XMLAPI.m */; };
 		B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90417A9919C0058311A /* XMLAPIClient.m */; };
-		B2E6A8CB17A1A22E0007EE20 /* XMLAPITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6A8CA17A1A22E0007EE20 /* XMLAPITests.m */; };
-		B2E6A8CE17A1A5490007EE20 /* UBFTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6A8CD17A1A5490007EE20 /* UBFTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,23 +66,43 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		190AB173190E876700C19FCE /* MobileDeepLinkingConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MobileDeepLinkingConfig.json; sourceTree = "<group>"; };
 		190AB176190E8F2100C19FCE /* libPods-MobileDeepLinking-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-MobileDeepLinking-iOS.a"; path = "Pods/build/Debug-iphoneos/libPods-MobileDeepLinking-iOS.a"; sourceTree = "<group>"; };
 		190D7CD81907360000432B88 /* EngageEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEvent.h; sourceTree = "<group>"; };
 		190D7CD91907360000432B88 /* EngageEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEvent.m; sourceTree = "<group>"; };
 		19153DD5190817F10086631B /* EngageLocalEventStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageLocalEventStore.h; sourceTree = "<group>"; };
 		19153DD6190817F10086631B /* EngageLocalEventStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageLocalEventStore.m; sourceTree = "<group>"; };
 		1916728E1907063F001F25C9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		191970741924FB1500C75CD8 /* TestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUtils.h; sourceTree = "<group>"; };
+		191970751924FB1500C75CD8 /* TestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestUtils.m; sourceTree = "<group>"; };
+		191970771925030900C75CD8 /* UBFManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFManager.h; sourceTree = "<group>"; };
+		191970781925030900C75CD8 /* UBFManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManager.m; sourceTree = "<group>"; };
+		1919707C1925064A00C75CD8 /* EngageEventLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventLocationManager.h; sourceTree = "<group>"; };
+		1919707D1925064A00C75CD8 /* EngageEventLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventLocationManager.m; sourceTree = "<group>"; };
+		1919708319251EA700C75CD8 /* EngageDeepLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageDeepLinkManager.h; sourceTree = "<group>"; };
+		1919708419251EA700C75CD8 /* EngageDeepLinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManager.m; sourceTree = "<group>"; };
+		19197086192531E300C75CD8 /* XMLAPIClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIClientTests.m; sourceTree = "<group>"; };
+		194C94B219216084004B8851 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		194C94B41921612C004B8851 /* UBFClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFClientTests.m; sourceTree = "<group>"; };
+		194C94B619216494004B8851 /* libPods-EngageSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-EngageSDK.a"; path = "Pods/build/Debug-iphoneos/libPods-EngageSDK.a"; sourceTree = "<group>"; };
+		194C94FC192172B1004B8851 /* sample-config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "sample-config.h"; sourceTree = "<group>"; };
+		199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManagerTests.m; sourceTree = "<group>"; };
+		19BFF1E41923AC5F004686B7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		19BFF1E71923BFAE004686B7 /* UBFTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFTests.m; sourceTree = "<group>"; };
+		19BFF1E91923DE77004686B7 /* NotificationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTests.m; sourceTree = "<group>"; };
+		19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageLocalEventStoreTests.m; sourceTree = "<group>"; };
 		19D24B7219088D6900855BC7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		19E06F951922540F008139E1 /* MobileDeepLinkingConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MobileDeepLinkingConfig.json; sourceTree = "<group>"; };
 		3D76863C004B4A1AAEE87550 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDK.xcconfig"; path = "Pods/Pods-EngageSDK.xcconfig"; sourceTree = "<group>"; };
 		6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		A5FD0612C1554177BB0F9A4A /* libPods-EngageSDKTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EngageSDKTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B137306FE3E7425F894C838C /* Pods-EngageSDKTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDKTests.xcconfig"; path = "Pods/Pods-EngageSDKTests.xcconfig"; sourceTree = "<group>"; };
 		B26FCA3D17A9868300629BC9 /* EngageResponseXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageResponseXML.h; sourceTree = "<group>"; };
 		B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageResponseXML.m; sourceTree = "<group>"; };
 		B2B1826F178B59400097EE6A /* libEngageSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEngageSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B18272178B59400097EE6A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B2B18276178B59400097EE6A /* EngageSDK-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EngageSDK-Prefix.pch"; sourceTree = "<group>"; };
-		B2B18280178B59400097EE6A /* EngageSDKTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EngageSDKTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2B18281178B59400097EE6A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		B2B18280178B59400097EE6A /* EngageSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EngageSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B18283178B59400097EE6A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		B2B1828B178B59400097EE6A /* EngageSDKTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EngageSDKTests-Info.plist"; sourceTree = "<group>"; };
 		B2B1828D178B59400097EE6A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -88,10 +121,7 @@
 		B2C2A90217A9919C0058311A /* XMLAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPI.m; sourceTree = "<group>"; };
 		B2C2A90317A9919C0058311A /* XMLAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAPIClient.h; sourceTree = "<group>"; };
 		B2C2A90417A9919C0058311A /* XMLAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIClient.m; sourceTree = "<group>"; };
-		B2E6A8C917A1A22E0007EE20 /* XMLAPITests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAPITests.h; sourceTree = "<group>"; };
-		B2E6A8CA17A1A22E0007EE20 /* XMLAPITests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPITests.m; sourceTree = "<group>"; };
-		B2E6A8CC17A1A5490007EE20 /* UBFTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFTests.h; sourceTree = "<group>"; };
-		B2E6A8CD17A1A5490007EE20 /* UBFTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFTests.m; sourceTree = "<group>"; };
+		B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EngageSDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,10 +129,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19BFF1E51923AC5F004686B7 /* CoreLocation.framework in Frameworks */,
 				19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */,
 				1916728F1907063F001F25C9 /* CoreData.framework in Frameworks */,
 				B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */,
 				7A3B2BEAEEC2479281F513DD /* libPods.a in Frameworks */,
+				A4B1270A55EF467497DA2A61 /* libPods-EngageSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +142,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2B18282178B59400097EE6A /* SenTestingKit.framework in Frameworks */,
+				19BFF1E61923AC67004686B7 /* CoreLocation.framework in Frameworks */,
+				194C94B819216CB0004B8851 /* SystemConfiguration.framework in Frameworks */,
+				194C94B119216032004B8851 /* CoreData.framework in Frameworks */,
 				B2B18284178B59400097EE6A /* UIKit.framework in Frameworks */,
 				B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */,
 				B2B18288178B59400097EE6A /* libEngageSDK.a in Frameworks */,
@@ -120,6 +154,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		194C94FA192171F0004B8851 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				19BFF1E91923DE77004686B7 /* NotificationTests.m */,
+				199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */,
+				19BFF1E71923BFAE004686B7 /* UBFTests.m */,
+			);
+			name = UnitTests;
+			sourceTree = "<group>";
+		};
+		194C94FB192171FC004B8851 /* FunctionalTests */ = {
+			isa = PBXGroup;
+			children = (
+				194C94B41921612C004B8851 /* UBFClientTests.m */,
+				19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */,
+				19197086192531E300C75CD8 /* XMLAPIClientTests.m */,
+			);
+			name = FunctionalTests;
+			sourceTree = "<group>";
+		};
 		B26FCA3A17A9868300629BC9 /* Private */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +191,8 @@
 				B2B18271178B59400097EE6A /* Frameworks */,
 				B2B18270178B59400097EE6A /* Products */,
 				6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */,
+				58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */,
+				B137306FE3E7425F894C838C /* Pods-EngageSDKTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -144,7 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				B2B1826F178B59400097EE6A /* libEngageSDK.a */,
-				B2B18280178B59400097EE6A /* EngageSDKTests.octest */,
+				B2B18280178B59400097EE6A /* EngageSDKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -152,13 +208,17 @@
 		B2B18271178B59400097EE6A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				19BFF1E41923AC5F004686B7 /* CoreLocation.framework */,
+				194C94B619216494004B8851 /* libPods-EngageSDK.a */,
+				194C94B219216084004B8851 /* XCTest.framework */,
 				190AB176190E8F2100C19FCE /* libPods-MobileDeepLinking-iOS.a */,
 				19D24B7219088D6900855BC7 /* SystemConfiguration.framework */,
 				1916728E1907063F001F25C9 /* CoreData.framework */,
 				B2B18272178B59400097EE6A /* Foundation.framework */,
-				B2B18281178B59400097EE6A /* SenTestingKit.framework */,
 				B2B18283178B59400097EE6A /* UIKit.framework */,
 				3D76863C004B4A1AAEE87550 /* libPods.a */,
+				B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */,
+				A5FD0612C1554177BB0F9A4A /* libPods-EngageSDKTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -184,11 +244,13 @@
 		B2B18289178B59400097EE6A /* EngageSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				19E06F951922540F008139E1 /* MobileDeepLinkingConfig.json */,
+				194C94FB192171FC004B8851 /* FunctionalTests */,
 				B2B1828A178B59400097EE6A /* Supporting Files */,
-				B2E6A8C917A1A22E0007EE20 /* XMLAPITests.h */,
-				B2E6A8CA17A1A22E0007EE20 /* XMLAPITests.m */,
-				B2E6A8CC17A1A5490007EE20 /* UBFTests.h */,
-				B2E6A8CD17A1A5490007EE20 /* UBFTests.m */,
+				194C94FA192171F0004B8851 /* UnitTests */,
+				194C94FC192172B1004B8851 /* sample-config.h */,
+				191970741924FB1500C75CD8 /* TestUtils.h */,
+				191970751924FB1500C75CD8 /* TestUtils.m */,
 			);
 			path = EngageSDKTests;
 			sourceTree = "<group>";
@@ -224,7 +286,12 @@
 				190D7CD91907360000432B88 /* EngageEvent.m */,
 				19153DD5190817F10086631B /* EngageLocalEventStore.h */,
 				19153DD6190817F10086631B /* EngageLocalEventStore.m */,
-				190AB173190E876700C19FCE /* MobileDeepLinkingConfig.json */,
+				191970771925030900C75CD8 /* UBFManager.h */,
+				191970781925030900C75CD8 /* UBFManager.m */,
+				1919707C1925064A00C75CD8 /* EngageEventLocationManager.h */,
+				1919707D1925064A00C75CD8 /* EngageEventLocationManager.m */,
+				1919708319251EA700C75CD8 /* EngageDeepLinkManager.h */,
+				1919708419251EA700C75CD8 /* EngageDeepLinkManager.m */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -241,6 +308,7 @@
 				B2B1826C178B59400097EE6A /* Frameworks */,
 				B2B1826D178B59400097EE6A /* CopyFiles */,
 				BAD040B135AD46F3A2AA544E /* Copy Pods Resources */,
+				194C94FF19217646004B8851 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -255,10 +323,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2B18297178B59400097EE6A /* Build configuration list for PBXNativeTarget "EngageSDKTests" */;
 			buildPhases = (
+				3AF2AC1FD2B847B795CBE3F6 /* Check Pods Manifest.lock */,
 				B2B1827B178B59400097EE6A /* Sources */,
 				B2B1827C178B59400097EE6A /* Frameworks */,
 				B2B1827D178B59400097EE6A /* Resources */,
-				B2B1827E178B59400097EE6A /* ShellScript */,
+				F3E8A14F3998498EB46F56E9 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -267,8 +336,8 @@
 			);
 			name = EngageSDKTests;
 			productName = EngageSDKTests;
-			productReference = B2B18280178B59400097EE6A /* EngageSDKTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = B2B18280178B59400097EE6A /* EngageSDKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -298,10 +367,18 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		194C94FF19217646004B8851 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B2B1827D178B59400097EE6A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19E06F961922540F008139E1 /* MobileDeepLinkingConfig.json in Resources */,
 				B2B1828E178B59400097EE6A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,6 +386,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3AF2AC1FD2B847B795CBE3F6 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		A63D0B7422A041F49B2EEFA4 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -324,19 +416,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		B2B1827E178B59400097EE6A /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
 		BAD040B135AD46F3A2AA544E /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -349,7 +428,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Pods-EngageSDK-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F3E8A14F3998498EB46F56E9 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-EngageSDKTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -362,13 +456,16 @@
 				190D7CDA1907360000432B88 /* EngageEvent.m in Sources */,
 				B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */,
 				B2C2A90517A9919C0058311A /* EngageClient.m in Sources */,
+				1919708519251EA700C75CD8 /* EngageDeepLinkManager.m in Sources */,
 				B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */,
+				1919707E1925064A00C75CD8 /* EngageEventLocationManager.m in Sources */,
 				B2C2A90717A9919C0058311A /* ResultDictionary.m in Sources */,
 				B2C2A90817A9919C0058311A /* UBF.m in Sources */,
 				B2C2A90917A9919C0058311A /* UBFClient.m in Sources */,
 				B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */,
 				19153DD7190817F10086631B /* EngageLocalEventStore.m in Sources */,
 				B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */,
+				191970791925030900C75CD8 /* UBFManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,8 +473,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2E6A8CB17A1A22E0007EE20 /* XMLAPITests.m in Sources */,
-				B2E6A8CE17A1A5490007EE20 /* UBFTests.m in Sources */,
+				19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */,
+				194C94B51921612C004B8851 /* UBFClientTests.m in Sources */,
+				19BFF1E81923BFAE004686B7 /* UBFTests.m in Sources */,
+				19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */,
+				19197087192531E300C75CD8 /* XMLAPIClientTests.m in Sources */,
+				199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */,
+				191970761924FB1500C75CD8 /* TestUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,7 +560,7 @@
 		};
 		B2B18295178B59400097EE6A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
+			baseConfigurationReference = 58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -476,7 +578,7 @@
 		};
 		B2B18296178B59400097EE6A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
+			baseConfigurationReference = 58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -494,33 +596,76 @@
 		};
 		B2B18298178B59400097EE6A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
+			baseConfigurationReference = B137306FE3E7425F894C838C /* Pods-EngageSDKTests.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
 				INFOPLIST_FILE = "EngageSDKTests/EngageSDKTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					MobileCoreServices,
+					"-framework",
+					Security,
+					"-framework",
+					SystemConfiguration,
+					"-framework",
+					XCTest,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				"TEST_HOST[sdk=*]" = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
 		B2B18299178B59400097EE6A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
+			baseConfigurationReference = B137306FE3E7425F894C838C /* Pods-EngageSDKTests.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
 				INFOPLIST_FILE = "EngageSDKTests/EngageSDKTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					MobileCoreServices,
+					"-framework",
+					Security,
+					"-framework",
+					SystemConfiguration,
+					"-framework",
+					XCTest,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};

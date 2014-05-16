@@ -8,12 +8,10 @@
 
 #import "EngageLocalEventStore.h"
 
-#define MAX_EVENTS_AGE_IN_DAYS 0
-#define ENGAGE_EVENT_CORE_DATA @"EngageEvent"
-#define UNPOSTED_EVENT_REQUEST_NAME @"UnpostedEvents"
-#define EXPIRED_EVENT_REQUEST_NAME @"ExpiredEvents"
-
 @implementation EngageLocalEventStore
+
+static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
+static long const MAX_EVENTS_AGE_IN_DAYS = 30;
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
@@ -41,13 +39,87 @@
     return sharedInstance;
 }
 
+- (NSUInteger) countForEventType:(NSNumber *)eventType {
+    NSError *error;
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ENGAGE_EVENT_CORE_DATA inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *countEventsRequest = [[NSFetchRequest alloc] init];
+    [countEventsRequest setEntity:entityDescription];
+    NSPredicate *predicateTemplate = nil;
+    
+    if ([eventType integerValue] > 0) {
+        predicateTemplate = [NSPredicate predicateWithFormat:@"(eventType = %d)", [eventType integerValue]];
+        [countEventsRequest setPredicate:predicateTemplate];
+    }
+    
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:countEventsRequest error:&error];
+    return count;
+}
+
+- (NSUInteger) deleteAllUBFEvents {
+    NSError *error;
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ENGAGE_EVENT_CORE_DATA inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *deleteUBFEventsRequest = [[NSFetchRequest alloc] init];
+    [deleteUBFEventsRequest setEntity:entityDescription];
+
+    NSUInteger deletedCount = 0;
+    NSArray *results = [[EngageLocalEventStore sharedInstance].managedObjectContext executeFetchRequest:deleteUBFEventsRequest error:&error];
+    for (NSManagedObject *managedObj in results) {
+        [self.managedObjectContext deleteObject:managedObj];
+        deletedCount++;
+    }
+    
+    return deletedCount;
+}
+
+- (EngageEvent *)findEngageEventWithIdentifier:(NSURL *)urlIdentifier {
+    NSManagedObjectID *managedObjectId = [[self persistenceStoreCoordinator] managedObjectIDForURIRepresentation:urlIdentifier];
+    
+    if (!managedObjectId) {
+        return nil;
+    }
+    
+    EngageEvent *engageEvent = (EngageEvent *)[self.managedObjectContext objectWithID:managedObjectId];
+    if (![engageEvent isFault]) {
+        return engageEvent;
+    }
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[managedObjectId entity]];
+    
+    NSPredicate *predicate = [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForEvaluatedObject]
+                                                                rightExpression:[NSExpression expressionForConstantValue:engageEvent]
+                                                                       modifier:NSDirectPredicateModifier
+                                                                           type:NSEqualToPredicateOperatorType
+                                                                        options:0];
+    [request setPredicate:predicate];
+    
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
+    if ([results count] > 0 )
+    {
+        return [results objectAtIndex:0];
+    }
+    
+    return nil;
+}
+
+
+- (NSArray *)findEngageEventsWithStatus:(int)eventStatus {
+    NSError *error;
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ENGAGE_EVENT_CORE_DATA inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *eventsWithStatusRequest = [[NSFetchRequest alloc] init];
+    [eventsWithStatusRequest setEntity:entityDescription];
+    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus = %d)", eventStatus];
+    [eventsWithStatusRequest setPredicate:predicateTemplate];
+    return [self.managedObjectContext executeFetchRequest:eventsWithStatusRequest error:&error];
+}
+
 
 - (NSArray *) findUnpostedEvents {
     NSError *error;
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ENGAGE_EVENT_CORE_DATA inManagedObjectContext:self.managedObjectContext];
     NSFetchRequest *unpostedEventsRequest = [[NSFetchRequest alloc] init];
     [unpostedEventsRequest setEntity:entityDescription];
-    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventHasPosted < 1) OR (eventHasPosted = nil)"];
+    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus < %d) OR (eventStatus = nil) OR (eventStatus = %d)", SUCCESSFULLY_POSTED, FAILED_POST];
     [unpostedEventsRequest setPredicate:predicateTemplate];
 
     return [self.managedObjectContext executeFetchRequest:unpostedEventsRequest error:&error];
@@ -63,13 +135,14 @@
     [expiredEventsFetchRequest setPredicate:[self predicateToRetrieveExpiredEventsFromDate:[[NSDate alloc] init]]];
     NSArray *results = [[EngageLocalEventStore sharedInstance].managedObjectContext executeFetchRequest:expiredEventsFetchRequest error:&error];
     
-    uint deletedEvents = 0;
+    int deletedEvents = 0;
     for (NSManagedObject *managedObj in results) {
         [self.managedObjectContext deleteObject:managedObj];
+        deletedEvents++;
     }
 
     if ([self.managedObjectContext save:&error]) {
-        NSLog(@"%du expired local events were purged from the local events store : %d days old from today %@",
+        NSLog(@"%d expired local events were purged from the local events store : %ld days old from today %@",
               deletedEvents, MAX_EVENTS_AGE_IN_DAYS, [[NSDate alloc] init]);
     } else {
         NSLog(@"Error while deleting expired ubf events from local events store %@", error);
@@ -83,7 +156,7 @@
     NSNumber *myNumber = [f numberFromString:[event objectForKey:@"eventTypeCode"]];
     engageEvent.eventType = myNumber;
     engageEvent.eventJson = [self createJsonStringFromDictionary:event];
-    engageEvent.eventHasPosted = [[NSNumber alloc] initWithInt:0];
+    engageEvent.eventStatus = [[NSNumber alloc] initWithInt:NOT_POSTED];
     engageEvent.eventDate = [NSDate date];
     
     NSError *error;
@@ -162,35 +235,18 @@
     [eventJsonAttribute setAttributeType:NSStringAttributeType];
     [eventJsonAttribute setOptional:NO];
     
-    NSAttributeDescription *eventHasPostedAttribute = [[NSAttributeDescription alloc] init];
-    [engageEventProperties addObject:eventHasPostedAttribute];
-    [eventHasPostedAttribute setName:@"eventHasPosted"];
-    [eventHasPostedAttribute setAttributeType:NSInteger16AttributeType];
-    [eventHasPostedAttribute setOptional:NO];
-    [eventHasPostedAttribute setDefaultValue:0];
+    NSAttributeDescription *eventStatusAttribute = [[NSAttributeDescription alloc] init];
+    [engageEventProperties addObject:eventStatusAttribute];
+    [eventStatusAttribute setName:@"eventStatus"];
+    [eventStatusAttribute setAttributeType:NSInteger16AttributeType];
+    [eventStatusAttribute setOptional:NO];
+    [eventStatusAttribute setDefaultValue:0];
     
     [engageEventEntity setProperties:engageEventProperties];
     
     _managedObjectModel = mom;
     return mom;
 }
-
-
-//- (void)createFetchRequestTemplates:(NSManagedObjectModel *)managedObjectModel {
-//    NSFetchRequest *unpostedEventsTemplate = [[NSFetchRequest alloc] init];
-//    NSEntityDescription *engageEventEntity = [[managedObjectModel entitiesByName] objectForKey:ENGAGE_EVENT_CORE_DATA];
-//    [unpostedEventsTemplate setEntity:engageEventEntity];
-//    
-//    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventHasPosted < 1) OR (eventHasPosted = nil)"];
-//    [unpostedEventsTemplate setPredicate:predicateTemplate];
-//    
-//    NSFetchRequest *expiredEventsTemplate = [[NSFetchRequest alloc] init];
-//    [expiredEventsTemplate setEntity:engageEventEntity];
-//    [expiredEventsTemplate setPredicate:[self predicateToRetrieveExpiredEventsFromDate:[[NSDate alloc] init]]];
-//    
-//    [managedObjectModel setFetchRequestTemplate:unpostedEventsTemplate forName:UNPOSTED_EVENT_REQUEST_NAME];
-//    [managedObjectModel setFetchRequestTemplate:expiredEventsTemplate forName:EXPIRED_EVENT_REQUEST_NAME];
-//}
 
 
 - (NSPredicate *) predicateToRetrieveExpiredEventsFromDate:(NSDate *)aDate {
@@ -210,11 +266,8 @@
     
     // build a NSDate for oldest date we want to keep in the local store
     NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
-    //[offsetComponents setDay:-MAX_EVENTS_AGE_IN_DAYS];
-    [offsetComponents setDay:-100];
+    [offsetComponents setDay:-MAX_EVENTS_AGE_IN_DAYS];
     NSDate *oldestDate = [gregorian dateByAddingComponents:offsetComponents toDate:thisDate options:0];
-    
-    NSLog(@"Oldest Date is %@", oldestDate);
     
     // build the predicate
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"eventDate <= %@", oldestDate];
@@ -230,7 +283,7 @@
         return _persistenceStoreCoordinator;
     }
     
-    NSURL *storeUrl = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"EngageLatest8.sqlite"];
+    NSURL *storeUrl = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"EngageEventLocalStore.sqlite"];
     
     NSError *error = nil;
     _persistenceStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

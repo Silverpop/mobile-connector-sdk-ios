@@ -26,6 +26,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.2.3)
   - AFOAuth2Client@phoenixplatform (~> 0.1)
   - MobileDeepLinking-iOS (~> 0.2)
+  - MobileDeepLinking-iOS (~> 1.2)
 
 SPEC CHECKSUMS:
   AFNetworking: ae513199cca79e9d7af2708ccabe2ed075550c42

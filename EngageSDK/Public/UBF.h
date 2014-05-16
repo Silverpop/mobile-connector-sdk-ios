@@ -13,14 +13,13 @@
 
 + (id)createEventWithCode:(NSString *)code params:(NSDictionary *)params;
 + (id)installed:(NSDictionary *)params;
-+ (id)sessionStarted:(NSDictionary *)params;
++ (id)sessionStarted:(NSDictionary *)params withCampaign:(NSString *)campaignName;
 + (id)sessionEnded:(NSDictionary *)params;
 + (id)goalAbandoned:(NSString *)goalName params:(NSDictionary *)params;
 + (id)goalCompleted:(NSString *)goalName params:(NSDictionary *)params;
 + (id)namedEvent:(NSString *)eventName params:(NSDictionary *)params;
-+ (id)receivedLocalNotification:(UILocalNotification *)localNotification;
++ (id)receivedLocalNotification:(UILocalNotification *)localNotification withParams:(NSDictionary *)params;
 + (id)receivedPushNotification:(NSDictionary *)params;
 + (id)openedNotification:(NSDictionary *)params;
-+ (id)openedURL:(NSDictionary *)params;
 
 @end

@@ -20,15 +20,11 @@
 
 + (instancetype)client;
 
-- (void)trackingEvent:(NSDictionary *)event;
-- (void)postEventCache;
-- (void)enqueueEvent:(NSDictionary *)event;
+- (NSInteger) eventCacheSize;
+- (NSArray *) cachedEvents;
 
-- (void)routeUsingUrl:(NSURL *)url;
-- (void) addHandlersDictionaryToMobileDeepLinking:(NSDictionary *)handlers;
-
-- (void) receivedLocalNotification:(UILocalNotification *)localNotification;
-- (void) receivedPushNotification:(NSDictionary *)params;
-- (void) openedNotification:(NSDictionary *)params;
+- (NSURL *) trackingEvent:(NSDictionary *)event;
+- (void) postEventCache;
+- (NSURL *) enqueueEvent:(NSDictionary *)event;
 
 @end

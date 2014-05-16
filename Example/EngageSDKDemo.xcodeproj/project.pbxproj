@@ -29,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		192FDFAC1921510A000BEEF0 /* sample_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sample_config.h; sourceTree = "<group>"; };
 		54681915728D47F88A19CE32 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F6E3F3A929A4F5896031C51 /* Pods/Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		B26FC9E117A6E30700629BC9 /* EngageSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EngageSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,7 +58,6 @@
 		B2AFD8D017B7C54A00971C97 /* UISwitch-Yes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UISwitch-Yes@2x.png"; sourceTree = "<group>"; };
 		B2AFD8D117B7C54A00971C97 /* UISwitch-No@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UISwitch-No@2x.png"; sourceTree = "<group>"; };
 		B2AFD8D417B920A100971C97 /* silverpop-logo@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "silverpop-logo@2x.jpg"; sourceTree = "<group>"; };
-		B2C2A90C17A99A190058311A /* sample-config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "sample-config.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +130,7 @@
 		B26FC9EB17A6E30700629BC9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				192FDFAC1921510A000BEEF0 /* sample_config.h */,
 				B26FC9EC17A6E30700629BC9 /* EngageSDKDemo-Info.plist */,
 				B26FC9ED17A6E30700629BC9 /* InfoPlist.strings */,
 				B26FC9F017A6E30700629BC9 /* main.m */,
@@ -137,7 +138,6 @@
 				B26FC9F617A6E30700629BC9 /* Default.png */,
 				B26FC9F817A6E30700629BC9 /* Default@2x.png */,
 				B26FC9FA17A6E30700629BC9 /* Default-568h@2x.png */,
-				B2C2A90C17A99A190058311A /* sample-config.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

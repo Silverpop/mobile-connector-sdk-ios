@@ -15,8 +15,11 @@
                     "required": "true",
                     "regex": "[0-9]"
                 },
-                "utmSource": {
+                "CurrentCampaign": {
                     
+                },
+                "utmSource": {
+                    "required": "false"
                 }
             }
         },
@@ -24,6 +27,19 @@
             "handlers": [
                          "postSilverpop"
                          ]
+        },
+        "campaign/:CurrentCampaign": {
+            "handlers": [
+                "postSilverpop"
+            ],
+            "routeParameters": {
+                "CurrentCampaign": {
+                    "required": "true"
+                },
+                "utmSource": {
+                    "required": "false"
+                }
+            }
         }
     }
 }

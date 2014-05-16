@@ -11,6 +11,7 @@
 #import <AFNetworking/AFHTTPRequestOperation.h>
 #import <UIKit/UIKit.h>
 #import "EngageEvent.h"
+#import "EngageConfig.h"
 
 NSString * const kEngageClientInstalled = @"engageClientInstalled";
 
@@ -54,11 +55,32 @@ __strong static UBFClient *_sharedClient = nil;
         _sharedClient.minCode = 15; // Session Ended event code
         _sharedClient.sessionTimeout = 30; // 5 minutes
         
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        
         //Perform the login to the system.
         [_sharedClient connectSuccess:^(AFOAuthCredential *credential) {
-            [_sharedClient postEventCache];
             success(credential);
-        } failure:failure];
+            
+            dispatch_semaphore_signal(semaphore);
+            
+            [_sharedClient postEventCache];
+            
+            //Check for UBFEvents that have not yet been posted
+            NSArray *unpostedLocalEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
+            NSLog(@"Re-queueing %lu unposted local events to Silverpop from events local store", (unsigned long)[unpostedLocalEvents count]);
+            for (EngageEvent *unpostedEvent in unpostedLocalEvents) {
+                [_sharedClient trackEngageEvent:unpostedEvent];
+            }
+        } failure:^(NSError *error) {
+            failure(error);
+            dispatch_semaphore_signal(semaphore);
+        }];
+        
+        while (dispatch_semaphore_wait(semaphore, DISPATCH_TIME_NOW))
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                                     beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+        
+        NSLog(@"OAuth2 authentication complete");
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *installed = [defaults objectForKey:kEngageClientInstalled];
@@ -77,9 +99,7 @@ __strong static UBFClient *_sharedClient = nil;
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification *note) {
-                                                          NSLog(@"Engage resume session");
                                                           if ([_sharedClient sessionExpired]) {
-                                                              NSLog(@"Engage Session Expired");
                                                               [_sharedClient restartSession];
                                                           }
                                                           else {
@@ -91,7 +111,6 @@ __strong static UBFClient *_sharedClient = nil;
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification *note) {
-                                                          NSLog(@"Engage pause session");
                                                           // now - start|resume + duration
                                                           _sharedClient.duration += [[NSDate date] timeIntervalSinceDate:_sharedClient.sessionBegan];
                                                           _sharedClient.sessionEnded = [UBF sessionEnded:@{@"Session Duration":[NSString stringWithFormat:@"%d",(int)_sharedClient.duration]}];
@@ -101,24 +120,8 @@ __strong static UBFClient *_sharedClient = nil;
                                                       }];
         
         [[EngageLocalEventStore sharedInstance] deleteExpiredLocalEvents];
-        
-        //Check for UBFEvents that have not yet been posted
-        NSArray *unpostedLocalEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
-        NSLog(@"Re-queueing %lu unposted local events to Silverpop from events local store", (unsigned long)[unpostedLocalEvents count]);
-        for (EngageEvent *unpostedEvent in unpostedLocalEvents) {
-            [_sharedClient trackEngageEvent:unpostedEvent];
-        }
-        
-        //Create MobileDeepLinking instance and register handler for capture URL data to post to Silverpop
-        _sharedClient.mobileDeepLinking = [MobileDeepLinking sharedInstance];
-        [_sharedClient.mobileDeepLinking registerHandlerWithName:@"postSilverpop" handler:^(NSDictionary *properties) {
-            NSLog(@"POSTing to Silverpop as a result of handling OpenURL with Params -> %@", properties);
-            id ubfResult = [UBF openedURL:properties];
-            NSLog(@"UBFResult of %@", ubfResult);
-            [_sharedClient trackingEvent:ubfResult];
-        }];
-
     });
+    
     return _sharedClient;
 }
 
@@ -127,9 +130,17 @@ __strong static UBFClient *_sharedClient = nil;
     return _sharedClient;
 }
 
+- (NSInteger)eventCacheSize {
+    return self.queueSize;
+}
+
+- (NSArray *) cachedEvents {
+    return self.events;
+}
+
 - (void)restartSession {
     if (_sharedClient.sessionEnded) [self trackingEvent:_sharedClient.sessionEnded];
-    [self trackingEvent:[UBF sessionStarted:nil]];
+    [self trackingEvent:[UBF sessionStarted:nil withCampaign:[EngageConfig currentCampaign]]];
     _sharedClient.sessionBegan = [NSDate date];
     self.duration = 0.0f;
 }
@@ -138,9 +149,10 @@ __strong static UBFClient *_sharedClient = nil;
     return [_sessionExpires compare:[NSDate date]] == NSOrderedAscending;
 }
 
-- (void)trackingEvent:(NSDictionary *)event {
+- (NSURL *)trackingEvent:(NSDictionary *)event {
     EngageEvent *engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event];
     [self trackEngageEvent:engageEvent];
+    return [[engageEvent objectID] URIRepresentation];
 }
 
 - (void)trackEngageEvent:(EngageEvent *)engageEvent {
@@ -162,24 +174,18 @@ __strong static UBFClient *_sharedClient = nil;
     [self enqueueEngageEvent:engageEventsCache];
 }
 
-- (void)enqueueEvent:(NSDictionary *)event {
+- (NSURL *)enqueueEvent:(NSDictionary *)event {
     //Save event to EngageLocalEventStore
-    [[EngageLocalEventStore sharedInstance] saveUBFEvent:event];
+    EngageEvent *engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event];
     
     [_events addObject:event];
     NSArray *engageEventsCache = [_events copy];
     [_events removeAllObjects];
     [self enqueueEngageEvent:engageEventsCache];
+    return [[engageEvent objectID] URIRepresentation];
 }
 
 - (void)enqueueEngageEvent:(NSArray *)engageEvents {
-    
-    if (self.credential == nil || [self.credential isExpired]) {
-        NSLog(@"Client is not currently logged in so we need to wait on posting for now ...");
-        return;
-    } else {
-        NSLog(@"Client has valid credentials so we will continue and post to the engage API");
-    }
     
     if ([engageEvents count] <= 0) {
         NSLog(@"No events available to be pushed to engage");
@@ -190,23 +196,50 @@ __strong static UBFClient *_sharedClient = nil;
     NSError *error;
     NSMutableArray *eventsCache = [[NSMutableArray alloc] init];
     for (EngageEvent *event in engageEvents) {
-        NSDictionary *originalEventData = [NSJSONSerialization JSONObjectWithData:[event.eventJson dataUsingEncoding:NSUTF8StringEncoding]
-                                                                   options:kNilOptions
-                                                                     error:&error];
-        [eventsCache addObject:originalEventData];
+        if (event.eventJson != nil) {
+            NSDictionary *originalEventData = [NSJSONSerialization JSONObjectWithData:[event.eventJson dataUsingEncoding:NSUTF8StringEncoding]
+                                                                              options:kNilOptions
+                                                                                error:&error];
+            [eventsCache addObject:originalEventData];
+        }
     }
     
     NSDictionary *params = @{ @"events" : eventsCache };
     
-    self.requestSerializer = [AFJSONRequestSerializer serializer];
-    [self POST:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    //Refresh the UBFClient OAuth2 Credentials if they have expired.
+    if ([[_sharedClient credential] isExpired]) {
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        
+        //Perform the login to the system.
+        [_sharedClient connectSuccess:^(AFOAuthCredential *credential) {
+            dispatch_semaphore_signal(semaphore);
+        } failure:^(NSError *error) {
+            NSLog(@"Failure refreshing UBFclient OAuth2 credentials! %@", [error description]);
+            dispatch_semaphore_signal(semaphore);
+        }];
+        
+        NSLog(@"Refreshing expired UBFClient OAuth2 credentials");
+        while (dispatch_semaphore_wait(semaphore, DISPATCH_TIME_NOW))
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                                     beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+        NSLog(@"Refreshing expired UBFClient OAuth2 credentials - Completed");
+    }
+    
+    _sharedClient.requestSerializer = [AFJSONRequestSerializer serializer];
+    [_sharedClient.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [_sharedClient.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [_sharedClient.credential accessToken]] forHTTPHeaderField:@"Authorization"];
+    
+    [_sharedClient POST:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[operation debugDescription]);
         NSLog(@"%@",[responseObject debugDescription]);
         
         // Mark the EngageObjects as posted in the EngageLocalEventStore.
         for (EngageEvent *event in engageEvents) {
-            event.eventHasPosted = [[NSNumber alloc] initWithInt:1];
+            if (event != nil && ![event isFault]) {
+                event.eventStatus = [NSNumber numberWithInt:SUCCESSFULLY_POSTED];
+            }
         }
+
         NSError *saveError;
         if (![[[EngageLocalEventStore sharedInstance] managedObjectContext] save:&saveError]) {
             NSLog(@"EngageUBFEvents were successfully posted to Silverpop but there was a problem marking them as posted in the EngageLocalEventStore: %@", [saveError description]);
@@ -217,38 +250,23 @@ __strong static UBFClient *_sharedClient = nil;
         NSLog(@"%@",[error debugDescription]);
         
         NSLog(@"-----CACHED FAILED OPERATION-----");
+
         // requeue to be retried later
         [_events addObjectsFromArray:engageEvents];
+        
+        // Mark the EngageObjects as posted in the EngageLocalEventStore.
+        for (EngageEvent *event in engageEvents) {
+            if (event != nil && ![event isFault]) {
+                event.eventStatus = [NSNumber numberWithInt:FAILED_POST];
+            }
+        }
+        
+        NSError *saveError;
+        if (![[[EngageLocalEventStore sharedInstance] managedObjectContext] save:&saveError]) {
+            NSLog(@"Marked events as failed to post in EngageLocalEventStore : %@", [saveError description]);
+        }
     }];
+
 }
-
-- (void) routeUsingUrl:(NSURL *)url
-{
-    [_sharedClient.mobileDeepLinking routeUsingUrl:url];
-}
-
-
-- (void) addHandlersDictionaryToMobileDeepLinking:(NSDictionary *)handlers {
-    NSLog(@"Registering %ld handlers to mobile deep linking library", (unsigned long)[handlers count]);
-    for (id key in handlers) {
-        [self.mobileDeepLinking registerHandlerWithName:key handler:[handlers objectForKey:key]];
-    }
-}
-
-- (void) receivedLocalNotification:(UILocalNotification *)localNotification {
-    NSLog(@"Received Local notification with AlertBody %@", [localNotification alertBody]);
-    [self trackingEvent:[UBF receivedLocalNotification:localNotification]];
-}
-
-- (void) receivedPushNotification:(NSDictionary *)params {
-    NSLog(@"Tracking UBF event from Received Push Notification with Params -> %@", params);
-    [self trackingEvent:[UBF receivedPushNotification:params]];
-}
-
-- (void) openedNotification:(NSDictionary *)params {
-    NSLog(@"Tracking UBF from Opened notification with params -> %@", params);
-    [self trackingEvent:[UBF openedNotification:params]];
-}
-
 
 @end

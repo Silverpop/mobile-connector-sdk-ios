@@ -1,21 +1,21 @@
 PODS:
-  - AFNetworking (2.2.3):
+  - AFNetworking (2.2.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
     - AFNetworking/UIKit
-  - AFNetworking/NSURLConnection (2.2.3):
+  - AFNetworking/NSURLConnection (2.2.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.2.3):
+  - AFNetworking/NSURLSession (2.2.4):
     - AFNetworking/NSURLConnection
-  - AFNetworking/Reachability (2.2.3)
-  - AFNetworking/Security (2.2.3)
-  - AFNetworking/Serialization (2.2.3)
-  - AFNetworking/UIKit (2.2.3):
+  - AFNetworking/Reachability (2.2.4)
+  - AFNetworking/Security (2.2.4)
+  - AFNetworking/Serialization (2.2.4)
+  - AFNetworking/UIKit (2.2.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AFOAuth2Client@phoenixplatform (0.1.1.1):
@@ -28,8 +28,8 @@ DEPENDENCIES:
   - MobileDeepLinking-iOS (~> 0.2)
 
 SPEC CHECKSUMS:
-  AFNetworking: ae513199cca79e9d7af2708ccabe2ed075550c42
-  AFOAuth2Client@phoenixplatform: f68b41548e030fcb37fce9427aeec1c1d811b3ca
-  MobileDeepLinking-iOS: 451f8f8b7c5171c64683461302fed4d41f2a678b
+  AFNetworking: ab63e259fe91eef4519b371ef0a4955af0e73e64
+  AFOAuth2Client@phoenixplatform: 9785fffb216a616da21c76e8cbefff9d7840ae6e
+  MobileDeepLinking-iOS: 4a23f291977481159a22296b4a8b0b8be26b4a13
 
-COCOAPODS: 0.32.1
+COCOAPODS: 0.33.1

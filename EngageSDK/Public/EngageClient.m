@@ -61,7 +61,7 @@
 
 - (void)connectSuccess:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure {
-    [self authenticateUsingOAuthWithURLString:@"/oauth/token"
+    [self authenticateUsingOAuthWithURLString:@"http://apipilot.silverpop.com/oauth/token"
                             refreshToken:_refreshToken
                                  success:^(AFOAuthCredential *credential) {
                                         self.credential = credential;

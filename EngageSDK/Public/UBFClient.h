@@ -23,7 +23,8 @@
 - (NSInteger) eventCacheSize;
 - (NSArray *) cachedEvents;
 
-- (NSURL *) trackingEvent:(NSDictionary *)event;
+//- (NSURL *) trackingEvent:(NSDictionary *)event;
+- (void)trackEngageEvent:(EngageEvent *)engageEvent;
 - (void) postEventCache;
 - (NSURL *) enqueueEvent:(NSDictionary *)event;
 

@@ -7,10 +7,16 @@ Pod::Spec.new do |s|
   s.license         = { :type => 'Apache 2.0', :file => 'License.txt' }
   s.source          = { :git => 'https://github.com/Silverpop/engage-sdk-ios.git', :tag => '0.2' }
   s.ios.xcconfig    = { 'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "$(SDKROOT)/Developer/Library/Frameworks" "$(DEVELOPER_LIBRARY_DIR)/Frameworks"' }
-  s.ios.deployment_target = '6.1'
+  s.ios.deployment_target = '7.1'
   s.source_files = 'EngageSDK/*/*.{h,m}'
   s.public_header_files = 'EngageSDK/Public/*.h'
   s.requires_arc = true
+
+  s.resources = ["EngageSDK/Supporting Files/EngageConfig.plist"]
+
+  s.resource_bundles = {
+    'EngageConfigPlist' => ['EngageSDK/EngageConfig.plist']
+  }
       
   s.subspec 'AFNetworking' do |net|
       net.dependency 'AFNetworking', '~> 2.2.3'

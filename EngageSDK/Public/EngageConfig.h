@@ -20,6 +20,15 @@
     #define CAMPAIGN_EXTERNAL_EXPIRATION_DATETIME_PARAM @"CampaignEndTimeStamp"
 #endif
 
+#define LOCATION_UPDATED_NOTIFICATION @"LocationUpdated"
+#define ENGAGE_CONFIG_BUNDLE @"EngageConfigPlist.bundle"
+
+//Plist Constants.
+#define PLIST_UBF_LONGITUDE @"UBFLongitudeFieldName"
+#define PLIST_UBF_LATITUDE @"UBFLatitudeFieldName"
+#define PLIST_UBF_LOCATION_NAME @"UBFLocationNameFieldName"
+#define PLIST_UBF_LOCATION_ADDRESS @"UBFLocationAddressFieldName"
+
 @interface EngageConfig : NSUserDefaults
 
 + (NSString *) deviceId;

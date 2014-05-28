@@ -149,14 +149,14 @@ static long const MAX_EVENTS_AGE_IN_DAYS = 30;
     }
 }
 
--(EngageEvent *)saveUBFEvent:(NSDictionary *)event {
+-(EngageEvent *)saveUBFEvent:(NSDictionary *)event status:(int) status {
     EngageEvent *engageEvent = [NSEntityDescription insertNewObjectForEntityForName:@"EngageEvent" inManagedObjectContext:[EngageLocalEventStore sharedInstance].managedObjectContext];
 
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
     NSNumber *myNumber = [f numberFromString:[event objectForKey:@"eventTypeCode"]];
     engageEvent.eventType = myNumber;
     engageEvent.eventJson = [self createJsonStringFromDictionary:event];
-    engageEvent.eventStatus = [[NSNumber alloc] initWithInt:NOT_POSTED];
+    engageEvent.eventStatus = [[NSNumber alloc] initWithInt:status];
     engageEvent.eventDate = [NSDate date];
     
     NSError *error;

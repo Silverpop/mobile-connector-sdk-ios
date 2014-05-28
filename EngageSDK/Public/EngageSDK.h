@@ -16,5 +16,6 @@
 #import "UBF.h"
 #import "UBFClient.h"
 #import <MobileDeepLinking-iOS/MobileDeepLinking.h>
+#import "UBFManager.h"
 
 #endif

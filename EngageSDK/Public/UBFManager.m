@@ -11,10 +11,42 @@
 #import "UBFClient.h"
 #import "EngageConfig.h"
 #import "EngageDeepLinkManager.h"
+#import "EngageEventLocationManager.h"
+
+NSString * const kEngageClientInstalled = @"engageClientInstalled";
+
+@interface UBFManager ()
+
+@property (strong, nonatomic) EngageLocalEventStore *engageLocalEventStore;
+@property (strong, nonatomic) EngageEventLocationManager *engageEventLocationManager;
+
+//Session Management.
+@property NSDictionary *sessionEnded;
+@property NSDate *sessionExpires;
+@property(nonatomic) NSDate *sessionBegan;
+@property NSTimeInterval duration;
+@property(nonatomic) NSTimeInterval sessionTimeout;
+
+@end
 
 @implementation UBFManager
 
 __strong static UBFManager *_sharedInstance = nil;
+
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)restartSession {
+    if (self.sessionEnded) [self trackEvent:self.sessionEnded];
+    [self trackEvent:[UBF sessionStarted:nil withCampaign:[EngageConfig currentCampaign]]];
+    self.sessionBegan = [NSDate date];
+    self.duration = 0.0f;
+}
+
+- (BOOL)sessionExpired {
+    return [self.sessionExpires compare:[NSDate date]] == NSOrderedAscending;
+}
 
 + (instancetype)createClient:(NSString *)clientId
                       secret:(NSString *)secret
@@ -26,6 +58,7 @@ __strong static UBFManager *_sharedInstance = nil;
     static dispatch_once_t pred = 0;
     dispatch_once(&pred, ^{
         _sharedInstance = [[UBFManager alloc] init];
+        _sharedInstance.sessionTimeout = 30; // 5 minutes
         
         [UBFClient createClient:clientId
                          secret:secret
@@ -36,10 +69,99 @@ __strong static UBFManager *_sharedInstance = nil;
                  } failure:^(NSError *error) {
                      NSLog(@"Failed to establish connection to Engage API .... %@", error);
                  }];
+        
+        _sharedInstance.engageEventLocationManager = [[EngageEventLocationManager alloc] init];
+        _sharedInstance.engageLocalEventStore = [[EngageLocalEventStore alloc] init];
+        
+        //If location services are enabled then we want to listen for location updated events.
+        if ([_sharedInstance.engageEventLocationManager locationServicesEnabled]) {
+            [[NSNotificationCenter defaultCenter] addObserverForName:LOCATION_UPDATED_NOTIFICATION
+                                                              object:nil
+                                                               queue:[NSOperationQueue mainQueue]
+                                                          usingBlock:^(NSNotification *note) {
+                                                              
+                                                              //Locate all events with "HOLD" status in Core Data
+                                                              NSArray *holdEngagedEvents = [_sharedInstance.engageLocalEventStore findEngageEventsWithStatus:HOLD];
+                                                              NSLog(@"%ld hold events were found", [holdEngagedEvents count]);
+                                                              
+                                                              //Update their payload to have the new coordinates.
+                                                              NSError *jsonError;
+                                                              for (EngageEvent *ee in holdEngagedEvents) {
+                                                                  
+                                                                  if (ee.eventJson != nil) {
+                                                                      NSDictionary *originalEventData = [NSJSONSerialization JSONObjectWithData:[ee.eventJson dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                                                                        options:kNilOptions
+                                                                                                                                          error:&jsonError];
+                                                                      
+                                                                      //Updates the UBF event with the LocationManager.
+                                                                      NSDictionary *newEvent = [_sharedInstance.engageEventLocationManager addLocationToUBFEvent:originalEventData];
+                                                                      
+                                                                      if (newEvent) {
+                                                                          ee.eventJson = [_sharedInstance.engageLocalEventStore createJsonStringFromDictionary:newEvent];
+                                                                          ee.eventStatus = [[NSNumber alloc] initWithInt:NOT_POSTED];
+                                                                      } else {
+                                                                          ee.eventStatus = [[NSNumber alloc] initWithInt:NOT_POSTED];
+                                                                      }
+                                                                  }
+                                                              }
+                                                              
+                                                              NSError *saveError;
+                                                              if (![[[EngageLocalEventStore sharedInstance] managedObjectContext] save:&saveError]) {
+                                                                  NSLog(@"EngageUBFEvents were successfully posted to Silverpop but there was a problem marking them as posted in the EngageLocalEventStore: %@", [saveError description]);
+                                                              }
+                                                              
+                                                              //Posts all of the updated events now.
+                                                              for (EngageEvent *ee in holdEngagedEvents) {
+                                                                  NSLog(@"TODO: UPDATE THE EVENT TO NOT_POSTED!!!!!");
+                                                              }
+                                                          }];
+        } else {
+            NSLog(@"Notifications are not enabled so we are not setting up a location event listener");
+        }
+        
+        
+        //Handles the session
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *installed = [defaults objectForKey:kEngageClientInstalled];
+        if (![installed boolValue]) { // nil or false
+            // installed event
+            [_sharedInstance trackEvent:[UBF installed:nil]];
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:@"YES" forKey:kEngageClientInstalled];
+            [defaults synchronize];
+        }
+        
+        // start session
+        [_sharedInstance restartSession];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification *note) {
+                                                          if ([_sharedInstance sessionExpired]) {
+                                                              [_sharedInstance restartSession];
+                                                          }
+                                                          else {
+                                                              _sharedInstance.sessionBegan = [NSDate date];
+                                                          }
+                                                      }];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification *note) {
+                                                          // now - start|resume + duration
+                                                          _sharedInstance.duration += [[NSDate date] timeIntervalSinceDate:_sharedInstance.sessionBegan];
+                                                          _sharedInstance.sessionEnded = [UBF sessionEnded:@{@"Session Duration":[NSString stringWithFormat:@"%d",(int)_sharedInstance.duration]}];
+                                                          _sharedInstance.sessionExpires = [NSDate dateWithTimeInterval:_sharedInstance.sessionTimeout
+                                                                                                            sinceDate:[NSDate date]];
+                                                          [_sharedInstance postEventCache];
+                                                      }];
     });
     
     return _sharedInstance;
 }
+
 
 + (id)sharedInstance
 {
@@ -49,8 +171,34 @@ __strong static UBFManager *_sharedInstance = nil;
     return _sharedInstance;
 }
 
+
+- (void)postEngageEvent:(EngageEvent *)engageEvent {
+    
+}
+
+
 - (NSURL *) trackEvent:(NSDictionary *)event {
-    return [[UBFClient client] trackingEvent:event];
+    
+    EngageEvent *engageEvent = nil;
+    
+    //Does the event need to be fired now or wait?
+    if ([self.engageEventLocationManager locationServicesEnabled]) {
+        //Ask the location Manager for the current CLLocation and CLPlacemark information
+        NSDictionary *eventWithLocation = [self.engageEventLocationManager addLocationToUBFEvent:event];
+        if (eventWithLocation == nil) {
+            //Location information is not yet ready so save with a hold state in the database.
+            engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:HOLD];
+        } else {
+            engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
+            [[UBFClient client] trackEngageEvent:engageEvent];
+        }
+    } else {
+        //Location Services are not enabled so continue with the normal flow.
+        engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
+        [[UBFClient client] trackEngageEvent:engageEvent];
+    }
+    
+    return [[engageEvent objectID] URIRepresentation];
 }
 
 - (void) postEventCache {
@@ -63,7 +211,7 @@ __strong static UBFManager *_sharedInstance = nil;
 
 - (NSURL *)handleLocalNotificationReceivedEvents:(UILocalNotification *)localNotification
                                       withParams:(NSDictionary *)params {
-    return [[UBFClient client] trackingEvent:[UBF receivedLocalNotification:localNotification withParams:params]];
+    return [self trackEvent:[UBF receivedLocalNotification:localNotification withParams:params]];
 }
 
 - (NSURL *)handlePushNotificationReceivedEvents:(NSDictionary *)pushNotification {
@@ -75,11 +223,11 @@ __strong static UBFManager *_sharedInstance = nil;
         [EngageConfig storeCurrentCampaign:[pushNotification objectForKey:CURRENT_CAMPAIGN_PARAM_NAME] withExpirationTimestamp:nil];
     }
     
-    return [[UBFClient client] trackingEvent:[UBF receivedPushNotification:pushNotification]];
+    return [self trackEvent:[UBF receivedPushNotification:pushNotification]];
 }
 
 - (NSURL *)handleNotificationOpenedEvents:(NSDictionary *)params {
-    return [[UBFClient client] trackingEvent:[UBF openedNotification:params]];
+    return [self trackEvent:[UBF openedNotification:params]];
 }
 
 - (NSURL *)handleExternalURLOpenedEvents:(NSURL *)externalUrl {
@@ -93,7 +241,7 @@ __strong static UBFManager *_sharedInstance = nil;
         ubfResult = [UBF sessionStarted:urlParams withCampaign:nil];
     }
     
-    return [[UBFClient client] trackingEvent:ubfResult];
+    return [self trackEvent:ubfResult];
 }
 
 @end

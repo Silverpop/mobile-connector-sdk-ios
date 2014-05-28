@@ -7,11 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
+#import "EngageConfigManager.h"
+#import "EngageConfig.h"
 
-@interface EngageEventLocationManager : NSObject
+@interface EngageEventLocationManager : NSObject <CLLocationManagerDelegate>
 
 + (id)sharedInstance;
 
-- (id)geocodeUBFEvent:(NSDictionary *)ubfEvent;
+- (BOOL)locationServicesEnabled;
+- (NSDictionary *)addLocationToUBFEvent:(NSDictionary *)ubfEvent;
+
+
 
 @end

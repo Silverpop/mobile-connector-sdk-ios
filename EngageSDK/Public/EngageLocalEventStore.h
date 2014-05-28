@@ -17,13 +17,14 @@
 
 - (NSArray *) findUnpostedEvents;
 - (void) deleteExpiredLocalEvents;
-- (EngageEvent *)saveUBFEvent:(NSDictionary *)event;
+- (EngageEvent *)saveUBFEvent:(NSDictionary *)event status:(int)status;
 - (EngageEvent *)findEngageEventWithIdentifier:(NSURL *)urlIdentifier;
 - (NSArray *)findEngageEventsWithStatus:(int)eventStatus;
 
 // Utility methods
 - (NSUInteger) countForEventType:(NSNumber *)eventType;
 - (NSUInteger) deleteAllUBFEvents;
+- (NSString *)createJsonStringFromDictionary:(NSDictionary *)dictionary;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;

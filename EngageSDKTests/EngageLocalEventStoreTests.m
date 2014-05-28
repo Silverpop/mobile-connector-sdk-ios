@@ -31,7 +31,7 @@
 
 - (void)testFindLocalEngageEventWithIdentifier {
     id installed = [UBF installed:nil];
-    NSURL *urlIdentifier = [[[[EngageLocalEventStore sharedInstance] saveUBFEvent:installed] objectID] URIRepresentation];
+    NSURL *urlIdentifier = [[[[EngageLocalEventStore sharedInstance] saveUBFEvent:installed status:NOT_POSTED] objectID] URIRepresentation];
     EngageEvent *locatedEvent = [[EngageLocalEventStore sharedInstance] findEngageEventWithIdentifier:urlIdentifier];
     XCTAssertTrue(locatedEvent != nil, @"Unable to locate EngageEvent from local Event Store with identifier %@", urlIdentifier);
     
@@ -51,7 +51,7 @@
     NSMutableArray *engageEvents = [[NSMutableArray alloc] init];
     NSArray *events = [self createSampleUBFEvents];
     for (id event in events) {
-        [engageEvents addObject:[[EngageLocalEventStore sharedInstance] saveUBFEvent:event]];
+        [engageEvents addObject:[[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED]];
     }
     
     for (EngageEvent *ea in engageEvents) {
@@ -75,7 +75,7 @@
 
 -(void)testGenerateStateAndTokenForUBFModel {
     id installed = [UBF installed:nil];
-    EngageEvent *event = [[EngageLocalEventStore sharedInstance] saveUBFEvent:installed];
+    EngageEvent *event = [[EngageLocalEventStore sharedInstance] saveUBFEvent:installed status:NOT_POSTED];
     
     XCTAssertTrue(![[event objectID] isTemporaryID], @"Saved EngageEvent reports having a temporary id!");
     XCTAssertTrue(![event isFault], @"Inserted EngageEvent is in a faulty state within CoreData");
@@ -89,7 +89,7 @@
     NSArray *events = [self createSampleUBFEvents];
     
     for (id event in events) {
-        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event];
+        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
     }
 
     XCTAssertTrue([[EngageLocalEventStore sharedInstance] countForEventType:[NSNumber numberWithInt:12]] == 1, @"More than 1 Engage installed event was located in the local event store");
@@ -101,7 +101,7 @@
     NSArray *events = [self createSampleUBFEvents];
     
     for (id event in events) {
-        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event];
+        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
     }
     
     //Finds the unposted events.

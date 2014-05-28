@@ -15,6 +15,7 @@
 
 __strong static NSDate *currentCampaignExpirationDate = nil;
 
+
 + (NSString *)deviceId {
     
     NSString *deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];

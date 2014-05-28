@@ -1,3 +1,5 @@
-pod 'EngageSDK', :git => 'https://github.com/Silverpop/engage-sdk-ios.git'
+#pod 'EngageSDK', :git => 'https://github.com/Silverpop/engage-sdk-ios.git'
+#pod 'EngageSDK', :git => 'https://github.com/makeandbuild/engage-sdk-ios-phase2.git'
+pod 'EngageSDK', :path => '/Users/jeremydyer/Development/IOSDevelopment/jeremy/engage-sdk-ios'
 pod 'MBProgressHUD', '~> 0.7'
 pod 'ECSlidingViewController', '~> 0.10.0'

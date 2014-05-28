@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UBFFieldNames</key>
+	<dict>
+		<key>UBFLocationAddressFieldName</key>
+		<string>Location Address</string>
+		<key>UBFLocationNameFieldName</key>
+		<string>Location Name</string>
+		<key>UBFLatitudeFieldName</key>
+		<string>Latitude</string>
+		<key>UBFLongitudeFieldName</key>
+		<string>Longitude</string>
+	</dict>
+	<key>LocationServices</key>
+	<dict>
+		<key>coordinatesUpdateInterval</key>
+		<string>15 sec</string>
+		<key>locationPrecisionLevel</key>
+		<string>kCLLocationAccuracyBest</string>
+		<key>locationCacheLifespan</key>
+		<string>1 hr</string>
+		<key>coordinatesPrecisionTimeout</key>
+		<string>15 sec</string>
+		<key>coordinatesAcquisitionTimeout</key>
+		<string>15 sec</string>
+		<key>enabled</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

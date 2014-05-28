@@ -12,6 +12,7 @@
 #define NOT_POSTED 0
 #define SUCCESSFULLY_POSTED 1
 #define FAILED_POST 2
+#define HOLD 3
 
 @interface EngageEvent : NSManagedObject
 

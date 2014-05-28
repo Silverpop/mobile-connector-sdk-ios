@@ -22,8 +22,6 @@
 + (id)sharedInstance;
 
 - (NSURL *) trackEvent:(NSDictionary *)event;
-- (void) postEventCache;
-- (NSURL *) enqueueEvent:(NSDictionary *)event;
 
 - (NSURL *)handleLocalNotificationReceivedEvents:(UILocalNotification *)localNotification
                                       withParams:(NSDictionary *)params;

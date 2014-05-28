@@ -155,7 +155,6 @@ __strong static UBFManager *_sharedInstance = nil;
                                                           _sharedInstance.sessionEnded = [UBF sessionEnded:@{@"Session Duration":[NSString stringWithFormat:@"%d",(int)_sharedInstance.duration]}];
                                                           _sharedInstance.sessionExpires = [NSDate dateWithTimeInterval:_sharedInstance.sessionTimeout
                                                                                                             sinceDate:[NSDate date]];
-                                                          [_sharedInstance postEventCache];
                                                       }];
     });
     
@@ -190,23 +189,15 @@ __strong static UBFManager *_sharedInstance = nil;
             engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:HOLD];
         } else {
             engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
-            [[UBFClient client] trackEngageEvent:engageEvent];
+            [[UBFClient client] postEngageEvent:engageEvent retryCount:0];
         }
     } else {
         //Location Services are not enabled so continue with the normal flow.
         engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
-        [[UBFClient client] trackEngageEvent:engageEvent];
+        [[UBFClient client] postEngageEvent:engageEvent retryCount:0];
     }
     
     return [[engageEvent objectID] URIRepresentation];
-}
-
-- (void) postEventCache {
-    [[UBFClient client] postEventCache];
-}
-
-- (NSURL *) enqueueEvent:(NSDictionary *)event {
-    return [[UBFClient client] enqueueEvent:event];
 }
 
 - (NSURL *)handleLocalNotificationReceivedEvents:(UILocalNotification *)localNotification

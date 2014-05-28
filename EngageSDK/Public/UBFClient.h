@@ -20,12 +20,6 @@
 
 + (instancetype)client;
 
-- (NSInteger) eventCacheSize;
-- (NSArray *) cachedEvents;
-
-//- (NSURL *) trackingEvent:(NSDictionary *)event;
-- (void)trackEngageEvent:(EngageEvent *)engageEvent;
-- (void) postEventCache;
-- (NSURL *) enqueueEvent:(NSDictionary *)event;
+- (void)postEngageEvent:(EngageEvent *)engageEvent retryCount:(int) numRetries;
 
 @end

@@ -25,8 +25,8 @@
 
 - (NSURL *)handleLocalNotificationReceivedEvents:(UILocalNotification *)localNotification
                                       withParams:(NSDictionary *)params;
-- (NSURL *)handlePushNotificationReceivedEvents:(NSDictionary *)pushNotification;
-- (NSURL *)handleNotificationOpenedEvents:(NSDictionary *)params;
+- (NSURL *)handlePushNotificationReceivedEvents:(NSDictionary *)pushNotification withParams:(NSDictionary *)params;
+- (NSURL *)handleNotificationOpenedEvents:(NSDictionary *)notification withParams:(NSDictionary *)params;
 - (NSURL *)handleExternalURLOpenedEvents:(NSURL *)externalUrl;
 
 @end

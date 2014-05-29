@@ -15,4 +15,8 @@
 - (long)expirationTimeStamp;
 - (NSDate *)expirationDate;
 
+//Given the expiration string the number of seconds parsed from the value.
+- (long)secondsParsedFromExpiration;
+- (long)millisecondsParsedFromExpiration;
+
 @end

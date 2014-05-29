@@ -19,6 +19,7 @@ NSString * const kEngageClientInstalled = @"engageClientInstalled";
 
 @property (strong, nonatomic) EngageLocalEventStore *engageLocalEventStore;
 @property (strong, nonatomic) EngageEventLocationManager *engageEventLocationManager;
+@property (strong, nonatomic) EngageConfigManager *ecm;
 
 //Session Management.
 @property NSDictionary *sessionEnded;
@@ -58,7 +59,7 @@ __strong static UBFManager *_sharedInstance = nil;
     static dispatch_once_t pred = 0;
     dispatch_once(&pred, ^{
         _sharedInstance = [[UBFManager alloc] init];
-        _sharedInstance.sessionTimeout = 30; // 5 minutes
+        _sharedInstance.sessionTimeout = [[EngageConfigManager sharedInstance] longConfigForSessionValue:PLIST_SESSION_LIFECYCLE_EXPIRATION];
         
         [UBFClient createClient:clientId
                          secret:secret
@@ -72,6 +73,7 @@ __strong static UBFManager *_sharedInstance = nil;
         
         _sharedInstance.engageEventLocationManager = [[EngageEventLocationManager alloc] init];
         _sharedInstance.engageLocalEventStore = [[EngageLocalEventStore alloc] init];
+        _sharedInstance.ecm = [EngageConfigManager sharedInstance];
         
         //If location services are enabled then we want to listen for location updated events.
         if ([_sharedInstance.engageEventLocationManager locationServicesEnabled]) {
@@ -152,7 +154,7 @@ __strong static UBFManager *_sharedInstance = nil;
                                                       usingBlock:^(NSNotification *note) {
                                                           // now - start|resume + duration
                                                           _sharedInstance.duration += [[NSDate date] timeIntervalSinceDate:_sharedInstance.sessionBegan];
-                                                          _sharedInstance.sessionEnded = [UBF sessionEnded:@{@"Session Duration":[NSString stringWithFormat:@"%d",(int)_sharedInstance.duration]}];
+                                                          _sharedInstance.sessionEnded = [UBF sessionEnded:@{[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_SESSION_DURATION]:[NSString stringWithFormat:@"%d",(int)_sharedInstance.duration]}];
                                                           _sharedInstance.sessionExpires = [NSDate dateWithTimeInterval:_sharedInstance.sessionTimeout
                                                                                                             sinceDate:[NSDate date]];
                                                       }];
@@ -205,20 +207,38 @@ __strong static UBFManager *_sharedInstance = nil;
     return [self trackEvent:[UBF receivedLocalNotification:localNotification withParams:params]];
 }
 
-- (NSURL *)handlePushNotificationReceivedEvents:(NSDictionary *)pushNotification {
+- (NSURL *)handlePushNotificationReceivedEvents:(NSDictionary *)pushNotification
+                                     withParams:(NSDictionary *)params {
+    
     //Examine the push notification for certain parameters that define sdk behavior.
-    if ([pushNotification objectForKey:CURRENT_CAMPAIGN_PARAM_NAME] && [pushNotification objectForKey:CAMPAIGN_EXTERNAL_EXPIRATION_DATETIME_PARAM]) {
-        [EngageConfig storeCurrentCampaign:[pushNotification objectForKey:CURRENT_CAMPAIGN_PARAM_NAME]
-                   withExpirationTimestamp:[pushNotification objectForKey:CAMPAIGN_EXTERNAL_EXPIRATION_DATETIME_PARAM]];
-    } else if ([pushNotification objectForKey:CURRENT_CAMPAIGN_PARAM_NAME]) {
-        [EngageConfig storeCurrentCampaign:[pushNotification objectForKey:CURRENT_CAMPAIGN_PARAM_NAME] withExpirationTimestamp:nil];
+    if ([pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
+        && [pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT]]) {
+        
+        //Parse the expiration timestamp from the hard datetime campaign end value.
+        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:[pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT]] fromDate:[NSDate date]];
+        
+        [EngageConfig storeCurrentCampaign:[pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
+                   withExpirationTimestamp:[exp expirationTimeStamp]];
+        
+    } else if ([pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
+               && [pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CAMPAIGN_VALID_FOR]]) {
+        
+        //Parse the expiration timestamp from the current date plus the expiration valid for parameter specified.
+        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:[pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CAMPAIGN_VALID_FOR]] fromDate:[NSDate date]];
+        
+        [EngageConfig storeCurrentCampaign:[pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]] withExpirationTimestamp:[exp expirationTimeStamp]];
+        
+    } else if ([pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]) {
+        [EngageConfig storeCurrentCampaign:[pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]] withExpirationTimestamp:-1];
+    } else {
+        NSLog(@"Unable to determine CurrentCampaign from push notification!");
     }
     
-    return [self trackEvent:[UBF receivedPushNotification:pushNotification]];
+    return [self trackEvent:[UBF receivedPushNotification:pushNotification withParams:params]];
 }
 
-- (NSURL *)handleNotificationOpenedEvents:(NSDictionary *)params {
-    return [self trackEvent:[UBF openedNotification:params]];
+- (NSURL *)handleNotificationOpenedEvents:(NSDictionary *)notification withParams:(NSDictionary *)params {
+    return [self trackEvent:[UBF openedNotification:notification withParams:params]];
 }
 
 - (NSURL *)handleExternalURLOpenedEvents:(NSURL *)externalUrl {
@@ -226,8 +246,8 @@ __strong static UBFManager *_sharedInstance = nil;
     NSDictionary *urlParams = [[EngageDeepLinkManager sharedInstance] parseDeepLinkURL:externalUrl];
     
     id ubfResult = nil;
-    if ([urlParams objectForKey:CURRENT_CAMPAIGN_PARAM_NAME]) {
-        ubfResult = [UBF sessionStarted:urlParams withCampaign:[urlParams objectForKey:CURRENT_CAMPAIGN_PARAM_NAME]];
+    if ([urlParams objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]) {
+        ubfResult = [UBF sessionStarted:urlParams withCampaign:[urlParams objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]];
     } else {
         ubfResult = [UBF sessionStarted:urlParams withCampaign:nil];
     }

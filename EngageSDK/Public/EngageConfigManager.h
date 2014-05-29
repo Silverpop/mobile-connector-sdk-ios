@@ -14,5 +14,9 @@
 
 - (BOOL)locationServicesEnabled;
 - (NSString *)fieldNameForUBF:(NSString *)ubfFieldConstantName;
+- (NSInteger)configForNetworkValue:(NSString *)networkFieldConstantName;
+- (long)longConfigForSessionValue:(NSString *)sessionFieldConstantName;
+- (NSString *)fieldNameForParam:(NSString *)paramFieldConstantName;
+- (NSString *)configForGeneralFieldName:(NSString *)generalFieldConstantName;
 
 @end

@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <CoreLocation/CLLocationManager.h>
+#import "EngageConfig.h"
+#import "EngageConfigManager.h"
 
 @interface UBF : NSObject
 
@@ -19,7 +23,7 @@
 + (id)goalCompleted:(NSString *)goalName params:(NSDictionary *)params;
 + (id)namedEvent:(NSString *)eventName params:(NSDictionary *)params;
 + (id)receivedLocalNotification:(UILocalNotification *)localNotification withParams:(NSDictionary *)params;
-+ (id)receivedPushNotification:(NSDictionary *)params;
-+ (id)openedNotification:(NSDictionary *)params;
++ (id)receivedPushNotification:(NSDictionary *)notification withParams:(NSDictionary *)params;
++ (id)openedNotification:(NSDictionary *)notification withParams:(NSDictionary *)params;
 
 @end

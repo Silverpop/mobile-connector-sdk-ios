@@ -2,10 +2,47 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>General</key>
+	<dict/>
+	<key>defaultCurrentCampaignExpiration</key>
+	<string>1 day</string>
+	<key>ParamFieldNames</key>
+	<dict>
+		<key>ParamCampaignValidFor</key>
+		<string>CampaignValidFor</string>
+		<key>ParamCampaignExpiresAt</key>
+		<string>CampaignExpiresAt</string>
+		<key>ParamCurrentCampaign</key>
+		<string>CurrentCampaign</string>
+		<key>ParamCallToAction</key>
+		<string>CallToAction</string>
+	</dict>
+	<key>Session</key>
+	<dict>
+		<key>sessionLifecycleExpiration</key>
+		<string>30 minutes</string>
+	</dict>
+	<key>Networking</key>
+	<dict>
+		<key>maxNumRetries</key>
+		<integer>3</integer>
+	</dict>
 	<key>UBFFieldNames</key>
 	<dict>
+		<key>UBFSessionDurationFieldName</key>
+		<string>Session Duration</string>
+		<key>UBFTagsFieldName</key>
+		<string>Tags</string>
+		<key>UBFDisplayMessageFieldName</key>
+		<string>Displayed Message</string>
+		<key>UBFCallToActionFieldName</key>
+		<string>Call To Action</string>
+		<key>UBFEventNameFieldName</key>
+		<string>Event Name</string>
+		<key>UBFGoalNameFieldName</key>
+		<string>Goal Name</string>
 		<key>UBFCurrentCampaignFieldName</key>
-		<string>Current Campaign</string>
+		<string>Campaign Name</string>
 		<key>UBFLastCampaignFieldName</key>
 		<string>Last Campaign</string>
 		<key>UBFLocationAddressFieldName</key>

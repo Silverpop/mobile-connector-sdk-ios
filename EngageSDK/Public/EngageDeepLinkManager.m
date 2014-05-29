@@ -7,7 +7,6 @@
 //
 
 #import "EngageDeepLinkManager.h"
-#import "EngageConfig.h"
 #import "UBFClient.h"
 #import "UBF.h"
 
@@ -34,12 +33,29 @@ __strong NSDictionary *urlParams;
 - (NSDictionary *)parseDeepLinkURL:(NSURL *)deeplink {
     [[MobileDeepLinking sharedInstance] routeUsingUrl:deeplink];
     
+    EngageConfigManager *ma = [EngageConfigManager sharedInstance];
+    
     //Examine the URL Parameters
-    if ([urlParams objectForKey:CURRENT_CAMPAIGN_PARAM_NAME] && [urlParams objectForKey:CAMPAIGN_EXTERNAL_EXPIRATION_DATETIME_PARAM]) {
-        [EngageConfig storeCurrentCampaign:[urlParams objectForKey:CURRENT_CAMPAIGN_PARAM_NAME]
-                   withExpirationTimestamp:[urlParams objectForKey:CAMPAIGN_EXTERNAL_EXPIRATION_DATETIME_PARAM]];
-    } else if ([urlParams objectForKey:CURRENT_CAMPAIGN_PARAM_NAME]) {
-        [EngageConfig storeCurrentCampaign:[urlParams objectForKey:CURRENT_CAMPAIGN_PARAM_NAME] withExpirationTimestamp:nil];
+    if ([urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
+        && [urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT]]) {
+        
+        //Parse the expiration timestamp from the hard datetime campaign end value.
+        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:[urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT]] fromDate:[NSDate date]];
+        
+        [EngageConfig storeCurrentCampaign:[urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
+                   withExpirationTimestamp:[exp expirationTimeStamp]];
+        
+    } else if ([urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
+        && [urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CAMPAIGN_VALID_FOR]]) {
+        
+        //Parse the expiration timestamp from the current date plus the expiration valid for parameter specified.
+        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:[urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CAMPAIGN_VALID_FOR]] fromDate:[NSDate date]];
+        
+        [EngageConfig storeCurrentCampaign:[urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]] withExpirationTimestamp:[exp expirationTimeStamp]];
+        
+    } else if ([urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]) {
+        //Just set the Campaign value without an expiration.
+        [EngageConfig storeCurrentCampaign:[urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]] withExpirationTimestamp:-1];
     }
     
     return urlParams;

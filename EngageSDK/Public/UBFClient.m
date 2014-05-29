@@ -11,15 +11,10 @@
 #import <AFNetworking/AFHTTPRequestOperation.h>
 #import <UIKit/UIKit.h>
 #import "EngageEvent.h"
-#import "EngageConfig.h"
-#import "EngageEventLocationManager.h"
-#import "EngageConfigManager.h"
 
 @interface UBFClient ()
 
-@property NSInteger minCode;
-@property (assign) int maxNumRetries;
-
+@property (assign) NSInteger maxNumRetries;
 @property (nonatomic, strong) MobileDeepLinking *mobileDeepLinking;
 
 @end
@@ -43,8 +38,7 @@ __strong static UBFClient *_sharedClient = nil;
     static dispatch_once_t pred = 0;
     dispatch_once(&pred, ^{
         _sharedClient = [[self alloc] initWithHost:hostUrl clientId:clientId secret:secret token:refreshToken];
-        _sharedClient.minCode = 15; // Session Ended event code
-        _sharedClient.maxNumRetries = 3;
+        _sharedClient.maxNumRetries = [[EngageConfigManager sharedInstance] configForNetworkValue:PLIST_NETWORK_MAX_NUM_RETRIES];
         
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         
@@ -149,7 +143,7 @@ __strong static UBFClient *_sharedClient = nil;
             }
         }];
     } else {
-        NSLog(@"Max number of retries %d was reached and event will not be posted", self.maxNumRetries);
+        NSLog(@"Max number of retries %ld was reached and event will not be posted", (long)self.maxNumRetries);
     }
 }
 

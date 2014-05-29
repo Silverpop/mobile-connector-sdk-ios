@@ -8,6 +8,9 @@
 
 #import "EngageClient.h"
 #import <MobileDeepLinking-iOS/MobileDeepLinking.h>
+#import "EngageConfig.h"
+#import "EngageEventLocationManager.h"
+#import "EngageConfigManager.h"
 
 @interface UBFClient : EngageClient
 

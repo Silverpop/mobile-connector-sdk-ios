@@ -8,8 +8,8 @@
 
 #import "EngageConfig.h"
 #import <UIKit/UIKit.h>
-
-#define DEFAULT_CURRENT_CAMPAIGN_EXPIRATION_SECONDS 86400
+#import "EngageConfigManager.h"
+#import "EngageExpirationParser.h"
 
 @implementation EngageConfig
 
@@ -98,7 +98,23 @@ __strong static NSDate *currentCampaignExpirationDate = nil;
     return currentCampaign;
 }
 
-+ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestamp:(NSString *)expirationTimestamp {
++ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestamp:(long)utcExpirationTimestamp {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if (utcExpirationTimestamp > 0) {
+        currentCampaignExpirationDate = [NSDate dateWithTimeIntervalSince1970:utcExpirationTimestamp];
+    } else {
+        //Creates a default expiration date.
+        NSString *expirationString = [[EngageConfigManager sharedInstance] configForGeneralFieldName:PLIST_GENERAL_DEFAULT_CURRENT_CAMPAIGN_EXPIRATION];
+        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:expirationString fromDate:[NSDate date]];
+        currentCampaignExpirationDate = [NSDate dateWithTimeInterval:[exp secondsParsedFromExpiration] sinceDate:[NSDate date]];
+    }
+    NSLog(@"Setting CurrentCampaign to %@ with expiration of %@", currentCampaign, currentCampaignExpirationDate);
+    [defaults setObject:currentCampaign forKey:@"engageCurrentCampaign"];
+    [defaults synchronize];
+}
+
++ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestampString:(NSString *)expirationTimestamp {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     if (expirationTimestamp) {
@@ -108,7 +124,9 @@ __strong static NSDate *currentCampaignExpirationDate = nil;
         currentCampaignExpirationDate = [NSDate dateWithTimeIntervalSince1970:[expirationTimestampNumber longValue]];
     } else {
         //Creates a default expiration date.
-        currentCampaignExpirationDate = [NSDate dateWithTimeInterval:DEFAULT_CURRENT_CAMPAIGN_EXPIRATION_SECONDS sinceDate:[NSDate date]];
+        NSString *expirationString = [[EngageConfigManager sharedInstance] configForGeneralFieldName:PLIST_GENERAL_DEFAULT_CURRENT_CAMPAIGN_EXPIRATION];
+        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:expirationString fromDate:[NSDate date]];
+        currentCampaignExpirationDate = [NSDate dateWithTimeInterval:[exp secondsParsedFromExpiration] sinceDate:[NSDate date]];
     }
     NSLog(@"Setting CurrentCampaign to %@ with expiration of %@", currentCampaign, currentCampaignExpirationDate);
     [defaults setObject:currentCampaign forKey:@"engageCurrentCampaign"];

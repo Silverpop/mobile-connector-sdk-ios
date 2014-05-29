@@ -7,12 +7,7 @@
 //
 
 #import "UBF.h"
-#import "EngageConfig.h"
 #import <sys/utsname.h>
-#import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
-#import <CoreLocation/CLLocationManager.h>
-
 
 @interface UBF ()
 
@@ -98,7 +93,10 @@
 
 + (id)installed:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
-    [mutParams setObject:[EngageConfig lastCampaign] forKey:@"Last Campaign"];
+    if (![mutParams objectForKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_LAST_CAMPAIGN_NAME]]) {
+        [mutParams setObject:[EngageConfig lastCampaign]
+                      forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_LAST_CAMPAIGN_NAME]];
+    }
     return [UBF createEventWithCode:@"12" params:mutParams];
 }
 
@@ -111,46 +109,46 @@
         NSLog(@"SessionStarted with empty CampaignName. Not storing value and using previous campaign name value");
     }
 
-    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
     return [UBF createEventWithCode:@"13" params:mutParams];
 }
 
 + (id)sessionEnded:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
-    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
     return [UBF createEventWithCode:@"14" params:mutParams];
 }
 
 + (id)goalAbandoned:(NSString *)goalName params:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
-    [mutParams setObject:goalName forKey:@"Goal Name"];
-    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    mutParams = [self setValue:goalName forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_GOAL_NAME];
+    mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
     return [UBF createEventWithCode:@"15" params:mutParams];
 }
 
 + (id)goalCompleted:(NSString *)goalName params:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
-    [mutParams setObject:goalName forKey:@"Goal Name"];
-    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    mutParams = [self setValue:goalName forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_GOAL_NAME];
+    mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
     return [UBF createEventWithCode:@"16" params:mutParams];
 }
 
 + (id)namedEvent:(NSString *)eventName params:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
-    [mutParams setObject:eventName forKey:@"Event Name"];
-    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
+    mutParams = [self setValue:eventName forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_EVENT_NAME];
+    mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
     return [UBF createEventWithCode:@"17" params:mutParams];
 }
 
 + (id)receivedLocalNotification:(UILocalNotification *)localNotification withParams:(NSDictionary *)params {
     NSMutableDictionary *locNotEvent = [self populateEventCommonParams:params];
-    [locNotEvent setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
-    [locNotEvent setObject:[localNotification alertAction] forKey:@"Call To Action"];
-    [locNotEvent setObject:[localNotification alertBody] forKey:@"Displayed Message"];
+    locNotEvent = [self setValue:[EngageConfig currentCampaign] forDictionary:locNotEvent withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
+    locNotEvent = [self setValue:[localNotification alertAction] forDictionary:locNotEvent withPlistUBFFieldName:PLIST_UBF_CALL_TO_ACTION];
+    locNotEvent = [self setValue:[localNotification alertBody] forDictionary:locNotEvent withPlistUBFFieldName:PLIST_UBF_DISPLAYED_MESSAGE];
     return [UBF createEventWithCode:@"48" params:locNotEvent];
 }
 
-+ (id)receivedPushNotification:(NSDictionary *)params {
++ (id)receivedPushNotification:(NSDictionary *)notification withParams:(NSDictionary *)params {
     
     NSString *displayedMessage = nil;
     if ([[[params objectForKey:@"aps"] objectForKey:@"alert"] isKindOfClass:[NSString class]]) {
@@ -160,18 +158,14 @@
     }
     
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
-    [mutParams setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
-    [mutParams setObject:displayedMessage forKey:@"Displayed Message"];
-    if ([params objectForKey:CALL_TO_ACTION_PARAM_NAME]) {
-        [mutParams setObject:[params objectForKey:CALL_TO_ACTION_PARAM_NAME] forKey:@"Call To Action"];
-    } else {
-        [mutParams setObject:@"" forKey:@"Call To Action"];
-    }
+    mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
+    mutParams = [self setValue:displayedMessage forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_DISPLAYED_MESSAGE];
+    //Call To Action must be provided by the SDK user in this case.
     
     return [UBF createEventWithCode:@"48" params:mutParams];
 }
 
-+ (id)openedNotification:(NSDictionary *)params {
++ (id)openedNotification:(NSDictionary *)notification withParams:(NSDictionary *)params {
     
     NSString *displayedMessage = nil;
     if ([[[params objectForKey:@"aps"] objectForKey:@"alert"] isKindOfClass:[NSString class]]) {
@@ -180,21 +174,16 @@
         displayedMessage = [[[params objectForKey:@"aps"] objectForKey:@"alert"] objectForKey:@"body"];
     }
     
-    NSMutableDictionary *openedNotificationEvent = [self populateEventCommonParams:params];
-    [openedNotificationEvent setObject:[EngageConfig currentCampaign] forKey:@"Campaign Name"];
-    [openedNotificationEvent setObject:displayedMessage forKey:@"Displayed Message"];
-    if ([params objectForKey:CALL_TO_ACTION_PARAM_NAME]) {
-        [openedNotificationEvent setObject:[params objectForKey:CALL_TO_ACTION_PARAM_NAME] forKey:@"Call To Action"];
-    } else {
-        [openedNotificationEvent setObject:@"" forKey:@"Call To Action"];
-    }
+    NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+    mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
+    mutParams = [self setValue:displayedMessage forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_DISPLAYED_MESSAGE];
+    //Call To Action must be provided by the SDK user in this case.
     
-    return [UBF createEventWithCode:@"49" params:openedNotificationEvent];
+    return [UBF createEventWithCode:@"49" params:mutParams];
 }
 
 + (NSMutableDictionary *) populateEventCommonParams:(NSDictionary *)params {
-    NSMutableDictionary *mutParams = [[NSMutableDictionary alloc] init];
-    mutParams = [self addLocationToParams:mutParams];
+    NSMutableDictionary *mutParams = [params mutableCopy];
     mutParams = [self addDelimitedTagsToParams:mutParams];
     return mutParams;
 }
@@ -214,34 +203,15 @@
     return params;
 }
 
-+ (NSMutableDictionary *) addLocationToParams:(NSMutableDictionary *)existingParams {
++ (NSMutableDictionary *)setValue:(id)value
+                      forDictionary:(NSMutableDictionary *)dictionary
+                        withPlistUBFFieldName:(NSString *)ubfFieldName {
     
-    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
-    //locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager.distanceFilter = kCLDistanceFilterNone;
-    [locationManager startUpdatingLocation];
-    CLLocation *location = [locationManager location];
-    CLLocationCoordinate2D coordinate = [location coordinate];
-    
-    NSString *latitude = [NSString stringWithFormat:@"%f", coordinate.latitude];
-    NSString *longitude = [NSString stringWithFormat:@"%f", coordinate.longitude];
-    
-    if (![existingParams objectForKey:@"Longitude"]) {
-        [existingParams setObject:longitude forKey:@"Longitude"];
+    if (![dictionary objectForKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:ubfFieldName]]) {
+        [dictionary setObject:value
+                       forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:ubfFieldName]];
     }
-    if (![existingParams objectForKey:@"Latitude"]) {
-        [existingParams setObject:latitude forKey:@"Latitude"];
-    }
-    
-//    if (![existingParams objectForKey:@"Location Name"]) {
-//        [existingParams setObject:@"" forKey:@"Location Name"];
-//    }
-//    if (![existingParams objectForKey:@"Location Address"]) {
-//        [existingParams setObject:@"" forKey:@"Location Address"];
-//    }
-    
-    return existingParams;
+    return dictionary;
 }
 
 

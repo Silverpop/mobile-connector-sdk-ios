@@ -46,4 +46,20 @@
     return (NSString *)[[self.configs objectForKey:@"UBFFieldNames"] objectForKey:ubfFieldConstantName];
 }
 
+- (NSInteger)configForNetworkValue:(NSString *)networkFieldConstantName {
+    return (NSInteger)[[self.configs objectForKey:@"Networking"] objectForKey:networkFieldConstantName];
+}
+
+- (long)longConfigForSessionValue:(NSString *)sessionFieldConstantName {
+    return (long)[[self.configs objectForKey:@"Session"] objectForKey:sessionFieldConstantName];
+}
+
+- (NSString *)fieldNameForParam:(NSString *)paramFieldConstantName {
+    return (NSString *)[[self.configs objectForKey:@"ParamFieldNames"] objectForKey:paramFieldConstantName];
+}
+
+- (NSString *)configForGeneralFieldName:(NSString *)generalFieldConstantName {
+    return (NSString *)[[self.configs objectForKey:@"General"] objectForKey:generalFieldConstantName];
+}
+
 @end

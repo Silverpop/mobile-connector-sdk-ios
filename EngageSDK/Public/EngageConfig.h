@@ -21,6 +21,8 @@
 #endif
 
 #define LOCATION_UPDATED_NOTIFICATION @"LocationUpdated"
+#define LOCATION_ACQUIRE_LOCATION_TIMEOUT @"LocationAcquisitionTimeout"
+#define LOCATION_PLACEMARK_TIMEOUT @"LocationPlacemarkTimeout";
 #define ENGAGE_CONFIG_BUNDLE @"EngageConfigPlist.bundle"
 
 //Plist Constants.
@@ -28,6 +30,8 @@
 #define PLIST_UBF_LATITUDE @"UBFLatitudeFieldName"
 #define PLIST_UBF_LOCATION_NAME @"UBFLocationNameFieldName"
 #define PLIST_UBF_LOCATION_ADDRESS @"UBFLocationAddressFieldName"
+#define PLIST_UBF_LAST_CAMPAIGN_NAME @"UBFLastCampaignFieldName"
+#define PLIST_UBF_CURRENT_CAMPAIGN_NAME @"UBFCurrentCampaignFieldName"
 
 @interface EngageConfig : NSUserDefaults
 

@@ -32,9 +32,9 @@
 
 - (void)testExample
 {
-    NSLog(@"Getting the current location");
-    [self.engageEventLocationManager currentLocation];
-    NSLog(@"Done getting the current location");
+//    NSLog(@"Getting the current location");
+//    [self.engageEventLocationManager currentLocation];
+//    NSLog(@"Done getting the current location");
 }
 
 @end

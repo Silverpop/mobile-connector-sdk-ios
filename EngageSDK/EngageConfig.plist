@@ -4,6 +4,10 @@
 <dict>
 	<key>UBFFieldNames</key>
 	<dict>
+		<key>UBFCurrentCampaignFieldName</key>
+		<string>Current Campaign</string>
+		<key>UBFLastCampaignFieldName</key>
+		<string>Last Campaign</string>
 		<key>UBFLocationAddressFieldName</key>
 		<string>Location Address</string>
 		<key>UBFLocationNameFieldName</key>

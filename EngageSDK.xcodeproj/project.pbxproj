@@ -17,6 +17,8 @@
 		19197087192531E300C75CD8 /* XMLAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19197086192531E300C75CD8 /* XMLAPIClientTests.m */; };
 		1929A3401936170D00D3F044 /* EngageConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1929A33F1936170D00D3F044 /* EngageConfig.plist */; };
 		1929A3441936197D00D3F044 /* EngageConfigManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1929A3431936197D00D3F044 /* EngageConfigManager.m */; };
+		1929A3491936714100D3F044 /* EngageExpirationParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1929A3481936714100D3F044 /* EngageExpirationParser.m */; };
+		1929A34B193675E300D3F044 /* EngageExpirationParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */; };
 		194C94B119216032004B8851 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1916728E1907063F001F25C9 /* CoreData.framework */; };
 		194C94B51921612C004B8851 /* UBFClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 194C94B41921612C004B8851 /* UBFClientTests.m */; };
 		194C94B819216CB0004B8851 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
@@ -88,6 +90,9 @@
 		1929A33F1936170D00D3F044 /* EngageConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EngageConfig.plist; sourceTree = "<group>"; };
 		1929A3421936197D00D3F044 /* EngageConfigManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageConfigManager.h; sourceTree = "<group>"; };
 		1929A3431936197D00D3F044 /* EngageConfigManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConfigManager.m; sourceTree = "<group>"; };
+		1929A3471936714100D3F044 /* EngageExpirationParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageExpirationParser.h; sourceTree = "<group>"; };
+		1929A3481936714100D3F044 /* EngageExpirationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageExpirationParser.m; sourceTree = "<group>"; };
+		1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageExpirationParserTests.m; sourceTree = "<group>"; };
 		1929D7F3192D301B00EC9B33 /* sample-config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sample-config.h"; sourceTree = "<group>"; };
 		194C94B219216084004B8851 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		194C94B41921612C004B8851 /* UBFClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFClientTests.m; sourceTree = "<group>"; };
@@ -183,12 +188,22 @@
 			name = location;
 			sourceTree = "<group>";
 		};
+		1929A3461936712E00D3F044 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				1929A3471936714100D3F044 /* EngageExpirationParser.h */,
+				1929A3481936714100D3F044 /* EngageExpirationParser.m */,
+			);
+			name = util;
+			sourceTree = "<group>";
+		};
 		194C94FA192171F0004B8851 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
 				19BFF1E91923DE77004686B7 /* NotificationTests.m */,
 				199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */,
 				19BFF1E71923BFAE004686B7 /* UBFTests.m */,
+				1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */,
 			);
 			name = UnitTests;
 			sourceTree = "<group>";
@@ -298,6 +313,7 @@
 		B2C2A8F517A9919C0058311A /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				1929A3461936712E00D3F044 /* util */,
 				1929A34519362D4F00D3F044 /* location */,
 				1929A3411936196600D3F044 /* configuration */,
 				B2C2A8FA17A9919C0058311A /* EngageSDK.h */,
@@ -485,6 +501,7 @@
 			files = (
 				190D7CDA1907360000432B88 /* EngageEvent.m in Sources */,
 				B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */,
+				1929A3491936714100D3F044 /* EngageExpirationParser.m in Sources */,
 				B2C2A90517A9919C0058311A /* EngageClient.m in Sources */,
 				1919708519251EA700C75CD8 /* EngageDeepLinkManager.m in Sources */,
 				B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */,
@@ -507,6 +524,7 @@
 				19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */,
 				194C94B51921612C004B8851 /* UBFClientTests.m in Sources */,
 				19BFF1E81923BFAE004686B7 /* UBFTests.m in Sources */,
+				1929A34B193675E300D3F044 /* EngageExpirationParserTests.m in Sources */,
 				19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */,
 				19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */,
 				19197087192531E300C75CD8 /* XMLAPIClientTests.m in Sources */,

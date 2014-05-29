@@ -45,7 +45,6 @@
             [self.locManager startMonitoringSignificantLocationChanges];
             
             self.locationServicesSupported = YES;
-            
         } else {
             //Location services are not enabled
             self.locationServicesSupported = NO;
@@ -128,37 +127,59 @@
  will be fired to update the event and then post it to Silverpop. 
 */
 - (NSDictionary *)addLocationToUBFEvent:(NSDictionary *)ubfEvent {
-    if (self.currentPlacemarkCache == nil || ![self placemarkCacheExpired]) {
-        return nil;
+    if (self.currentLocationCache == nil) {
+        //If the current CLLocation coordinates are null then we need to give up trying and allow the UBF events to continue on to Silverpop after the expiration time is reached.
+        
+        //Get the expiration time in seconds.
+        int expirationSeconds = 15;
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, expirationSeconds * NSEC_PER_SEC), queue, ^{
+            
+            //Send a system wide NSNotificationCenter message letting the application know that this UBF event should be sent without the notification information.
+            [[NSNotificationCenter defaultCenter] postNotificationName:LOCATION_ACQUIRE_LOCATION_TIMEOUT object:nil];
+        });
     } else {
-        NSMutableDictionary *event = [ubfEvent mutableCopy];
-        EngageConfigManager *cm = [EngageConfigManager sharedInstance];
-        
-        //Sets the Longitude and Latitude
-        if (self.currentLocationCache) {
-            if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LONGITUDE]]) {
-                [event setValue:[NSString stringWithFormat:@"%f", [self.currentLocationCache coordinate].longitude] forKey:[cm fieldNameForUBF:PLIST_UBF_LONGITUDE]];
+        if (self.currentPlacemarkCache == nil || ![self placemarkCacheExpired]) {
+            
+//            //Place a timeout value on how long it takes from the placemark to be acquired. If that expires then fire an event to post the UBF anyway.
+//            //Get the expiration time in seconds.
+//            int expirationSeconds = 15;
+//            dispatch_queue_t placemarkQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, expirationSeconds * NSEC_PER_SEC), placemarkQueue, ^{
+//                [[NSNotificationCenter defaultCenter] postNotificationName:LOCATION_PLACEMARK_TIMEOUT object:nil userInfo:nil];
+//            });
+            
+            return nil;
+        } else {
+            NSMutableDictionary *event = [ubfEvent mutableCopy];
+            EngageConfigManager *cm = [EngageConfigManager sharedInstance];
+            
+            //Sets the Longitude and Latitude
+            if (self.currentLocationCache) {
+                if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LONGITUDE]]) {
+                    [event setValue:[NSString stringWithFormat:@"%f", [self.currentLocationCache coordinate].longitude] forKey:[cm fieldNameForUBF:PLIST_UBF_LONGITUDE]];
+                }
+                
+                if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LATITUDE]]) {
+                    [event setValue:[NSString stringWithFormat:@"%f", [self.currentLocationCache coordinate].latitude] forKey:[cm fieldNameForUBF:PLIST_UBF_LATITUDE]];
+                }
+                
             }
             
-            if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LATITUDE]]) {
-                [event setValue:[NSString stringWithFormat:@"%f", [self.currentLocationCache coordinate].latitude] forKey:[cm fieldNameForUBF:PLIST_UBF_LATITUDE]];
+            //Sets the location name and address.
+            if (self.currentPlacemarkCache) {
+                
+                if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_NAME]]) {
+                    [event setValue:[NSString stringWithFormat:@"%@", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"Name"]] forKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_NAME]];
+                }
+                
+                if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS]]) {
+                    [event setValue:[NSString stringWithFormat:@"%@, %@ %@", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"City"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"State"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"ZIP"]] forKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS]];
+                }
             }
             
+            return event;
         }
-        
-        //Sets the location name and address.
-        if (self.currentPlacemarkCache) {
-            
-            if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_NAME]]) {
-                [event setValue:[NSString stringWithFormat:@"%@", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"Name"]] forKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_NAME]];
-            }
-            
-            if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS]]) {
-                [event setValue:[NSString stringWithFormat:@"%@, %@ %@", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"City"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"State"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"ZIP"]] forKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS]];
-            }
-        }
-        
-        return event;
     }
 }
 

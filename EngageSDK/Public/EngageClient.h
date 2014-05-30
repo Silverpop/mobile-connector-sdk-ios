@@ -22,7 +22,9 @@ typedef enum {
             secret:(NSString *)secret
              token:(NSString *)refreshToken;
 
-- (void)connectSuccess:(void (^)(AFOAuthCredential *credential))success
+- (BOOL)isAuthenticated;
+
+- (void)authenticate:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure;
 
 @property AFOAuthCredential *credential;

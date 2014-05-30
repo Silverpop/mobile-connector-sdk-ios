@@ -8,6 +8,10 @@
 
 #import "UBF.h"
 #import <sys/utsname.h>
+#import <CoreLocation/CoreLocation.h>
+#import <CoreLocation/CLLocationManager.h>
+#import "EngageConfig.h"
+#import "EngageConfigManager.h"
 
 @interface UBF ()
 
@@ -104,7 +108,7 @@
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
 
     if (campaignName != nil && [campaignName length] > 0) {
-        [EngageConfig storeCurrentCampaign:campaignName withExpirationTimestamp:nil];
+        [EngageConfig storeCurrentCampaign:campaignName withExpirationTimestamp:-1];
     } else {
         NSLog(@"SessionStarted with empty CampaignName. Not storing value and using previous campaign name value");
     }
@@ -191,12 +195,12 @@
 + (NSMutableDictionary *) addDelimitedTagsToParams:(NSMutableDictionary *)params
 {
     if (params) {
-        if ([params objectForKey:@"Tags"]) {
-            id tagsParam = [params objectForKey:@"Tags"];
+        if ([params objectForKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_TAGS]]) {
+            id tagsParam = [params objectForKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_TAGS]];
             if ([tagsParam isKindOfClass:[NSArray class]]) {
-                [params setObject:[tagsParam componentsJoinedByString:@","] forKey:@"Tags"];
+                [params setObject:[tagsParam componentsJoinedByString:@","] forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_TAGS]];
             } else {
-                [params setObject:@"" forKey:@"Tags"];
+                [params setObject:@"" forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_TAGS]];
             }
         }
     }

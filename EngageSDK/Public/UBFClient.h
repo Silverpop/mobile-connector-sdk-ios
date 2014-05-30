@@ -7,10 +7,6 @@
 //
 
 #import "EngageClient.h"
-#import <MobileDeepLinking-iOS/MobileDeepLinking.h>
-#import "EngageConfig.h"
-#import "EngageEventLocationManager.h"
-#import "EngageConfigManager.h"
 
 @interface UBFClient : EngageClient
 
@@ -23,6 +19,7 @@
 
 + (instancetype)client;
 
-- (void)postEngageEvent:(EngageEvent *)engageEvent retryCount:(int) numRetries;
+- (void)postEngageEvent:(EngageEvent *)engageEvent;
+- (void)pushEventCache;
 
 @end

@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
-#import <CoreLocation/CLLocationManager.h>
-#import "EngageConfig.h"
-#import "EngageConfigManager.h"
 
 @interface UBF : NSObject
 

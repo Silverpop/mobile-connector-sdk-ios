@@ -30,11 +30,24 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testCoordinatesAcquisitionTimeout
 {
-//    NSLog(@"Getting the current location");
-//    [self.engageEventLocationManager currentLocation];
-//    NSLog(@"Done getting the current location");
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:LOCATION_ACQUIRE_LOCATION_TIMEOUT
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification *note) {
+                                                      XCTAssertTrue(true);
+                                                      dispatch_semaphore_signal(semaphore);
+                                                  }];
+    
+    [[EngageEventLocationManager sharedInstance] addLocationToUBFEvent:nil withEngageEvent:nil];
+    
+    while (dispatch_semaphore_wait(semaphore, DISPATCH_TIME_NOW))
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                                     beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+    
 }
 
 @end

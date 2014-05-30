@@ -2,10 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LocalEventStore</key>
+	<dict>
+		<key>expireLocalEventsAfterNumDays</key>
+		<integer>30</integer>
+	</dict>
 	<key>General</key>
-	<dict/>
-	<key>defaultCurrentCampaignExpiration</key>
-	<string>1 day</string>
+	<dict>
+		<key>ubfEventCacheSize</key>
+		<integer>3</integer>
+		<key>defaultCurrentCampaignExpiration</key>
+		<string>1 day</string>
+	</dict>
 	<key>ParamFieldNames</key>
 	<dict>
 		<key>ParamCampaignValidFor</key>
@@ -56,13 +64,13 @@
 	</dict>
 	<key>LocationServices</key>
 	<dict>
-		<key>coordinatesUpdateInterval</key>
-		<string>15 sec</string>
+		<key>locationDistanceFilter</key>
+		<string>10</string>
 		<key>locationPrecisionLevel</key>
 		<string>kCLLocationAccuracyBest</string>
 		<key>locationCacheLifespan</key>
 		<string>1 hr</string>
-		<key>coordinatesPrecisionTimeout</key>
+		<key>coordinatesPlacemarkTimeout</key>
 		<string>15 sec</string>
 		<key>coordinatesAcquisitionTimeout</key>
 		<string>15 sec</string>

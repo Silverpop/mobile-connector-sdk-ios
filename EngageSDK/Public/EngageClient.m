@@ -15,7 +15,7 @@
 
 @interface EngageClient ()
 
-@property NSString *clientId, *secret, *refreshToken;
+@property NSString *clientId, *secret, *refreshToken, *host;
 
 @end
 
@@ -45,9 +45,10 @@
         _clientId = clientId;
         _secret = secret;
         _refreshToken = refreshToken;
+        _host = host;
         
         [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            if (status == AFNetworkReachabilityStatusNotReachable) {
+            if (status == AFNetworkReachabilityStatusNotReachable || [self credential] == nil || [[self credential] isExpired]) {
                 [[self operationQueue] setSuspended:YES];
             } else {
                 [[self operationQueue] setSuspended:NO];
@@ -59,15 +60,39 @@
     return self;
 }
 
-- (void)connectSuccess:(void (^)(AFOAuthCredential *credential))success
+- (BOOL)isAuthenticated {
+    if (self.credential != nil && ![self.credential isExpired]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (void)authenticate:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure {
+    
     [self authenticateUsingOAuthWithURLString:@"http://apipilot.silverpop.com/oauth/token"
                             refreshToken:_refreshToken
                                  success:^(AFOAuthCredential *credential) {
-                                        self.credential = credential;
-                                        success(credential);
+                                     
+                                     self.credential = credential;
+                                     
+                                     success(credential);
+                                     
+                                     //Checks the network status and if its active open up the queue.
+                                     if ([[AFNetworkReachabilityManager sharedManager] networkReachabilityStatus] == AFNetworkReachabilityStatusNotReachable) {
+                                         [[self operationQueue] setSuspended:YES];
+                                     } else {
+                                         [[self operationQueue] setSuspended:NO];
+                                     }
                                  }
-                                failure:failure];
+                                failure:^(NSError *error) {
+                                    [[self operationQueue] setSuspended:YES];
+                                    failure(error);
+                                }];
+    
+    //Suspend the operation queue until the login is successful
+    [[self operationQueue] setSuspended:YES];
 }
 
 @end

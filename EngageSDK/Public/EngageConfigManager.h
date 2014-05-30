@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EngageConfig.h"
 
 @interface EngageConfigManager : NSObject
 
@@ -14,9 +15,12 @@
 
 - (BOOL)locationServicesEnabled;
 - (NSString *)fieldNameForUBF:(NSString *)ubfFieldConstantName;
-- (NSInteger)configForNetworkValue:(NSString *)networkFieldConstantName;
+- (NSNumber *)configForNetworkValue:(NSString *)networkFieldConstantName;
 - (long)longConfigForSessionValue:(NSString *)sessionFieldConstantName;
 - (NSString *)fieldNameForParam:(NSString *)paramFieldConstantName;
 - (NSString *)configForGeneralFieldName:(NSString *)generalFieldConstantName;
+- (NSNumber *)numberConfigForGeneralFieldName:(NSString *)generalFieldConstantName;
+- (NSString *)configForLocationFieldName:(NSString *)locationFieldConstantName;
+- (NSNumber *)numberConfigForLocalStoreFieldName:(NSString *)localStoreFieldConstantName;
 
 @end

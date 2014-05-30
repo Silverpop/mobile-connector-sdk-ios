@@ -7,7 +7,6 @@
 //
 
 #import "EngageConfigManager.h"
-#import "EngageConfig.h"
 
 @interface EngageConfigManager ()
 
@@ -20,8 +19,29 @@
 - (id) init {
     self = [super init];
     if (self) {
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"EngageConfig" ofType:@"plist" inDirectory:ENGAGE_CONFIG_BUNDLE];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"EngageConfigDefaults" ofType:@"plist" inDirectory:ENGAGE_CONFIG_BUNDLE];
+        if (path == nil) {
+            path  = [[NSBundle mainBundle] pathForResource:@"EngageConfigDefaults" ofType:@"plist"];
+            if (path == nil) {
+                NSBundle *unitTestBundle = [NSBundle bundleForClass:[self class]];
+                path = [unitTestBundle pathForResource:@"EngageConfigDefaults" ofType:@"plist"];
+            }
+        }
         self.configs = [[NSDictionary alloc] initWithContentsOfFile:path];
+        
+        //Looks for a SDK user defined plist file as well and merges those into the
+        //existing configurations with the SDK defined configs taking precedence
+        NSString *sdkPath = [[NSBundle mainBundle] pathForResource:@"EngageConfig" ofType:@"plist"];
+        if (sdkPath) {
+            NSDictionary *userConfigs = [[NSDictionary alloc] initWithContentsOfFile:sdkPath];
+            if (userConfigs) {
+                NSMutableDictionary *engageConfigs = [self.configs mutableCopy];
+                [engageConfigs addEntriesFromDictionary:userConfigs];
+                self.configs = engageConfigs;
+            }
+        } else {
+            NSLog(@"No EngageConfig.plist file found in main bundle. Falling back to Silverpop defaults.");
+        }
     }
     return self;
 }
@@ -46,8 +66,8 @@
     return (NSString *)[[self.configs objectForKey:@"UBFFieldNames"] objectForKey:ubfFieldConstantName];
 }
 
-- (NSInteger)configForNetworkValue:(NSString *)networkFieldConstantName {
-    return (NSInteger)[[self.configs objectForKey:@"Networking"] objectForKey:networkFieldConstantName];
+- (NSNumber *)configForNetworkValue:(NSString *)networkFieldConstantName {
+    return (NSNumber *)[[self.configs objectForKey:@"Networking"] objectForKey:networkFieldConstantName];
 }
 
 - (long)longConfigForSessionValue:(NSString *)sessionFieldConstantName {
@@ -61,5 +81,18 @@
 - (NSString *)configForGeneralFieldName:(NSString *)generalFieldConstantName {
     return (NSString *)[[self.configs objectForKey:@"General"] objectForKey:generalFieldConstantName];
 }
+
+- (NSNumber *)numberConfigForGeneralFieldName:(NSString *)generalFieldConstantName {
+    return (NSNumber *)[[self.configs objectForKey:@"General"] objectForKey:generalFieldConstantName];
+}
+
+- (NSString *)configForLocationFieldName:(NSString *)locationFieldConstantName {
+    return (NSString *)[[self.configs objectForKey:@"LocationServices"] objectForKey:locationFieldConstantName];
+}
+
+- (NSNumber *)numberConfigForLocalStoreFieldName:(NSString *)localStoreFieldConstantName {
+    return (NSNumber *)[[self.configs objectForKey:@"LocalEventStore"] objectForKey:localStoreFieldConstantName];
+}
+
 
 @end

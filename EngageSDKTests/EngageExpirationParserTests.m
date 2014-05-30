@@ -47,11 +47,13 @@
     NSDate *expirationDate = [parser expirationDate];
     XCTAssertTrue(expirationDate != nil, @"ExpirationDate cannot be null!");
     
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"UTC"];
+    [calendar setTimeZone:timeZone];
     NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:expirationDate];
     
     XCTAssertTrue([components day] == 2, @"Expected day value to be 2");
-    XCTAssertTrue([components hour] == 2, @"Expected hour value to be 2");//Testing in EST, 5 hours behind UTC
+    XCTAssertTrue([components hour] == 7, @"Expected hour value to be 7");
     XCTAssertTrue([components minute] == 23, @"Expected minute value to be 23");
     XCTAssertTrue([components second] == 15, @"Expected second value to be 15");
 }
@@ -62,11 +64,13 @@
     NSDate *expirationDate = [parser expirationDate];
     XCTAssertTrue(expirationDate != nil, @"ExpirationDate cannot be null!");
     
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"UTC"];
+    [calendar setTimeZone:timeZone];
     NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:expirationDate];
     
     XCTAssertTrue([components day] == 2, @"Expected day value to be 2");
-    XCTAssertTrue([components hour] == 2, @"Expected hour value to be 2");//Testing in EST, 5 hours behind UTC
+    XCTAssertTrue([components hour] == 7, @"Expected hour value to be 7");
     XCTAssertTrue([components minute] == 23, @"Expected minute value to be 23");
     XCTAssertTrue([components second] == 15, @"Expected second value to be 15");
     
@@ -78,11 +82,13 @@
     NSDate *expirationDate = [parser expirationDate];
     XCTAssertTrue(expirationDate != nil, @"ExpirationDate cannot be null!");
     
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"UTC"];
+    [calendar setTimeZone:timeZone];
     NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:expirationDate];
     
-    XCTAssertTrue([components day] == 1);
-    XCTAssertTrue([components hour] == 19);
+    XCTAssertTrue([components day] == 2);
+    XCTAssertTrue([components hour] == 0);
     XCTAssertTrue([components minute] == 0);
     XCTAssertTrue([components second] == 0);
     
@@ -94,11 +100,13 @@
     NSDate *expirationDate = [parser expirationDate];
     XCTAssertTrue(expirationDate != nil, @"ExpirationDate cannot be null!");
     
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"UTC"];
+    [calendar setTimeZone:timeZone];
     NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:expirationDate];
     
     XCTAssertTrue([components day] == 1, @"Expected day value to be 1");
-    XCTAssertTrue([components hour] == 4);//Testing in EST, 5 hours behind UTC
+    XCTAssertTrue([components hour] == 9);
     XCTAssertTrue([components minute] == 0);
     XCTAssertTrue([components second] == 0);
     
@@ -110,11 +118,13 @@
     NSDate *expirationDate = [parser expirationDate];
     XCTAssertTrue(expirationDate != nil, @"ExpirationDate cannot be null!");
     
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"UTC"];
+    [calendar setTimeZone:timeZone];
     NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:expirationDate];
     
     XCTAssertTrue([components day] == 2, @"Expected day value to be 2");
-    XCTAssertTrue([components hour] == 2, @"Expected hour value to be 2"); //Testing in EST, 5 hours behind UTC
+    XCTAssertTrue([components hour] == 7, @"Expected hour value to be 7");
     XCTAssertTrue([components minute] == 23, @"Expected minute value to be 23");
     XCTAssertTrue([components second] == 15, @"Expected second value to be 15");
     
@@ -126,14 +136,35 @@
     NSDate *expirationDate = [parser expirationDate];
     XCTAssertTrue(expirationDate != nil, @"ExpirationDate cannot be null!");
     
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"UTC"];
+    [calendar setTimeZone:timeZone];
     NSDateComponents *components = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:expirationDate];
     XCTAssertTrue([components year] == 2014, @"Expected year value to be 2014");
     XCTAssertTrue([components month] == 12, @"Expected month value to be 12");
     XCTAssertTrue([components day] == 25, @"Expected day value to be 25");
-    XCTAssertTrue([components hour] == 6, @"Expected hour value to be 6"); //Testing in EST, 5 hours behind UTC
+    XCTAssertTrue([components hour] == 11, @"Expected hour value to be 11");
     XCTAssertTrue([components minute] == 12, @"Expected minute value to be 12");
     XCTAssertTrue([components second] == 13, @"Expected second value to be 13");
+    
+}
+
+- (void)testInvalidExpirationString
+{
+    EngageExpirationParser *parser = [[EngageExpirationParser alloc] initWithExpirationString:@"21341qaskljdf;lawjer;aldsv;lajsdf" fromDate:self.beforeDate];
+    NSDate *expirationDate = [parser expirationDate];
+    XCTAssertTrue(expirationDate != nil, @"ExpirationDate cannot be null!");
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"UTC"];
+    [calendar setTimeZone:timeZone];
+    NSDateComponents *components = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:expirationDate];
+    XCTAssertTrue([components year] == 2014, @"Expected year value to be 2014");
+    XCTAssertTrue([components month] == 1, @"Expected month value to be 12");
+    XCTAssertTrue([components day] == 1, @"Expected day value to be 25");
+    XCTAssertTrue([components hour] == 0, @"Expected hour value to be 6"); //Testing in EST, 5 hours behind UTC
+    XCTAssertTrue([components minute] == 0, @"Expected minute value to be 12");
+    XCTAssertTrue([components second] == 0, @"Expected second value to be 13");
     
 }
 

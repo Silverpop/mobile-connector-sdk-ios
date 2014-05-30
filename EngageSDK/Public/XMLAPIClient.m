@@ -27,22 +27,15 @@ __strong static XMLAPIClient *_sharedClient = nil;
     dispatch_once(&pred, ^{
         _sharedClient = [[self alloc] initWithHost:hostUrl clientId:clientId secret:secret token:refreshToken];
         
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        [[_sharedClient operationQueue] setSuspended:YES];
         
         //Perform the login to the system.
-        [_sharedClient connectSuccess:^(AFOAuthCredential *credential) {
-            success(credential);
-            dispatch_semaphore_signal(semaphore);
+        [_sharedClient authenticate:^(AFOAuthCredential *credential) {
+            NSLog(@"Authentication refresh complete");
         } failure:^(NSError *error) {
-            failure(error);
-            dispatch_semaphore_signal(semaphore);
+            NSLog(@"Failed to refresh OAuth2 token for authentication");
+            [[_sharedClient operationQueue] setSuspended:YES];
         }];
-        
-        while (dispatch_semaphore_wait(semaphore, DISPATCH_TIME_NOW))
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-                                     beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
-        
-        NSLog(@"XMLAPI OAuth2 authentication complete");
     });
     return _sharedClient;
 }
@@ -72,7 +65,7 @@ __strong static XMLAPIClient *_sharedClient = nil;
     
     if (self.credential.isExpired) {
         NSLog(@"%@",@"Session expired...attempting to reconnect");
-        [super connectSuccess:^(AFOAuthCredential *credential) {
+        [super authenticate:^(AFOAuthCredential *credential) {
             self.credential = credential;
             postResource();
         } failure:failure];

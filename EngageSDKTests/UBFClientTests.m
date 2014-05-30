@@ -39,7 +39,6 @@
                               } failure:^(NSError *error) {
                                   NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
                               }];
-
 }
 
 - (void)tearDown
@@ -48,103 +47,31 @@
     self.ubfClient = nil;
 }
 
-/*
- Test should validate that when no network is present that UBF events are not attempted to be sent to SilverPop.
- The test will programmatically sent the network Reachability to false and then add 4 UBF events (3 are queued before delivery attempt)
- and then check the size of the NSOperationQueue to ensure a size of 4. After check will turn network reachability on and
- then check for proper drainage.
-*/
--(void)testUBFEventNetworkOffline {
-
-    NSLog(@"Creating and setting new network reachability manager that is offline");
-    [[self.ubfClient operationQueue] setSuspended:YES];
-
-    [[self.ubfClient operationQueue] cancelAllOperations];
-    NSLog(@"Current Queue Size %lu", (unsigned long)[[self.ubfClient operationQueue] operationCount]);
-    XCTAssertTrue([[self.ubfClient operationQueue] operationCount] == 0, @"UBFClient Operations Queue must be 0 before starting test!");
-    XCTAssertTrue([[self.ubfClient reachabilityManager] isReachable] == NO, @"Network must not be reachable to perform this test");
+- (void)testOAuthAuthentication {
     
-    NSLog(@"Current Queue Size After %lu", (unsigned long)[[self.ubfClient operationQueue] operationCount]);
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     
-    //Stuff events in the UBFClient and make sure that they are not sent.
-    id installedEvent = [UBF installed:nil];
-    id goalCompleted = [UBF goalAbandoned:@"" params:nil];
-    id namedEvent = [UBF namedEvent:@"" params:nil];
-    id sessionEnded = [UBF sessionEnded:nil];
+    self.ubfClient = [UBFClient createClient:ENGAGE_CLIENT_ID
+                                      secret:ENGAGE_SECRET
+                                       token:ENGAGE_REFRESH_TOKEN
+                                        host:ENGAGE_BASE_URL
+                              connectSuccess:^(AFOAuthCredential *credential) {
+                                  NSLog(@"Successfully connected to Engage API : Credential %@", credential);
+                                  XCTAssertTrue([self.ubfClient credential] != nil);
+                                  XCTAssertTrue(![[self.ubfClient credential] isExpired]);
+                                  XCTAssertTrue([[self.ubfClient operationQueue] isSuspended] == NO);
+                                  dispatch_semaphore_signal(semaphore);
+                              } failure:^(NSError *error) {
+                                  NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
+                                  dispatch_semaphore_signal(semaphore);
+                              }];
     
-    NSUInteger previousCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
-    NSLog(@"Previous Core Data Count %lul", (unsigned long)previousCoreDataCount);
+    XCTAssertTrue([self.ubfClient credential] == nil);
+    XCTAssertTrue([[self.ubfClient operationQueue] isSuspended] == YES);
     
-    //Track the 4 new events (Note session started was automatically added so really there is 5).
-    [self.ubfClient trackingEvent:installedEvent];
-    [self.ubfClient trackingEvent:goalCompleted];
-    [self.ubfClient trackingEvent:namedEvent];
-    [self.ubfClient trackingEvent:sessionEnded];
-    
-    NSLog(@"Reachability Status here %ld", [[self.ubfClient reachabilityManager] networkReachabilityStatus]);
-    NSLog(@"OperationQueue should be suspended but is it?? %d", [[self.ubfClient operationQueue] isSuspended]);
-    
-    //Check to make sure that the NSOperationQueue has the 5 events queued in it.
-    NSLog(@"OperationQueue Count %lu", (unsigned long)[[self.ubfClient operationQueue] operationCount]);
-    XCTAssertTrue([[self.ubfClient operationQueue] operationCount] == floor(5 / [self.ubfClient eventCacheSize]), @"Expected NSOperationQueue to contain %f UBF Event Operations", floor(5 / [self.ubfClient eventCacheSize]));
-    
-    //Check the Core Data store for the 5 UBF events were persisted.
-    NSUInteger afterCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
-    NSLog(@"After Core Data Count %lul", (unsigned long)afterCoreDataCount);
-    XCTAssertTrue(previousCoreDataCount < afterCoreDataCount, @"After persisting 4 UBF Events Core Data store should have grown with those events");
-    XCTAssertTrue((previousCoreDataCount + 4) == afterCoreDataCount, @"Not all 4 UBF events were saved to Core Data!");
-}
-
-
-/*
- Tests posting UBF events with an active network connection.
-*/
--(void)testUBFEventNetworkOnline {
-    
-    [[self.ubfClient operationQueue] setSuspended:NO];
-    [[self.ubfClient operationQueue] cancelAllOperations];
-    NSLog(@"Current Queue Size %lu", (unsigned long)[[self.ubfClient operationQueue] operationCount]);
-    XCTAssertTrue([[self.ubfClient operationQueue] operationCount] == 0, @"UBFClient Operations Queue must be 0 before starting test!");
-    NSLog(@"Reachability Status %ld", [[self.ubfClient reachabilityManager] networkReachabilityStatus]);
-    
-    //Stuff events in the UBFClient and make sure that they are not sent.
-    id installedEvent = [UBF installed:nil];
-    id goalCompleted = [UBF goalAbandoned:@"" params:nil];
-    id namedEvent = [UBF namedEvent:@"" params:nil];
-    id sessionEnded = [UBF sessionEnded:nil];
-    
-    NSUInteger previousCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
-    NSLog(@"Previous Core Data Count %lul", (unsigned long)previousCoreDataCount);
-    
-    //Track the 4 new events (Note session started was automatically added so really there is 5).
-    [self.ubfClient trackingEvent:installedEvent];
-    [self.ubfClient trackingEvent:goalCompleted];
-    [self.ubfClient trackingEvent:namedEvent];
-    [self.ubfClient trackingEvent:sessionEnded];
-    
-    //Check to make sure that the NSOperationQueue has the 5 events queued in it.
-    NSLog(@"OperationQueue Count %lu", (unsigned long)[[self.ubfClient operationQueue] operationCount]);
-    XCTAssertTrue([[self.ubfClient operationQueue] operationCount] == floor(5 / [self.ubfClient eventCacheSize]), @"Expected NSOperationQueue to contain %f UBF Event Operations", floor(5 / [self.ubfClient eventCacheSize]));
-    
-    //Check the Core Data store for the 5 UBF events were persisted.
-    NSUInteger afterCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
-    NSLog(@"After Core Data Count %lul", (unsigned long)afterCoreDataCount);
-    XCTAssertTrue(previousCoreDataCount < afterCoreDataCount, @"After persisting 4 UBF Events Core Data store should have grown with those events");
-    XCTAssertTrue((previousCoreDataCount + 4) == afterCoreDataCount, @"Not all 4 UBF events were saved to Core Data!");
-    
-    //Find how many of the events are in the queue. Should theoretically be
-    NSLog(@"QUEUE COUNT %lu", (unsigned long)[[self.ubfClient operationQueue] operationCount]);
-    [self.ubfClient postEventCache];
-    
-    NSLog(@"Waiting until all current NSOperationQueue Operations have completed before continuing tests");
-    
-    [[self.ubfClient operationQueue] addOperationWithBlock:^(void) {
-        NSLog(@"Last NSOperation has finished executing");
-    }];
-    
-    [[self.ubfClient operationQueue] waitUntilAllOperationsAreFinished];
-    XCTAssertTrue([[self.ubfClient operationQueue] operationCount] == 0, @"NSOperationQueue should be completed drained by now");
-    NSLog(@"Number of Unposted Events %ld", [[[EngageLocalEventStore sharedInstance] findUnpostedEvents] count]);
+    while (dispatch_semaphore_wait(semaphore, DISPATCH_TIME_NOW))
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
 }
 
 /*
@@ -162,23 +89,23 @@
     //Stuff events in the UBFClient and make sure that they are not sent.
     id installedEvent = [UBF installed:nil];
     id sessionStarted = [UBF sessionStarted:nil withCampaign:@"Test Network Reachability Campaign"];
-    id goalCompleted = [UBF goalAbandoned:@"" params:nil];
-    id namedEvent = [UBF namedEvent:@"" params:nil];
+    id goalCompleted = [UBF goalAbandoned:@"UnitTestGoal" params:nil];
+    id namedEvent = [UBF namedEvent:@"UnitTestNamedEvent" params:nil];
     id sessionEnded = [UBF sessionEnded:nil];
     
     NSUInteger previousCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
     NSLog(@"Previous Core Data Count %lul", (unsigned long)previousCoreDataCount);
     
     //Track the 5 events.
-    [self.ubfClient trackingEvent:installedEvent];
-    [self.ubfClient trackingEvent:sessionStarted];
-    [self.ubfClient trackingEvent:goalCompleted];
-    [self.ubfClient trackingEvent:namedEvent];
-    [self.ubfClient trackingEvent:sessionEnded];
+    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:installedEvent status:NOT_POSTED]];
+    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionStarted status:NOT_POSTED]];
+    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:goalCompleted status:NOT_POSTED]];
+    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:namedEvent status:NOT_POSTED]];
+    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionEnded status:NOT_POSTED]];
     
     //Check to make sure that the NSOperationQueue has the 5 events queued in it.
     NSLog(@"OperationQueue Count %lu", (unsigned long)[[self.ubfClient operationQueue] operationCount]);
-    XCTAssertTrue([[self.ubfClient operationQueue] operationCount] == floor(5 % [self.ubfClient eventCacheSize]), @"Expected NSOperationQueue to contain 5 UBF Event Operations");
+    XCTAssertTrue(([[self.ubfClient operationQueue] operationCount] == 5), @"Expected NSOperationQueue to contain 5 UBF Event Operations");
     
     //Check the Core Data store for the 5 UBF events were persisted.
     NSUInteger afterCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
@@ -198,7 +125,7 @@
     NSArray *events = [self createSampleUBFEvents];
     
     for (id event in events) {
-        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event];
+        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
     }
     
     //Finds the unposted events.

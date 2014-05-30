@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EngageExpirationParser.h"
 
 //#ifndef CURRENT_CAMPAIGN_PARAM_NAME
 //    #define CURRENT_CAMPAIGN_PARAM_NAME @"CurrentCampaign"
@@ -53,6 +54,17 @@
 
 //Plist General constants.
 #define PLIST_GENERAL_DEFAULT_CURRENT_CAMPAIGN_EXPIRATION @"defaultCurrentCampaignExpiration"
+#define PLIST_GENERAL_UBF_EVENT_CACHE_SIZE @"ubfEventCacheSize"
+
+//Plist Location constants.
+#define PLIST_LOCATION_COORDINATES_ACQUISITION_TIMEOUT @"coordinatesAcquisitionTimeout"
+#define PLIST_LOCATION_COORDINATES_PLACEMARK_TIMEOUT @"coordinatesPlacemarkTimeout"
+#define PLIST_LOCATION_LOCATION_PRECISION_LEVEL @"locationPrecisionLevel"
+#define PLIST_LOCATION_LOCATION_CACHE_LIFESPAN @"locationCacheLifespan"
+#define PLIST_LOCATION_LOCATION_DISTANCE_FILTER @"locationDistanceFilter"
+
+// Plist LocalEventStore constants.
+#define PLIST_LOCAL_STORE_EVENTS_EXPIRE_AFTER_DAYS @"expireLocalEventsAfterNumDays"
 
 @interface EngageConfig : NSUserDefaults
 

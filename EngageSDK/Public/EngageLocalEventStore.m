@@ -7,11 +7,11 @@
 //
 
 #import "EngageLocalEventStore.h"
+#import "EngageConfigManager.h"
 
 @implementation EngageLocalEventStore
 
 static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
-static long const MAX_EVENTS_AGE_IN_DAYS = 30;
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
@@ -142,8 +142,8 @@ static long const MAX_EVENTS_AGE_IN_DAYS = 30;
     }
 
     if ([self.managedObjectContext save:&error]) {
-        NSLog(@"%d expired local events were purged from the local events store : %ld days old from today %@",
-              deletedEvents, MAX_EVENTS_AGE_IN_DAYS, [[NSDate alloc] init]);
+        NSLog(@"%d expired local events were purged from the local events store : %@ days old from today %@",
+              deletedEvents, [[EngageConfigManager sharedInstance] numberConfigForLocalStoreFieldName:PLIST_LOCAL_STORE_EVENTS_EXPIRE_AFTER_DAYS], [[NSDate alloc] init]);
     } else {
         NSLog(@"Error while deleting expired ubf events from local events store %@", error);
     }
@@ -266,7 +266,7 @@ static long const MAX_EVENTS_AGE_IN_DAYS = 30;
     
     // build a NSDate for oldest date we want to keep in the local store
     NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
-    [offsetComponents setDay:-MAX_EVENTS_AGE_IN_DAYS];
+    [offsetComponents setDay:-[[[EngageConfigManager sharedInstance] numberConfigForLocalStoreFieldName:PLIST_LOCAL_STORE_EVENTS_EXPIRE_AFTER_DAYS] longValue]];
     NSDate *oldestDate = [gregorian dateByAddingComponents:offsetComponents toDate:thisDate options:0];
     
     // build the predicate

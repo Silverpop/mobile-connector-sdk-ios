@@ -9,6 +9,8 @@
 #import "EngageDeepLinkManager.h"
 #import "UBFClient.h"
 #import "UBF.h"
+#import "EngageConfigManager.h"
+#import "EngageExpirationParser.h"
 
 @implementation EngageDeepLinkManager
 

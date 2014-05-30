@@ -15,13 +15,16 @@
 		1919707E1925064A00C75CD8 /* EngageEventLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1919707D1925064A00C75CD8 /* EngageEventLocationManager.m */; };
 		1919708519251EA700C75CD8 /* EngageDeepLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1919708419251EA700C75CD8 /* EngageDeepLinkManager.m */; };
 		19197087192531E300C75CD8 /* XMLAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19197086192531E300C75CD8 /* XMLAPIClientTests.m */; };
-		1929A3401936170D00D3F044 /* EngageConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1929A33F1936170D00D3F044 /* EngageConfig.plist */; };
 		1929A3441936197D00D3F044 /* EngageConfigManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1929A3431936197D00D3F044 /* EngageConfigManager.m */; };
 		1929A3491936714100D3F044 /* EngageExpirationParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1929A3481936714100D3F044 /* EngageExpirationParser.m */; };
 		1929A34B193675E300D3F044 /* EngageExpirationParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */; };
 		194C94B119216032004B8851 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1916728E1907063F001F25C9 /* CoreData.framework */; };
 		194C94B51921612C004B8851 /* UBFClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 194C94B41921612C004B8851 /* UBFClientTests.m */; };
 		194C94B819216CB0004B8851 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
+		1962468F1938BE470038B453 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1962468E1938BE470038B453 /* EngageConfigDefaults.plist */; };
+		196246921938D2990038B453 /* EngageEventWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 196246911938D2990038B453 /* EngageEventWrapper.m */; };
+		196246931938FDA80038B453 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1962468E1938BE470038B453 /* EngageConfigDefaults.plist */; };
+		19624695193904B40038B453 /* UBFManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19624694193904B40038B453 /* UBFManagerTests.m */; };
 		199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */; };
 		19BFF1E51923AC5F004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
 		19BFF1E61923AC67004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
@@ -29,16 +32,13 @@
 		19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1E91923DE77004686B7 /* NotificationTests.m */; };
 		19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */; };
 		19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */; };
+		19CFF0D11937C2B100AB45BA /* libEngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B1826F178B59400097EE6A /* libEngageSDK.a */; };
+		19CFF0D31937CB2800AB45BA /* MobileDeepLinkingConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 19CFF0D21937CB2800AB45BA /* MobileDeepLinkingConfig.json */; };
 		19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
 		19E06F961922540F008139E1 /* MobileDeepLinkingConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 19E06F951922540F008139E1 /* MobileDeepLinkingConfig.json */; };
-		275E757B5B7D4300A83894DB /* libPods-EngageSDKTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5FD0612C1554177BB0F9A4A /* libPods-EngageSDKTests.a */; };
-		7A3B2BEAEEC2479281F513DD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D76863C004B4A1AAEE87550 /* libPods.a */; };
-		A4B1270A55EF467497DA2A61 /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
 		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
 		B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
-		B2B18284178B59400097EE6A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18283178B59400097EE6A /* UIKit.framework */; };
 		B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
-		B2B18288178B59400097EE6A /* libEngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B1826F178B59400097EE6A /* libEngageSDK.a */; };
 		B2B1828E178B59400097EE6A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2B1828C178B59400097EE6A /* InfoPlist.strings */; };
 		B2C2A90517A9919C0058311A /* EngageClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A8F717A9919C0058311A /* EngageClient.m */; };
 		B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A8F917A9919C0058311A /* EngageConfig.m */; };
@@ -47,6 +47,7 @@
 		B2C2A90917A9919C0058311A /* UBFClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90017A9919C0058311A /* UBFClient.m */; };
 		B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90217A9919C0058311A /* XMLAPI.m */; };
 		B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90417A9919C0058311A /* XMLAPIClient.m */; };
+		E88D52509FC044D9B68FD8F9 /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,7 +88,6 @@
 		1919708319251EA700C75CD8 /* EngageDeepLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageDeepLinkManager.h; sourceTree = "<group>"; };
 		1919708419251EA700C75CD8 /* EngageDeepLinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManager.m; sourceTree = "<group>"; };
 		19197086192531E300C75CD8 /* XMLAPIClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIClientTests.m; sourceTree = "<group>"; };
-		1929A33F1936170D00D3F044 /* EngageConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EngageConfig.plist; sourceTree = "<group>"; };
 		1929A3421936197D00D3F044 /* EngageConfigManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageConfigManager.h; sourceTree = "<group>"; };
 		1929A3431936197D00D3F044 /* EngageConfigManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConfigManager.m; sourceTree = "<group>"; };
 		1929A3471936714100D3F044 /* EngageExpirationParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageExpirationParser.h; sourceTree = "<group>"; };
@@ -97,12 +97,17 @@
 		194C94B219216084004B8851 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		194C94B41921612C004B8851 /* UBFClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFClientTests.m; sourceTree = "<group>"; };
 		194C94B619216494004B8851 /* libPods-EngageSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-EngageSDK.a"; path = "Pods/build/Debug-iphoneos/libPods-EngageSDK.a"; sourceTree = "<group>"; };
+		1962468E1938BE470038B453 /* EngageConfigDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EngageConfigDefaults.plist; sourceTree = "<group>"; };
+		196246901938D2990038B453 /* EngageEventWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventWrapper.h; sourceTree = "<group>"; };
+		196246911938D2990038B453 /* EngageEventWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventWrapper.m; sourceTree = "<group>"; };
+		19624694193904B40038B453 /* UBFManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManagerTests.m; sourceTree = "<group>"; };
 		199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManagerTests.m; sourceTree = "<group>"; };
 		19BFF1E41923AC5F004686B7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		19BFF1E71923BFAE004686B7 /* UBFTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFTests.m; sourceTree = "<group>"; };
 		19BFF1E91923DE77004686B7 /* NotificationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTests.m; sourceTree = "<group>"; };
 		19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageLocalEventStoreTests.m; sourceTree = "<group>"; };
 		19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventLocationManagerTests.m; sourceTree = "<group>"; };
+		19CFF0D21937CB2800AB45BA /* MobileDeepLinkingConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MobileDeepLinkingConfig.json; sourceTree = "<group>"; };
 		19D24B7219088D6900855BC7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		19E06F951922540F008139E1 /* MobileDeepLinkingConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MobileDeepLinkingConfig.json; sourceTree = "<group>"; };
 		3D76863C004B4A1AAEE87550 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,8 +151,7 @@
 				19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */,
 				1916728F1907063F001F25C9 /* CoreData.framework in Frameworks */,
 				B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */,
-				7A3B2BEAEEC2479281F513DD /* libPods.a in Frameworks */,
-				A4B1270A55EF467497DA2A61 /* libPods-EngageSDK.a in Frameworks */,
+				E88D52509FC044D9B68FD8F9 /* libPods-EngageSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,13 +159,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19CFF0D11937C2B100AB45BA /* libEngageSDK.a in Frameworks */,
 				19BFF1E61923AC67004686B7 /* CoreLocation.framework in Frameworks */,
 				194C94B819216CB0004B8851 /* SystemConfiguration.framework in Frameworks */,
 				194C94B119216032004B8851 /* CoreData.framework in Frameworks */,
-				B2B18284178B59400097EE6A /* UIKit.framework in Frameworks */,
 				B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */,
-				B2B18288178B59400097EE6A /* libEngageSDK.a in Frameworks */,
-				275E757B5B7D4300A83894DB /* libPods-EngageSDKTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +186,8 @@
 			children = (
 				1919707C1925064A00C75CD8 /* EngageEventLocationManager.h */,
 				1919707D1925064A00C75CD8 /* EngageEventLocationManager.m */,
+				196246901938D2990038B453 /* EngageEventWrapper.h */,
+				196246911938D2990038B453 /* EngageEventWrapper.m */,
 			);
 			name = location;
 			sourceTree = "<group>";
@@ -195,28 +199,6 @@
 				1929A3481936714100D3F044 /* EngageExpirationParser.m */,
 			);
 			name = util;
-			sourceTree = "<group>";
-		};
-		194C94FA192171F0004B8851 /* UnitTests */ = {
-			isa = PBXGroup;
-			children = (
-				19BFF1E91923DE77004686B7 /* NotificationTests.m */,
-				199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */,
-				19BFF1E71923BFAE004686B7 /* UBFTests.m */,
-				1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */,
-			);
-			name = UnitTests;
-			sourceTree = "<group>";
-		};
-		194C94FB192171FC004B8851 /* FunctionalTests */ = {
-			isa = PBXGroup;
-			children = (
-				194C94B41921612C004B8851 /* UBFClientTests.m */,
-				19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */,
-				19197086192531E300C75CD8 /* XMLAPIClientTests.m */,
-				19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */,
-			);
-			name = FunctionalTests;
 			sourceTree = "<group>";
 		};
 		B26FCA3A17A9868300629BC9 /* Private */ = {
@@ -281,8 +263,9 @@
 		B2B18275178B59400097EE6A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				1929A33F1936170D00D3F044 /* EngageConfig.plist */,
+				1962468E1938BE470038B453 /* EngageConfigDefaults.plist */,
 				B2B18276178B59400097EE6A /* EngageSDK-Prefix.pch */,
+				19CFF0D21937CB2800AB45BA /* MobileDeepLinkingConfig.json */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -290,13 +273,20 @@
 		B2B18289178B59400097EE6A /* EngageSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				194C94B41921612C004B8851 /* UBFClientTests.m */,
+				19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */,
+				19197086192531E300C75CD8 /* XMLAPIClientTests.m */,
+				19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */,
+				19BFF1E91923DE77004686B7 /* NotificationTests.m */,
+				199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */,
+				19BFF1E71923BFAE004686B7 /* UBFTests.m */,
+				1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */,
 				19E06F951922540F008139E1 /* MobileDeepLinkingConfig.json */,
-				194C94FB192171FC004B8851 /* FunctionalTests */,
 				B2B1828A178B59400097EE6A /* Supporting Files */,
-				194C94FA192171F0004B8851 /* UnitTests */,
 				191970741924FB1500C75CD8 /* TestUtils.h */,
 				191970751924FB1500C75CD8 /* TestUtils.m */,
 				1929D7F3192D301B00EC9B33 /* sample-config.h */,
+				19624694193904B40038B453 /* UBFManagerTests.m */,
 			);
 			path = EngageSDKTests;
 			sourceTree = "<group>";
@@ -416,7 +406,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1929A3401936170D00D3F044 /* EngageConfig.plist in Resources */,
+				19CFF0D31937CB2800AB45BA /* MobileDeepLinkingConfig.json in Resources */,
+				1962468F1938BE470038B453 /* EngageConfigDefaults.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,6 +415,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				196246931938FDA80038B453 /* EngageConfigDefaults.plist in Resources */,
 				19E06F961922540F008139E1 /* MobileDeepLinkingConfig.json in Resources */,
 				B2B1828E178B59400097EE6A /* InfoPlist.strings in Resources */,
 			);
@@ -508,6 +500,7 @@
 				1919707E1925064A00C75CD8 /* EngageEventLocationManager.m in Sources */,
 				B2C2A90717A9919C0058311A /* ResultDictionary.m in Sources */,
 				B2C2A90817A9919C0058311A /* UBF.m in Sources */,
+				196246921938D2990038B453 /* EngageEventWrapper.m in Sources */,
 				B2C2A90917A9919C0058311A /* UBFClient.m in Sources */,
 				B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */,
 				1929A3441936197D00D3F044 /* EngageConfigManager.m in Sources */,
@@ -524,6 +517,7 @@
 				19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */,
 				194C94B51921612C004B8851 /* UBFClientTests.m in Sources */,
 				19BFF1E81923BFAE004686B7 /* UBFTests.m in Sources */,
+				19624695193904B40038B453 /* UBFManagerTests.m in Sources */,
 				1929A34B193675E300D3F044 /* EngageExpirationParserTests.m in Sources */,
 				19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */,
 				19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */,

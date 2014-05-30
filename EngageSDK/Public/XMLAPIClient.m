@@ -63,14 +63,13 @@ __strong static XMLAPIClient *_sharedClient = nil;
          }];
     };
     
-    if (self.credential.isExpired) {
+    if (!self.isAuthenticated) {
         NSLog(@"%@",@"Session expired...attempting to reconnect");
         [super authenticate:^(AFOAuthCredential *credential) {
             self.credential = credential;
             postResource();
         } failure:failure];
-    }
-    else {
+    } else {
         postResource();
     }
     

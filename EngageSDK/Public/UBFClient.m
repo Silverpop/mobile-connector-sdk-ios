@@ -68,7 +68,9 @@ __strong static UBFClient *_sharedClient = nil;
     
     //Perform the login to the system.
     [_sharedClient authenticate:^(AFOAuthCredential *credential) {
-        success(credential);
+        if (success) {
+            success(credential);
+        }
         
         //Push the events that have queued up while the client was not authenticated
         [self pushEventCache];
@@ -80,13 +82,15 @@ __strong static UBFClient *_sharedClient = nil;
             [_sharedClient postEngageEvent:unpostedEvent];
         }
     } failure:^(NSError *error) {
-        failure(error);
+        if (failure) {
+            failure(error);
+        }
     }];
 }
 
 
 - (void)pushEventCache {
-    if (self.credential != nil && ![self.credential isExpired]) {
+    if (self.isAuthenticated) {
         [self pushEventCacheInternal:0 withEvents:nil];
     } else {
         NSLog(@"Client is not authenticated yet. Unable to force event push");
@@ -99,7 +103,7 @@ __strong static UBFClient *_sharedClient = nil;
     [self.eventCache addObject:engageEvent];
     
     if ([self.eventCache count] >= self.queueSize
-        && self.credential != nil && ![self.credential isExpired]) {
+        && self.isAuthenticated) {
         [self pushEventCache];
     }
 }
@@ -138,7 +142,7 @@ __strong static UBFClient *_sharedClient = nil;
         NSDictionary *params = @{ @"events" : eventsCache };
         
         //Refresh the UBFClient OAuth2 Credentials if they have expired.
-        if (self.isAuthenticated) {
+        if (!self.isAuthenticated) {
             NSLog(@"Client was not authenticated so we could not push the cache events!");
             [self authenticateInternal:nil failure:nil];
         }

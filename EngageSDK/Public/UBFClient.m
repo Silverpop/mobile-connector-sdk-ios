@@ -2,27 +2,17 @@
 //  UBFClient.m
 //  EngageSDK
 //
-//  Created by Musa Siddeeq on 7/25/13.
-//  Copyright (c) 2013 Silverpop. All rights reserved.
+//  Created by Jeremy Dyer on 5/25/14.
+//  Copyright (c) 2014 Silverpop. All rights reserved.
 //
 
 #import "UBFClient.h"
-#import "UBF.h"
-#import <AFNetworking/AFHTTPRequestOperation.h>
-#import <UIKit/UIKit.h>
 #import "EngageEvent.h"
-#import <MobileDeepLinking-iOS/MobileDeepLinking.h>
-#import "EngageConfig.h"
-#import "EngageEventLocationManager.h"
 #import "EngageConfigManager.h"
 
 @interface UBFClient ()
 
 @property int maxNumRetries;
-@property (nonatomic, strong) MobileDeepLinking *mobileDeepLinking;
-@property (strong, nonatomic) NSMutableArray *eventCache;
-@property (strong, nonatomic) NSMutableArray *tmpEventCache;
-@property (assign) int queueSize;
 
 @end
 
@@ -30,10 +20,6 @@
 @implementation UBFClient
 
 __strong static UBFClient *_sharedClient = nil;
-
-- (void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 + (instancetype)createClient:(NSString *)clientId
                       secret:(NSString *)secret
@@ -46,9 +32,8 @@ __strong static UBFClient *_sharedClient = nil;
     dispatch_once(&pred, ^{
         _sharedClient = [[self alloc] initWithHost:hostUrl clientId:clientId secret:secret token:refreshToken];
         _sharedClient.maxNumRetries = [[[EngageConfigManager sharedInstance] configForNetworkValue:PLIST_NETWORK_MAX_NUM_RETRIES] intValue];
-        _sharedClient.eventCache = [[NSMutableArray alloc] init];
-        _sharedClient.tmpEventCache = [[NSMutableArray alloc] init];
-        _sharedClient.queueSize = [[[EngageConfigManager sharedInstance] numberConfigForGeneralFieldName:PLIST_GENERAL_UBF_EVENT_CACHE_SIZE] intValue];
+        _sharedClient.requestSerializer = [AFJSONRequestSerializer serializer];
+        [_sharedClient.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [_sharedClient authenticateInternal:success failure:failure];
         [[EngageLocalEventStore sharedInstance] deleteExpiredLocalEvents];
     });
@@ -56,10 +41,13 @@ __strong static UBFClient *_sharedClient = nil;
     return _sharedClient;
 }
 
-
 + (instancetype)client
 {
     return _sharedClient;
+}
+
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -74,20 +62,9 @@ __strong static UBFClient *_sharedClient = nil;
             success(credential);
         }
         
-        //Push the events that have queued up while the client was not authenticated
-        [self pushEventCache];
+        //Posts all of the pending EngageEvents.
+        [self postUBFEngageEvents];
         
-        //Check for UBFEvents that have not yet been posted
-        NSArray *unpostedLocalEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
-        NSLog(@"Found %lu unposted local events to Silverpop from events local store", (unsigned long)[unpostedLocalEvents count]);
-        int numRequeded = 0;
-        for (EngageEvent *unpostedEvent in unpostedLocalEvents) {
-            if ([_sharedClient.eventCache indexOfObject:unpostedEvent]) {
-                numRequeded++;
-                [_sharedClient postEngageEvent:unpostedEvent];
-            }
-        }
-        NSLog(@"%d EngageEvents were actually requeued", numRequeded);
     } failure:^(NSError *error) {
         if (failure) {
             failure(error);
@@ -95,117 +72,52 @@ __strong static UBFClient *_sharedClient = nil;
     }];
 }
 
-
-- (void)pushEventCache {
+- (void) postUBFEngageEvents {
     if (self.isAuthenticated) {
-        [_sharedClient pushEventCacheInternal:0 withEvents:nil];
-    } else {
-        NSLog(@"Client is not authenticated yet. Unable to force event push");
-    }
-}
-
-//- (void)postEngageEvent:(EngageEventLiteWrapper *)engageEventLiteWrapper {
-//    [_sharedClient.eventCache addObject:engageEventLiteWrapper];
-//    
-//    if ([_sharedClient.eventCache count] >= _sharedClient.queueSize
-//        && self.isAuthenticated) {
-//        [_sharedClient pushEventCache];
-//    }
-//}
-
-
-- (void)postEngageEvent:(EngageEvent *)engageEvent {
-    
-    [_sharedClient.eventCache addObject:engageEvent];
-    
-    if ([_sharedClient.eventCache count] >= self.queueSize
-        && self.isAuthenticated) {
-        [_sharedClient pushEventCache];
-    }
-}
-
-
-- (void)pushEventCacheInternal:(int)retryAttempt withEvents:(NSMutableArray *)events {
-    
-    if (retryAttempt < self.maxNumRetries) {
         
-        NSMutableArray *eventCacheToPush = nil;
-        __block int localRetryCount = retryAttempt;
-        if (events != nil) {
-            eventCacheToPush = events;
-        } else {
-            eventCacheToPush = [[NSMutableArray alloc] init];
-        }
+        __block NSArray *unpostedUbfEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
         
         //We need to convert the list of "tracked" EngageEvent objects back to their original format for submission
         NSError *error;
         NSMutableArray *eventsCache = [[NSMutableArray alloc] init];
         
-        for (EngageEvent *ee in _sharedClient.eventCache) {
-            if (ee.eventJson) {
+        for (EngageEvent *ee in unpostedUbfEvents) {
+            if (![ee isFault]) {
                 NSDictionary *originalEventData = [NSJSONSerialization JSONObjectWithData:[ee.eventJson dataUsingEncoding:NSUTF8StringEncoding]
                                                                                   options:kNilOptions
                                                                                     error:&error];
                 [eventsCache addObject:originalEventData];
             } else {
-                NSLog(@"Found EngageEvent with empty payload body!");
+                NSLog(@"EngageEvent is in a fault state");
             }
-            [eventCacheToPush addObject:ee];
         }
-        
-        [_sharedClient.eventCache removeAllObjects];
         
         NSDictionary *params = @{ @"events" : eventsCache };
         
-        //Refresh the UBFClient OAuth2 Credentials if they have expired.
-        if (!self.isAuthenticated) {
-            NSLog(@"Client was not authenticated so we could not push the cache events!");
-            [self authenticateInternal:nil failure:nil];
-        }
-        
-        _sharedClient.requestSerializer = [AFJSONRequestSerializer serializer];
-        [_sharedClient.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [_sharedClient.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [_sharedClient.credential accessToken]] forHTTPHeaderField:@"Authorization"];
         
         [_sharedClient POST:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",[operation debugDescription]);
-            NSLog(@"%@",[responseObject debugDescription]);
             
             // Mark the EngageObjects as posted in the EngageLocalEventStore.
-            for (EngageEvent *intEE in eventCacheToPush) {
+            for (EngageEvent *intEE in unpostedUbfEvents) {
                 intEE.eventStatus = [NSNumber numberWithInt:SUCCESSFULLY_POSTED];
             }
             
-            NSError *saveError;
-            if (![[[EngageLocalEventStore sharedInstance] managedObjectContext] save:&saveError]) {
-                NSLog(@"EngageUBFEvents were successfully posted to Silverpop but there was a problem marking them as posted in the EngageLocalEventStore: %@", [saveError description]);
-            }
-            
-            //Remove all of the tmp items.
-            [_sharedClient.tmpEventCache removeAllObjects];
+            [[EngageLocalEventStore sharedInstance] saveEvents];
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"%@",[operation debugDescription]);
-            NSLog(@"%@",[error debugDescription]);
             
-            NSLog(@"-----CACHED FAILED OPERATION-----");
-
-            for (EngageEvent *intEE in eventCacheToPush) {
+            NSLog(@"Posting UBFEngageEvents failed with error:%@", [error description]);
+            
+            for (EngageEvent *intEE in unpostedUbfEvents) {
                 intEE.eventStatus = [NSNumber numberWithInt:FAILED_POST];
             }
             
-            NSError *saveError;
-            if (![[[EngageLocalEventStore sharedInstance] managedObjectContext] save:&saveError]) {
-                NSLog(@"Marked events as failed to post in EngageLocalEventStore : %@", [saveError description]);
-            }
-            
-            //Remove all of the tmp items.
-            [_sharedClient.tmpEventCache removeAllObjects];
-            
-            [_sharedClient pushEventCacheInternal:(localRetryCount++) withEvents:eventCacheToPush];
+            [[EngageLocalEventStore sharedInstance] saveEvents];
         }];
+        
     } else {
-        NSLog(@"Max number of retries %d was reached and event will not be posted", self.maxNumRetries);
+        NSLog(@"UBFClient is not authenticated yet. Events will be posted once authentication is complete.");
     }
 }
 

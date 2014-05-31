@@ -20,8 +20,6 @@
 
 + (instancetype)client;
 
-- (void)postEngageEvent:(EngageEvent *)engageEvent;
-//- (void)postEngageEvent:(EngageEventLiteWrapper *)engageEventLiteWrapper;
-- (void)pushEventCache;
+- (void) postUBFEngageEvents;
 
 @end

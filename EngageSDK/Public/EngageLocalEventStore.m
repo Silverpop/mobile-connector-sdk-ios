@@ -150,6 +150,15 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     }
 }
 
+
+- (void)saveEvents {
+    NSError *saveError;
+    if (![[self managedObjectContext] save:&saveError]) {
+        NSLog(@"Failure saving UBFEngageEvents: %@", [saveError description]);
+    }
+}
+
+
 -(EngageEvent *)saveUBFEvent:(NSDictionary *)event status:(int) status {
     EngageEvent *engageEvent = [NSEntityDescription insertNewObjectForEntityForName:@"EngageEvent" inManagedObjectContext:[EngageLocalEventStore sharedInstance].managedObjectContext];
 

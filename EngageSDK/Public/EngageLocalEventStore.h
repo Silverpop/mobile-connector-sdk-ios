@@ -17,6 +17,7 @@
 
 - (NSArray *) findUnpostedEvents;
 - (void) deleteExpiredLocalEvents;
+- (void)saveEvents;
 - (EngageEvent *)saveUBFEvent:(NSDictionary *)event status:(int)status;
 - (EngageEvent *)findEngageEventWithIdentifier:(NSURL *)urlIdentifier;
 - (NSArray *)findEngageEventsWithStatus:(int)eventStatus;

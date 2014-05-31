@@ -13,6 +13,7 @@
 #import "EngageLocalEventStore.h"
 #import <MobileDeepLinking-iOS/MobileDeepLinking.h>
 #import "TestUtils.h"
+#import "EngageEventLiteWrapper.h"
 #import "sample-config.h"
 
 @interface UBFClientTests : XCTestCase
@@ -27,8 +28,8 @@
 {
     [super setUp];
     
-    NSUInteger deletedEvents = [[EngageLocalEventStore sharedInstance] deleteAllUBFEvents];
-    NSLog(@"Deleted %lul", (unsigned long)deletedEvents);
+//    NSUInteger deletedEvents = [[EngageLocalEventStore sharedInstance] deleteAllUBFEvents];
+//    NSLog(@"Deleted %lul", (unsigned long)deletedEvents);
 }
 
 - (void)tearDown
@@ -37,32 +38,32 @@
     self.ubfClient = nil;
 }
 
-- (void)testOAuthAuthentication {
-    
-    //dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    
-    self.ubfClient = [UBFClient createClient:ENGAGE_CLIENT_ID
-                                      secret:ENGAGE_SECRET
-                                       token:ENGAGE_REFRESH_TOKEN
-                                        host:ENGAGE_BASE_URL
-                              connectSuccess:^(AFOAuthCredential *credential) {
-                                  NSLog(@"Successfully connected to Engage API : Credential %@", credential);
-                                  XCTAssertTrue([self.ubfClient credential] != nil);
-                                  XCTAssertTrue(![[self.ubfClient credential] isExpired]);
-                                  XCTAssertTrue([[self.ubfClient operationQueue] isSuspended] == NO);
-                                  //dispatch_semaphore_signal(semaphore);
-                              } failure:^(NSError *error) {
-                                  NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
-                                  //dispatch_semaphore_signal(semaphore);
-                              }];
-    
-    XCTAssertTrue([self.ubfClient credential] == nil);
-    XCTAssertTrue([[self.ubfClient operationQueue] isSuspended] == YES);
-    
-//    while (dispatch_semaphore_wait(semaphore, DISPATCH_TIME_NOW))
-//        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-//                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
-}
+//- (void)testOAuthAuthentication {
+//    
+//    //dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+//    
+//    self.ubfClient = [UBFClient createClient:ENGAGE_CLIENT_ID
+//                                      secret:ENGAGE_SECRET
+//                                       token:ENGAGE_REFRESH_TOKEN
+//                                        host:ENGAGE_BASE_URL
+//                              connectSuccess:^(AFOAuthCredential *credential) {
+//                                  NSLog(@"Successfully connected to Engage API : Credential %@", credential);
+//                                  XCTAssertTrue([self.ubfClient credential] != nil);
+//                                  XCTAssertTrue(![[self.ubfClient credential] isExpired]);
+//                                  XCTAssertTrue([[self.ubfClient operationQueue] isSuspended] == NO);
+//                                  //dispatch_semaphore_signal(semaphore);
+//                              } failure:^(NSError *error) {
+//                                  NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
+//                                  //dispatch_semaphore_signal(semaphore);
+//                              }];
+//    
+//    XCTAssertTrue([self.ubfClient credential] == nil);
+//    XCTAssertTrue([[self.ubfClient operationQueue] isSuspended] == YES);
+//    
+////    while (dispatch_semaphore_wait(semaphore, DISPATCH_TIME_NOW))
+////        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+////                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+//}
 
 /*
  
@@ -97,6 +98,23 @@
     NSLog(@"Previous Core Data Count %lul", (unsigned long)previousCoreDataCount);
     
     //Track the 5 events.
+    
+//    EngageEventLiteWrapper *wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:installedEvent engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:installedEvent status:NOT_POSTED]];
+//    [self.ubfClient postEngageEvent:wrapper];
+//    
+//    wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:sessionStarted engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionStarted status:NOT_POSTED]];
+//    [self.ubfClient postEngageEvent:wrapper];
+//    
+//
+//    wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:goalCompleted engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:goalCompleted status:NOT_POSTED]];
+//    [self.ubfClient postEngageEvent:wrapper];
+//    
+//    wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:namedEvent engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:namedEvent status:NOT_POSTED]];
+//    [self.ubfClient postEngageEvent:wrapper];
+//    
+//    wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:sessionEnded engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionEnded status:NOT_POSTED]];
+//    [self.ubfClient postEngageEvent:wrapper];
+    
     [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:installedEvent status:NOT_POSTED]];
     [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionStarted status:NOT_POSTED]];
     [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:goalCompleted status:NOT_POSTED]];
@@ -108,26 +126,40 @@
     NSLog(@"After Core Data Count %lul", (unsigned long)afterCoreDataCount);
     XCTAssertTrue(previousCoreDataCount < afterCoreDataCount, @"After persisting 5 UBF Events Core Data store should have grown with those events");
     XCTAssertTrue((previousCoreDataCount + 5) == afterCoreDataCount, @"Not all 5 UBF events were saved to Core Data!");
-}
-
-
-/*
- Take the UBF events that were persisted into Core Data and make sure that they are
- pushed back to the SilverPop Pilot once the app is restarted
-*/
--(void)testResendNonPushedUBFEventsFromCoreData {
     
-    //Directly inserts some unposted events into Core Data
-    NSArray *events = [self createSampleUBFEvents];
-    
-    for (id event in events) {
-        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    while (true) {
+        if ([[[EngageLocalEventStore sharedInstance] findUnpostedEvents] count] == 0) {
+            dispatch_semaphore_signal(semaphore);
+            break;
+        }
+
+        NSLog(@"Waiting on UBF events to post");
+        
+        while (dispatch_semaphore_wait(semaphore, DISPATCH_TIME_NOW))
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                                     beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
     }
-    
-    //Finds the unposted events.
-    NSArray *unpostedEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
-     XCTAssertTrue([unpostedEvents count] == [events count], @"Expected to find %lu unposted UBF events in the Local Core Data Event Store", (unsigned long)[events count]);
 }
+
+
+///*
+// Take the UBF events that were persisted into Core Data and make sure that they are
+// pushed back to the SilverPop Pilot once the app is restarted
+//*/
+//-(void)testResendNonPushedUBFEventsFromCoreData {
+//    
+//    //Directly inserts some unposted events into Core Data
+//    NSArray *events = [self createSampleUBFEvents];
+//    
+//    for (id event in events) {
+//        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
+//    }
+//    
+//    //Finds the unposted events.
+//    NSArray *unpostedEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
+//     XCTAssertTrue([unpostedEvents count] == [events count], @"Expected to find %lu unposted UBF events in the Local Core Data Event Store", (unsigned long)[events count]);
+//}
 
 
 //Testing Utility methods

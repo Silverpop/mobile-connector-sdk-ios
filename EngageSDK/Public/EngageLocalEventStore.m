@@ -84,6 +84,7 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     }
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    request.returnsObjectsAsFaults = NO;
     [request setEntity:[managedObjectId entity]];
     
     NSPredicate *predicate = [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForEvaluatedObject]

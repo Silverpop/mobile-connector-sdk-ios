@@ -7,6 +7,7 @@
 //
 
 #import "EngageClient.h"
+#import "EngageEventLiteWrapper.h"
 
 @interface UBFClient : EngageClient
 
@@ -20,6 +21,7 @@
 + (instancetype)client;
 
 - (void)postEngageEvent:(EngageEvent *)engageEvent;
+//- (void)postEngageEvent:(EngageEventLiteWrapper *)engageEventLiteWrapper;
 - (void)pushEventCache;
 
 @end

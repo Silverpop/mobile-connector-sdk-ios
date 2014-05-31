@@ -25,6 +25,7 @@
 		196246921938D2990038B453 /* EngageEventWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 196246911938D2990038B453 /* EngageEventWrapper.m */; };
 		196246931938FDA80038B453 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1962468E1938BE470038B453 /* EngageConfigDefaults.plist */; };
 		19624695193904B40038B453 /* UBFManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19624694193904B40038B453 /* UBFManagerTests.m */; };
+		19624699193935610038B453 /* EngageEventLiteWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 19624698193935610038B453 /* EngageEventLiteWrapper.m */; };
 		199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */; };
 		19BFF1E51923AC5F004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
 		19BFF1E61923AC67004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
@@ -101,6 +102,8 @@
 		196246901938D2990038B453 /* EngageEventWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventWrapper.h; sourceTree = "<group>"; };
 		196246911938D2990038B453 /* EngageEventWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventWrapper.m; sourceTree = "<group>"; };
 		19624694193904B40038B453 /* UBFManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManagerTests.m; sourceTree = "<group>"; };
+		19624697193935610038B453 /* EngageEventLiteWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventLiteWrapper.h; sourceTree = "<group>"; };
+		19624698193935610038B453 /* EngageEventLiteWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventLiteWrapper.m; sourceTree = "<group>"; };
 		199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManagerTests.m; sourceTree = "<group>"; };
 		19BFF1E41923AC5F004686B7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		19BFF1E71923BFAE004686B7 /* UBFTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFTests.m; sourceTree = "<group>"; };
@@ -186,8 +189,6 @@
 			children = (
 				1919707C1925064A00C75CD8 /* EngageEventLocationManager.h */,
 				1919707D1925064A00C75CD8 /* EngageEventLocationManager.m */,
-				196246901938D2990038B453 /* EngageEventWrapper.h */,
-				196246911938D2990038B453 /* EngageEventWrapper.m */,
 			);
 			name = location;
 			sourceTree = "<group>";
@@ -199,6 +200,17 @@
 				1929A3481936714100D3F044 /* EngageExpirationParser.m */,
 			);
 			name = util;
+			sourceTree = "<group>";
+		};
+		196246961939354E0038B453 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				196246901938D2990038B453 /* EngageEventWrapper.h */,
+				196246911938D2990038B453 /* EngageEventWrapper.m */,
+				19624697193935610038B453 /* EngageEventLiteWrapper.h */,
+				19624698193935610038B453 /* EngageEventLiteWrapper.m */,
+			);
+			name = model;
 			sourceTree = "<group>";
 		};
 		B26FCA3A17A9868300629BC9 /* Private */ = {
@@ -303,6 +315,7 @@
 		B2C2A8F517A9919C0058311A /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				196246961939354E0038B453 /* model */,
 				1929A3461936712E00D3F044 /* util */,
 				1929A34519362D4F00D3F044 /* location */,
 				1929A3411936196600D3F044 /* configuration */,
@@ -497,6 +510,7 @@
 				B2C2A90517A9919C0058311A /* EngageClient.m in Sources */,
 				1919708519251EA700C75CD8 /* EngageDeepLinkManager.m in Sources */,
 				B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */,
+				19624699193935610038B453 /* EngageEventLiteWrapper.m in Sources */,
 				1919707E1925064A00C75CD8 /* EngageEventLocationManager.m in Sources */,
 				B2C2A90717A9919C0058311A /* ResultDictionary.m in Sources */,
 				B2C2A90817A9919C0058311A /* UBF.m in Sources */,

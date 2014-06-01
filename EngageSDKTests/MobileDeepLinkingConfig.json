@@ -1,45 +1,8 @@
 {
-    "logging": "true",
+    "logging": "false",
     "defaultRoute": {
         "handlers": [
             "postSilverpop"
         ]
-    },
-    "routes": {
-        "test/:testId": {
-            "handlers": [
-                         "postSilverpop"
-                         ],
-            "routeParameters": {
-                "testId": {
-                    "required": "true",
-                    "regex": "[0-9]"
-                },
-                "CurrentCampaign": {
-                    
-                },
-                "utmSource": {
-                    "required": "false"
-                }
-            }
-        },
-        "addToCart/:productId": {
-            "handlers": [
-                         "postSilverpop"
-                         ]
-        },
-        "campaign/:CurrentCampaign": {
-            "handlers": [
-                "postSilverpop"
-            ],
-            "routeParameters": {
-                "CurrentCampaign": {
-                    "required": "true"
-                },
-                "utmSource": {
-                    "required": "false"
-                }
-            }
-        }
     }
 }

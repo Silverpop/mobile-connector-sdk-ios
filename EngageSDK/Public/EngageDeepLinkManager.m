@@ -14,7 +14,7 @@
 
 @implementation EngageDeepLinkManager
 
-__strong NSDictionary *urlParams;
+__strong NSMutableDictionary *urlParams;
 
 + (id)sharedInstance
 {
@@ -26,14 +26,40 @@ __strong NSDictionary *urlParams;
         
         //Register the MobileDeepLinking handlers.
         [[MobileDeepLinking sharedInstance] registerHandlerWithName:@"postSilverpop" handler:^(NSDictionary *properties) {
-            urlParams = properties;
+            urlParams = [properties mutableCopy];
         }];
     });
     return sharedInstance;
 }
 
+- (NSDictionary *)parseURLQueryParams:(NSURL *)url {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    if (url) {
+        NSString *query = [url query];
+        if (query) {
+            NSArray *components = [query componentsSeparatedByString:@"&"];
+            for (NSString *component in components) {
+                NSArray *inCom = [component componentsSeparatedByString:@"="];
+                if ([inCom count] == 2) {
+                    NSString *value = inCom[1];
+                    value = [value stringByRemovingPercentEncoding];
+                    [dict setObject:value forKey:inCom[0]];
+                }
+            }
+        }
+    }
+    return dict;
+}
+
 - (NSDictionary *)parseDeepLinkURL:(NSURL *)deeplink {
     [[MobileDeepLinking sharedInstance] routeUsingUrl:deeplink];
+    NSDictionary *queryParams = [self parseURLQueryParams:deeplink];
+    
+    //Merge the MobileDeepLinking library dictionary with the query params we parsed.
+    if (urlParams == nil) {
+        urlParams = [[NSMutableDictionary alloc] init];
+    }
+    [urlParams addEntriesFromDictionary:queryParams];
     
     EngageConfigManager *ma = [EngageConfigManager sharedInstance];
     

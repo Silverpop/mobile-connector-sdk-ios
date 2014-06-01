@@ -115,11 +115,11 @@
 //    wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:sessionEnded engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionEnded status:NOT_POSTED]];
 //    [self.ubfClient postEngageEvent:wrapper];
     
-    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:installedEvent status:NOT_POSTED]];
-    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionStarted status:NOT_POSTED]];
-    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:goalCompleted status:NOT_POSTED]];
-    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:namedEvent status:NOT_POSTED]];
-    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionEnded status:NOT_POSTED]];
+//    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:installedEvent status:NOT_POSTED]];
+//    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionStarted status:NOT_POSTED]];
+//    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:goalCompleted status:NOT_POSTED]];
+//    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:namedEvent status:NOT_POSTED]];
+//    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionEnded status:NOT_POSTED]];
     
     //Check the Core Data store for the 5 UBF events were persisted.
     NSUInteger afterCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];

@@ -7,12 +7,18 @@
 //
 
 #import <XCTest/XCTest.h>
-//#import "EngageDeepLinkManager.h"
-//#import "EngageConfig.h"
+#import "EngageDeepLinkManager.h"
+#import "EngageConfig.h"
+#import "EngageConfigManager.h"
 //#import "UBF.h"
 //#import "TestUtils.h"
 
 @interface EngageDeepLinkManagerTests : XCTestCase
+
+@property (strong, nonatomic) NSString *currentCampaignParamName;
+@property (strong, nonatomic) NSString *campaignValidForParamName;
+@property (strong, nonatomic) NSString *campaignExpiresAtParamName;
+@property (strong, nonatomic) NSString *callToActionParamName;
 
 @end
 
@@ -21,6 +27,11 @@
 - (void)setUp
 {
     [super setUp];
+    
+    self.currentCampaignParamName = [[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN];
+    self.campaignValidForParamName = [[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CAMPAIGN_VALID_FOR];
+    self.campaignExpiresAtParamName = [[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT];
+    self.callToActionParamName = [[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CALL_TO_ACTION];
 }
 
 - (void)tearDown
@@ -28,13 +39,24 @@
     [super tearDown];
 }
 
+- (void)testParseCurrentCampaignFromURL {
+    
+    NSURL *sampleUrl = [NSURL URLWithString:[[@"MakeAndBuild://test/5?" stringByAppendingString:self.currentCampaignParamName] stringByAppendingString:@"=UnitTestCampaign 2"]];
+    
+    NSString *text = @"MakeAndBuild://test/5?CurrentCampaign=UnitTestCampaign 2";
+    sampleUrl = [NSURL URLWithString:[text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSDictionary *results = [[EngageDeepLinkManager sharedInstance] parseDeepLinkURL:sampleUrl];
+    NSLog(@"Results %@", results);
+}
+
+
 //- (void)testParsingURLParameters {
 //    NSURL *sampleUrl = [NSURL URLWithString:@"MakeAndBuild://test/5"];
 //    NSDictionary *params = [[EngageDeepLinkManager sharedInstance] parseDeepLinkURL:sampleUrl];
 //    XCTAssertTrue([params count] == 1, @"Only expecting 1 parameter for URL %@", sampleUrl);
 //    XCTAssertTrue([[params objectForKey:@"testId"] isEqualToString:@"5"], @"Expecting testId value of 5");
 //}
-//
+
 //-(void)testCurrentCampaignParseFromRESTStyleURL {
 //    //Test CurrentCampaign name of "Jeremy"
 //    NSURL *testUrl1 = [NSURL URLWithString:@"MakeAndBuild://campaign/Jeremy"];

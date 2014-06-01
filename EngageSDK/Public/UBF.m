@@ -187,8 +187,14 @@
 }
 
 + (NSMutableDictionary *) populateEventCommonParams:(NSDictionary *)params {
-    NSMutableDictionary *mutParams = [params mutableCopy];
-    mutParams = [self addDelimitedTagsToParams:mutParams];
+    NSMutableDictionary *mutParams = nil;
+    if (params) {
+        mutParams = [params mutableCopy];
+        mutParams = [self addDelimitedTagsToParams:mutParams];
+    } else {
+        mutParams = [[NSMutableDictionary alloc] init];
+    }
+    
     return mutParams;
 }
 

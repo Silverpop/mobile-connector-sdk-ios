@@ -10,7 +10,7 @@
 #import <MobileDeepLinking-iOS/MobileDeepLinking.h>
 #import <MobileDeepLinking-iOS/MDLDeeplinkMatcher.h>
 
-@interface EngageDeepLinkManager : MobileDeepLinking
+@interface EngageDeepLinkManager : NSObject
 
 + (id)sharedInstance;
 

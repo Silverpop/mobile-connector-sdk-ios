@@ -13,7 +13,6 @@
 #import "EngageLocalEventStore.h"
 #import <MobileDeepLinking-iOS/MobileDeepLinking.h>
 #import "TestUtils.h"
-#import "EngageEventLiteWrapper.h"
 #import "sample-config.h"
 
 @interface UBFClientTests : XCTestCase
@@ -97,24 +96,7 @@
     NSUInteger previousCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
     NSLog(@"Previous Core Data Count %lul", (unsigned long)previousCoreDataCount);
     
-    //Track the 5 events.
-    
-//    EngageEventLiteWrapper *wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:installedEvent engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:installedEvent status:NOT_POSTED]];
-//    [self.ubfClient postEngageEvent:wrapper];
-//    
-//    wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:sessionStarted engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionStarted status:NOT_POSTED]];
-//    [self.ubfClient postEngageEvent:wrapper];
-//    
-//
-//    wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:goalCompleted engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:goalCompleted status:NOT_POSTED]];
-//    [self.ubfClient postEngageEvent:wrapper];
-//    
-//    wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:namedEvent engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:namedEvent status:NOT_POSTED]];
-//    [self.ubfClient postEngageEvent:wrapper];
-//    
-//    wrapper = [[EngageEventLiteWrapper alloc] initWithUBFEvent:sessionEnded engageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionEnded status:NOT_POSTED]];
-//    [self.ubfClient postEngageEvent:wrapper];
-    
+    //Track the 5 events.    
 //    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:installedEvent status:NOT_POSTED]];
 //    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:sessionStarted status:NOT_POSTED]];
 //    [self.ubfClient postEngageEvent:[[EngageLocalEventStore sharedInstance] saveUBFEvent:goalCompleted status:NOT_POSTED]];

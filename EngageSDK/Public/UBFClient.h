@@ -7,7 +7,6 @@
 //
 
 #import "EngageClient.h"
-#import "EngageEventLiteWrapper.h"
 
 @interface UBFClient : EngageClient
 

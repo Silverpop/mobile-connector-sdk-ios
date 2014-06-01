@@ -1,8 +1,0 @@
-{
-    "logging": "false",
-    "defaultRoute": {
-        "handlers": [
-            "postSilverpop"
-        ]
-    }
-}

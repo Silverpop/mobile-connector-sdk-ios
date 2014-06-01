@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		19075406193BA2BC00C6AE2E /* libEngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B1826F178B59400097EE6A /* libEngageSDK.a */; };
 		190D7CDA1907360000432B88 /* EngageEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 190D7CD91907360000432B88 /* EngageEvent.m */; };
 		19153DD7190817F10086631B /* EngageLocalEventStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 19153DD6190817F10086631B /* EngageLocalEventStore.m */; };
 		1916728F1907063F001F25C9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1916728E1907063F001F25C9 /* CoreData.framework */; };
@@ -25,7 +26,6 @@
 		196246921938D2990038B453 /* EngageEventWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 196246911938D2990038B453 /* EngageEventWrapper.m */; };
 		196246931938FDA80038B453 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1962468E1938BE470038B453 /* EngageConfigDefaults.plist */; };
 		19624695193904B40038B453 /* UBFManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19624694193904B40038B453 /* UBFManagerTests.m */; };
-		19624699193935610038B453 /* EngageEventLiteWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 19624698193935610038B453 /* EngageEventLiteWrapper.m */; };
 		199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */; };
 		19BFF1E51923AC5F004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
 		19BFF1E61923AC67004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
@@ -33,10 +33,9 @@
 		19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1E91923DE77004686B7 /* NotificationTests.m */; };
 		19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */; };
 		19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */; };
-		19CFF0D11937C2B100AB45BA /* libEngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B1826F178B59400097EE6A /* libEngageSDK.a */; };
 		19CFF0D31937CB2800AB45BA /* MobileDeepLinkingConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 19CFF0D21937CB2800AB45BA /* MobileDeepLinkingConfig.json */; };
 		19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
-		19E06F961922540F008139E1 /* MobileDeepLinkingConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 19E06F951922540F008139E1 /* MobileDeepLinkingConfig.json */; };
+		6F2B2C1176094E9B8BFA405A /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
 		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
 		B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
 		B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
@@ -48,7 +47,6 @@
 		B2C2A90917A9919C0058311A /* UBFClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90017A9919C0058311A /* UBFClient.m */; };
 		B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90217A9919C0058311A /* XMLAPI.m */; };
 		B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90417A9919C0058311A /* XMLAPIClient.m */; };
-		E88D52509FC044D9B68FD8F9 /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,8 +100,6 @@
 		196246901938D2990038B453 /* EngageEventWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventWrapper.h; sourceTree = "<group>"; };
 		196246911938D2990038B453 /* EngageEventWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventWrapper.m; sourceTree = "<group>"; };
 		19624694193904B40038B453 /* UBFManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManagerTests.m; sourceTree = "<group>"; };
-		19624697193935610038B453 /* EngageEventLiteWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventLiteWrapper.h; sourceTree = "<group>"; };
-		19624698193935610038B453 /* EngageEventLiteWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventLiteWrapper.m; sourceTree = "<group>"; };
 		199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManagerTests.m; sourceTree = "<group>"; };
 		19BFF1E41923AC5F004686B7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		19BFF1E71923BFAE004686B7 /* UBFTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFTests.m; sourceTree = "<group>"; };
@@ -112,7 +108,6 @@
 		19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventLocationManagerTests.m; sourceTree = "<group>"; };
 		19CFF0D21937CB2800AB45BA /* MobileDeepLinkingConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MobileDeepLinkingConfig.json; sourceTree = "<group>"; };
 		19D24B7219088D6900855BC7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		19E06F951922540F008139E1 /* MobileDeepLinkingConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MobileDeepLinkingConfig.json; sourceTree = "<group>"; };
 		3D76863C004B4A1AAEE87550 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDK.xcconfig"; path = "Pods/Pods-EngageSDK.xcconfig"; sourceTree = "<group>"; };
 		6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -154,7 +149,7 @@
 				19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */,
 				1916728F1907063F001F25C9 /* CoreData.framework in Frameworks */,
 				B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */,
-				E88D52509FC044D9B68FD8F9 /* libPods-EngageSDK.a in Frameworks */,
+				6F2B2C1176094E9B8BFA405A /* libPods-EngageSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19CFF0D11937C2B100AB45BA /* libEngageSDK.a in Frameworks */,
+				19075406193BA2BC00C6AE2E /* libEngageSDK.a in Frameworks */,
 				19BFF1E61923AC67004686B7 /* CoreLocation.framework in Frameworks */,
 				194C94B819216CB0004B8851 /* SystemConfiguration.framework in Frameworks */,
 				194C94B119216032004B8851 /* CoreData.framework in Frameworks */,
@@ -173,6 +168,86 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		190753F4193B987800C6AE2E /* deeplinking */ = {
+			isa = PBXGroup;
+			children = (
+				1919708319251EA700C75CD8 /* EngageDeepLinkManager.h */,
+				1919708419251EA700C75CD8 /* EngageDeepLinkManager.m */,
+			);
+			name = deeplinking;
+			sourceTree = "<group>";
+		};
+		190753FE193BA16300C6AE2E /* network */ = {
+			isa = PBXGroup;
+			children = (
+				B2C2A8F617A9919C0058311A /* EngageClient.h */,
+				B2C2A8F717A9919C0058311A /* EngageClient.m */,
+				B2C2A8FF17A9919C0058311A /* UBFClient.h */,
+				B2C2A90017A9919C0058311A /* UBFClient.m */,
+				B2C2A90317A9919C0058311A /* XMLAPIClient.h */,
+				B2C2A90417A9919C0058311A /* XMLAPIClient.m */,
+			);
+			name = network;
+			sourceTree = "<group>";
+		};
+		190753FF193BA18700C6AE2E /* db */ = {
+			isa = PBXGroup;
+			children = (
+				19153DD5190817F10086631B /* EngageLocalEventStore.h */,
+				19153DD6190817F10086631B /* EngageLocalEventStore.m */,
+			);
+			name = db;
+			sourceTree = "<group>";
+		};
+		19075400193BA1E100C6AE2E /* db */ = {
+			isa = PBXGroup;
+			children = (
+				19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */,
+			);
+			name = db;
+			sourceTree = "<group>";
+		};
+		19075401193BA1EB00C6AE2E /* network */ = {
+			isa = PBXGroup;
+			children = (
+				194C94B41921612C004B8851 /* UBFClientTests.m */,
+				19197086192531E300C75CD8 /* XMLAPIClientTests.m */,
+			);
+			name = network;
+			sourceTree = "<group>";
+		};
+		19075402193BA1F400C6AE2E /* deeplinking */ = {
+			isa = PBXGroup;
+			children = (
+				199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */,
+			);
+			name = deeplinking;
+			sourceTree = "<group>";
+		};
+		19075403193BA1FD00C6AE2E /* model */ = {
+			isa = PBXGroup;
+			children = (
+				19BFF1E71923BFAE004686B7 /* UBFTests.m */,
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
+		19075404193BA20F00C6AE2E /* util */ = {
+			isa = PBXGroup;
+			children = (
+				1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */,
+			);
+			name = util;
+			sourceTree = "<group>";
+		};
+		19075405193BA22E00C6AE2E /* location */ = {
+			isa = PBXGroup;
+			children = (
+				19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */,
+			);
+			name = location;
+			sourceTree = "<group>";
+		};
 		1929A3411936196600D3F044 /* configuration */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,10 +280,16 @@
 		196246961939354E0038B453 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				B2C2A8FD17A9919C0058311A /* UBF.h */,
+				B2C2A8FE17A9919C0058311A /* UBF.m */,
+				B2C2A90117A9919C0058311A /* XMLAPI.h */,
+				B2C2A90217A9919C0058311A /* XMLAPI.m */,
+				B2C2A8FB17A9919C0058311A /* ResultDictionary.h */,
+				B2C2A8FC17A9919C0058311A /* ResultDictionary.m */,
+				190D7CD81907360000432B88 /* EngageEvent.h */,
+				190D7CD91907360000432B88 /* EngageEvent.m */,
 				196246901938D2990038B453 /* EngageEventWrapper.h */,
 				196246911938D2990038B453 /* EngageEventWrapper.m */,
-				19624697193935610038B453 /* EngageEventLiteWrapper.h */,
-				19624698193935610038B453 /* EngageEventLiteWrapper.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -285,15 +366,13 @@
 		B2B18289178B59400097EE6A /* EngageSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				194C94B41921612C004B8851 /* UBFClientTests.m */,
-				19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */,
-				19197086192531E300C75CD8 /* XMLAPIClientTests.m */,
-				19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */,
+				19075405193BA22E00C6AE2E /* location */,
+				19075404193BA20F00C6AE2E /* util */,
+				19075403193BA1FD00C6AE2E /* model */,
+				19075402193BA1F400C6AE2E /* deeplinking */,
+				19075401193BA1EB00C6AE2E /* network */,
+				19075400193BA1E100C6AE2E /* db */,
 				19BFF1E91923DE77004686B7 /* NotificationTests.m */,
-				199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */,
-				19BFF1E71923BFAE004686B7 /* UBFTests.m */,
-				1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */,
-				19E06F951922540F008139E1 /* MobileDeepLinkingConfig.json */,
 				B2B1828A178B59400097EE6A /* Supporting Files */,
 				191970741924FB1500C75CD8 /* TestUtils.h */,
 				191970751924FB1500C75CD8 /* TestUtils.m */,
@@ -315,31 +394,16 @@
 		B2C2A8F517A9919C0058311A /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				190753FF193BA18700C6AE2E /* db */,
+				190753FE193BA16300C6AE2E /* network */,
+				190753F4193B987800C6AE2E /* deeplinking */,
 				196246961939354E0038B453 /* model */,
 				1929A3461936712E00D3F044 /* util */,
 				1929A34519362D4F00D3F044 /* location */,
 				1929A3411936196600D3F044 /* configuration */,
 				B2C2A8FA17A9919C0058311A /* EngageSDK.h */,
-				B2C2A8F617A9919C0058311A /* EngageClient.h */,
-				B2C2A8F717A9919C0058311A /* EngageClient.m */,
-				B2C2A8FF17A9919C0058311A /* UBFClient.h */,
-				B2C2A90017A9919C0058311A /* UBFClient.m */,
-				B2C2A90317A9919C0058311A /* XMLAPIClient.h */,
-				B2C2A90417A9919C0058311A /* XMLAPIClient.m */,
-				B2C2A8FD17A9919C0058311A /* UBF.h */,
-				B2C2A8FE17A9919C0058311A /* UBF.m */,
-				B2C2A90117A9919C0058311A /* XMLAPI.h */,
-				B2C2A90217A9919C0058311A /* XMLAPI.m */,
-				B2C2A8FB17A9919C0058311A /* ResultDictionary.h */,
-				B2C2A8FC17A9919C0058311A /* ResultDictionary.m */,
-				190D7CD81907360000432B88 /* EngageEvent.h */,
-				190D7CD91907360000432B88 /* EngageEvent.m */,
-				19153DD5190817F10086631B /* EngageLocalEventStore.h */,
-				19153DD6190817F10086631B /* EngageLocalEventStore.m */,
 				191970771925030900C75CD8 /* UBFManager.h */,
 				191970781925030900C75CD8 /* UBFManager.m */,
-				1919708319251EA700C75CD8 /* EngageDeepLinkManager.h */,
-				1919708419251EA700C75CD8 /* EngageDeepLinkManager.m */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -429,7 +493,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				196246931938FDA80038B453 /* EngageConfigDefaults.plist in Resources */,
-				19E06F961922540F008139E1 /* MobileDeepLinkingConfig.json in Resources */,
 				B2B1828E178B59400097EE6A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -510,7 +573,6 @@
 				B2C2A90517A9919C0058311A /* EngageClient.m in Sources */,
 				1919708519251EA700C75CD8 /* EngageDeepLinkManager.m in Sources */,
 				B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */,
-				19624699193935610038B453 /* EngageEventLiteWrapper.m in Sources */,
 				1919707E1925064A00C75CD8 /* EngageEventLocationManager.m in Sources */,
 				B2C2A90717A9919C0058311A /* ResultDictionary.m in Sources */,
 				B2C2A90817A9919C0058311A /* UBF.m in Sources */,

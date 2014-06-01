@@ -25,7 +25,6 @@
 		1962468F1938BE470038B453 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1962468E1938BE470038B453 /* EngageConfigDefaults.plist */; };
 		196246921938D2990038B453 /* EngageEventWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 196246911938D2990038B453 /* EngageEventWrapper.m */; };
 		196246931938FDA80038B453 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1962468E1938BE470038B453 /* EngageConfigDefaults.plist */; };
-		19624695193904B40038B453 /* UBFManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19624694193904B40038B453 /* UBFManagerTests.m */; };
 		199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */; };
 		19BFF1E51923AC5F004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
 		19BFF1E61923AC67004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
@@ -33,7 +32,6 @@
 		19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1E91923DE77004686B7 /* NotificationTests.m */; };
 		19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */; };
 		19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */; };
-		19CFF0D31937CB2800AB45BA /* MobileDeepLinkingConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 19CFF0D21937CB2800AB45BA /* MobileDeepLinkingConfig.json */; };
 		19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
 		6F2B2C1176094E9B8BFA405A /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
 		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
@@ -99,14 +97,12 @@
 		1962468E1938BE470038B453 /* EngageConfigDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EngageConfigDefaults.plist; sourceTree = "<group>"; };
 		196246901938D2990038B453 /* EngageEventWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventWrapper.h; sourceTree = "<group>"; };
 		196246911938D2990038B453 /* EngageEventWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventWrapper.m; sourceTree = "<group>"; };
-		19624694193904B40038B453 /* UBFManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManagerTests.m; sourceTree = "<group>"; };
 		199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManagerTests.m; sourceTree = "<group>"; };
 		19BFF1E41923AC5F004686B7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		19BFF1E71923BFAE004686B7 /* UBFTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFTests.m; sourceTree = "<group>"; };
 		19BFF1E91923DE77004686B7 /* NotificationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTests.m; sourceTree = "<group>"; };
 		19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageLocalEventStoreTests.m; sourceTree = "<group>"; };
 		19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventLocationManagerTests.m; sourceTree = "<group>"; };
-		19CFF0D21937CB2800AB45BA /* MobileDeepLinkingConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MobileDeepLinkingConfig.json; sourceTree = "<group>"; };
 		19D24B7219088D6900855BC7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3D76863C004B4A1AAEE87550 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDK.xcconfig"; path = "Pods/Pods-EngageSDK.xcconfig"; sourceTree = "<group>"; };
@@ -358,7 +354,6 @@
 			children = (
 				1962468E1938BE470038B453 /* EngageConfigDefaults.plist */,
 				B2B18276178B59400097EE6A /* EngageSDK-Prefix.pch */,
-				19CFF0D21937CB2800AB45BA /* MobileDeepLinkingConfig.json */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -377,7 +372,6 @@
 				191970741924FB1500C75CD8 /* TestUtils.h */,
 				191970751924FB1500C75CD8 /* TestUtils.m */,
 				1929D7F3192D301B00EC9B33 /* sample-config.h */,
-				19624694193904B40038B453 /* UBFManagerTests.m */,
 			);
 			path = EngageSDKTests;
 			sourceTree = "<group>";
@@ -483,7 +477,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19CFF0D31937CB2800AB45BA /* MobileDeepLinkingConfig.json in Resources */,
 				1962468F1938BE470038B453 /* EngageConfigDefaults.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -593,7 +586,6 @@
 				19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */,
 				194C94B51921612C004B8851 /* UBFClientTests.m in Sources */,
 				19BFF1E81923BFAE004686B7 /* UBFTests.m in Sources */,
-				19624695193904B40038B453 /* UBFManagerTests.m in Sources */,
 				1929A34B193675E300D3F044 /* EngageExpirationParserTests.m in Sources */,
 				19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */,
 				19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */,

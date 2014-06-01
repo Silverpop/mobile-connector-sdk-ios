@@ -50,4 +50,12 @@
     
 }
 
+- (void)testLocationName {
+    XCTFail(@"No Yet implemented!");
+}
+
+- (void)testLocationServicesEnabled {
+    XCTAssertTrue([[EngageEventLocationManager sharedInstance] locationServicesEnabled]);
+}
+
 @end

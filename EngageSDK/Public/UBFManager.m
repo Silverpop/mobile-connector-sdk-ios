@@ -165,7 +165,7 @@ __strong static UBFManager *_sharedInstance = nil;
                                                       NSLog(@"Location Coordinate acquisition timed out. Sending UBF event without coordinates!");
                                                       
                                                       //Acquiring coordinates has timed out so we need to go ahead and push the UBF event to Silverpop.
-                                                      [[UBFClient client] postUBFEngageEvents];
+                                                      [[UBFClient client] postUBFEngageEvents:nil failure:nil];
                                                   }];
     
     
@@ -176,7 +176,7 @@ __strong static UBFManager *_sharedInstance = nil;
                                                       NSLog(@"Location Placemark acquisition timed out. Sending UBF event without Placemark location!");
                                                       
                                                       //Acquiring CLPlacemark has timed out so we need to go ahead and push the UBF event to Silverpop.
-                                                      [[UBFClient client] postUBFEngageEvents];
+                                                      [[UBFClient client] postUBFEngageEvents:nil failure:nil];
                                                   }];
 }
 
@@ -216,7 +216,7 @@ __strong static UBFManager *_sharedInstance = nil;
     
     self.eventsCached++;
     if (self.eventsCached >= self.eventsToCacheBeforePost) {
-        [[UBFClient client] postUBFEngageEvents];
+        [[UBFClient client] postUBFEngageEvents:nil failure:nil];
     }
     
     return [[engageEvent objectID] URIRepresentation];

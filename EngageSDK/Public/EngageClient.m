@@ -71,13 +71,15 @@
 - (void)authenticate:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure {
     
-    [self authenticateUsingOAuthWithURLString:@"http://apipilot.silverpop.com/oauth/token"
+    [self authenticateUsingOAuthWithURLString:[self.host stringByAppendingString:@"oauth/token"]
                             refreshToken:_refreshToken
                                  success:^(AFOAuthCredential *credential) {
                                      
                                      self.credential = credential;
                                      
-                                     success(credential);
+                                     if (success) {
+                                         success(credential);
+                                     }
                                      
                                      //Checks the network status and if its active open up the queue.
                                      if ([[AFNetworkReachabilityManager sharedManager] networkReachabilityStatus] == AFNetworkReachabilityStatusNotReachable) {
@@ -88,7 +90,10 @@
                                  }
                                 failure:^(NSError *error) {
                                     [[self operationQueue] setSuspended:YES];
-                                    failure(error);
+                                    
+                                    if (failure) {
+                                        failure(error);
+                                    }
                                 }];
     
     //Suspend the operation queue until the login is successful

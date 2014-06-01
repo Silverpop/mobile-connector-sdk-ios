@@ -217,12 +217,14 @@
                       forDictionary:(NSMutableDictionary *)dictionary
                         withPlistUBFFieldName:(NSString *)ubfFieldName {
     
-    if (![dictionary objectForKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:ubfFieldName]]) {
-        [dictionary setObject:value
-                       forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:ubfFieldName]];
+    if (value) {
+        if (![dictionary objectForKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:ubfFieldName]]) {
+            [dictionary setObject:value
+                           forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:ubfFieldName]];
+        }
     }
+    
     return dictionary;
 }
-
 
 @end

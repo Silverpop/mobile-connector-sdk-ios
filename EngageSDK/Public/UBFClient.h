@@ -19,6 +19,7 @@
 
 + (instancetype)client;
 
-- (void) postUBFEngageEvents;
+- (void) postUBFEngageEvents:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success
+                     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 @end

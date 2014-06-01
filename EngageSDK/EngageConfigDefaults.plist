@@ -41,7 +41,7 @@
 		<string>Session Duration</string>
 		<key>UBFTagsFieldName</key>
 		<string>Tags</string>
-		<key>UBFDisplayMessageFieldName</key>
+		<key>UBFDisplayedMessageFieldName</key>
 		<string>Displayed Message</string>
 		<key>UBFCallToActionFieldName</key>
 		<string>Call To Action</string>

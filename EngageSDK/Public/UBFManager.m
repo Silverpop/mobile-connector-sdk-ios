@@ -224,6 +224,10 @@ __strong static UBFManager *_sharedInstance = nil;
     return [[engageEvent objectID] URIRepresentation];
 }
 
+- (void)postEventCache {
+    [[UBFClient client] postUBFEngageEvents:nil failure:nil];
+}
+
 - (NSURL *)handleLocalNotificationReceivedEvents:(UILocalNotification *)localNotification
                                       withParams:(NSDictionary *)params {
     return [self trackEvent:[UBF receivedLocalNotification:localNotification withParams:params]];

@@ -128,11 +128,11 @@
             
             [self updateHUD:@"Success" details:[ERXML valueForShortPath:@"Email"]];
 
-            [[UBFClient client] trackingEvent:[UBF goalCompleted:@"SELECTED REGISTERED USER" params:nil]];
+            [[UBFManager sharedInstance] trackEvent:[UBF goalCompleted:@"SELECTED REGISTERED USER" params:nil]];
         }
         else {
             [self updateHUD:@"Failed" details:[ERXML valueForShortPath:@"Fault.FaultString"]];
-            [[UBFClient client] trackingEvent:[UBF goalAbandoned:@"SELECTED REGISTERED USER" params:nil]];
+            [[UBFManager sharedInstance] trackEvent:[UBF goalAbandoned:@"SELECTED REGISTERED USER" params:nil]];
         }
         
     } failure:^(NSError *error) {
@@ -204,12 +204,12 @@
                                                             
                                                             _upgradeAnonymousButton.hidden = YES;
                                                             
-                                                            [[UBFClient client] trackingEvent:[UBF goalCompleted:@"UPGRADE ANONYMOUS USER" params:nil]];
+                                                            [[UBFManager sharedInstance] trackEvent:[UBF goalCompleted:@"UPGRADE ANONYMOUS USER" params:nil]];
                                                         }
                                                         else {
                                                             NSLog(@"%@",[ERXML debugDescription]);
                                                             [self updateHUD:@"Failed" details:[ERXML valueForShortPath:@"Fault.FaultString"]];
-                                                            [[UBFClient client] trackingEvent:[UBF goalAbandoned:@"UPGRADE ANONYMOUS USER" params:nil]];
+                                                            [[UBFManager sharedInstance] trackEvent:[UBF goalAbandoned:@"UPGRADE ANONYMOUS USER" params:nil]];
                                                         }
                                                     } failure:^(NSError *error) {
                                                         [self updateHUD:@"Failed" details:@"Service is unavailable"];

@@ -201,13 +201,13 @@
                 
                 [self reloadMain];
                 
-                [[UBFClient client] trackingEvent:[UBF goalCompleted:@"UPDATE RECIPIENT" params:nil]];
-                [[UBFClient client] postEventCache];
+                [[UBFManager sharedInstance] trackEvent:[UBF goalCompleted:@"UPDATE RECIPIENT" params:nil]];
+                [[UBFManager sharedInstance] postEventCache];
             }
             else {
                 NSLog(@"%@",[ERXML debugDescription]);
                 [self updateHUD:@"Failed" details:[ERXML valueForShortPath:@"Fault.FaultString"]];
-                [[UBFClient client] trackingEvent:[UBF goalAbandoned:@"UPDATE RECIPIENT" params:nil]];
+                [[UBFManager sharedInstance] trackEvent:[UBF goalAbandoned:@"UPDATE RECIPIENT" params:nil]];
             }
         } failure:^(NSError *error) {
             [self updateHUD:@"Failed" details:@"Service is unavailable"];

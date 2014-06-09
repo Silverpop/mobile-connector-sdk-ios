@@ -8,15 +8,33 @@
 
 #import "AppDelegate.h"
 #import <EngageSDK/EngageSDK.h>
+#import "sample_config.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    [UBFManager createClient:ENGAGE_CLIENT_ID secret:ENGAGE_SECRET token:ENGAGE_REFRESH_TOKEN host:ENGAGE_BASE_URL connectSuccess:^(AFOAuthCredential *credential) {
+        NSLog(@"Successfully connected to Engage API : Credential %@", credential);
+    } failure:^(NSError *error) {
+        NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
+    }];
+    
+    [XMLAPIClient createClient:ENGAGE_CLIENT_ID
+                                               secret:ENGAGE_SECRET
+                                                token:ENGAGE_REFRESH_TOKEN
+                                                 host:ENGAGE_BASE_URL
+                                       connectSuccess:^(AFOAuthCredential *credential) {
+                                           NSLog(@"Successfully connected to Engage API : Credential %@", credential);
+                                       } failure:^(NSError *error) {
+                                           NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
+                                       }];
+    
     // Override point for customization after application launch.
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

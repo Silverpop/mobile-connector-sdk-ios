@@ -92,52 +92,6 @@
     [self beginHUD];
     
     [EngageConfig storePrimaryUserId:nil];
-    
-    XMLAPIClient *client = [XMLAPIClient createClient:ENGAGE_CLIENT_ID
-                                               secret:ENGAGE_SECRET
-                                                token:ENGAGE_REFRESH_TOKEN
-                                                 host:ENGAGE_BASE_URL
-                                       connectSuccess:^(AFOAuthCredential *credential) {
-                                           NSLog(@"Successfully connected to Engage API : Credential %@", credential);
-                                       } failure:^(NSError *error) {
-                                           NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
-                                       }];
-    
-    [client connectSuccess:^(AFOAuthCredential *credential) {
-        [self updateHUD:@"Connected" details:credential.accessToken];
-        [self registerAnonymousUser];
-    } failure:^(NSError *error) {
-        [self updateHUD:@"Connection Failed" details:[error localizedDescription]];
-    }];
-    
-    //Creates a UBFManager instance.
-    UBFManager *ubfManager = [UBFManager createClient:ENGAGE_CLIENT_ID
-                                               secret:ENGAGE_SECRET
-                                                token:ENGAGE_REFRESH_TOKEN
-                                                 host:ENGAGE_BASE_URL
-                                       connectSuccess:^(AFOAuthCredential *credential) {
-                                           NSLog(@"Successfully connected to Engage API : Credential %@", credential);
-                                       } failure:^(NSError *error) {
-                                           NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
-                                       }];
-    
-    
-//    // UBFClient is used for sending app behavior analytics
-//    UBFClient *clientUBF = [UBFClient createClient:ENGAGE_CLIENT_ID
-//                                            secret:ENGAGE_SECRET
-//                                             token:ENGAGE_REFRESH_TOKEN
-//                                              host:ENGAGE_BASE_URL
-//                                    connectSuccess:^(AFOAuthCredential *credential) {
-//                                        NSLog(@"Successfully connected to Engage API : Credential %@", credential);
-//                                    } failure:^(NSError *error) {
-//                                        NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
-//                                    }];
-    
-//    [clientUBF connectSuccess:^(AFOAuthCredential *credential) {
-//        NSLog(@"SUCCESS ANALYTICS");
-//    } failure:^(NSError *failure) {
-//        NSLog(@"FAIL ANALYTICS");
-//    }];
 }
 
 #pragma mark - UITextFieldDelegate

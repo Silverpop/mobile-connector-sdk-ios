@@ -229,7 +229,7 @@
                 }
                 
                 if (![[ubfEvent attributes] objectForKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS]]) {
-                    [[[ubfEvent setAttribute:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS] value:[NSString stringWithFormat:@"%@, %@ %@, %@ (%@)", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"City"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"State"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"ZIP"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"Country"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"CountryCode"]];
+                    [ubfEvent setAttribute:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS] value:[NSString stringWithFormat:@"%@, %@ %@, %@ (%@)", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"City"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"State"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"ZIP"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"Country"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"CountryCode"]]];
                 }
             }
         }

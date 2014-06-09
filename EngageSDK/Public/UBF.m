@@ -97,7 +97,12 @@
         
         [_attributes addEntriesFromDictionary:template];
         if (params) {
-            [_attributes addEntriesFromDictionary:params];
+            for (id key in params) {
+                id ob = [params objectForKey:key];
+                if (![ob isKindOfClass:[NSDictionary class]]) {
+                    [_attributes setObject:ob forKey:key];
+                }
+            }
         }
     }
     

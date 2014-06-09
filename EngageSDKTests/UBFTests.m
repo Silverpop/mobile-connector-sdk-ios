@@ -26,6 +26,20 @@
     [super tearDown];
 }
 
+- (void) testCreateUBFWithDictionaryInvalidParameter {
+    NSArray *tags = @[@"demo", @"unit test"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:tags, @"Tags", nil];
+    
+    NSDictionary *invalidParamDict = @{@"root" : @{@"key" : @"value"}};
+    [params setObject:invalidParamDict forKey:@"root"];
+    
+    UBF *installedEvent = [UBF installed:params];
+    
+    XCTAssertTrue(installedEvent != nil);
+    XCTAssertTrue([installedEvent jsonValue] != nil);
+    XCTAssertTrue([[installedEvent attributes] objectForKey:@"root"] == nil);
+}
+
 - (void) testCreateFromJSON {
     NSArray *tags = @[@"demo", @"unit test"];
     NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:tags, @"Tags", nil];

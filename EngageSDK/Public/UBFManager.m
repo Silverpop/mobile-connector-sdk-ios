@@ -95,9 +95,11 @@ __strong static UBFManager *_sharedInstance = nil;
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification *note) {
                                                           if ([_sharedInstance sessionExpired]) {
+                                                              NSLog(@"Session restarted");
                                                               [_sharedInstance restartSession];
                                                           }
                                                           else {
+                                                              NSLog(@"Session resumed");
                                                               _sharedInstance.sessionBegan = [NSDate date];
                                                           }
                                                       }];
@@ -111,6 +113,8 @@ __strong static UBFManager *_sharedInstance = nil;
                                                           _sharedInstance.sessionEnded = [UBF sessionEnded:@{[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_SESSION_DURATION]:[NSString stringWithFormat:@"%d",(int)_sharedInstance.duration]}];
                                                           _sharedInstance.sessionExpires = [NSDate dateWithTimeInterval:_sharedInstance.sessionTimeout
                                                                                                             sinceDate:[NSDate date]];
+                                                          
+                                                          NSLog(@"Session paused");
                                                       }];
     });
     

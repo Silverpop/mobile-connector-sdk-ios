@@ -8,12 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "EngageEvent.h"
+#import "UBF.h"
 
 @interface EngageEventWrapper : NSObject
 
-- (id) initWithUBFEvent:(NSDictionary *)ubfEvent engageEvent:(EngageEvent *)engageEvent;
+- (id) initWithUBFEvent:(UBF *)ubfEvent engageEvent:(EngageEvent *)engageEvent;
 
-@property (strong, nonatomic) NSDictionary *ubfEvent;
+@property (strong, nonatomic) UBF *ubfEvent;
 @property (strong, nonatomic) EngageEvent *engageEvent;
 
 @end

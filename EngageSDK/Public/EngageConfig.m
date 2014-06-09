@@ -39,7 +39,7 @@ __strong static NSDate *currentCampaignExpirationDate = nil;
         [defaults synchronize];
     }
     
-    return deviceId;
+    return deviceId ? deviceId : @"";
 }
 
 + (NSString *)anonymousId {
@@ -94,11 +94,7 @@ __strong static NSDate *currentCampaignExpirationDate = nil;
 + (NSString *)lastCampaign {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *currentCampaign = [defaults objectForKey:@"engageCurrentCampaign"];
-    if (currentCampaign) {
-        return currentCampaign;
-    } else {
-        return @"";
-    }
+    return currentCampaign ? currentCampaign : @"";
 }
 
 + (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestamp:(long)utcExpirationTimestamp {

@@ -11,13 +11,14 @@
 #import "EngageConfigManager.h"
 #import "EngageConfig.h"
 #import "EngageEvent.h"
+#import "UBF.h"
 
 @interface EngageEventLocationManager : NSObject <CLLocationManagerDelegate>
 
 + (id)sharedInstance;
 
 - (BOOL)locationServicesEnabled;
-- (NSDictionary *)addLocationToUBFEvent:(NSDictionary *)ubfEvent withEngageEvent:(EngageEvent *)engageEvent;
+- (UBF *)addLocationToUBFEvent:(UBF *)ubfEvent withEngageEvent:(EngageEvent *)engageEvent;
 
 
 

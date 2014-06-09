@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "EngageEvent.h"
 #import "EngageConfig.h"
+#import "UBF.h"
 
 @interface EngageLocalEventStore : NSObject
 
@@ -18,14 +19,13 @@
 - (NSArray *) findUnpostedEvents;
 - (void) deleteExpiredLocalEvents;
 - (void)saveEvents;
-- (EngageEvent *)saveUBFEvent:(NSDictionary *)event status:(int)status;
+- (EngageEvent *)saveUBFEvent:(UBF *)event status:(int)status;
 - (EngageEvent *)findEngageEventWithIdentifier:(NSURL *)urlIdentifier;
 - (NSArray *)findEngageEventsWithStatus:(int)eventStatus;
 
 // Utility methods
 - (NSUInteger) countForEventType:(NSNumber *)eventType;
 - (NSUInteger) deleteAllUBFEvents;
-- (NSString *)createJsonStringFromDictionary:(NSDictionary *)dictionary;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;

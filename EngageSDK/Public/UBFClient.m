@@ -56,7 +56,7 @@ __strong static UBFClient *_sharedClient = nil;
     
     //Perform the login to the system.
     [_sharedClient authenticate:^(AFOAuthCredential *credential) {
-        NSLog(@"Made it HERE!");
+        NSLog(@"EngageSDK UBFClient successfully authenticated");
         if (success) {
             success(credential);
         }
@@ -79,14 +79,11 @@ __strong static UBFClient *_sharedClient = nil;
         __block NSArray *unpostedUbfEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
         if (unpostedUbfEvents && [unpostedUbfEvents count] > 0) {
             //We need to convert the list of "tracked" EngageEvent objects back to their original format for submission
-            NSError *error;
             NSMutableArray *eventsCache = [[NSMutableArray alloc] init];
             
             for (EngageEvent *ee in unpostedUbfEvents) {
                 if (![ee isFault]) {
-                    NSDictionary *originalEventData = [NSJSONSerialization JSONObjectWithData:[ee.eventJson dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                      options:kNilOptions
-                                                                                        error:&error];
+                    NSDictionary *originalEventData = [[[UBF alloc] initFromJSON:ee.eventJson] dictionaryValue];
                     [eventsCache addObject:originalEventData];
                 } else {
                     NSLog(@"EngageEvent is in a fault state");

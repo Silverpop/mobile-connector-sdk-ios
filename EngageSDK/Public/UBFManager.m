@@ -25,7 +25,7 @@ NSString * const kEngageClientInstalled = @"engageClientInstalled";
 @property (assign) int eventsCached;
 
 //Session Management.
-@property NSDictionary *sessionEnded;
+@property UBF *sessionEnded;
 @property NSDate *sessionExpires;
 @property(nonatomic) NSDate *sessionBegan;
 @property NSTimeInterval duration;
@@ -136,19 +136,16 @@ __strong static UBFManager *_sharedInstance = nil;
                                                       NSArray *holdEngagedEvents = [_sharedInstance.engageLocalEventStore findEngageEventsWithStatus:HOLD];
                                                       
                                                       //Update their payload to have the new coordinates.
-                                                      NSError *jsonError;
                                                       for (EngageEvent *ee in holdEngagedEvents) {
                                                           
                                                           if (ee.eventJson != nil) {
-                                                              NSDictionary *originalEventData = [NSJSONSerialization JSONObjectWithData:[ee.eventJson dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                                                                options:kNilOptions
-                                                                                                                                  error:&jsonError];
+                                                              UBF *originalEvent = [[UBF alloc] initFromJSON:ee.eventJson];
                                                               
                                                               //Updates the UBF event with the LocationManager.
-                                                              NSDictionary *newEvent = [_sharedInstance.engageEventLocationManager addLocationToUBFEvent:originalEventData withEngageEvent:ee];
+                                                              UBF *newEvent = [_sharedInstance.engageEventLocationManager addLocationToUBFEvent:originalEvent withEngageEvent:ee];
                                                               
                                                               if (newEvent) {
-                                                                  ee.eventJson = [_sharedInstance.engageLocalEventStore createJsonStringFromDictionary:newEvent];
+                                                                  ee.eventJson = [newEvent jsonValue];
                                                                   ee.eventStatus = [[NSNumber alloc] initWithInt:NOT_POSTED];
                                                               } else {
                                                                   ee.eventStatus = [[NSNumber alloc] initWithInt:NOT_POSTED];
@@ -194,7 +191,7 @@ __strong static UBFManager *_sharedInstance = nil;
 }
 
 
-- (NSURL *) trackEvent:(NSDictionary *)event {
+- (NSURL *) trackEvent:(UBF *)event {
     
     EngageEvent *engageEvent = nil;
     
@@ -204,7 +201,7 @@ __strong static UBFManager *_sharedInstance = nil;
         engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:HOLD];
         
         //Ask the location Manager for the current CLLocation and CLPlacemark information
-        NSDictionary *eventWithLocation = [self.engageEventLocationManager addLocationToUBFEvent:event withEngageEvent:engageEvent];
+        UBF *eventWithLocation = [self.engageEventLocationManager addLocationToUBFEvent:event withEngageEvent:engageEvent];
         
         //If the event information was actually populated we need to update the EngageEvent status
         if (eventWithLocation != nil) {

@@ -163,7 +163,7 @@
  and nil is returned. Once the location information has been obtained (or a timeout has been reached then a NSNotificationCenter message
  will be fired to update the event and then post it to Silverpop. 
 */
-- (NSDictionary *)addLocationToUBFEvent:(NSDictionary *)ubfEvent
+- (UBF *)addLocationToUBFEvent:(UBF *)ubfEvent
                         withEngageEvent:(EngageEvent *)engageEvent {
     
     if (self.currentLocationCache == nil) {
@@ -205,17 +205,16 @@
             
             return nil;
         } else {
-            NSMutableDictionary *event = [ubfEvent mutableCopy];
             EngageConfigManager *cm = [EngageConfigManager sharedInstance];
             
             //Sets the Longitude and Latitude
             if (self.currentLocationCache) {
-                if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LONGITUDE]]) {
-                    [event setValue:[NSString stringWithFormat:@"%f", [self.currentLocationCache coordinate].longitude] forKey:[cm fieldNameForUBF:PLIST_UBF_LONGITUDE]];
+                if (![[ubfEvent attributes] objectForKey:[cm fieldNameForUBF:PLIST_UBF_LONGITUDE]]) {
+                    [ubfEvent setAttribute:[cm fieldNameForUBF:PLIST_UBF_LONGITUDE] value:[NSString stringWithFormat:@"%f", [self.currentLocationCache coordinate].longitude]];
                 }
                 
-                if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LATITUDE]]) {
-                    [event setValue:[NSString stringWithFormat:@"%f", [self.currentLocationCache coordinate].latitude] forKey:[cm fieldNameForUBF:PLIST_UBF_LATITUDE]];
+                if (![[ubfEvent attributes] objectForKey:[cm fieldNameForUBF:PLIST_UBF_LATITUDE]]) {
+                    [ubfEvent setAttribute:[cm fieldNameForUBF:PLIST_UBF_LATITUDE] value:[NSString stringWithFormat:@"%f", [self.currentLocationCache coordinate].latitude]];
                 }
                 
             }
@@ -223,16 +222,14 @@
             //Sets the location name and address.
             if (self.currentPlacemarkCache) {
                 
-                if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_NAME]]) {
-                    [event setValue:[NSString stringWithFormat:@"%@", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"Name"]] forKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_NAME]];
+                if (![[ubfEvent attributes] objectForKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_NAME]]) {
+                    [ubfEvent setAttribute:[cm fieldNameForUBF:PLIST_UBF_LOCATION_NAME] value:[NSString stringWithFormat:@"%@", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"Name"]]];
                 }
                 
-                if (![event objectForKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS]]) {
-                    [event setValue:[NSString stringWithFormat:@"%@, %@ %@", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"City"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"State"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"ZIP"]] forKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS]];
+                if (![[ubfEvent attributes] objectForKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS]]) {
+                    [ubfEvent setAttribute:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS] value:[NSString stringWithFormat:@"%@, %@ %@", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"City"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"State"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"ZIP"]]];
                 }
             }
-            
-            return event;
         }
     }
     return ubfEvent;

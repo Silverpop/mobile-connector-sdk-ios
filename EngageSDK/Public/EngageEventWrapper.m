@@ -10,7 +10,7 @@
 
 @implementation EngageEventWrapper
 
-- (id) initWithUBFEvent:(NSDictionary *)ubfEvent
+- (id) initWithUBFEvent:(UBF *)ubfEvent
             engageEvent:(EngageEvent *)engageEvent {
     self = [super init];
     

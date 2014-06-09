@@ -26,10 +26,22 @@
     [super tearDown];
 }
 
+- (void) testCreateFromJSON {
+    NSArray *tags = @[@"demo", @"unit test"];
+    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:tags, @"Tags", nil];
+    UBF *installedEvent = [UBF installed:params];
+    
+    UBF *newEvent = [[UBF alloc] initFromJSON:[installedEvent jsonValue]];
+    NSLog(@"%@", [newEvent jsonValue]);
+    
+    XCTAssertTrue(newEvent != nil);
+    XCTAssertTrue([newEvent jsonValue] != nil);
+}
+
 -(void)testUBFGenerateInstalledEvent {
     NSArray *tags = @[@"demo", @"unit test"];
     NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:tags, @"Tags", nil];
-    id installedEvent = [UBF installed:params];
+    UBF *installedEvent = [UBF installed:params];
     
     //Test the requiredfields are present.
     NSArray *expectedFields = @[@"Device Name", @"Device Version", @"OS Name", @"OS Version", @"App Name", @"App Version", @"Device Id", @"Last Campaign"];
@@ -75,16 +87,6 @@
     
     //Check that the eventTypeCode is correct.
     XCTAssertTrue([[self getEventTypeCodeForEvent:installedEvent] isEqualToString:@"12"], @"Installed UBF EventTypeCode does not equal 12!");
-}
-
--(void)testUBFGenerateSessionStartedEvent {
-    NSArray *tags = @[@"demo", @"unit test"];
-    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:tags, @"Tags", nil];
-    id sessionStarted = [UBF sessionStarted:params withCampaign:@"testUBFGenerateSessionStartedEvent"];
-    
-    NSDictionary *newAtts = @{@"Location Name" : @"Sears", @"Location Address" : @"123 Sears Way"};
-    sessionStarted = [UBF addAttributes:newAtts toExistingEvent:sessionStarted];
-    NSLog(@"SessionStarted %@", sessionStarted);
 }
 
 -(void)testUBFGenerateSessionEndedEvent {
@@ -271,13 +273,13 @@
     return [ubfEvent valueForKey:@"eventTypeCode"];
 }
 
--(NSString *)getAttributeField:(NSString *)fieldName forEvent:(id)ubfEvent {
-    for (id val in [ubfEvent valueForKey:@"attributes"]) {
-        if ([[val valueForKey:@"name"] isEqualToString:fieldName]) {
-            return [val valueForKey:@"value"];
-        }
+-(NSString *)getAttributeField:(NSString *)fieldName forEvent:(UBF *)ubfEvent {
+    NSDictionary *atts = [ubfEvent attributes];
+    if ([atts objectForKey:fieldName]) {
+        return [atts objectForKey:fieldName];
+    } else {
+        return @"";
     }
-    return @"";
 }
 
 @end

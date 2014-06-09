@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "EngageClient.h"
+#import "UBF.h"
 
 @interface UBFManager : NSObject
 
@@ -21,7 +22,7 @@
 
 + (id)sharedInstance;
 
-- (NSURL *) trackEvent:(NSDictionary *)event;
+- (NSURL *) trackEvent:(UBF *)event;
 
 - (NSURL *)handleLocalNotificationReceivedEvents:(UILocalNotification *)localNotification
                                       withParams:(NSDictionary *)params;

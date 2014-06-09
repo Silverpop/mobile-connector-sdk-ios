@@ -11,16 +11,24 @@
 
 @interface UBF : NSObject
 
-+ (id)createEventWithCode:(NSString *)code params:(NSDictionary *)params;
-+ (id)addAttributes:(NSDictionary *)atts toExistingEvent:(NSDictionary *)existingEvent;
-+ (id)installed:(NSDictionary *)params;
-+ (id)sessionStarted:(NSDictionary *)params withCampaign:(NSString *)campaignName;
-+ (id)sessionEnded:(NSDictionary *)params;
-+ (id)goalAbandoned:(NSString *)goalName params:(NSDictionary *)params;
-+ (id)goalCompleted:(NSString *)goalName params:(NSDictionary *)params;
-+ (id)namedEvent:(NSString *)eventName params:(NSDictionary *)params;
-+ (id)receivedLocalNotification:(UILocalNotification *)localNotification withParams:(NSDictionary *)params;
-+ (id)receivedPushNotification:(NSDictionary *)notification withParams:(NSDictionary *)params;
-+ (id)openedNotification:(NSDictionary *)notification withParams:(NSDictionary *)params;
+@property (readonly, nonatomic, strong) NSString *eventTypeCode;
+@property (readonly, nonatomic, strong) NSString *eventTimeStamp;
+@property (readonly, nonatomic, strong) NSMutableDictionary *attributes;
+
++ (UBF *)createEventWithCode:(NSString *)code params:(NSDictionary *)params;
++ (UBF *)installed:(NSDictionary *)params;
++ (UBF *)sessionStarted:(NSDictionary *)params withCampaign:(NSString *)campaignName;
++ (UBF *)sessionEnded:(NSDictionary *)params;
++ (UBF *)goalAbandoned:(NSString *)goalName params:(NSDictionary *)params;
++ (UBF *)goalCompleted:(NSString *)goalName params:(NSDictionary *)params;
++ (UBF *)namedEvent:(NSString *)eventName params:(NSDictionary *)params;
++ (UBF *)receivedLocalNotification:(UILocalNotification *)localNotification withParams:(NSDictionary *)params;
++ (UBF *)receivedPushNotification:(NSDictionary *)notification withParams:(NSDictionary *)params;
++ (UBF *)openedNotification:(NSDictionary *)notification withParams:(NSDictionary *)params;
+
+- (UBF *)initFromJSON:(NSString *)jsonString;
+- (void)setAttribute:(NSString *)attributeName value:(NSString *)attributeValue;
+- (NSDictionary *)dictionaryValue;
+- (NSString *)jsonValue;
 
 @end

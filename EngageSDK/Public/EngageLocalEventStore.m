@@ -160,13 +160,13 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
 }
 
 
--(EngageEvent *)saveUBFEvent:(NSDictionary *)event status:(int) status {
+-(EngageEvent *)saveUBFEvent:(UBF *)event status:(int) status {
     EngageEvent *engageEvent = [NSEntityDescription insertNewObjectForEntityForName:@"EngageEvent" inManagedObjectContext:[EngageLocalEventStore sharedInstance].managedObjectContext];
 
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-    NSNumber *myNumber = [f numberFromString:[event objectForKey:@"eventTypeCode"]];
+    NSNumber *myNumber = [f numberFromString:[event eventTypeCode]];
     engageEvent.eventType = myNumber;
-    engageEvent.eventJson = [self createJsonStringFromDictionary:event];
+    engageEvent.eventJson = [event jsonValue];
     engageEvent.eventStatus = [[NSNumber alloc] initWithInt:status];
     engageEvent.eventDate = [NSDate date];
     
@@ -176,21 +176,6 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     }
     
     return engageEvent;
-}
-
-
-- (NSString *)createJsonStringFromDictionary:(NSDictionary *)dictionary {
-    NSError *error;
-    NSString *jsonString;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary
-                                                       options:0
-                                                         error:&error];
-    if (!jsonData) {
-        NSLog(@"Got an error: %@", error);
-    } else {
-        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    }
-    return jsonString;
 }
 
 

@@ -119,6 +119,8 @@
                 EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:locAcqTimeout fromDate:self.currentPlacemarkBirthday];
                 self.currentPlacemarkExpirationDate = [exp expirationDate];
                 
+                NSLog(@"Geo Location : %@", self.currentPlacemarkCache);
+                
                 //Send a system wide NSNotificationCenter message notifing interested parties that the CLPlacemark has been determined.
                 [[NSNotificationCenter defaultCenter] postNotificationName:LOCATION_UPDATED_NOTIFICATION object:nil];
             }

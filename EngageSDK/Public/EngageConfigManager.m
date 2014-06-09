@@ -35,7 +35,13 @@
         if (sdkPath) {
             NSDictionary *userConfigs = [[NSDictionary alloc] initWithContentsOfFile:sdkPath];
             if (userConfigs) {
-                NSMutableDictionary *engageConfigs = [self.configs mutableCopy];
+                NSMutableDictionary *engageConfigs;
+                if (self.configs) {
+                    engageConfigs = [self.configs mutableCopy];
+                } else {
+                    engageConfigs = [[NSMutableDictionary alloc] init];
+                }
+                
                 [engageConfigs addEntriesFromDictionary:userConfigs];
                 self.configs = engageConfigs;
             }

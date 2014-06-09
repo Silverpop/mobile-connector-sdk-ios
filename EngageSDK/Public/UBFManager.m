@@ -202,6 +202,8 @@ __strong static UBFManager *_sharedInstance = nil;
         
         //Ask the location Manager for the current CLLocation and CLPlacemark information
         UBF *eventWithLocation = [self.engageEventLocationManager addLocationToUBFEvent:event withEngageEvent:engageEvent];
+        engageEvent.eventJson = [eventWithLocation jsonValue];
+        [[EngageLocalEventStore sharedInstance] saveEvents];
         
         //If the event information was actually populated we need to update the EngageEvent status
         if (eventWithLocation != nil) {

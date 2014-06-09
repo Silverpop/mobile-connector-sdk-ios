@@ -95,6 +95,21 @@
 }
 
 
++ (id)addAttributes:(NSDictionary *)atts toExistingEvent:(NSDictionary *)existingEvent {
+    if (existingEvent) {
+        NSMutableDictionary *mutExisting = [existingEvent mutableCopy];
+        NSMutableDictionary *existAtts = [mutExisting objectForKey:@"attributes"];
+        
+        for (NSString* key in atts) {
+            [existAtts setObject:[atts objectForKey:key] forKey:key];
+        }
+        
+        NSLog(@"Something %@", existAtts);
+    }
+    return existingEvent;
+}
+
+
 + (id)installed:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
     if (![mutParams objectForKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_LAST_CAMPAIGN_NAME]]) {

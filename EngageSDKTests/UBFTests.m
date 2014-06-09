@@ -51,29 +51,40 @@
     XCTAssertTrue([[self getEventTypeCodeForEvent:installedEvent] isEqualToString:@"12"], @"Installed UBF EventTypeCode does not equal 12!");
 }
 
--(void)testUBFGenerateSessionStartedEvent {
+
+- (void)testUBFGenerateInstalledEventAndAddLocationAfter {
     NSArray *tags = @[@"demo", @"unit test"];
     NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:tags, @"Tags", nil];
-    id sessionStarted = [UBF sessionStarted:params withCampaign:@"testUBFGenerateSessionStartedEvent"];
+    id installedEvent = [UBF installed:params];
     
     //Test the requiredfields are present.
-    NSArray *expectedFields = @[@"Device Name", @"Device Version", @"OS Name", @"OS Version", @"App Name", @"App Version", @"Device Id", @"Campaign Name"];
+    NSArray *expectedFields = @[@"Device Name", @"Device Version", @"OS Name", @"OS Version", @"App Name", @"App Version", @"Device Id", @"Last Campaign"];
     NSArray *optionalFields = @[@"Primary User Id", @"Anonymous Id", @"Latitude", @"Longitude", @"Tags", @"Location Name", @"Location Address"];
     
     //Ensure required attribute values are present.
     for (int i = 0; i < [expectedFields count]; i++) {
-        NSString *fieldValue = [self getAttributeField:expectedFields[i] forEvent:sessionStarted];
+        NSString *fieldValue = [self getAttributeField:expectedFields[i] forEvent:installedEvent];
         XCTAssertTrue((fieldValue != nil && [fieldValue length] > 0), @"Field %@ is a required field but is not present in UBF event", expectedFields[i]);
     }
     
     //Ensure the optional fields are in the event payload.
     for (int i = 0; i < [optionalFields count]; i++) {
-        NSString *fieldValue = [self getAttributeField:optionalFields[i] forEvent:sessionStarted];
+        NSString *fieldValue = [self getAttributeField:optionalFields[i] forEvent:installedEvent];
         XCTAssertTrue(fieldValue != nil, @"Optional field %@ is not present in the UBF event payload. Value is not required but field presence is", expectedFields[i]);
     }
     
     //Check that the eventTypeCode is correct.
-    XCTAssertTrue([[self getEventTypeCodeForEvent:sessionStarted] isEqualToString:@"13"], @"Installed UBF EventTypeCode does not equal 13!");
+    XCTAssertTrue([[self getEventTypeCodeForEvent:installedEvent] isEqualToString:@"12"], @"Installed UBF EventTypeCode does not equal 12!");
+}
+
+-(void)testUBFGenerateSessionStartedEvent {
+    NSArray *tags = @[@"demo", @"unit test"];
+    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:tags, @"Tags", nil];
+    id sessionStarted = [UBF sessionStarted:params withCampaign:@"testUBFGenerateSessionStartedEvent"];
+    
+    NSDictionary *newAtts = @{@"Location Name" : @"Sears", @"Location Address" : @"123 Sears Way"};
+    sessionStarted = [UBF addAttributes:newAtts toExistingEvent:sessionStarted];
+    NSLog(@"SessionStarted %@", sessionStarted);
 }
 
 -(void)testUBFGenerateSessionEndedEvent {

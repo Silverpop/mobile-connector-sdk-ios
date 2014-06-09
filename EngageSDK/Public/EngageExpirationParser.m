@@ -84,11 +84,8 @@ __strong static NSString *engageDatePattern = @"yyyy'/'MM'/'dd' 'HH':'mm':'ss'";
     if (self.expiresAtDate == nil) {
         //Creates the actual expiration date.
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-//        NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"UTC"];
-//        [calendar setTimeZone:timeZone];
         
         NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-//        [dateComponents setTimeZone:timeZone];
         if (self.dayValue > -1) [dateComponents setDay:self.dayValue];
         if (self.hourValue > -1) [dateComponents setHour:self.hourValue];
         if (self.minuteValue > -1) [dateComponents setMinute:self.minuteValue];

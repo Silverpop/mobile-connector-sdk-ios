@@ -94,7 +94,11 @@ __strong static NSDate *currentCampaignExpirationDate = nil;
 + (NSString *)lastCampaign {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *currentCampaign = [defaults objectForKey:@"engageCurrentCampaign"];
-    return currentCampaign;
+    if (currentCampaign) {
+        return currentCampaign;
+    } else {
+        return @"";
+    }
 }
 
 + (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestamp:(long)utcExpirationTimestamp {

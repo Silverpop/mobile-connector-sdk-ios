@@ -12,6 +12,7 @@
 @interface UBF : NSObject
 
 + (id)createEventWithCode:(NSString *)code params:(NSDictionary *)params;
++ (id)addAttributes:(NSDictionary *)atts toExistingEvent:(NSDictionary *)existingEvent;
 + (id)installed:(NSDictionary *)params;
 + (id)sessionStarted:(NSDictionary *)params withCampaign:(NSString *)campaignName;
 + (id)sessionEnded:(NSDictionary *)params;

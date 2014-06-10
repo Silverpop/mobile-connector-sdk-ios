@@ -11,12 +11,7 @@ Pod::Spec.new do |s|
   s.source_files = 'EngageSDK/*/*.{h,m}'
   s.public_header_files = 'EngageSDK/Public/*.h'
   s.requires_arc = true
-
-  s.resources = ["EngageSDK/MobileDeepLinkingConfig.json", "EngageSDK/EngageConfigDefaults.plist"]
-
-  s.resource_bundles = {
-    'EngageConfigPlist' => ['EngageSDK/EngageConfigDefaults.plist']
-  }
+  s.resources = "Resources/*"
       
   s.subspec 'AFNetworking' do |net|
       net.dependency 'AFNetworking', '~> 2.2.3'

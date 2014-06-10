@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.public_header_files = 'EngageSDK/Public/*.h'
   s.requires_arc = true
 
-  s.resources = ["EngageSDK/MobileDeepLinkingConfig.json", "EngageSDK/Supporting Files/EngageConfigDefaults.plist"]
+  s.resources = ["EngageSDK/MobileDeepLinkingConfig.json", "EngageSDK/EngageConfigDefaults.plist"]
 
   s.resource_bundles = {
     'EngageConfigPlist' => ['EngageSDK/EngageConfigDefaults.plist']

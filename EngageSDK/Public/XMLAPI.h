@@ -40,27 +40,6 @@ extern int const COLUMN_TYPE_MULTI_SELECT;
 
 + (id)updateUserLastKnownLocation:(CLPlacemark *)lastKnownLocation listId:(NSString* )listID;
 
-//Database Management Interfaces - User.
-
-//Import to a database.
-//Export from a database.
 + (id)addColumn:(NSString *)column toDatabase:(NSString *)listId ofColumnType:(int)columnType; //Add a column to a database.
-//get database details.
-//list contact mailings.
-//remove a contact
-//get a list of databases.
-//create a relational table.
-//associate relational data with contacts in a database.
-//insert and update records in a relational table.
-//delete records from a relational table.
-//import to a relational table.
-//export from a relational table.
-//purge data from a relational table.
-//delete a relational table.
-//create a contact list
-//add a contact to a program.
-//create a query of a database.
-//calculate the current contacts for a query.
-//set a column value.
 
 @end

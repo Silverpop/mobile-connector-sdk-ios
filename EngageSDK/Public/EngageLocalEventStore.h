@@ -25,6 +25,7 @@
 
 // Utility methods
 - (NSUInteger) countForEventType:(NSNumber *)eventType;
+- (NSUInteger) unpostedEventsCount;
 - (NSUInteger) deleteAllUBFEvents;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

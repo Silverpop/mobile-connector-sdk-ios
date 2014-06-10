@@ -212,10 +212,10 @@
 + (UBF *)receivedPushNotification:(NSDictionary *)notification withParams:(NSDictionary *)params {
     
     NSString *displayedMessage = nil;
-    if ([[[params objectForKey:@"aps"] objectForKey:@"alert"] isKindOfClass:[NSString class]]) {
-        displayedMessage = [[params objectForKey:@"aps"] objectForKey:@"alert"];
+    if ([[[notification objectForKey:@"aps"] objectForKey:@"alert"] isKindOfClass:[NSString class]]) {
+        displayedMessage = [[notification objectForKey:@"aps"] objectForKey:@"alert"];
     } else {
-        displayedMessage = [[[params objectForKey:@"aps"] objectForKey:@"alert"] objectForKey:@"body"];
+        displayedMessage = [[[notification objectForKey:@"aps"] objectForKey:@"alert"] objectForKey:@"body"];
     }
     
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];

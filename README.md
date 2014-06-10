@@ -325,7 +325,8 @@ The configuration
 |LocationServices->locationCacheLifespan|1 hr|lifespan of location coordinates before they are considered expired|EngageExpirationParser String|
 |LocationServices->coordinatesPlacemarkTimeout|15 sec|timeout on acquiring CLPlacemark before event is posted without that information|EngageExpirationParser String|
 |LocationServices->coordinatesAcquisitionTimeout|15 sec|timeout on acquiring CLLocation before event is posted without that information|EngageExpirationParser String|
-|LocationServices->enabled|YES|Are Location services enabled for UBF events|Boolean| 
+|LocationServices->enabled|YES|Are Location services enabled for UBF events|Boolean|
+|Augmentation->augmentationTimeout|15 sec|timeout for augmenting UBF events|EngageExpirationParser String|
 
 
 ## EngageExpirationParser

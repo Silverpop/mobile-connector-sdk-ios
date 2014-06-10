@@ -27,6 +27,10 @@
 		196246931938FDA80038B453 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1962468E1938BE470038B453 /* EngageConfigDefaults.plist */; };
 		197BBFF61946A128001F925C /* EngageConfigManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BBFF51946A128001F925C /* EngageConfigManagerTests.m */; };
 		197BBFF91946A68B001F925C /* XMLAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BBFF81946A68B001F925C /* XMLAPIManager.m */; };
+		197BC00319472A8C001F925C /* UBFAugmentationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BC00219472A8C001F925C /* UBFAugmentationManager.m */; };
+		197BC00A19472AFB001F925C /* UBFCoordinatesAugmentationPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BC00919472AFB001F925C /* UBFCoordinatesAugmentationPlugin.m */; };
+		197BC00E19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BC00D19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m */; };
+		197BC01119473AF8001F925C /* UBFAugmentationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BC01019473AF8001F925C /* UBFAugmentationOperation.m */; };
 		198A2D4019466D3400FF7AD8 /* XMLAPITest.m in Sources */ = {isa = PBXBuildFile; fileRef = 198A2D3F19466D3400FF7AD8 /* XMLAPITest.m */; };
 		198A2D421946749300FF7AD8 /* UBFManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 198A2D411946749300FF7AD8 /* UBFManagerTests.m */; };
 		199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */; };
@@ -104,6 +108,15 @@
 		197BBFF51946A128001F925C /* EngageConfigManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConfigManagerTests.m; sourceTree = "<group>"; };
 		197BBFF71946A68B001F925C /* XMLAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAPIManager.h; sourceTree = "<group>"; };
 		197BBFF81946A68B001F925C /* XMLAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIManager.m; sourceTree = "<group>"; };
+		197BC00119472A8C001F925C /* UBFAugmentationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFAugmentationManager.h; sourceTree = "<group>"; };
+		197BC00219472A8C001F925C /* UBFAugmentationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFAugmentationManager.m; sourceTree = "<group>"; };
+		197BC00819472AFB001F925C /* UBFCoordinatesAugmentationPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFCoordinatesAugmentationPlugin.h; sourceTree = "<group>"; };
+		197BC00919472AFB001F925C /* UBFCoordinatesAugmentationPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFCoordinatesAugmentationPlugin.m; sourceTree = "<group>"; };
+		197BC00B19472B1C001F925C /* UBFAugmentationPluginProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBFAugmentationPluginProtocol.h; sourceTree = "<group>"; };
+		197BC00C19472B68001F925C /* UBFPlacemarkAugmentationPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFPlacemarkAugmentationPlugin.h; sourceTree = "<group>"; };
+		197BC00D19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFPlacemarkAugmentationPlugin.m; sourceTree = "<group>"; };
+		197BC00F19473AF8001F925C /* UBFAugmentationOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFAugmentationOperation.h; sourceTree = "<group>"; };
+		197BC01019473AF8001F925C /* UBFAugmentationOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFAugmentationOperation.m; sourceTree = "<group>"; };
 		198A2D3F19466D3400FF7AD8 /* XMLAPITest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPITest.m; sourceTree = "<group>"; };
 		198A2D411946749300FF7AD8 /* UBFManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManagerTests.m; sourceTree = "<group>"; };
 		199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManagerTests.m; sourceTree = "<group>"; };
@@ -300,6 +313,30 @@
 			name = model;
 			sourceTree = "<group>";
 		};
+		197BBFFA19472A15001F925C /* augmentation */ = {
+			isa = PBXGroup;
+			children = (
+				197BC00419472AC1001F925C /* plugins */,
+				197BC00119472A8C001F925C /* UBFAugmentationManager.h */,
+				197BC00219472A8C001F925C /* UBFAugmentationManager.m */,
+				197BC00F19473AF8001F925C /* UBFAugmentationOperation.h */,
+				197BC01019473AF8001F925C /* UBFAugmentationOperation.m */,
+			);
+			name = augmentation;
+			sourceTree = "<group>";
+		};
+		197BC00419472AC1001F925C /* plugins */ = {
+			isa = PBXGroup;
+			children = (
+				197BC00819472AFB001F925C /* UBFCoordinatesAugmentationPlugin.h */,
+				197BC00919472AFB001F925C /* UBFCoordinatesAugmentationPlugin.m */,
+				197BC00B19472B1C001F925C /* UBFAugmentationPluginProtocol.h */,
+				197BC00C19472B68001F925C /* UBFPlacemarkAugmentationPlugin.h */,
+				197BC00D19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m */,
+			);
+			name = plugins;
+			sourceTree = "<group>";
+		};
 		B26FCA3A17A9868300629BC9 /* Private */ = {
 			isa = PBXGroup;
 			children = (
@@ -400,6 +437,7 @@
 		B2C2A8F517A9919C0058311A /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				197BBFFA19472A15001F925C /* augmentation */,
 				190753FF193BA18700C6AE2E /* db */,
 				190753FE193BA16300C6AE2E /* network */,
 				190753F4193B987800C6AE2E /* deeplinking */,
@@ -574,15 +612,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				197BC00A19472AFB001F925C /* UBFCoordinatesAugmentationPlugin.m in Sources */,
 				190D7CDA1907360000432B88 /* EngageEvent.m in Sources */,
+				197BC00E19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m in Sources */,
 				B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */,
 				1929A3491936714100D3F044 /* EngageExpirationParser.m in Sources */,
 				B2C2A90517A9919C0058311A /* EngageClient.m in Sources */,
 				1919708519251EA700C75CD8 /* EngageDeepLinkManager.m in Sources */,
 				B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */,
 				1919707E1925064A00C75CD8 /* EngageEventLocationManager.m in Sources */,
+				197BC00319472A8C001F925C /* UBFAugmentationManager.m in Sources */,
 				B2C2A90717A9919C0058311A /* ResultDictionary.m in Sources */,
 				B2C2A90817A9919C0058311A /* UBF.m in Sources */,
+				197BC01119473AF8001F925C /* UBFAugmentationOperation.m in Sources */,
 				196246921938D2990038B453 /* EngageEventWrapper.m in Sources */,
 				B2C2A90917A9919C0058311A /* UBFClient.m in Sources */,
 				B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */,

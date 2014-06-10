@@ -22,5 +22,6 @@
 - (NSNumber *)numberConfigForGeneralFieldName:(NSString *)generalFieldConstantName;
 - (NSString *)configForLocationFieldName:(NSString *)locationFieldConstantName;
 - (NSNumber *)numberConfigForLocalStoreFieldName:(NSString *)localStoreFieldConstantName;
+- (NSString *)configForAugmentationServiceFieldName:(NSString *)augmentationServiceFieldConstantName;
 
 @end

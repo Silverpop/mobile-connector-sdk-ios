@@ -70,6 +70,9 @@
 // Plist LocalEventStore constants.
 #define PLIST_LOCAL_STORE_EVENTS_EXPIRE_AFTER_DAYS @"expireLocalEventsAfterNumDays"
 
+// Plist Augmentation services.
+#define PLIST_AUGMENTATION_SERVICE_TIMEOUT @"augmentationTimeout"
+
 @interface EngageConfig : NSUserDefaults
 
 + (NSString *) deviceId;

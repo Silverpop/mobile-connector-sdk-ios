@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.resources = ["EngageSDK/Supporting Files/MobileDeepLinkingConfig.json", "EngageSDK/Supporting Files/EngageConfigDefaults.plist"]
 
   s.resource_bundles = {
-    'EngageConfigPlist' => ['EngageSDK/EngageConfig.plist']
+    'EngageConfigPlist' => ['EngageSDK/Supporting Files/EngageConfigDefaults.plist']
   }
       
   s.subspec 'AFNetworking' do |net|

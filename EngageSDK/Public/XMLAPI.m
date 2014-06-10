@@ -8,6 +8,7 @@
 
 #import "XMLAPI.h"
 #import "EngageConfig.h"
+#import "EngageConfigManager.h"
 
 #define COLUMN (@"COLUMN")
 #define SYNC_FIELD (@"SYNC_FIELD")
@@ -18,6 +19,22 @@
 @end
 
 @implementation XMLAPI
+
+int const COLUMN_TYPE_TEXT = 0;
+int const COLUMN_TYPE_YES_NO = 1;
+int const COLUMN_TYPE_NUMERIC = 2;
+int const COLUMN_TYPE_DATE = 3;
+int const COLUMN_TYPE_TIME = 4;
+int const COLUMN_TYPE_COUNTRY = 5;
+int const COLUMN_TYPE_SELECT_ONE = 6;
+int const COLUMN_TYPE_SEGMENTING = 8;
+int const COLUMN_TYPE_SMS_OPT_IN = 13;
+int const COLUMN_TYPE_SMS_OPT_OUT_DATE = 14;
+int const COLUMN_TYPE_SMS_PHONE_NUMBER = 15;
+int const COLUMN_TYPE_PHONE_NUMBER = 16;
+int const COLUMN_TYPE_TIMESTAMP = 17;
+int const COLUMN_TYPE_MULTI_SELECT = 20;
+
 
 + (id)resourceNamed:(NSString *)namedResource {
     XMLAPI *api = [[self alloc] init];
@@ -135,6 +152,52 @@
      @{
      @"LIST_ID" : listId
      }];
+    return api;
+}
+
+
++ (id)addColumn:(NSString *)column toDatabase:(NSString *)listId ofColumnType:(int)columnType {
+    XMLAPI *api = [self resourceNamed:@"AddListColumn"];
+    [api.bodyElements addEntriesFromDictionary:@{
+                                                 @"LIST_ID" : listId,
+                                                 @"COLUMN_NAME" : column,
+                                                 @"COLUMN_TYPE" : [NSString stringWithFormat:@"%d", columnType],
+                                                 @"DEFAULT" : @""
+    }];
+    return api;
+}
+
+
++ (id)updateUserLastKnownLocation:(CLPlacemark *)lastKnownLocation listId:(NSString* )listID {
+    XMLAPI *api = [self resourceNamed:@"UpdateRecipient"];
+    
+    NSString *lastKnownLocationDateFormat = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME_FORMAT];
+    
+    //Updates the users last known location.
+    NSString *location;
+    if (lastKnownLocation) {
+        location = [NSString stringWithFormat:@"%@, %@ %@, %@ (%@)", [[lastKnownLocation addressDictionary] objectForKey:@"City"], [[lastKnownLocation addressDictionary] objectForKey:@"State"], [[lastKnownLocation addressDictionary] objectForKey:@"ZIP"], [[lastKnownLocation addressDictionary] objectForKey:@"Country"], [[lastKnownLocation addressDictionary] objectForKey:@"CountryCode"]];
+    } else {
+        location = @"UNKNOWN";
+    }
+    
+    NSDate *date = [NSDate date];
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:lastKnownLocationDateFormat];
+    NSString *lastKnownLocationDate = [dateFormatter stringFromDate:date];
+    
+    NSString *recipientId = [EngageConfig primaryUserId] ? [EngageConfig primaryUserId] : [EngageConfig anonymousId];
+    
+    NSString *lastKnownLocationColumnName = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION];
+    NSString *lastKnownLocationTime = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME];
+    
+    [api.bodyElements addEntriesFromDictionary:@{
+                                                 @"LIST_ID" : listID,
+                                                 @"RECIPIENT_ID" : recipientId,
+                                                 @"COLUMN" : @
+                                                         {@"NAME" : lastKnownLocationColumnName, @"VALUE" : location, @"NAME" : lastKnownLocationTime, @"VALUE" : lastKnownLocationDate}
+    }];
+    
     return api;
 }
 

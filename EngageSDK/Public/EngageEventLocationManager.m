@@ -9,6 +9,7 @@
 #import "EngageEventLocationManager.h"
 #import "EngageExpirationParser.h"
 #import "EngageEventWrapper.h"
+#import "XMLAPIClient.h"
 
 @interface EngageEventLocationManager ()
 
@@ -123,6 +124,13 @@
                 
                 //Send a system wide NSNotificationCenter message notifing interested parties that the CLPlacemark has been determined.
                 [[NSNotificationCenter defaultCenter] postNotificationName:LOCATION_UPDATED_NOTIFICATION object:nil];
+                
+                NSString *listId = [[EngageConfigManager sharedInstance] configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID];
+                XMLAPIClient *client = [XMLAPIClient client];
+                XMLAPI *updateUserKnownLocation = [XMLAPI updateUserLastKnownLocation:self.currentPlacemarkCache listId:listId];
+                [client postResource:updateUserKnownLocation success:^(ResultDictionary *ERXML) {
+                    NSLog(@"Updated user last known location to %@", self.currentPlacemarkCache);
+                } failure:nil];
             }
         }];
     } else {
@@ -228,8 +236,10 @@
                     [ubfEvent setAttribute:[cm fieldNameForUBF:PLIST_UBF_LOCATION_NAME] value:[NSString stringWithFormat:@"%@", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"Name"]]];
                 }
                 
+                NSString *location;
                 if (![[ubfEvent attributes] objectForKey:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS]]) {
-                    [ubfEvent setAttribute:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS] value:[NSString stringWithFormat:@"%@, %@ %@, %@ (%@)", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"City"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"State"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"ZIP"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"Country"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"CountryCode"]]];
+                    location = [NSString stringWithFormat:@"%@, %@ %@, %@ (%@)", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"City"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"State"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"ZIP"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"Country"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"CountryCode"]];
+                    [ubfEvent setAttribute:[cm fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS] value:location];
                 }
             }
         }

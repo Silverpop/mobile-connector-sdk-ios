@@ -9,6 +9,8 @@
 	</dict>
 	<key>General</key>
 	<dict>
+		<key>databaseListId</key>
+		<string>23949</string>
 		<key>ubfEventCacheSize</key>
 		<integer>3</integer>
 		<key>defaultCurrentCampaignExpiration</key>
@@ -64,6 +66,12 @@
 	</dict>
 	<key>LocationServices</key>
 	<dict>
+		<key>lastKnownLocationDateFormat</key>
+		<string>yyyy&apos;-&apos;MM&apos;-&apos;dd</string>
+		<key>lastKnownLocationTimestampColumn</key>
+		<string>Last Location Address Time</string>
+		<key>lastKnownLocationColumn</key>
+		<string>Last Location Address</string>
 		<key>locationDistanceFilter</key>
 		<string>10</string>
 		<key>locationPrecisionLevel</key>

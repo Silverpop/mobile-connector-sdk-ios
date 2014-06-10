@@ -55,6 +55,7 @@
 //Plist General constants.
 #define PLIST_GENERAL_DEFAULT_CURRENT_CAMPAIGN_EXPIRATION @"defaultCurrentCampaignExpiration"
 #define PLIST_GENERAL_UBF_EVENT_CACHE_SIZE @"ubfEventCacheSize"
+#define PLIST_GENERAL_DATABASE_LIST_ID @"databaseListId"
 
 //Plist Location constants.
 #define PLIST_LOCATION_COORDINATES_ACQUISITION_TIMEOUT @"coordinatesAcquisitionTimeout"
@@ -62,6 +63,9 @@
 #define PLIST_LOCATION_LOCATION_PRECISION_LEVEL @"locationPrecisionLevel"
 #define PLIST_LOCATION_LOCATION_CACHE_LIFESPAN @"locationCacheLifespan"
 #define PLIST_LOCATION_LOCATION_DISTANCE_FILTER @"locationDistanceFilter"
+#define PLIST_LOCATION_LAST_KNOWN_LOCATION @"lastKnownLocationColumn"
+#define PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME @"lastKnownLocationTimestampColumn"
+#define PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME_FORMAT @"lastKnownLocationDateFormat"
 
 // Plist LocalEventStore constants.
 #define PLIST_LOCAL_STORE_EVENTS_EXPIRE_AFTER_DAYS @"expireLocalEventsAfterNumDays"

@@ -8,6 +8,8 @@
 
 #import "UBFManager.h"
 #import "UBF.h"
+#import "XMLAPI.h"
+#import "XMLAPIClient.h"
 #import "UBFClient.h"
 #import "EngageConfig.h"
 #import "EngageDeepLinkManager.h"
@@ -85,6 +87,22 @@ __strong static UBFManager *_sharedInstance = nil;
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             [defaults setObject:@"YES" forKey:kEngageClientInstalled];
             [defaults synchronize];
+            
+            //If LocationServices are enabled then we need to add the Last known location fields to the database.
+            if ([[EngageConfigManager sharedInstance] locationServicesEnabled]) {
+                XMLAPIClient *xmlApiClient = [XMLAPIClient createClient:clientId secret:secret token:refreshToken host:hostUrl connectSuccess:nil failure:nil];
+                
+                NSString *lastKnownLocationColumnName = [_sharedInstance.ecm configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION];
+                NSString *lastKnownLocationTime = [_sharedInstance.ecm configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME];
+                
+                XMLAPI *addLastKnownLocationColumn = [XMLAPI addColumn:lastKnownLocationColumnName toDatabase:[_sharedInstance.ecm configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID] ofColumnType:COLUMN_TYPE_TEXT];
+                XMLAPI *addLastKnownLocationTimeColumn = [XMLAPI addColumn:lastKnownLocationTime toDatabase:[_sharedInstance.ecm configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID] ofColumnType:COLUMN_TYPE_DATE];
+                
+                [xmlApiClient postResource:addLastKnownLocationColumn success:nil failure:nil];
+                [xmlApiClient postResource:addLastKnownLocationTimeColumn success:nil failure:nil];
+            }
+            
+            
         }
         
         // start session
@@ -206,7 +224,7 @@ __strong static UBFManager *_sharedInstance = nil;
         //If the event information was actually populated we need to update the EngageEvent status
         if (eventWithLocation != nil) {
             engageEvent.eventJson = [eventWithLocation jsonValue];
-            engageEvent.eventStatus = NOT_POSTED;
+            engageEvent.eventStatus = [NSNumber numberWithInt:NOT_POSTED];
         }
     } else {
         //Location Services are not enabled so continue with the normal flow.

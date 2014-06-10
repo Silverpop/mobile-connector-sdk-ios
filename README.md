@@ -8,26 +8,95 @@ Silverpop Engage SDK for iOS (a.k.a. the "Silverpop Mobile Connector")
 EngageSDK is a Engage API wrapper library for iOS development.
 The goal is to provide a library that is simple to setup and use for communicating remotely with our Silverpop Engage Database system.
 
-
 ## Features
 
-EngageSDK is a wrapper for the Engage Database XMLAPI and JSON Univeral Events. Before you can post any data, you must create a client configured with your OAuth 2 credentials provided by the Engage Portal.
+EngageSDK is a wrapper for the Engage Database XMLAPI and JSON Universal Events. The SDK assists developers in interacting with both the XMLAPI and JSON Universal Events (UBF) web services. All interaction with the Engage web services require that you first establish a secure connection with Engage via the OAuth 2 credentials you receive from the Engage Portal. Although XMLAPI and UBF share certain components the SDK divides the interaction with each module into separate components namely UBFManager and XMLAPIManager. 
+
+### General Notes
+- sample-config.h file to place your credentials and such in.
+- Waits for authentication before events are posted.
+
+### UBFManager
+
+The UBFManager manages posting UBF events through the Engage JSON Universal Events web services. A UBFManager singleton instance should be created in your AppDelegate class. Failing to initialize the UBFManager in your AppDelegate and rather somewhere else in your application may lead to certain UBF events such as "installed" or "session started" from being captured since they may occur before anywhere else in your application has the opportunity to initialize an instance of the UBFManager. 
+
+Create UBFManager instance in your AppDelegate
+```objective-c
+UBFManager *ubfManger = [UBFManager createClient:ENGAGE_CLIENT_ID
+                                          secret:ENGAGE_SECRET
+                                           token:ENGAGE_REFRESH_TOKEN
+                                            host:ENGAGE_BASE_URL
+                                  connectSuccess:^(AFOAuthCredential *credential) {
+        NSLog(@"Successfully connected to Engage API : Credential %@", credential);
+    } failure:^(NSError *error) {
+        NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
+    }];
+```
+Notes about UBFManager creation. The UBFManager transparently handles network reachability, event persistence, and client authentication. Initial creation of the UBFManager will establish the OAuth 2 connection to the Engage service using the credentials that you provide which you received from the Engage portal. UBF events may be immediately posted to the UBFManager even before a successful authentication connection has been established. UBF events that are posted to the manager are simply queued and persisted until the authentication is successful and then they are flushed to Engage. The UBFManager will also queue and persist the events locally if an event is posted while the device does not currently have network reachability. If the application is closed or the device powered down before network reachability has been regained then the events will be posted the next time the application is opened. The local events are durable under all circumstances other than the application being deleted from the device or the SDK user deleting them from the EngageLocalEventStore. 
+
+After initial UBFManager creation you may reference your singleton anytime with
+```objective-c
+UBFManager *ubfManager = [UBFManager sharedInstance];
+```
+
+### UBFManager Operations
+
+The goal of UBFManager is serve the simple purpose of posting UBF Universal Events to Engage while masking the more complicated management tasks such as (network reachability, persistence, and authentication) from the SDK user. 
+
+* tracking UBF events - Posts your individual events to Engage. Local cache is taken into consideration and events are not posted until "ubfEventCacheSize" configuration value is reached. Once that value is reached then the events are batched and sent to Engage to reduce network traffic. You may set the value of "ubfEventCacheSize" if you do not wish for local caching to take palce. 
+* handleLocalNotification - 
+* handlePushNotificationReceived
+* handleNotificationOpened
+* handleExternalURLOpened
+
+### XMLAPIManager
+
+
+## Configuration Values
+|Configuration Name|Default Value|Meaning|Format|
+|------------------|-------------|-------|
+|expireLocalEventsAfterNumDays|30 days|Number of days before engage events are purged from local storage|Number|
+|databaseListId|<your list id>|Engage Database ListID from Engage Portal|String|
+|ubfEventCacheSize|3|Events to cache locally before batch post|Number|
+|defaultCurrentCampaignExpiration|1 day|time before current campaign expires by default|EngageExpirationParser String|
+
+
+
+
+## EngageExpirationParser
+
+
+## Installing SDK
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```objective-c
+XMLAPIManager
 XMLAPIClient *client = [XMLAPIClient createClient:ENGAGE_CLIENT_ID
                                            secret:ENGAGE_SECRET
                                             token:ENGAGE_REFRESH_TOKEN
                                              host:ENGAGE_BASE_URL];
-```
-
-Once you have configured your client, you should connect to the Engage OAuth 2 provider.
-
-```objective-c
-[client connectSuccess:^(AFOAuthCredential *credential) {
-    NSLog(@"SUCCESS");
-} failure:^(NSError *error) {
-    NSLog(@"FAIL");
-}];
 ```
 
 

@@ -52,13 +52,51 @@ The goal of UBFManager is serve the simple purpose of posting UBF Universal Even
 ### XMLAPIManager
 
 
-## Configuration Values
+## Configuration
+
+The EngageSDK is configured via 2 plist files. One plist file (EngageConfigDefaults.plist) is provided in the SDK itself and in populated with the values from the Configuration Values table below to promote a turn key SDK approach. The second plist file is a file caused EngageConfig.plist that you (optionally) provide in the supporting files of your project. The EngageConfig.plist values you define always take precedence over the configuration values defined in the EngageConfigDefaults.plist files. It is recommended that you simply copy the EngageConfigDefaults.plist file and rename it to EngageConfig.plist in your project and change the configurations to their desired values.
+
+### EngageConfigManager
+
+The EngageSDK configuration values are stored in memory in a NSDictionary after the application starts up. Receiving those individual configuration values is managed via the EngageConfigManager. The manager queries the NSDictionary for the requested field. EngageConfigManager accepts constants defined in EngageConfig which provide more description names that point to the actual configuration values specified in the Configuration Values table below.
+
+### Configuration Values
+
+The configuration 
+
 |Configuration Name|Default Value|Meaning|Format|
-|------------------|-------------|-------|
-|expireLocalEventsAfterNumDays|30 days|Number of days before engage events are purged from local storage|Number|
-|databaseListId|<your list id>|Engage Database ListID from Engage Portal|String|
-|ubfEventCacheSize|3|Events to cache locally before batch post|Number|
-|defaultCurrentCampaignExpiration|1 day|time before current campaign expires by default|EngageExpirationParser String|
+|------------------|-------------|-------|------|
+|LocalEventStore->expireLocalEventsAfterNumDays|30 days|Number of days before engage events are purged from local storage|Number|
+|General->databaseListId|{YOUR_LIST_ID}|Engage Database ListID from Engage Portal|String|
+|General->ubfEventCacheSize|3|Events to cache locally before batch post|Number|
+|General->defaultCurrentCampaignExpiration|1 day|time before current campaign expires by default|EngageExpirationParser String|
+|ParamFieldNames->ParamCampaignValidFor|CampaignValidFor|External event parameter name to parse Campaign valid from|String|
+|ParamFieldNames->ParamCampaignExpiresAt|CampaignExpiresAt|External event parameter name to parse Campaign expires at from|String|
+|ParamFieldNames->ParamCurrentCampaign|CurrentCampaign|External event parameter name to parse Current Campaign from|String|
+|ParamFieldNames->ParamCallToAction|CallToAction|External event parameter name to parse Call To Action from|String|
+|Session->sessionLifecycleExpiration|30 minutes|time local application session is valid for before triggering session ended event|EngageExpirationParser String|
+|Networking->maxNumRetries|3|Number of times that an event is retried before it is finally marked as failed in the local event store and no more attempts are made|Number|
+|UBFFieldNames->UBFSessionDurationFieldName|Session Duration|JSON Universal Event Session Duration field name|String|
+|UBFFieldNames->UBFTagsFieldName|Tags|JSON Universal Event Tags field name|String|
+|UBFFieldNames->UBFDisplayedMessageFieldName|Displayed Message|JSON Universal Event Displayed Message field name|String|
+|UBFFieldNames->UBFCallToActionFieldName|Call To Action|JSON Universal Event Call To Action field name|String|
+|UBFFieldNames->UBFEventNameFieldName|Event Name|JSON Universal Event name field name|String|
+|UBFFieldNames->UBFGoalNameFieldName|Goal Name|JSON Universal Event goal field name|String|
+|UBFFieldNames->UBFCurrentCampaignFieldName|Campaign Name|JSON Universal Event current campaign field name|String|
+|UBFFieldNames->UBFLastCampaignFieldName|Last Campaign|JSON Universal Event last campaign field name|String|
+|UBFFieldNames->UBFLocationAddressFieldName|Location Address|JSON Universal Event location address field name|String|
+|UBFFieldNames->UBFLocationNameFieldName|Location Name|JSON Universal Event location name field name|String|
+|UBFFieldNames->UBFLatitudeFieldName|Latitude|JSON Universal Event Latitude field name|String|
+|UBFFieldNames->UBFLongitudeFieldName|Longitude|JSON Universal Event Longitude field name|String|
+|LocationServices->lastKnownLocationDateFormat|yyyy'-'MM'-'dd|User last known location date format|String|
+|LocationServices->lastKnownLocationTimestampColumn|Last Location Address Time|Engage DB column name for the last known location time|String|
+|LocationServices->lastKnownLocationColumn|Last Location Address|Engage DB column name for the last known location|String|
+|LocationServices->locationDistanceFilter|10|meters in location change before updated location information delegate is invoked|Number|
+||LocationServices->locationPrecisionLevel|kCLLocationAccuracyBest|desired level of location accuracy|String|
+|LocationServices->locationCacheLifespan|1 hr|lifespan of location coordinates before they are considered expired|EngageExpirationParser String|
+|LocationServices->coordinatesPlacemarkTimeout|15 sec|timeout on acquiring CLPlacemark before event is posted without that information|EngageExpirationParser String|
+|LocationServices->coordinatesAcquisitionTimeout|15 sec|timeout on acquiring CLLocation before event is posted without that information|EngageExpirationParser String|
+|LocationServices->enabled|YES|Are Location services enabled for UBF events|Boolean| 
 
 
 

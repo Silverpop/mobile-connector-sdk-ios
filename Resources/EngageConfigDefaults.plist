@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Augmentation</key>
+	<dict/>
+	<key>augmentationTimeout</key>
+	<string>15 sec</string>
+	<key>LocalEventStore</key>
+	<dict>
+		<key>expireLocalEventsAfterNumDays</key>
+		<integer>30</integer>
+	</dict>
+	<key>General</key>
+	<dict>
+		<key>databaseListId</key>
+		<string>23949</string>
+		<key>ubfEventCacheSize</key>
+		<integer>3</integer>
+		<key>defaultCurrentCampaignExpiration</key>
+		<string>1 day</string>
+	</dict>
+	<key>ParamFieldNames</key>
+	<dict>
+		<key>ParamCampaignValidFor</key>
+		<string>CampaignValidFor</string>
+		<key>ParamCampaignExpiresAt</key>
+		<string>CampaignExpiresAt</string>
+		<key>ParamCurrentCampaign</key>
+		<string>CurrentCampaign</string>
+		<key>ParamCallToAction</key>
+		<string>CallToAction</string>
+	</dict>
+	<key>Session</key>
+	<dict>
+		<key>sessionLifecycleExpiration</key>
+		<string>30 minutes</string>
+	</dict>
+	<key>Networking</key>
+	<dict>
+		<key>maxNumRetries</key>
+		<integer>3</integer>
+	</dict>
+	<key>UBFFieldNames</key>
+	<dict>
+		<key>UBFSessionDurationFieldName</key>
+		<string>Session Duration</string>
+		<key>UBFTagsFieldName</key>
+		<string>Tags</string>
+		<key>UBFDisplayedMessageFieldName</key>
+		<string>Displayed Message</string>
+		<key>UBFCallToActionFieldName</key>
+		<string>Call To Action</string>
+		<key>UBFEventNameFieldName</key>
+		<string>Event Name</string>
+		<key>UBFGoalNameFieldName</key>
+		<string>Goal Name</string>
+		<key>UBFCurrentCampaignFieldName</key>
+		<string>Campaign Name</string>
+		<key>UBFLastCampaignFieldName</key>
+		<string>Last Campaign</string>
+		<key>UBFLocationAddressFieldName</key>
+		<string>Location Address</string>
+		<key>UBFLocationNameFieldName</key>
+		<string>Location Name</string>
+		<key>UBFLatitudeFieldName</key>
+		<string>Latitude</string>
+		<key>UBFLongitudeFieldName</key>
+		<string>Longitude</string>
+	</dict>
+	<key>LocationServices</key>
+	<dict>
+		<key>lastKnownLocationDateFormat</key>
+		<string>yyyy&apos;-&apos;MM&apos;-&apos;dd</string>
+		<key>lastKnownLocationTimestampColumn</key>
+		<string>Last Location Address Time</string>
+		<key>lastKnownLocationColumn</key>
+		<string>Last Location Address</string>
+		<key>locationDistanceFilter</key>
+		<string>10</string>
+		<key>locationPrecisionLevel</key>
+		<string>kCLLocationAccuracyBest</string>
+		<key>locationCacheLifespan</key>
+		<string>1 hr</string>
+		<key>coordinatesPlacemarkTimeout</key>
+		<string>15 sec</string>
+		<key>coordinatesAcquisitionTimeout</key>
+		<string>15 sec</string>
+		<key>enabled</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

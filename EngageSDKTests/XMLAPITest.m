@@ -11,6 +11,7 @@
 #import "XMLAPI.h"
 #import "EngageConfigManager.h"
 #import "sample-config.h"
+#import "XMLAPIManager.h"
 
 @interface XMLAPITest : XCTestCase
 
@@ -45,6 +46,7 @@
     XMLAPI *addLastKnownLocation = [XMLAPI updateUserLastKnownLocation:nil listId:ENGAGE_LIST_ID];
     NSString *xmlEnvelope = [addLastKnownLocation envelope];
     XCTAssertTrue(xmlEnvelope != nil);
+    
 }
 
 @end

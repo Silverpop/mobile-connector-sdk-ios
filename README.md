@@ -12,10 +12,6 @@ The goal is to provide a library that is simple to setup and use for communicati
 
 EngageSDK is a wrapper for the Engage Database XMLAPI and JSON Universal Events. The SDK assists developers in interacting with both the XMLAPI and JSON Universal Events (UBF) web services. All interaction with the Engage web services require that you first establish a secure connection with Engage via the OAuth 2 credentials you receive from the Engage Portal. Although XMLAPI and UBF share certain components the SDK divides the interaction with each module into separate components namely UBFManager and XMLAPIManager. 
 
-### General Notes
-- sample-config.h file to place your credentials and such in.
-- Waits for authentication before events are posted.
-
 ### UBFManager
 
 The UBFManager manages posting UBF events through the Engage JSON Universal Events web services. A UBFManager singleton instance should be created in your AppDelegate class. Failing to initialize the UBFManager in your AppDelegate and rather somewhere else in your application may lead to certain UBF events such as "installed" or "session started" from being captured since they may occur before anywhere else in your application has the opportunity to initialize an instance of the UBFManager. 
@@ -39,17 +35,250 @@ After initial UBFManager creation you may reference your singleton anytime with
 UBFManager *ubfManager = [UBFManager sharedInstance];
 ```
 
+## Universal Behaviors API
+
+Before connecting and sending Universal Behaviors, you should assume a valid user identity either "anonymous" or some other specified identity via XMLAPI.
+
+### Creating an anonymous user
+
+```objective-c
+// Conveniently calls addRecipient and stores anonymousId within EngageConfig
+[[XMLAPIManager sharedInstance] createAnonymousUserToList:ENGAGE_LIST_ID success:^(ResultDictionary *ERXML) {
+    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+        NSLog(@"SUCCESS");
+    }
+    else {
+        NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
+    }
+} failure:^(NSError *error) {
+    NSLog(@"SERVICE FAIL");
+}];
+```
+
+### Identifying a registered user
+
+```objective-c
+
+XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.com" list:ENGAGE_LIST_ID];
+
+[[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientData success:^(ResultDictionary *ERXML) {
+        if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+            NSLog(@"SUCCESS");
+            // VERY IMPORTANT!!!
+            // Universal Behaviors reads this value
+            [EngageConfig storePrimaryUserId:[ERXML valueForShortPath:@"RecipientId"]];
+        }
+        else {
+            NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"SERVICE FAIL");
+    }];
+```
+
+### Convert anonymous user to registered user
+
+```objective-c
+// Conveniently links anonymous user record with the primary user record according to the mergeColumn
+[[XMLAPIManager sharedInstance] updateAnonymousToPrimaryUser:[EngageConfig primaryUserId]
+                                                   list:ENGAGE_LIST_ID
+                                      primaryUserColumn:@"CONTACT_ID"
+                                            mergeColumn:@"MERGE_CONTACT_ID"
+                                                success:^(ResultDictionary *ERXML) {
+                                                    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+                                                        NSLog(@"SUCCESS");
+                                                    }
+                                                    else {
+                                                        NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
+                                                    }
+                                                } failure:^(NSError *error) {
+                                                    NSLog(@"SERVICE FAIL");
+                                                }];
+```
+
+#### Goal Completed
+```objective-c
+[[UBFManager sharedInstance] trackEvent:[UBF goalCompleted:@"LISTENED TO MVSTERMIND" params:nil]];
+```
+
+#### Goal Abandoned
+```objective-c
+[[UBFManager sharedInstance] trackEvent:[UBF goalAbandoned:@"LISTENED TO MVSTERMIND" params:nil]];
+```
+
+#### Named Event with params
+```objective-c
+[[UBFManager sharedInstance] trackEvent:[UBF namedEvent:@"PLAYER LOADED" params:@{ @"Event Source View" : @"HomeViewController", @"Event Tags" : @"MVSTERMIND,Underground" }]];
+```
+
 ### UBFManager Operations
 
 The goal of UBFManager is serve the simple purpose of posting UBF Universal Events to Engage while masking the more complicated management tasks such as (network reachability, persistence, and authentication) from the SDK user. 
 
 * tracking UBF events - Posts your individual events to Engage. Local cache is taken into consideration and events are not posted until "ubfEventCacheSize" configuration value is reached. Once that value is reached then the events are batched and sent to Engage to reduce network traffic. You may set the value of "ubfEventCacheSize" if you do not wish for local caching to take palce. 
-* handleLocalNotification - 
-* handlePushNotificationReceived
-* handleNotificationOpened
-* handleExternalURLOpened
+* handleLocalNotification - utility method invoked SDK user invokes when their application receives a local notificaiton
+* handlePushNotificationReceived - utility method for received push notification. This method also handles searching the notification for EngageSDK parameter values like Current Campaign (configurable).
+* handleNotificationOpened - utility method for opened notifications. Method handles searching the notifications for EngageSDK parameter values like Current Campaign (configurable)
+* handleExternalURLOpened - utility method for external URL opened (email or website deeplink on the device for example) and handles searching the notifications for EngageSDK parameter values like Current Campaign (configurable)
 
 ### XMLAPIManager
+
+The XMLAPIManager manages posting XMLAPI messages to the Engage web services. A XMLAPIManager singleton instance should be created in your AppDelegate class.
+
+Create XMLAPIManager instance in your AppDelegate
+```objective-c
+XMLAPIManager *xmlapiManager = [XMLAPIManager createClient:ENGAGE_CLIENT_ID
+                                          secret:ENGAGE_SECRET
+                                           token:ENGAGE_REFRESH_TOKEN
+                                            host:ENGAGE_BASE_URL
+                                  connectSuccess:^(AFOAuthCredential *credential) {
+        NSLog(@"Successfully connected to Engage XMLAPI : Credential %@", credential);
+    } failure:^(NSError *error) {
+        NSLog(@"Failed to connect to Silverpop XMLAPI .... %@", [error description]);
+    }];
+```
+
+After initial XMLAPIManager creation you may reference your singleton anytime with
+```objective-c
+XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
+```
+
+## Local Event Storage
+
+UBF events are persisted to a local SQLite DB on the user's device. The event can have 1 of 4 status. NOT_POSTED, SUCCESSFULLY_POSTED, FAILED_POST, HOLD. 
+
+*NOT_POSTED 
+**UBF events that are ready to be sent to Engage but currently cannot due to network not being reachable or queue cache size not being met yet.
+*SUCCESSFULLY_POSTED
+**UBF events that have already been successfully posted to Engage. These events will be purged after the configurable amount of time has been reached.
+*FAILED_POST
+**UBF events that were attempted to be posted to Engage for the maximum number of retries. Once in this state no further attempts to post the UBF event will be made.
+*HOLD
+**UBF events in this state have been initially created but have still not had all of their data set by the augmentation service. UBF events that fail to be ran successfully through the augmentation service before their timeouts have been reached will be moved to the NOT_POSTED state and sent to Engage on the next flush. Providing timeouts helps ensure that the events do not become stuck in the HOLD state if certain external augmentation events are never received.
+
+## UBF Event Augmentation Plugin Service
+
+
+
+## EngageSDK Models
+
+EngageSDK has 2 primary models that SDK users should concerns themselves with
+
+### UBF
+
+Utility class for generating JSON Universal Events that are posted to the UBFManager and ultimately sent to Engage. The class maintains a NSDictionary of attributes that are different depending on the event type that is created. Any NSDictionary values that you provide to the utility methods will take precedence over the values that the utility methods pull from the device.
+
+#### UBF Core Values
+
+*Device Version
+*OS Name
+*OS Version
+*App Name
+*App Version
+*Device Id
+*Primary User Id
+*Anonymous Id
+
+### XMLAPI
+
+Post an XMLAPI resource using a helper e.g. SelectRecipientData
+
+```objective-c
+// create a resource encapsulating your request to select by email address
+XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.com" list:ENGAGE_LIST_ID];
+
+[[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientData success:^(ResultDictionary *ERXML) {
+    // SUCCESS = TRUE
+    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+        NSLog(@"SUCCESS");
+    }
+    // SUCCESS != TRUE
+    // This is a specific XMLAPI failure, status 2xx
+    else {
+        NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
+    }
+} failure:^(NSError *error) {
+    // This is a status > 400
+    NSLog(@"SERVICE FAIL");
+}];
+```
+
+## XMLAPI Resources
+
+### Example 1
+
+```xml
+<Envelope>
+    <Body>
+        <SelectRecipientData>
+            <LIST_ID>45654</LIST_ID>
+            <EMAIL>someone@adomain.com</EMAIL>
+            <COLUMN>
+                <NAME>Customer Id</NAME>
+                <VALUE>123-45-6789</VALUE>
+            </COLUMN>
+        </SelectRecipientData>
+    </Body>
+</Envelope>
+```
+
+is equivalent to:
+
+```objective-c
+XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"
+                                             params:@{
+                               @"LIST_ID" : @"45654",
+                               @"EMAIL" : @"someone@adomain.com",
+                               @"COLUMNS" : @{ @"Customer Id" : @"123-45-6789" } }];
+```
+
+or alternately:
+
+```objective-c
+XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"];
+[selectRecipientData addParams:@{ @"LIST_ID" : @"45654", @"EMAIL" : @"someone@adomain.com" }];
+[selectRecipientData addColumns:@{ @"Customer Id" : @"123-45-6789" }];
+```
+
+### Example 2
+
+```xml
+<Envelope>
+    <Body>
+        <SelectRecipientData>
+            <LIST_ID>45654</LIST_ID>
+            <RECIPIENT_ID>702003</RECIPIENT_ID>
+        </SelectRecipientData>
+    </Body>
+</Envelope>
+```
+
+is equivalent to:
+
+```objective-c
+XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData" params:@{@"RECIPIENT_ID" : @"702003"}];
+```
+
+### Example 3
+
+```xml
+<Envelope>
+    <Body>
+        <SelectRecipientData>
+            <LIST_ID>45654</LIST_ID>
+            <EMAIL>someone@adomain.com</EMAIL>
+        </SelectRecipientData>
+    </Body>
+</Envelope>
+```
+
+is equivalent to:
+
+```objective-c
+XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"someone@adomain.com" list:@"45654"];
+```
+
+## Deeplinking
 
 
 ## Configuration
@@ -99,66 +328,25 @@ The configuration
 |LocationServices->enabled|YES|Are Location services enabled for UBF events|Boolean| 
 
 
-
-
 ## EngageExpirationParser
+
+EnagageSDK interacts with a wide array of dates and expiration times. Those values are pulled from both external parameters and internal configurations. To ensure that those values are most accurately interpretted a flexible format was created for the EngageSDK and a special format which will be referred to as the "EngageExpirationParser String". This "EngageExpirationParser String" value can accept any number of time based values and then provides several convenience methods for accessing specific units of time measurement from those parsed values. Units of time are measured from either a reference date that you provide when you create the object or otherwise the the time string is interpreted as a "valid for" value instead of a "expires at" value.
+
+### EngageExpirationExamples
+
+####Assume current date of 6/10/2014 00:00:00
+
+|EngageExpirationParser String|Expiration Date|
+|-----------------------------|---------------|
+|1 day 15m|6/11/2014 00:15:00|
+|15m1d0seconds|6/11/2014 00:15:00|
+|65minutes|6/10/2014 01:05:00|
+|3seconds|6/10/2014 00:00:03|
 
 
 ## Installing SDK
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```objective-c
-XMLAPIManager
-XMLAPIClient *client = [XMLAPIClient createClient:ENGAGE_CLIENT_ID
-                                           secret:ENGAGE_SECRET
-                                            token:ENGAGE_REFRESH_TOKEN
-                                             host:ENGAGE_BASE_URL];
-```
-
-
-Post an XMLAPI resource using a helper e.g. SelectRecipientData
-
-```objective-c
-// create a resource encapsulating your request to select by email address
-XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.com" list:ENGAGE_LIST_ID];
-
-[[XMLAPIClient client] postResource:selectRecipientData success:^(ResultDictionary *ERXML) {
-    // SUCCESS = TRUE
-    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
-        NSLog(@"SUCCESS");
-    }
-    // SUCCESS != TRUE
-    // This is a specific XMLAPI failure, status 2xx
-    else {
-		NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
-    }
-} failure:^(NSError *error) {
-    // This is a status > 400 or a failure of connectivity
-    NSLog(@"SERVICE FAIL");
-}];
-```
 
 ## Before You Release Your App
 
@@ -200,18 +388,6 @@ Using an new or existing iPhone project within Xcode, create a new C header file
 #define ENGAGE_SECRET (@"YOUR SECRET GOES HERE")
 #define ENGAGE_REFRESH_TOKEN (@"YOUR REFRESH TOKEN HERE")
 #define ENGAGE_LIST_ID (@"YOUR LIST ID")
-
-//Param macros default to the values listed below. You can change them if you wish 
-#define CURRENT_CAMPAIGN_PARAM_NAME @"CurrentCampaign"
-#define CALL_TO_ACTION_PARAM_NAME @"CallToAction"
-#define CAMPAIGN_EXTERNAL_EXPIRATION_DATETIME_PARAM @"CampaignEndTimeStamp"
-
-// if your database uses a unique key different from Recipient/Contact ID
-#define ENGAGE_SYNC_COLUMN_NAME (@"YOUR SYNC COLUMN NAME GOES HERE")
-
-// For supporting the merging of anonymous activity with registered users
-// merge columns must be created manually with Engage Database portal 
-#define ENGAGE_MERGE_COLUMN_NAME (@"YOUR MERGE COLUMN NAME GOES HERE")
 ```
 
 Configure the defines with your values and save changes and close your project if it is open. 
@@ -225,7 +401,7 @@ touch Podfile
 Edit this file to add the EngageSDK dependency
 
 ```
-pod 'EngageSDK', '~> 0.1'
+pod 'EngageSDK', '~> 0.2'
 ```
 
 Save and close. 
@@ -258,163 +434,9 @@ Some developers may need to install Xcode Command Line Tools before installing C
 
 If you are having trouble with ruby gems, try performing a gem system update: `gem update --system`
 
-
-## XMLAPI Resources
-
-### Example 1
-
-```xml
-<Envelope>
-	<Body>
-		<SelectRecipientData>
-			<LIST_ID>45654</LIST_ID>
-			<EMAIL>someone@adomain.com</EMAIL>
-			<COLUMN>
-				<NAME>Customer Id</NAME>
-				<VALUE>123-45-6789</VALUE>
-			</COLUMN>
-		</SelectRecipientData>
-	</Body>
-</Envelope>
-```
-
-is equivalent to:
-
-```objective-c
-XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"
-                                             params:@{
-                               @"LIST_ID" : @"45654",
-                               @"EMAIL" : @"someone@adomain.com",
-                               @"COLUMNS" : @{ @"Customer Id" : @"123-45-6789" } }];
-```
-
-or alternately:
-
-```objective-c
-XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"];
-[selectRecipientData addParams:@{ @"LIST_ID" : @"45654", @"EMAIL" : @"someone@adomain.com" }];
-[selectRecipientData addColumns:@{ @"Customer Id" : @"123-45-6789" }];
-```
-
-### Example 2
-
-```xml
-<Envelope>
-	<Body>
-		<SelectRecipientData>
-			<LIST_ID>45654</LIST_ID>
-			<RECIPIENT_ID>702003</RECIPIENT_ID>
-		</SelectRecipientData>
-	</Body>
-</Envelope>
-```
-
-is equivalent to:
-
-```objective-c
-XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData" params:@{@"RECIPIENT_ID" : @"702003"}];
-```
-
-### Example 3
-
-```xml
-<Envelope>
-	<Body>
-		<SelectRecipientData>
-			<LIST_ID>45654</LIST_ID>
-			<EMAIL>someone@adomain.com</EMAIL>
-		</SelectRecipientData>
-	</Body>
-</Envelope>
-```
-
-is equivalent to:
-
-```objective-c
-XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"someone@adomain.com" list:@"45654"];
-```
-
-## Universal Behaviors API
-
-Before connecting and sending Universal Behaviors, you should assume a valid user identity either "anonymous" or some other specified identity via XMLAPI.
-
-### Creating an anonymous user
-
-```objective-c
-// Conveniently calls addRecipient and stores anonymousId within EngageConfig
-[[XMLAPIClient client] createAnonymousUserToList:ENGAGE_LIST_ID success:^(ResultDictionary *ERXML) {
-    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
-        NSLog(@"SUCCESS");
-    }
-    else {
-        NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
-    }
-} failure:^(NSError *error) {
-    NSLog(@"SERVICE FAIL");
-}];
-```
-
-### Identifying a registered user
-
-```objective-c
-
-XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.com" list:ENGAGE_LIST_ID];
-
-[[XMLAPIClient client] postResource:selectRecipientData success:^(ResultDictionary *ERXML) {
-    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
-        NSLog(@"SUCCESS");
-        // VERY IMPORTANT!!! 
-        // Universal Behaviors reads this value
-        [EngageConfig storePrimaryUserId:[ERXML valueForShortPath:@"RecipientId"]];
-    }
-    else {
-	NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
-    }
-} failure:^(NSError *error) {
-    NSLog(@"SERVICE FAIL");
-}];
-```
-
-### Convert anonymous user to registered user
-
-```objective-c
-// Conveniently links anonymous user record with the primary user record according to the mergeColumn
-[[XMLAPIClient client] updateAnonymousToPrimaryUser:[EngageConfig primaryUserId]
-                                               list:ENGAGE_LIST_ID
-                                  primaryUserColumn:@"CONTACT_ID"
-                                        mergeColumn:@"MERGE_CONTACT_ID"
-                                            success:^(ResultDictionary *ERXML) {
-    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
-    	NSLog(@"SUCCESS");
-    }
-    else {
-        NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
-    }
-} failure:^(NSError *error) {
-    NSLog(@"SERVICE FAIL");
-}];
-```
-
 ### Sessions
 
 EngageSDK implements predefined Session events for Universal Behaviors. Sessions are configured to timeout if a user leaves your app for at least 5 minutes. At the end of the Session, duration is computed excluding any portion of inactivity.
-
-### Logging to events cache
-
-#### Goal Completed
-```objective-c
-[[UBFClient client] trackingEvent:[UBF goalCompleted:@"LISTENED TO MVSTERMIND" params:nil]];
-```
-
-#### Goal Abandoned
-```objective-c
-[[UBFClient client] trackingEvent:[UBF goalAbandoned:@"LISTENED TO MVSTERMIND" params:nil]];
-```
-
-#### Named Event with params
-```objective-c
-[[UBFClient client] trackingEvent:[UBF namedEvent:@"PLAYER LOADED" params:@{ @"Event Source View" : @"HomeViewController", @"Event Tags" : @"MVSTERMIND,Underground" }]];
-```
 
 #### Notifications
 Both local and push notifications require that the user of the SDK enable their application for subscribing and listening for the notifications. These hooks for the notifications are defined inside your application's UIApplicationDelegage (AppDelegate) implementation class. Full reference for those hooks can be found [here] (https://developer.apple.com/library/ios/documentation/uikit/reference/uiapplicationdelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIApplicationDelegate). Examples of using the local and push notification hooks are found below.
@@ -528,7 +550,7 @@ Events are cached and sent in larger batches for efficiency. The timing of the a
 
 #### Manually post all events in cache
 ```objective-c
-[[UBFClient client] postEventCache];
+[[UBFManager sharedInstance] postEventCache];
 ```
 
 ### Further Questions, Issues, or Comments?

@@ -54,7 +54,7 @@ The goal of UBFManager is serve the simple purpose of posting UBF Universal Even
 
 ## Configuration Values
 |Configuration Name|Default Value|Meaning|Format|
-|------------------|-------------|-------|
+|------------------|-------------|-------|------|
 |expireLocalEventsAfterNumDays|30 days|Number of days before engage events are purged from local storage|Number|
 |databaseListId|<your list id>|Engage Database ListID from Engage Portal|String|
 |ubfEventCacheSize|3|Events to cache locally before batch post|Number|

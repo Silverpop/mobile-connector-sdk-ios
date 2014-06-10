@@ -93,6 +93,18 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
             for (id keyField in element) {
                 [syncFields appendFormat:nameValueForm,SYNC_FIELD,keyField,[element objectForKey:keyField]];
             }
+        } else if ([key isEqualToString:@"COLUMN"]) {
+            id obj = [_bodyElements objectForKey:key];
+            if ([obj isKindOfClass:[NSArray class]]) {
+                [body appendString:@"<COLUMN>"];
+                for (id key in obj) {
+                    NSDictionary *keyValue = (NSDictionary *)key;
+                    [body appendFormat:@"<NAME>%1$@</NAME><VALUE>%2$@</VALUE>", [keyValue objectForKey:@"NAME"], [keyValue objectForKey:@"VALUE"]];
+                }
+                [body appendString:@"</COLUMN>"];
+            } else if ([obj isKindOfClass:[NSDictionary class]]) {
+                NSLog(@"NSDictionary");
+            }
         }
         else {
             [body appendFormat:@"<%1$@>%2$@</%1$@>",key,[_bodyElements objectForKey:key]];
@@ -195,8 +207,12 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
                                                  @"LIST_ID" : listID,
                                                  @"RECIPIENT_ID" : recipientId,
                                                  @"COLUMN" : @
-                                                         {@"NAME" : lastKnownLocationColumnName, @"VALUE" : location, @"NAME" : lastKnownLocationTime, @"VALUE" : lastKnownLocationDate}
+                                                     [@{@"NAME" : lastKnownLocationColumnName, @"VALUE" : location}, @{@"NAME" : lastKnownLocationTime, @"VALUE" : lastKnownLocationDate}]
     }];
+    
+    
+    
+    
     
     return api;
 }

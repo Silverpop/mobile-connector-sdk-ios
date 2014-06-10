@@ -43,7 +43,8 @@
 
 - (void)testUpdateRecipientLastKnownLocation {
     XMLAPI *addLastKnownLocation = [XMLAPI updateUserLastKnownLocation:nil listId:ENGAGE_LIST_ID];
-    XCTAssertTrue(addLastKnownLocation != nil);
+    NSString *xmlEnvelope = [addLastKnownLocation envelope];
+    XCTAssertTrue(xmlEnvelope != nil);
 }
 
 @end

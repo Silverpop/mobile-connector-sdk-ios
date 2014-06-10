@@ -26,6 +26,7 @@
 		196246921938D2990038B453 /* EngageEventWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 196246911938D2990038B453 /* EngageEventWrapper.m */; };
 		196246931938FDA80038B453 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1962468E1938BE470038B453 /* EngageConfigDefaults.plist */; };
 		197BBFF61946A128001F925C /* EngageConfigManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BBFF51946A128001F925C /* EngageConfigManagerTests.m */; };
+		197BBFF91946A68B001F925C /* XMLAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BBFF81946A68B001F925C /* XMLAPIManager.m */; };
 		198A2D4019466D3400FF7AD8 /* XMLAPITest.m in Sources */ = {isa = PBXBuildFile; fileRef = 198A2D3F19466D3400FF7AD8 /* XMLAPITest.m */; };
 		198A2D421946749300FF7AD8 /* UBFManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 198A2D411946749300FF7AD8 /* UBFManagerTests.m */; };
 		199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */; };
@@ -101,6 +102,8 @@
 		196246901938D2990038B453 /* EngageEventWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventWrapper.h; sourceTree = "<group>"; };
 		196246911938D2990038B453 /* EngageEventWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventWrapper.m; sourceTree = "<group>"; };
 		197BBFF51946A128001F925C /* EngageConfigManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConfigManagerTests.m; sourceTree = "<group>"; };
+		197BBFF71946A68B001F925C /* XMLAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAPIManager.h; sourceTree = "<group>"; };
+		197BBFF81946A68B001F925C /* XMLAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIManager.m; sourceTree = "<group>"; };
 		198A2D3F19466D3400FF7AD8 /* XMLAPITest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPITest.m; sourceTree = "<group>"; };
 		198A2D411946749300FF7AD8 /* UBFManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManagerTests.m; sourceTree = "<group>"; };
 		199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManagerTests.m; sourceTree = "<group>"; };
@@ -407,6 +410,8 @@
 				B2C2A8FA17A9919C0058311A /* EngageSDK.h */,
 				191970771925030900C75CD8 /* UBFManager.h */,
 				191970781925030900C75CD8 /* UBFManager.m */,
+				197BBFF71946A68B001F925C /* XMLAPIManager.h */,
+				197BBFF81946A68B001F925C /* XMLAPIManager.m */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -583,6 +588,7 @@
 				B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */,
 				1929A3441936197D00D3F044 /* EngageConfigManager.m in Sources */,
 				19153DD7190817F10086631B /* EngageLocalEventStore.m in Sources */,
+				197BBFF91946A68B001F925C /* XMLAPIManager.m in Sources */,
 				B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */,
 				191970791925030900C75CD8 /* UBFManager.m in Sources */,
 			);

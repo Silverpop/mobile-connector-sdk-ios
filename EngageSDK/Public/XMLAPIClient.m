@@ -87,18 +87,22 @@ __strong static XMLAPIClient *_sharedClient = nil;
     PostResourceBlock postResource = ^(void) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[api envelope], @"xml", nil];
         
-        [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [self.credential accessToken]] forHTTPHeaderField:@"Authorization"];
-        self.responseSerializer = [AFXMLParserResponseSerializer serializer];
+        [_sharedClient.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [self.credential accessToken]] forHTTPHeaderField:@"Authorization"];
+        _sharedClient.responseSerializer = [AFXMLParserResponseSerializer serializer];
         
-        [self POST:@"/XMLAPI" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [_sharedClient POST:@"/XMLAPI" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             ResultDictionary *ERXML = [EngageResponseXML decode:responseObject];
-            success(ERXML);
+            if (success) {
+                success(ERXML);
+            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            failure(error);
+            if (failure) {
+                failure(error);
+            }
         }];
     };
     
-    if (![self isAuthenticated]) {
+    if (![_sharedClient isAuthenticated]) {
         if (self.hasBeenInitiallyAuthenticated) {
             //We need to refresh our token.
             NSLog(@"%@",@"Session expired...attempting to reconnect");

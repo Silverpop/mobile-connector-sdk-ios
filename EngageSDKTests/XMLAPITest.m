@@ -33,11 +33,7 @@
 
 - (void)testAddListColumn
 {
-    
     NSString *lastKnownLocationColumnName = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION];
-    NSString *lastKnownLocationTime = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME];
-    NSString *lastKnownLocationTimeFormat = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME_FORMAT];
-    
     XMLAPI *addListColumn = [XMLAPI addColumn:lastKnownLocationColumnName toDatabase:ENGAGE_LIST_ID ofColumnType:COLUMN_TYPE_DATE];
     NSLog(@"AddListColumn XMLAPI : %@", addListColumn);
 }

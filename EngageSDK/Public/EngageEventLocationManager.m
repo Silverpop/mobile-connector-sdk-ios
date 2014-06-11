@@ -125,12 +125,14 @@
                 //Send a system wide NSNotificationCenter message notifing interested parties that the CLPlacemark has been determined.
                 [[NSNotificationCenter defaultCenter] postNotificationName:LOCATION_UPDATED_NOTIFICATION object:nil];
                 
-                NSString *listId = [[EngageConfigManager sharedInstance] configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID];
-                XMLAPIClient *client = [XMLAPIClient client];
-                XMLAPI *updateUserKnownLocation = [XMLAPI updateUserLastKnownLocation:self.currentPlacemarkCache listId:listId];
-                [client postResource:updateUserKnownLocation success:^(ResultDictionary *ERXML) {
-                    NSLog(@"Updated user last known location to %@", self.currentPlacemarkCache);
-                } failure:nil];
+                if ([EngageConfig primaryUserId]) {
+                    NSString *listId = [[EngageConfigManager sharedInstance] configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID];
+                    XMLAPIClient *client = [XMLAPIClient client];
+                    XMLAPI *updateUserKnownLocation = [XMLAPI updateUserLastKnownLocation:self.currentPlacemarkCache listId:listId];
+                    [client postResource:updateUserKnownLocation success:^(ResultDictionary *ERXML) {
+                        NSLog(@"Updated user last known location to %@", self.currentPlacemarkCache);
+                    } failure:nil];
+                }
             }
         }];
     } else {

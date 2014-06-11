@@ -115,4 +115,19 @@ __strong static XMLAPIManager *_sharedInstance = nil;
     } failure:failure];
 }
 
+//-(void) testAddListColumnToUserDatabase {
+//    
+//}
+//
+//-(void) testAddUserLocationToDatabase {
+//    
+//    NSString *listId = [[EngageConfigManager sharedInstance] configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID];
+//    XMLAPIClient *client = [XMLAPIClient client];
+//    XMLAPI *updateUserKnownLocation = [XMLAPI updateUserLastKnownLocation:self.currentPlacemarkCache listId:listId];
+//    [client postResource:updateUserKnownLocation success:^(ResultDictionary *ERXML) {
+//        NSLog(@"Updated user last known location to %@", self.currentPlacemarkCache);
+//    } failure:nil];
+//    
+//}
+
 @end

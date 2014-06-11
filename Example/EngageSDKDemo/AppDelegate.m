@@ -14,22 +14,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [EngageSDK initializeSDKClient:ENGAGE_CLIENT_ID secret:ENGAGE_SECRET token:ENGAGE_REFRESH_TOKEN host:ENGAGE_BASE_URL];
+    [EngageConfig storePrimaryUserId:@"jeremy.dyer@makenandbuild.com"];
     
-    [UBFManager createClient:ENGAGE_CLIENT_ID secret:ENGAGE_SECRET token:ENGAGE_REFRESH_TOKEN host:ENGAGE_BASE_URL connectSuccess:^(AFOAuthCredential *credential) {
-        NSLog(@"Successfully connected to Engage API : Credential %@", credential);
-    } failure:^(NSError *error) {
-        NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
-    }];
-    
-    [XMLAPIClient createClient:ENGAGE_CLIENT_ID
-                                               secret:ENGAGE_SECRET
-                                                token:ENGAGE_REFRESH_TOKEN
-                                                 host:ENGAGE_BASE_URL
-                                       connectSuccess:^(AFOAuthCredential *credential) {
-                                           NSLog(@"Successfully connected to Engage API : Credential %@", credential);
-                                       } failure:^(NSError *error) {
-                                           NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
-                                       }];
+    NSString *listId = [[EngageConfigManager sharedInstance] configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID];
+    XMLAPI *addRecipient = [XMLAPI addRecipient:[EngageConfig primaryUserId] list:listId];
+    [[XMLAPIManager sharedInstance] postXMLAPI:addRecipient];
     
     // Override point for customization after application launch.
     return YES;

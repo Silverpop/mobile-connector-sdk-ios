@@ -54,13 +54,13 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
 }
 
 - (void)addElements:(NSDictionary *)elements named:(NSString *)elementName {
-    NSMutableDictionary *syncFields = [NSMutableDictionary dictionary];
+    NSMutableDictionary *fields = [NSMutableDictionary dictionary];
     NSDictionary *existing;
     if ((existing = [_bodyElements objectForKey:elementName])) {
-        [syncFields addEntriesFromDictionary:existing];
+        [fields addEntriesFromDictionary:existing];
     }
-    [syncFields addEntriesFromDictionary:elements];
-    [_bodyElements setObject:[NSDictionary dictionaryWithDictionary:syncFields] forKey:elementName];
+    [fields addEntriesFromDictionary:elements];
+    [_bodyElements setObject:[NSDictionary dictionaryWithDictionary:fields] forKey:elementName];
 }
 
 - (void)addSyncFields:(NSDictionary *)fields {
@@ -92,18 +92,6 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
         else if ([key isEqualToString:@"SYNC_FIELDS"]) {
             for (id keyField in element) {
                 [syncFields appendFormat:nameValueForm,SYNC_FIELD,keyField,[element objectForKey:keyField]];
-            }
-        } else if ([key isEqualToString:@"COLUMN"]) {
-            id obj = [_bodyElements objectForKey:key];
-            if ([obj isKindOfClass:[NSArray class]]) {
-                [body appendString:@"<COLUMN>"];
-                for (id key in obj) {
-                    NSDictionary *keyValue = (NSDictionary *)key;
-                    [body appendFormat:@"<NAME>%1$@</NAME><VALUE>%2$@</VALUE>", [keyValue objectForKey:@"NAME"], [keyValue objectForKey:@"VALUE"]];
-                }
-                [body appendString:@"</COLUMN>"];
-            } else if ([obj isKindOfClass:[NSDictionary class]]) {
-                NSLog(@"NSDictionary");
             }
         }
         else {
@@ -181,7 +169,6 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
 
 
 + (id)updateUserLastKnownLocation:(CLPlacemark *)lastKnownLocation listId:(NSString* )listID {
-    XMLAPI *api = [self resourceNamed:@"UpdateRecipient"];
     
     NSString *lastKnownLocationDateFormat = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME_FORMAT];
     
@@ -198,21 +185,16 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
     [dateFormatter setDateFormat:lastKnownLocationDateFormat];
     NSString *lastKnownLocationDate = [dateFormatter stringFromDate:date];
     
-    NSString *recipientId = [EngageConfig primaryUserId] ? [EngageConfig primaryUserId] : [EngageConfig anonymousId];
-    
     NSString *lastKnownLocationColumnName = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION];
     NSString *lastKnownLocationTime = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME];
     
-    [api.bodyElements addEntriesFromDictionary:@{
-                                                 @"LIST_ID" : listID,
-                                                 @"RECIPIENT_ID" : recipientId,
-                                                 @"COLUMN" : @
-                                                     [@{@"NAME" : lastKnownLocationColumnName, @"VALUE" : location}, @{@"NAME" : lastKnownLocationTime, @"VALUE" : lastKnownLocationDate}]
-    }];
     
-    
-    
-    
+    XMLAPI *api = [XMLAPI resourceNamed:@"UpdateRecipient" params:@{ @"LIST_ID" : listID } ];
+    // FIELDS TO SYNC/SEARCH BY
+    [api addSyncFields:@{ @"EMAIL" : [EngageConfig primaryUserId] } ];
+    // COLUMNS TO UPDATE ON OLDEST MATCH
+    [api addColumns:@{ lastKnownLocationColumnName : location,
+                       lastKnownLocationTime : lastKnownLocationDate} ];
     
     return api;
 }

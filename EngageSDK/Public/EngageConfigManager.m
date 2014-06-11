@@ -52,6 +52,7 @@
                 self.configs = engageConfigs;
                 
                 NSLog(@"EngageSDK - EngageConfig.plist configurations loaded and merged with precedence over EngageConfigDefaults.plist values");
+                NSLog(@"%@", self.configs);
             }
         } else {
             NSLog(@"EngageSDK - No user defined EngageConfig.plist file found in main bundle EngageSDK defaults will be used.");

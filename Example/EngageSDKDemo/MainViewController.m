@@ -161,7 +161,7 @@
     
     [self beginHUD];
     
-    [[XMLAPIClient client] createAnonymousUserToList:ENGAGE_LIST_ID success:^(ResultDictionary *ERXML) {
+    [[XMLAPIManager sharedInstance] createAnonymousUserToList:ENGAGE_LIST_ID success:^(ResultDictionary *ERXML) {
         if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
             [self updateHUD:@"Success" details:[ERXML valueForShortPath:@"RecipientId"]];
             
@@ -192,7 +192,7 @@
         [EngageConfig storePrimaryUserId:_emailAddressField.text];
         
         // updateAnonymousToPrimaryUser
-        [[XMLAPIClient client] updateAnonymousToPrimaryUser:[EngageConfig primaryUserId]
+        [[XMLAPIManager sharedInstance] updateAnonymousToPrimaryUser:[EngageConfig primaryUserId]
                                                        list:ENGAGE_LIST_ID
                                           primaryUserColumn:@"Email"
                                                 mergeColumn:@"MERGE_CONTACT_ID"

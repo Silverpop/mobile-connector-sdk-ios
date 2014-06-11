@@ -41,6 +41,12 @@
     [super tearDown];
 }
 
+- (void)testNilExpirationString {
+    EngageExpirationParser *parser = [[EngageExpirationParser alloc] initWithExpirationString:nil fromDate:nil];
+    NSDate *expirationDate = [parser expirationDate];
+    XCTAssertTrue(expirationDate == nil);
+}
+
 - (void)testFullExpirationString
 {
     EngageExpirationParser *parser = [[EngageExpirationParser alloc] initWithExpirationString:@"1 day 7 hours 23 minutes 15 seconds" fromDate:self.beforeDate];

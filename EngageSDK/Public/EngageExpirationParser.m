@@ -39,59 +39,61 @@ __strong static NSString *engageDatePattern = @"yyyy'/'MM'/'dd' 'HH':'mm':'ss'";
     self.secondValue = -1;
     self.expiresAtDate = nil;
     
-    // Create a regular expression
-    NSError *error = NULL;
-    NSRegularExpression *validForRegex = [NSRegularExpression regularExpressionWithPattern:regexPattern options:0 error:&error];
-    if (error) {
-        NSLog(@"Couldn't create valid for regex with given string and options");
-    }
-    
-    NSArray *matches = [validForRegex matchesInString:expirationString options:0 range:NSMakeRange(0, [expirationString length])];
-    if (matches == nil || [matches count] == 0) {
-        //Lets try the expiration date regex now.
-        NSRegularExpression *expiresAtRegex = [NSRegularExpression regularExpressionWithPattern:expirationDateRegexPattern options:0 error:&error];
-        matches = [expiresAtRegex matchesInString:expirationString options:0 range:NSMakeRange(0, [expirationString length])];
-    }
-    
-    for (NSTextCheckingResult *match in matches) {
-        NSRange matchRange = [match rangeAtIndex:0];
-        
-        NSString *result = [expirationString substringWithRange:matchRange];
-        
-        if ([self string:result contains:@"d"]) {
-            self.dayValue = [self valueFromRegexResult:result];
-        } else if ([self string:result contains:@"h"]) {
-            self.hourValue = [self valueFromRegexResult:result];
-        } else if ([self string:result contains:@"m"]) {
-            self.minuteValue = [self valueFromRegexResult:result];
-        } else if ([self string:result contains:@"s"]) {
-            self.secondValue = [self valueFromRegexResult:result];
-        } else if ([self string:result contains:@"/"]) {
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"UTC"];
-            [dateFormatter setDateFormat:engageDatePattern];
-            [dateFormatter setTimeZone:timeZone];
-            
-            //Parse the result into the new date.
-            self.expiresAtDate = [dateFormatter dateFromString:result];
-            NSLog(@"Date %@", self.expiresAtDate);
-        } else {
-            NSLog(@"EngageExpirationParser Regex result '%@' does not match any pattern", result);
+    if (expirationString) {
+        // Create a regular expression
+        NSError *error = NULL;
+        NSRegularExpression *validForRegex = [NSRegularExpression regularExpressionWithPattern:regexPattern options:0 error:&error];
+        if (error) {
+            NSLog(@"Couldn't create valid for regex with given string and options");
         }
-    }
-    
-    //If the expiration date was not already set by the parameter than it is set here.
-    if (self.expiresAtDate == nil) {
-        //Creates the actual expiration date.
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         
-        NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-        if (self.dayValue > -1) [dateComponents setDay:self.dayValue];
-        if (self.hourValue > -1) [dateComponents setHour:self.hourValue];
-        if (self.minuteValue > -1) [dateComponents setMinute:self.minuteValue];
-        if (self.secondValue > -1) [dateComponents setSecond:self.secondValue];
+        NSArray *matches = [validForRegex matchesInString:expirationString options:0 range:NSMakeRange(0, [expirationString length])];
+        if (matches == nil || [matches count] == 0) {
+            //Lets try the expiration date regex now.
+            NSRegularExpression *expiresAtRegex = [NSRegularExpression regularExpressionWithPattern:expirationDateRegexPattern options:0 error:&error];
+            matches = [expiresAtRegex matchesInString:expirationString options:0 range:NSMakeRange(0, [expirationString length])];
+        }
         
-        self.expiresAtDate = [calendar dateByAddingComponents:dateComponents toDate:date options:0];
+        for (NSTextCheckingResult *match in matches) {
+            NSRange matchRange = [match rangeAtIndex:0];
+            
+            NSString *result = [expirationString substringWithRange:matchRange];
+            
+            if ([self string:result contains:@"d"]) {
+                self.dayValue = [self valueFromRegexResult:result];
+            } else if ([self string:result contains:@"h"]) {
+                self.hourValue = [self valueFromRegexResult:result];
+            } else if ([self string:result contains:@"m"]) {
+                self.minuteValue = [self valueFromRegexResult:result];
+            } else if ([self string:result contains:@"s"]) {
+                self.secondValue = [self valueFromRegexResult:result];
+            } else if ([self string:result contains:@"/"]) {
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"UTC"];
+                [dateFormatter setDateFormat:engageDatePattern];
+                [dateFormatter setTimeZone:timeZone];
+                
+                //Parse the result into the new date.
+                self.expiresAtDate = [dateFormatter dateFromString:result];
+                NSLog(@"Date %@", self.expiresAtDate);
+            } else {
+                NSLog(@"EngageExpirationParser Regex result '%@' does not match any pattern", result);
+            }
+        }
+        
+        //If the expiration date was not already set by the parameter than it is set here.
+        if (self.expiresAtDate == nil) {
+            //Creates the actual expiration date.
+            NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+            
+            NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+            if (self.dayValue > -1) [dateComponents setDay:self.dayValue];
+            if (self.hourValue > -1) [dateComponents setHour:self.hourValue];
+            if (self.minuteValue > -1) [dateComponents setMinute:self.minuteValue];
+            if (self.secondValue > -1) [dateComponents setSecond:self.secondValue];
+            
+            self.expiresAtDate = [calendar dateByAddingComponents:dateComponents toDate:date options:0];
+        }
     }
     
     return self;

@@ -27,7 +27,13 @@
                 path = [unitTestBundle pathForResource:@"EngageConfigDefaults" ofType:@"plist"];
             }
         }
-        self.configs = [[NSDictionary alloc] initWithContentsOfFile:path];
+        
+        if (path) {
+            self.configs = [[NSDictionary alloc] initWithContentsOfFile:path];
+            NSLog(@"EngageSDK - %lu SDK defaults loaded from EngageConfigDefaults.plist file at path %@", (unsigned long)[self.configs count], path);
+        } else {
+            [NSException raise:@"Invalid EngageSDK configuration" format:@"Unable to locate required EngageConfigDefaults.plist default configuration file!"];
+        }
         
         //Looks for a SDK user defined plist file as well and merges those into the
         //existing configurations with the SDK defined configs taking precedence
@@ -44,9 +50,11 @@
                 
                 [engageConfigs addEntriesFromDictionary:userConfigs];
                 self.configs = engageConfigs;
+                
+                NSLog(@"EngageSDK - EngageConfig.plist configurations loaded and merged with precedence over EngageConfigDefaults.plist values");
             }
         } else {
-            NSLog(@"No EngageConfig.plist file found in main bundle. Falling back to Silverpop defaults.");
+            NSLog(@"EngageSDK - No user defined EngageConfig.plist file found in main bundle EngageSDK defaults will be used.");
         }
     }
     return self;
@@ -98,6 +106,10 @@
 
 - (NSNumber *)numberConfigForLocalStoreFieldName:(NSString *)localStoreFieldConstantName {
     return (NSNumber *)[[self.configs objectForKey:@"LocalEventStore"] objectForKey:localStoreFieldConstantName];
+}
+
+- (NSString *)configForAugmentationServiceFieldName:(NSString *)augmentationServiceFieldConstantName {
+    return (NSString *)[[self.configs objectForKey:@"AugmentationService"] objectForKey:augmentationServiceFieldConstantName];
 }
 
 

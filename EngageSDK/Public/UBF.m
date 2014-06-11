@@ -161,18 +161,23 @@
     return [[UBF alloc] initEventOfType:@"12" withParams:mutParams];
 }
 
+
 + (UBF *)sessionStarted:(NSDictionary *)params withCampaign:(NSString *)campaignName {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+    
+    //Process the contents of the notification for important information
+    [self locatedAndProcessImportantValuesInDictionary:params];
 
+    //If a CurrentCampaign was present in the params and the user passes in a campaignName value the user value takes precedence
     if (campaignName != nil && [campaignName length] > 0) {
-        [EngageConfig storeCurrentCampaign:campaignName withExpirationTimestamp:-1];
-    } else {
-        NSLog(@"SessionStarted with empty CampaignName. Not storing value and using previous campaign name value");
+        long expirationTimestamp = [self expirationTimestampFromParams:params];
+        [EngageConfig storeCurrentCampaign:campaignName withExpirationTimestamp:expirationTimestamp];
     }
 
     mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
     return [[UBF alloc] initEventOfType:@"13" withParams:mutParams];
 }
+
 
 + (UBF *)sessionEnded:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
@@ -211,16 +216,18 @@
 
 + (UBF *)receivedPushNotification:(NSDictionary *)notification withParams:(NSDictionary *)params {
     
-    NSString *displayedMessage = nil;
-    if ([[[notification objectForKey:@"aps"] objectForKey:@"alert"] isKindOfClass:[NSString class]]) {
-        displayedMessage = [[notification objectForKey:@"aps"] objectForKey:@"alert"];
-    } else {
-        displayedMessage = [[[notification objectForKey:@"aps"] objectForKey:@"alert"] objectForKey:@"body"];
-    }
+    //Process the contents of the notification for important information
+    [self locatedAndProcessImportantValuesInDictionary:notification];
     
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+    NSString *displayedMessage = [self displayedMessageForNotification:notification];
+    if (displayedMessage) {
+        mutParams = [self setValue:displayedMessage forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_DISPLAYED_MESSAGE];
+    } else {
+        mutParams = [self setValue:@"" forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_DISPLAYED_MESSAGE];
+    }
+    
     mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
-    mutParams = [self setValue:displayedMessage forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_DISPLAYED_MESSAGE];
     //Call To Action must be provided by the SDK user in this case.
     
     return [[UBF alloc] initEventOfType:@"48" withParams:mutParams];
@@ -228,46 +235,49 @@
 
 + (UBF *)openedNotification:(NSDictionary *)notification withParams:(NSDictionary *)params {
     
-    NSString *displayedMessage = nil;
-    if ([[[params objectForKey:@"aps"] objectForKey:@"alert"] isKindOfClass:[NSString class]]) {
-        displayedMessage = [[params objectForKey:@"aps"] objectForKey:@"alert"];
-    } else {
-        displayedMessage = [[[params objectForKey:@"aps"] objectForKey:@"alert"] objectForKey:@"body"];
-    }
+    //Process the contents of the notification for important information
+    [self locatedAndProcessImportantValuesInDictionary:notification];
     
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
+    NSString *displayedMessage = [self displayedMessageForNotification:notification];
+    if (displayedMessage) {
+        mutParams = [self setValue:displayedMessage forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_DISPLAYED_MESSAGE];
+    } else {
+        mutParams = [self setValue:@"" forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_DISPLAYED_MESSAGE];
+    }
+    
     mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
-    mutParams = [self setValue:displayedMessage forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_DISPLAYED_MESSAGE];
     //Call To Action must be provided by the SDK user in this case.
     
     return [[UBF alloc] initEventOfType:@"49" withParams:mutParams];
 }
 
+
 + (NSMutableDictionary *) populateEventCommonParams:(NSDictionary *)params {
-    NSMutableDictionary *mutParams = nil;
+    
+    NSMutableDictionary *mutParams;
     if (params) {
-        mutParams = [params mutableCopy];
-        mutParams = [self addDelimitedTagsToParams:mutParams];
+        mutParams = [self addDelimitedTagsFromParams:params toDictionary:mutParams];
     } else {
         mutParams = [[NSMutableDictionary alloc] init];
     }
-    
     return mutParams;
 }
 
-+ (NSMutableDictionary *) addDelimitedTagsToParams:(NSMutableDictionary *)params
+
++ (NSMutableDictionary *) addDelimitedTagsFromParams:(NSDictionary *)params toDictionary:(NSMutableDictionary *)mutParams
 {
     if (params) {
         if ([params objectForKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_TAGS]]) {
             id tagsParam = [params objectForKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_TAGS]];
             if ([tagsParam isKindOfClass:[NSArray class]]) {
-                [params setObject:[tagsParam componentsJoinedByString:@","] forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_TAGS]];
+                [mutParams setObject:[tagsParam componentsJoinedByString:@","] forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_TAGS]];
             } else {
-                [params setObject:@"" forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_TAGS]];
+                [mutParams setObject:@"" forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_TAGS]];
             }
         }
     }
-    return params;
+    return mutParams;
 }
 
 + (NSMutableDictionary *)setValue:(id)value
@@ -282,6 +292,84 @@
     }
     
     return dictionary;
+}
+
+//We would like to be able to use KVC for a particular KeyPath but
+//unfortunatly we don't have the luxury of knowing the full path for the key
++ (NSString *)traverseDictionary:(NSDictionary *)dict ForKey:(NSString *)lookingForKey {
+    
+    __block NSString *keyValue;
+    [dict enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent
+                                  usingBlock:^(id key, id object, BOOL *stop) {
+                                      if ([object isKindOfClass:[NSString class]]) {
+                                          if ([key isEqualToString:lookingForKey]) {
+                                              keyValue = (NSString *)object;
+                                              *stop = YES;
+                                          }
+                                      } else if ([object isKindOfClass:[NSDictionary class]]) {
+                                          NSString *response = [self traverseDictionary:object ForKey:lookingForKey];
+                                          if (response) {
+                                              keyValue = response;
+                                              *stop = YES;
+                                          }
+                                      } else {
+                                          NSLog(@"EngageSDK - located key '%@' but unsupported object type in dictionary was found! Expected NSString. Object will be ignored and no result returned", lookingForKey);
+                                      }
+    }];
+    
+    return keyValue;
+}
+
+
++ (NSString *)displayedMessageForNotification:(NSDictionary *)notification {
+    NSString *displayedMessage = nil;
+    
+    displayedMessage = [notification valueForKeyPath:@"aps.alert"];
+    if (!displayedMessage || ![displayedMessage isKindOfClass:[NSString class]]) {
+        displayedMessage = [notification valueForKeyPath:@"aps.alert.body"];
+    }
+
+    return displayedMessage;
+}
+
+
++ (long)expirationTimestampFromParams:(NSDictionary *)dictionary {
+    if (dictionary) {
+        NSString *expiresAt = [UBF traverseDictionary:dictionary ForKey:[[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT]];
+        NSString *validFor = [UBF traverseDictionary:dictionary ForKey:[[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CAMPAIGN_VALID_FOR]];
+        
+        long expirationTimestamp = -1;
+        if (expiresAt) {
+            //Current campaign with a expires at value.
+            EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:validFor fromDate:[NSDate date]];
+            expirationTimestamp = [exp expirationTimeStamp];
+            
+        } else if (validFor) {
+            //Current campaign wiht a valid for value.
+            EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:expiresAt fromDate:[NSDate date]];
+            expirationTimestamp = [exp expirationTimeStamp];
+        }
+        return expirationTimestamp;
+    } else {
+        return -1;
+    }
+}
+
+
++ (void)locatedAndProcessImportantValuesInDictionary:(NSDictionary *) dictionary {
+    
+    if (dictionary) {
+        //Locate the Current Campaign value if it is present in the notification
+        NSString *currentCampaign = [UBF traverseDictionary:dictionary ForKey:[[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]];
+        
+        if (currentCampaign) {
+            long expirationTimestamp = [self expirationTimestampFromParams:dictionary];
+            [EngageConfig storeCurrentCampaign:currentCampaign withExpirationTimestamp:expirationTimestamp];
+            
+        } else {
+            NSLog(@"EngageSDK - No %@ specified in push notification", [[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]);
+        }
+    }
 }
 
 @end

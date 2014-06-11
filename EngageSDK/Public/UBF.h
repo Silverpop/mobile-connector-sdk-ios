@@ -25,6 +25,8 @@
 + (UBF *)receivedLocalNotification:(UILocalNotification *)localNotification withParams:(NSDictionary *)params;
 + (UBF *)receivedPushNotification:(NSDictionary *)notification withParams:(NSDictionary *)params;
 + (UBF *)openedNotification:(NSDictionary *)notification withParams:(NSDictionary *)params;
++ (NSString *)traverseDictionary:(NSDictionary *)dict ForKey:(NSString *)key;
++ (NSString *)displayedMessageForNotification:(NSDictionary *)notification;
 
 - (UBF *)initFromJSON:(NSString *)jsonString;
 - (void)setAttribute:(NSString *)attributeName value:(NSString *)attributeValue;

@@ -82,31 +82,6 @@ __strong static EngageDeepLinkManager *_sharedInstance = nil;
     }
     [urlParams addEntriesFromDictionary:queryParams];
     
-    EngageConfigManager *ma = [EngageConfigManager sharedInstance];
-    
-    //Examine the URL Parameters
-    if ([urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
-        && [urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT]]) {
-        
-        //Parse the expiration timestamp from the hard datetime campaign end value.
-        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:[urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT]] fromDate:[NSDate date]];
-        
-        [EngageConfig storeCurrentCampaign:[urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
-                   withExpirationTimestamp:[exp expirationTimeStamp]];
-        
-    } else if ([urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
-        && [urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CAMPAIGN_VALID_FOR]]) {
-        
-        //Parse the expiration timestamp from the current date plus the expiration valid for parameter specified.
-        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:[urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CAMPAIGN_VALID_FOR]] fromDate:[NSDate date]];
-        
-        [EngageConfig storeCurrentCampaign:[urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]] withExpirationTimestamp:[exp expirationTimeStamp]];
-        
-    } else if ([urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]) {
-        //Just set the Campaign value without an expiration.
-        [EngageConfig storeCurrentCampaign:[urlParams objectForKey:[ma fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]] withExpirationTimestamp:-1];
-    }
-    
     return urlParams;
 }
 

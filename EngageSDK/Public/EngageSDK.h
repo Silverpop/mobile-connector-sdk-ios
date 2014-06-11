@@ -2,20 +2,38 @@
 //  EngageSDK.h
 //  EngageSDK
 //
-//  Created by Musa Siddeeq on 7/31/13.
-//  Copyright (c) 2013 Silverpop. All rights reserved.
+//  Created by Jeremy Dyer on 6/11/14.
+//  Copyright (c) 2014 Silverpop. All rights reserved.
 //
 
-#ifndef EngageSDK_EngageSDK_h
-#define EngageSDK_EngageSDK_h
-
-#import "EngageConfig.h"
-#import "ResultDictionary.h"
-#import "XMLAPI.h"
-#import "XMLAPIClient.h"
-#import "UBF.h"
+#import "UBFCoordinatesAugmentationPlugin.h"
+#import "UBFAugmentationPluginProtocol.h"
+#import "UBFPlacemarkAugmentationPlugin.h"
+#import "UBFAugmentationManager.h"
+#import "UBFAugmentationOperation.h"
+#import "EngageLocalEventStore.h"
+#import "EngageClient.h"
 #import "UBFClient.h"
-//#import <MobileDeepLinking-iOS/MobileDeepLinking.h>
+#import "XMLAPIClient.h"
+#import "EngageDeepLinkManager.h"
+#import "UBF.h"
+#import "XMLAPI.h"
+#import "ResultDictionary.h"
+#import "EngageEvent.h"
+#import "EngageEventWrapper.h"
+#import "EngageExpirationParser.h"
+#import "EngageEventLocationManager.h"
+#import "EngageConfig.h"
+#import "EngageConfigManager.h"
 #import "UBFManager.h"
+#import "XMLAPIManager.h"
 
-#endif
+@interface EngageSDK : NSObject
+
+
++(void) initializeSDKClient:(NSString *)clientId
+                     secret:(NSString *)secret
+                      token:(NSString *)refreshToken
+                       host:(NSString *)host;
+
+@end

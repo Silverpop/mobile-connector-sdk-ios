@@ -22,7 +22,6 @@
 		194C94B119216032004B8851 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1916728E1907063F001F25C9 /* CoreData.framework */; };
 		194C94B51921612C004B8851 /* UBFClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 194C94B41921612C004B8851 /* UBFClientTests.m */; };
 		194C94B819216CB0004B8851 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
-		1962468F1938BE470038B453 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1962468E1938BE470038B453 /* EngageConfigDefaults.plist */; };
 		196246921938D2990038B453 /* EngageEventWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 196246911938D2990038B453 /* EngageEventWrapper.m */; };
 		197BBFF61946A128001F925C /* EngageConfigManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BBFF51946A128001F925C /* EngageConfigManagerTests.m */; };
 		197BBFF91946A68B001F925C /* XMLAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BBFF81946A68B001F925C /* XMLAPIManager.m */; };
@@ -40,6 +39,9 @@
 		19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */; };
 		19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */; };
 		19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
+		19EFC3851948B95C009BC128 /* EngageSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 19EFC3841948B95C009BC128 /* EngageSDK.m */; };
+		19EFC38D1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
+		19EFC38E1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
 		6F2B2C1176094E9B8BFA405A /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
 		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
 		B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
@@ -101,7 +103,6 @@
 		194C94B219216084004B8851 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		194C94B41921612C004B8851 /* UBFClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFClientTests.m; sourceTree = "<group>"; };
 		194C94B619216494004B8851 /* libPods-EngageSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-EngageSDK.a"; path = "Pods/build/Debug-iphoneos/libPods-EngageSDK.a"; sourceTree = "<group>"; };
-		1962468E1938BE470038B453 /* EngageConfigDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EngageConfigDefaults.plist; sourceTree = "<group>"; };
 		196246901938D2990038B453 /* EngageEventWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventWrapper.h; sourceTree = "<group>"; };
 		196246911938D2990038B453 /* EngageEventWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventWrapper.m; sourceTree = "<group>"; };
 		197BBFF51946A128001F925C /* EngageConfigManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConfigManagerTests.m; sourceTree = "<group>"; };
@@ -125,6 +126,9 @@
 		19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageLocalEventStoreTests.m; sourceTree = "<group>"; };
 		19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventLocationManagerTests.m; sourceTree = "<group>"; };
 		19D24B7219088D6900855BC7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		19EFC3831948B95C009BC128 /* EngageSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageSDK.h; sourceTree = "<group>"; };
+		19EFC3841948B95C009BC128 /* EngageSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageSDK.m; sourceTree = "<group>"; };
+		19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EngageConfigDefaults.plist; sourceTree = "<group>"; };
 		3D76863C004B4A1AAEE87550 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDK.xcconfig"; path = "Pods/Pods-EngageSDK.xcconfig"; sourceTree = "<group>"; };
 		6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -143,7 +147,6 @@
 		B2C2A8F717A9919C0058311A /* EngageClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageClient.m; sourceTree = "<group>"; };
 		B2C2A8F817A9919C0058311A /* EngageConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageConfig.h; sourceTree = "<group>"; };
 		B2C2A8F917A9919C0058311A /* EngageConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConfig.m; sourceTree = "<group>"; };
-		B2C2A8FA17A9919C0058311A /* EngageSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageSDK.h; sourceTree = "<group>"; };
 		B2C2A8FB17A9919C0058311A /* ResultDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultDictionary.h; sourceTree = "<group>"; };
 		B2C2A8FC17A9919C0058311A /* ResultDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultDictionary.m; sourceTree = "<group>"; };
 		B2C2A8FD17A9919C0058311A /* UBF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBF.h; sourceTree = "<group>"; };
@@ -336,6 +339,14 @@
 			name = plugins;
 			sourceTree = "<group>";
 		};
+		19EFC38B1948BE3F009BC128 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		B26FCA3A17A9868300629BC9 /* Private */ = {
 			isa = PBXGroup;
 			children = (
@@ -348,6 +359,7 @@
 		B2B18266178B59400097EE6A = {
 			isa = PBXGroup;
 			children = (
+				19EFC38B1948BE3F009BC128 /* Resources */,
 				B2B18274178B59400097EE6A /* EngageSDK */,
 				B2B18289178B59400097EE6A /* EngageSDKTests */,
 				B2B18271178B59400097EE6A /* Frameworks */,
@@ -398,7 +410,6 @@
 		B2B18275178B59400097EE6A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				1962468E1938BE470038B453 /* EngageConfigDefaults.plist */,
 				B2B18276178B59400097EE6A /* EngageSDK-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -444,11 +455,12 @@
 				1929A3461936712E00D3F044 /* util */,
 				1929A34519362D4F00D3F044 /* location */,
 				1929A3411936196600D3F044 /* configuration */,
-				B2C2A8FA17A9919C0058311A /* EngageSDK.h */,
 				191970771925030900C75CD8 /* UBFManager.h */,
 				191970781925030900C75CD8 /* UBFManager.m */,
 				197BBFF71946A68B001F925C /* XMLAPIManager.h */,
 				197BBFF81946A68B001F925C /* XMLAPIManager.m */,
+				19EFC3831948B95C009BC128 /* EngageSDK.h */,
+				19EFC3841948B95C009BC128 /* EngageSDK.m */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -528,7 +540,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1962468F1938BE470038B453 /* EngageConfigDefaults.plist in Resources */,
+				19EFC38D1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,6 +549,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2B1828E178B59400097EE6A /* InfoPlist.strings in Resources */,
+				19EFC38E1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -611,6 +624,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				197BC00A19472AFB001F925C /* UBFCoordinatesAugmentationPlugin.m in Sources */,
+				19EFC3851948B95C009BC128 /* EngageSDK.m in Sources */,
 				190D7CDA1907360000432B88 /* EngageEvent.m in Sources */,
 				197BC00E19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m in Sources */,
 				B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */,

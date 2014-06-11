@@ -60,9 +60,15 @@ __strong static UBFManager *_sharedInstance = nil;
                           token:refreshToken
                            host:hostUrl
                  connectSuccess:^(AFOAuthCredential *credential) {
-                     NSLog(@"Successfully authenticated connection to Engage API");
+                     NSLog(@"Successfully authenticated UBFManager connection to Engage API");
+                     if (success) {
+                         success(credential);
+                     }
                  } failure:^(NSError *error) {
-                     NSLog(@"Failed to authenticate connection to Engage API%@", error);
+                     NSLog(@"Failed to authenticate UBFManager connection to Engage API%@", error);
+                     if (failure) {
+                         failure(error);
+                     }
                  }];
         
         _sharedInstance.engageEventLocationManager = [[EngageEventLocationManager alloc] init];
@@ -253,31 +259,6 @@ __strong static UBFManager *_sharedInstance = nil;
 
 - (NSURL *)handlePushNotificationReceivedEvents:(NSDictionary *)pushNotification
                                      withParams:(NSDictionary *)params {
-    
-    //Examine the push notification for certain parameters that define sdk behavior.
-    if ([pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
-        && [pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT]]) {
-        
-        //Parse the expiration timestamp from the hard datetime campaign end value.
-        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:[pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT]] fromDate:[NSDate date]];
-        
-        [EngageConfig storeCurrentCampaign:[pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
-                   withExpirationTimestamp:[exp expirationTimeStamp]];
-        
-    } else if ([pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]
-               && [pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CAMPAIGN_VALID_FOR]]) {
-        
-        //Parse the expiration timestamp from the current date plus the expiration valid for parameter specified.
-        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:[pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CAMPAIGN_VALID_FOR]] fromDate:[NSDate date]];
-        
-        [EngageConfig storeCurrentCampaign:[pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]] withExpirationTimestamp:[exp expirationTimeStamp]];
-        
-    } else if ([pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]) {
-        [EngageConfig storeCurrentCampaign:[pushNotification objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]] withExpirationTimestamp:-1];
-    } else {
-        NSLog(@"Unable to determine CurrentCampaign from push notification!");
-    }
-    
     return [self trackEvent:[UBF receivedPushNotification:pushNotification withParams:params]];
 }
 
@@ -288,15 +269,7 @@ __strong static UBFManager *_sharedInstance = nil;
 - (NSURL *)handleExternalURLOpenedEvents:(NSURL *)externalUrl {
     
     NSDictionary *urlParams = [[EngageDeepLinkManager sharedInstance] parseDeepLinkURL:externalUrl];
-    
-    id ubfResult = nil;
-    if ([urlParams objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]) {
-        ubfResult = [UBF sessionStarted:urlParams withCampaign:[urlParams objectForKey:[self.ecm fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]]];
-    } else {
-        ubfResult = [UBF sessionStarted:urlParams withCampaign:nil];
-    }
-    
-    return [self trackEvent:ubfResult];
+    return [self trackEvent:[UBF sessionStarted:urlParams withCampaign:nil]];
 }
 
 - (void)restartSession {

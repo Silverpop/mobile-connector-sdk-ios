@@ -283,6 +283,40 @@
     XCTAssertTrue([[EngageConfig currentCampaign] isEqualToString:randomCampaignName], @"Current Campaign parsed from Session Started is %@ but should be %@", [EngageConfig currentCampaign], randomCampaignName);
 }
 
+-(void)testTraversePushNotificationDictionaryForKey {
+    
+    //Creates some sample push notification dictionaries for testing.
+    NSDictionary *pushNotification = @{@"aps" : @{@"alert" : @"Alert Value"},
+                                       @"Current Campaign" : @"5OFF"};
+    
+    NSString *value = [UBF traverseDictionary:pushNotification ForKey:@"Current Campaign"];
+    XCTAssertTrue([value isEqualToString:@"5OFF"]);
+    
+    pushNotification = @{@"aps" : @{@"alert" : @"Alert Value", @"Current Campaign" : @"6OFF"}};
+    
+    value = [UBF traverseDictionary:pushNotification ForKey:@"Current Campaign"];
+    XCTAssertTrue([value isEqualToString:@"6OFF"]);
+    
+    pushNotification = @{@"aps" : @{@"alert" : @"Alert Value", @"Nested" : @{@"Current Campaign" : @"7OFF"}}};
+    
+    value = [UBF traverseDictionary:pushNotification ForKey:@"Current Campaign"];
+    XCTAssertTrue([value isEqualToString:@"7OFF"]);
+}
+
+-(void)testGettingDisplayedMessageFromNotification {
+    NSDictionary *pushNotification = @{@"aps" : @{@"alert" : @"HELLO!!"},
+                                       @"Current Campaign" : @"5OFF"};
+    
+    NSString *displayedMessage = [UBF displayedMessageForNotification:pushNotification];
+    XCTAssertTrue([displayedMessage isEqualToString:@"HELLO!!"]);
+    
+    pushNotification = @{@"aps" : @{@"alert" : @{@"body" : @"HELLO!!"}},
+                                       @"Current Campaign" : @"5OFF"};
+    
+    displayedMessage = [UBF displayedMessageForNotification:pushNotification];
+    XCTAssertTrue([displayedMessage isEqualToString:@"HELLO!!"]);
+}
+
 -(NSString *)getEventTypeCodeForEvent:(id)ubfEvent {
     return [ubfEvent valueForKey:@"eventTypeCode"];
 }

@@ -83,7 +83,7 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ENGAGE_EVENT_CORE_DATA inManagedObjectContext:self.managedObjectContext];
     NSFetchRequest *deleteUBFEventsRequest = [[NSFetchRequest alloc] init];
     [deleteUBFEventsRequest setEntity:entityDescription];
-
+    
     NSUInteger deletedCount = 0;
     NSArray *results = [[EngageLocalEventStore sharedInstance].managedObjectContext executeFetchRequest:deleteUBFEventsRequest error:&error];
     for (NSManagedObject *managedObj in results) {
@@ -146,7 +146,7 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     [unpostedEventsRequest setReturnsObjectsAsFaults:NO];
     NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus = 0) OR (eventStatus = 3)"];
     [unpostedEventsRequest setPredicate:predicateTemplate];
-
+    
     return [self.managedObjectContext executeFetchRequest:unpostedEventsRequest error:&error];
 }
 
@@ -165,7 +165,7 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
         [self.managedObjectContext deleteObject:managedObj];
         deletedEvents++;
     }
-
+    
     if ([self.managedObjectContext save:&error]) {
         NSLog(@"%d expired local events were purged from the local events store : %@ days old from today %@",
               deletedEvents, [[EngageConfigManager sharedInstance] numberConfigForLocalStoreFieldName:PLIST_LOCAL_STORE_EVENTS_EXPIRE_AFTER_DAYS], [[NSDate alloc] init]);
@@ -185,7 +185,7 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
 
 -(EngageEvent *)saveUBFEvent:(UBF *)event status:(int) status {
     EngageEvent *engageEvent = [NSEntityDescription insertNewObjectForEntityForName:@"EngageEvent" inManagedObjectContext:[EngageLocalEventStore sharedInstance].managedObjectContext];
-
+    
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
     NSNumber *myNumber = [f numberFromString:[event eventTypeCode]];
     engageEvent.eventType = myNumber;

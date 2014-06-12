@@ -31,7 +31,7 @@
 
 - (void)testFindLocalEngageEventWithIdentifier {
     id installed = [UBF installed:nil];
-    NSURL *urlIdentifier = [[[[EngageLocalEventStore sharedInstance] saveUBFEvent:installed status:NOT_POSTED] objectID] URIRepresentation];
+    NSURL *urlIdentifier = [[[[EngageLocalEventStore sharedInstance] saveUBFEvent:installed status:[[NSNumber numberWithInt:NOT_POSTED] intValue]] objectID] URIRepresentation];
     EngageEvent *locatedEvent = [[EngageLocalEventStore sharedInstance] findEngageEventWithIdentifier:urlIdentifier];
     XCTAssertTrue(locatedEvent != nil, @"Unable to locate EngageEvent from local Event Store with identifier %@", urlIdentifier);
     
@@ -75,7 +75,7 @@
 
 -(void)testGenerateStateAndTokenForUBFModel {
     id installed = [UBF installed:nil];
-    EngageEvent *event = [[EngageLocalEventStore sharedInstance] saveUBFEvent:installed status:NOT_POSTED];
+    EngageEvent *event = [[EngageLocalEventStore sharedInstance] saveUBFEvent:installed status:[[NSNumber numberWithInt:NOT_POSTED] intValue]];
     
     XCTAssertTrue(![[event objectID] isTemporaryID], @"Saved EngageEvent reports having a temporary id!");
     XCTAssertTrue(![event isFault], @"Inserted EngageEvent is in a faulty state within CoreData");
@@ -89,7 +89,7 @@
     NSArray *events = [self createSampleUBFEvents];
     
     for (id event in events) {
-        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
+        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:NOT_POSTED] intValue]];
     }
 
     XCTAssertTrue([[EngageLocalEventStore sharedInstance] countForEventType:[NSNumber numberWithInt:12]] == 1, @"More than 1 Engage installed event was located in the local event store");
@@ -101,7 +101,7 @@
     NSArray *events = [self createSampleUBFEvents];
     
     for (id event in events) {
-        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
+        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:NOT_POSTED] intValue]];
     }
     
     //Finds the unposted events.

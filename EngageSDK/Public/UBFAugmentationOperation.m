@@ -56,7 +56,7 @@
         
         if (![self isCancelled] && [notProcessedPlugins count] == 0) {
             self.engageEvent.eventJson = [mutEvent jsonValue];
-            self.engageEvent.eventStatus = NOT_POSTED;
+            self.engageEvent.eventStatus = [NSNumber numberWithInt:NOT_POSTED];
             [[EngageLocalEventStore sharedInstance] saveEvents];
         }
         

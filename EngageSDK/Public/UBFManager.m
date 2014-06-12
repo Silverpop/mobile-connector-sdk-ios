@@ -157,7 +157,7 @@ __strong static UBFManager *_sharedInstance = nil;
                                                   usingBlock:^(NSNotification *note) {
                                                       
                                                       //Locate all events with "HOLD" status in Core Data
-                                                      NSArray *holdEngagedEvents = [_sharedInstance.engageLocalEventStore findEngageEventsWithStatus:HOLD];
+                                                      NSArray *holdEngagedEvents = [_sharedInstance.engageLocalEventStore findEngageEventsWithStatus:[[NSNumber numberWithInt:HOLD] intValue]];
                                                       
                                                       //Update their payload to have the new coordinates.
                                                       for (EngageEvent *ee in holdEngagedEvents) {
@@ -222,7 +222,7 @@ __strong static UBFManager *_sharedInstance = nil;
     //Does the event need to be fired now or wait?
     if ([self.engageEventLocationManager locationServicesEnabled]) {
         
-        engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:HOLD];
+        engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:HOLD] intValue]];
         
         //Ask the location Manager for the current CLLocation and CLPlacemark information
         UBF *eventWithLocation = [self.engageEventLocationManager addLocationToUBFEvent:event withEngageEvent:engageEvent];
@@ -234,7 +234,7 @@ __strong static UBFManager *_sharedInstance = nil;
         }
     } else {
         //Location Services are not enabled so continue with the normal flow.
-        engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:NOT_POSTED];
+        engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:NOT_POSTED] intValue]];
     }
     
     //Save and post the event.

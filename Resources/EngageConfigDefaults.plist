@@ -35,7 +35,7 @@
 	<key>Session</key>
 	<dict>
 		<key>sessionLifecycleExpiration</key>
-		<string>30 minutes</string>
+		<string>5 minutes</string>
 	</dict>
 	<key>Networking</key>
 	<dict>

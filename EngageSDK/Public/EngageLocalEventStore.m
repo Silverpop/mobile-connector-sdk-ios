@@ -72,7 +72,7 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ENGAGE_EVENT_CORE_DATA inManagedObjectContext:self.managedObjectContext];
     NSFetchRequest *countEventsRequest = [[NSFetchRequest alloc] init];
     [countEventsRequest setEntity:entityDescription];
-    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus = %d) OR (eventStatus = %d)", [NSNumber numberWithInt:NOT_POSTED], [NSNumber numberWithInt:EXPIRED]];
+    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus = 0) OR (eventStatus = 4)"];
     [countEventsRequest setPredicate:predicateTemplate];
     NSUInteger count = [self.managedObjectContext countForFetchRequest:countEventsRequest error:&error];
     return count;
@@ -144,7 +144,7 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     NSFetchRequest *unpostedEventsRequest = [[NSFetchRequest alloc] init];
     [unpostedEventsRequest setEntity:entityDescription];
     [unpostedEventsRequest setReturnsObjectsAsFaults:NO];
-    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus = %i) OR (eventStatus = nil) OR (eventStatus = %i)", [NSNumber numberWithInt:NOT_POSTED], [NSNumber numberWithInt:EXPIRED]];
+    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus = 0) OR (eventStatus = nil) OR (eventStatus = 4)"];
     [unpostedEventsRequest setPredicate:predicateTemplate];
 
     return [self.managedObjectContext executeFetchRequest:unpostedEventsRequest error:&error];

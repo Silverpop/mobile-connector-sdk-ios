@@ -24,7 +24,7 @@
 - (NSArray *)findEngageEventsWithStatus:(int)eventStatus;
 
 // Utility methods
-- (NSUInteger) countForEventType:(NSNumber *)eventType;
+- (NSUInteger) countForEventType:(int)eventType;
 - (NSUInteger) unpostedEventsCount;
 - (NSUInteger) deleteAllUBFEvents;
 

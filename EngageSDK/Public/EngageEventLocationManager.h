@@ -15,6 +15,7 @@
 
 @interface EngageEventLocationManager : NSObject <CLLocationManagerDelegate>
 
+
 + (id)sharedInstance;
 
 - (BOOL)locationServicesEnabled;

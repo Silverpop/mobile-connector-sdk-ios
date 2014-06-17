@@ -11,18 +11,18 @@
 
 @implementation EngageLocalEventStore
 
-static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
+__strong NSString* ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistenceStoreCoordinator = _persistenceStoreCoordinator;
-
 
 - (id) init {
     self = [super init];
     if (self) {
         //Setup core data
         [self managedObjectContext];
+        
     }
     return self;
 }
@@ -39,32 +39,19 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     return sharedInstance;
 }
 
-- (NSUInteger) countForEventType:(NSNumber *)eventType {
+- (NSUInteger) countForEventType:(int)eventType {
     NSError *error;
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ENGAGE_EVENT_CORE_DATA inManagedObjectContext:self.managedObjectContext];
     NSFetchRequest *countEventsRequest = [[NSFetchRequest alloc] init];
     [countEventsRequest setEntity:entityDescription];
     NSPredicate *predicateTemplate = nil;
     
-    if ([eventType integerValue] > 0) {
-        predicateTemplate = [NSPredicate predicateWithFormat:@"(eventType = %d)", [eventType integerValue]];
+    if (eventType > 0) {
+        predicateTemplate = [NSPredicate predicateWithFormat:@"eventType == %d", [[NSNumber numberWithInt:eventType] intValue]];
         [countEventsRequest setPredicate:predicateTemplate];
     }
     
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:countEventsRequest error:&error];
-    return count;
-}
-
-- (void)test {
-    NSLog(@"NOT_POSTED events : %lu", [[EngageLocalEventStore sharedInstance] countForEventType:[NSNumber numberWithInt:NOT_POSTED]]);
-    NSLog(@"SUCCESSFULLY_POSTED events : %lu", [[EngageLocalEventStore sharedInstance] countForEventType:[NSNumber numberWithInt:SUCCESSFULLY_POSTED]]);
-    NSLog(@"FAILED_POST events : %lu", [[EngageLocalEventStore sharedInstance] countForEventType:[NSNumber numberWithInt:FAILED_POST]]);
-    NSLog(@"HOLD events : %lu", [[EngageLocalEventStore sharedInstance] countForEventType:[NSNumber numberWithInt:HOLD]]);
-    NSLog(@"EXPIRED events : %lu", [[EngageLocalEventStore sharedInstance] countForEventType:[NSNumber numberWithInt:EXPIRED]]);
-    NSLog(@"UnpostedEventCount %lu", [[EngageLocalEventStore sharedInstance] unpostedEventsCount]);
-    NSLog(@"# Unposted Events %lu", [[[EngageLocalEventStore sharedInstance] findUnpostedEvents] count]);
-    
-    NSLog(@"All Events Count %lu", [[EngageLocalEventStore sharedInstance] countForEventType:[NSNumber numberWithInt:-1]]);
+    return [self.managedObjectContext countForFetchRequest:countEventsRequest error:&error];
 }
 
 - (NSUInteger) unpostedEventsCount {
@@ -72,7 +59,8 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ENGAGE_EVENT_CORE_DATA inManagedObjectContext:self.managedObjectContext];
     NSFetchRequest *countEventsRequest = [[NSFetchRequest alloc] init];
     [countEventsRequest setEntity:entityDescription];
-    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus = 0) OR (eventStatus = 3)"];
+    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus == %d) OR (eventStatus == %d)",
+                                      NOT_POSTED, EXPIRED];
     [countEventsRequest setPredicate:predicateTemplate];
     NSUInteger count = [self.managedObjectContext countForFetchRequest:countEventsRequest error:&error];
     return count;
@@ -184,14 +172,17 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
 
 
 -(EngageEvent *)saveUBFEvent:(UBF *)event status:(int) status {
-    EngageEvent *engageEvent = [NSEntityDescription insertNewObjectForEntityForName:@"EngageEvent" inManagedObjectContext:[EngageLocalEventStore sharedInstance].managedObjectContext];
+    EngageEvent *engageEvent = [NSEntityDescription insertNewObjectForEntityForName:@"EngageEvent" inManagedObjectContext:self.managedObjectContext];
     
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-    NSNumber *myNumber = [f numberFromString:[event eventTypeCode]];
-    engageEvent.eventType = myNumber;
+    NSNumber *eventTypeNumber = [f numberFromString:[event eventTypeCode]];
+    //NSNumber *eventStatusNumber = [f num]
+    engageEvent.eventType = eventTypeNumber;
     engageEvent.eventJson = [event jsonValue];
-    engageEvent.eventStatus = [[NSNumber alloc] initWithInt:status];
+    engageEvent.eventStatus = [NSNumber numberWithInt:status];
     engageEvent.eventDate = [NSDate date];
+    
+    
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
@@ -227,42 +218,48 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
         return _managedObjectModel;
     }
     
+//    //NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Engage" withExtension:@"momd"];
+//    //_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+//    _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+//    return _managedObjectModel;
+    
     //Create the managed object model programmatically.
     NSManagedObjectModel *mom = [[NSManagedObjectModel alloc] init];
     NSEntityDescription *engageEventEntity = [[NSEntityDescription alloc] init];
     [engageEventEntity setName:@"EngageEvent"];
     [engageEventEntity setManagedObjectClassName:ENGAGE_EVENT_CORE_DATA];
-    [mom setEntities:@[engageEventEntity]];
     
     NSMutableArray *engageEventProperties = [NSMutableArray array];
     
     NSAttributeDescription *eventDateAttribute = [[NSAttributeDescription alloc] init];
-    [engageEventProperties addObject:eventDateAttribute];
     [eventDateAttribute setName:@"eventDate"];
     [eventDateAttribute setAttributeType:NSDateAttributeType];
     [eventDateAttribute setOptional:NO];
+    [engageEventProperties addObject:eventDateAttribute];
     
     NSAttributeDescription *eventTypeAttribute = [[NSAttributeDescription alloc] init];
-    [engageEventProperties addObject:eventTypeAttribute];
     [eventTypeAttribute setName:@"eventType"];
-    [eventTypeAttribute setAttributeType:NSInteger16AttributeType];
+    [eventTypeAttribute setAttributeType:NSInteger32AttributeType];
     [eventTypeAttribute setOptional:NO];
+    //[eventTypeAttribute set]
+    [engageEventProperties addObject:eventTypeAttribute];
     
     NSAttributeDescription *eventJsonAttribute= [[NSAttributeDescription alloc] init];
-    [engageEventProperties addObject:eventJsonAttribute];
     [eventJsonAttribute setName:@"eventJson"];
     [eventJsonAttribute setAttributeType:NSStringAttributeType];
     [eventJsonAttribute setOptional:NO];
+    [engageEventProperties addObject:eventJsonAttribute];
     
     NSAttributeDescription *eventStatusAttribute = [[NSAttributeDescription alloc] init];
-    [engageEventProperties addObject:eventStatusAttribute];
     [eventStatusAttribute setName:@"eventStatus"];
-    [eventStatusAttribute setAttributeType:NSInteger16AttributeType];
+    [eventStatusAttribute setAttributeType:NSInteger32AttributeType];
     [eventStatusAttribute setOptional:NO];
     [eventStatusAttribute setDefaultValue:0];
+    [engageEventProperties addObject:eventStatusAttribute];
     
     [engageEventEntity setProperties:engageEventProperties];
     
+    [mom setEntities:@[engageEventEntity]];
     _managedObjectModel = mom;
     return mom;
 }
@@ -303,6 +300,11 @@ static NSString* const ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     }
     
     NSURL *storeUrl = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"EngageEventLocalStore.sqlite"];
+    
+//    NSString *modelPath = [[NSBundle mainBundle]
+//                           pathForResource:@"Engage" ofType:@"mom"];
+//    NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
+//    [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     
     NSError *error = nil;
     _persistenceStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

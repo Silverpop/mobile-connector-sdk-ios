@@ -91,7 +91,7 @@
     id namedEvent = [UBF namedEvent:@"UnitTestNamedEvent" params:nil];
     id sessionEnded = [UBF sessionEnded:nil];
     
-    NSUInteger previousCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
+    NSUInteger previousCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:ALL_EVENTS];
     NSLog(@"Previous Core Data Count %lul", (unsigned long)previousCoreDataCount);
     
     //Save the events.
@@ -116,7 +116,7 @@
                                  beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
     
     //Check the Core Data store for the 5 UBF events were persisted.
-    NSUInteger afterCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
+    NSUInteger afterCoreDataCount = [[EngageLocalEventStore sharedInstance] countForEventType:ALL_EVENTS];
     NSLog(@"After Core Data Count %lul", (unsigned long)afterCoreDataCount);
     XCTAssertTrue(previousCoreDataCount < afterCoreDataCount, @"After persisting 5 UBF Events Core Data store should have grown with those events");
     XCTAssertTrue((previousCoreDataCount + 5) == afterCoreDataCount, @"Not all 5 UBF events were saved to Core Data!");

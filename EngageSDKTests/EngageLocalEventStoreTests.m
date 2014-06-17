@@ -30,10 +30,18 @@
 }
 
 - (void)testFindLocalEngageEventWithIdentifier {
+    
+    //Test that no events exist period.
+    XCTAssertTrue([[EngageLocalEventStore sharedInstance] countForEventType:ALL_EVENTS] == 0);
+    
     id installed = [UBF installed:nil];
-    NSURL *urlIdentifier = [[[[EngageLocalEventStore sharedInstance] saveUBFEvent:installed status:[[NSNumber numberWithInt:NOT_POSTED] intValue]] objectID] URIRepresentation];
+    NSURL *urlIdentifier = [[[[EngageLocalEventStore sharedInstance] saveUBFEvent:installed status:NOT_POSTED] objectID] URIRepresentation];
     EngageEvent *locatedEvent = [[EngageLocalEventStore sharedInstance] findEngageEventWithIdentifier:urlIdentifier];
     XCTAssertTrue(locatedEvent != nil, @"Unable to locate EngageEvent from local Event Store with identifier %@", urlIdentifier);
+    
+    //Tests that a single value is now present in the core data DB.
+    XCTAssertTrue([[EngageLocalEventStore sharedInstance] countForEventType:ALL_EVENTS] == 1);
+    XCTAssertTrue([[EngageLocalEventStore sharedInstance] countForEventType:12] == 1);
     
     [[[EngageLocalEventStore sharedInstance] managedObjectContext] deleteObject:locatedEvent];
     locatedEvent = [[EngageLocalEventStore sharedInstance] findEngageEventWithIdentifier:urlIdentifier];
@@ -62,12 +70,12 @@
     [[[EngageLocalEventStore sharedInstance] managedObjectContext] save:&error];
     
     //Gets the count before the delete.
-    NSUInteger count = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
+    NSUInteger count = [[EngageLocalEventStore sharedInstance] countForEventType:ALL_EVENTS];
     
     //Deletes the expired events.
     [[EngageLocalEventStore sharedInstance] deleteExpiredLocalEvents];
     
-    NSUInteger afterDeleteCount = [[EngageLocalEventStore sharedInstance] countForEventType:nil];
+    NSUInteger afterDeleteCount = [[EngageLocalEventStore sharedInstance] countForEventType:ALL_EVENTS];
     
     XCTAssertTrue(((count - afterDeleteCount) == [events count]), @"Expired events were not deleted from the local event store");
 }
@@ -92,7 +100,19 @@
         [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:NOT_POSTED] intValue]];
     }
 
-    XCTAssertTrue([[EngageLocalEventStore sharedInstance] countForEventType:[NSNumber numberWithInt:12]] == 1, @"More than 1 Engage installed event was located in the local event store");
+    XCTAssertTrue([[EngageLocalEventStore sharedInstance] countForEventType:12] == 1, @"More than 1 Engage installed event was located in the local event store");
+}
+
+- (void)testCountUnpostedEventsInLocalStore {
+    //Directly inserts some unposted events into Core Data
+    NSArray *events = [self createSampleUBFEvents];
+    
+    for (id event in events) {
+        [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:NOT_POSTED] intValue]];
+    }
+    
+    //Finds the unposted events.
+    XCTAssertTrue([[EngageLocalEventStore sharedInstance] unpostedEventsCount] == [events count], @"Expected to find %lu unposted UBF events in the Local Core Data Event Store", (unsigned long)[events count]);
 }
 
 -(void)testQueryLocalEventStoreForUnPostedUBFEvents {

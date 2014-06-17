@@ -2,7 +2,7 @@
 //  EngageEvent.m
 //  EngageSDK
 //
-//  Created by Jeremy Dyer on 4/22/14.
+//  Created by Jeremy Dyer on 6/12/14.
 //  Copyright (c) 2014 Silverpop. All rights reserved.
 //
 
@@ -11,9 +11,16 @@
 
 @implementation EngageEvent
 
+const int ALL_EVENTS = -1;
+const int NOT_POSTED = 1;
+const int SUCCESSFULLY_POSTED = 2;
+const int FAILED_POST = 3;
+const int HOLD = 4;
+const int EXPIRED = 5;
+
 @dynamic eventType;
-@dynamic eventJson;
 @dynamic eventStatus;
 @dynamic eventDate;
+@dynamic eventJson;
 
 @end

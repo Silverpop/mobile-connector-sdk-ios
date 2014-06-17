@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="EngageEvent" representedClassName="EngageEvent" syncable="YES">
+        <attribute name="eventDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="eventJson" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventStatus" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="eventType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="EngageEvent" positionX="-63" positionY="-18" width="128" height="105"/>
+    </elements>
+</model>

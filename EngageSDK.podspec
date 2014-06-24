@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name            = 'EngageSDK'
-  s.version         = '0.2'
+  s.version         = '1.0.0'
   s.summary         = 'Silverpop Engage SDK for iOS.'
   s.homepage        = 'https://github.com/Silverpop/engage-sdk-ios'
   s.authors         = { 'Silverpop Development' => 'engineeringmanagement@silverpop.com' }
   s.license         = { :type => 'Apache 2.0', :file => 'License.txt' }
-  s.source          = { :git => 'https://github.com/Silverpop/engage-sdk-ios.git', :tag => '0.2' }
+  s.source          = { :git => 'https://github.com/Silverpop/engage-sdk-ios.git', :tag => '1.0.0' }
   s.ios.xcconfig    = { 'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "$(SDKROOT)/Developer/Library/Frameworks" "$(DEVELOPER_LIBRARY_DIR)/Frameworks"' }
   s.ios.deployment_target = '7.0'
   s.source_files = 'EngageSDK/*/*.{h,m}'

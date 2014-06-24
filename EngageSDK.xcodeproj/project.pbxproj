@@ -37,10 +37,7 @@
 		19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1E91923DE77004686B7 /* NotificationTests.m */; };
 		19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */; };
 		19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */; };
-		19CE4336194970B200FAC024 /* Engage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 19CE4334194970B200FAC024 /* Engage.xcdatamodeld */; };
 		19CE433C1949717700FAC024 /* EngageEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 19CE433B1949717700FAC024 /* EngageEvent.m */; };
-		19CE433D1949739700FAC024 /* Engage.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 19CE4334194970B200FAC024 /* Engage.xcdatamodeld */; };
-		19CE433E194973A000FAC024 /* Engage.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 19CE4334194970B200FAC024 /* Engage.xcdatamodeld */; };
 		19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
 		19EFC3851948B95C009BC128 /* EngageSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 19EFC3841948B95C009BC128 /* EngageSDK.m */; };
 		19EFC38D1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
@@ -126,7 +123,6 @@
 		19BFF1E91923DE77004686B7 /* NotificationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTests.m; sourceTree = "<group>"; };
 		19BFF1EB1923ED66004686B7 /* EngageLocalEventStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageLocalEventStoreTests.m; sourceTree = "<group>"; };
 		19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventLocationManagerTests.m; sourceTree = "<group>"; };
-		19CE4335194970B200FAC024 /* Engage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Engage.xcdatamodel; sourceTree = "<group>"; };
 		19CE433A1949717700FAC024 /* EngageEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEvent.h; sourceTree = "<group>"; };
 		19CE433B1949717700FAC024 /* EngageEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEvent.m; sourceTree = "<group>"; };
 		19D24B7219088D6900855BC7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -404,7 +400,6 @@
 		B2B18274178B59400097EE6A /* EngageSDK */ = {
 			isa = PBXGroup;
 			children = (
-				19CE4334194970B200FAC024 /* Engage.xcdatamodeld */,
 				B2C2A8F517A9919C0058311A /* Public */,
 				B26FCA3A17A9868300629BC9 /* Private */,
 				B2B18275178B59400097EE6A /* Supporting Files */,
@@ -545,7 +540,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19CE433E194973A000FAC024 /* Engage.xcdatamodeld in Resources */,
 				19EFC38D1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -554,7 +548,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19CE433D1949739700FAC024 /* Engage.xcdatamodeld in Resources */,
 				B2B1828E178B59400097EE6A /* InfoPlist.strings in Resources */,
 				19EFC38E1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */,
 			);
@@ -632,7 +625,6 @@
 			files = (
 				197BC00A19472AFB001F925C /* UBFCoordinatesAugmentationPlugin.m in Sources */,
 				19EFC3851948B95C009BC128 /* EngageSDK.m in Sources */,
-				19CE4336194970B200FAC024 /* Engage.xcdatamodeld in Sources */,
 				197BC00E19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m in Sources */,
 				B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */,
 				1929A3491936714100D3F044 /* EngageExpirationParser.m in Sources */,
@@ -892,19 +884,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		19CE4334194970B200FAC024 /* Engage.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				19CE4335194970B200FAC024 /* Engage.xcdatamodel */,
-			);
-			currentVersion = 19CE4335194970B200FAC024 /* Engage.xcdatamodel */;
-			path = Engage.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = B2B18267178B59400097EE6A /* Project object */;
 }

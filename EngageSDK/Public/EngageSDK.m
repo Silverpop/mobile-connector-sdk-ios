@@ -32,6 +32,8 @@
     //Creates the shared instance of the XMLAPIManager and begins the underlying authentication process.
     NSLog(@"EngageSDK - initializing XMLAPIManager shared instance");
     [XMLAPIManager createClient:clientId secret:secret token:refreshToken host:host engageDatabaseListId:engageListId connectSuccess:nil failure:nil];
+    
+    
 }
 
 @end

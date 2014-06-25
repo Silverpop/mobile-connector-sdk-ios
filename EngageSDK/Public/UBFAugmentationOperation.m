@@ -35,14 +35,6 @@
         self.ubfEvent = ubfEvent;
         self.engageEvent = engageEvent;
         self.timeoutTimer = timeoutTimer;
-        
-//        [[NSNotificationCenter defaultCenter] addObserverForName:PLUGIN_SUPPLEMENTAL_DATA_AVAILABLE
-//                                                          object:nil
-//                                                           queue:[NSOperationQueue mainQueue]
-//                                                      usingBlock:^(NSNotification *note) {
-//                                                          
-//                                                          NSLog(@"Plugin Supplemental data is now available for Plugin Class %@", [note.object class]);
-//                                                      }];
     }
     return self;
 }
@@ -73,21 +65,17 @@
         }
         
         if (![self isCancelled] && [notProcessedPlugins count] == 0) {
-            //Cancel the pending timer of doom.
-            dispatch_source_cancel(self.timeoutTimer);
-            
             self.engageEvent.eventJson = [self.ubfEvent jsonValue];
             self.engageEvent.eventStatus = [NSNumber numberWithInt:NOT_POSTED];
             [[EngageLocalEventStore sharedInstance] saveEvents];
+            
+            //Cancel the pending timer of doom.
+            dispatch_source_cancel(self.timeoutTimer);
         }
         
         UBFManager *ubfManager = [UBFManager sharedInstance];
         [ubfManager postEventCache];
     }
 }
-
-//-(void)cancel {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//}
 
 @end

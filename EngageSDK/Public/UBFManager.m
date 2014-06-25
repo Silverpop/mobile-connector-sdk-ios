@@ -156,7 +156,9 @@ __strong static UBFManager *_sharedInstance = nil;
     EngageEvent *engageEvent = nil;
     
     //Does the event need to be fired now or wait?
-    if ([self.engageEventLocationManager locationServicesEnabled]) {
+    if ([self.engageEventLocationManager locationServicesEnabled]
+        && [[UBFAugmentationManager sharedInstance] augmentationPlugins]
+        && [[[UBFAugmentationManager sharedInstance] augmentationPlugins] count] > 0) {
         
         engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:HOLD] intValue]];
         

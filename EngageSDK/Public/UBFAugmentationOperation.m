@@ -36,7 +36,6 @@
         
         int index = 0;
         NSMutableArray *notProcessedPlugins = [self.augmentationPlugins copy];
-        UBF *mutEvent = [self.ubfEvent copy];
         
         while (![self isCancelled] && [notProcessedPlugins count] > 0) {
             if (index >= [notProcessedPlugins count]) {
@@ -46,7 +45,7 @@
             id plugin = [notProcessedPlugins objectAtIndex:index];
             
             if ([plugin isSupplementalDataReady]) {
-                mutEvent = [plugin process:mutEvent];
+                self.ubfEvent = [plugin process:self.ubfEvent];
                 [notProcessedPlugins removeObjectAtIndex:index];
                 //Index does not need to be updated since the list size has decreased by one.
             } else if (![plugin processSyncronously]) {
@@ -55,7 +54,7 @@
         }
         
         if (![self isCancelled] && [notProcessedPlugins count] == 0) {
-            self.engageEvent.eventJson = [mutEvent jsonValue];
+            self.engageEvent.eventJson = [self.ubfEvent jsonValue];
             self.engageEvent.eventStatus = [NSNumber numberWithInt:NOT_POSTED];
             [[EngageLocalEventStore sharedInstance] saveEvents];
         }

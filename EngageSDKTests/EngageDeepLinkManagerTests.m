@@ -82,7 +82,8 @@
 - (void)testSubsequentUBFEventsContainCurrentCampaign {
     //Test CurrentCampaign name of "Jeremy"
     NSURL *testUrl1 = [NSURL URLWithString:[[@"MakeAndBuild://test/5?" stringByAppendingString:self.currentCampaignParamName] stringByAppendingString:@"=Jeremy"]];
-    [[EngageDeepLinkManager sharedInstance] parseDeepLinkURL:testUrl1];
+    NSDictionary *notificationValues = [[EngageDeepLinkManager sharedInstance] parseDeepLinkURL:testUrl1];
+    [UBF openedNotification:notificationValues withParams:nil];
     
     //Now create subsequent UBF events and make sure their CurrentCampaign value is "Jeremy"
     XCTAssertTrue([[TestUtils getLastCampaignFromInstalledEvent:[UBF installed:nil]] isEqualToString:@"Jeremy"], @"UBFResult did not have expected %@ value of Jeremy", self.currentCampaignParamName);

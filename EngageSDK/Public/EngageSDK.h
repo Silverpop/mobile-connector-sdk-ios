@@ -9,6 +9,7 @@
 #import "UBFCoordinatesAugmentationPlugin.h"
 #import "UBFAugmentationPluginProtocol.h"
 #import "UBFPlacemarkAugmentationPlugin.h"
+#import "UBFLocationNameAugmentationPlugin.h"
 #import "UBFAugmentationManager.h"
 #import "UBFAugmentationOperation.h"
 #import "EngageLocalEventStore.h"

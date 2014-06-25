@@ -4,6 +4,12 @@
 <dict>
 	<key>Augmentation</key>
 	<dict>
+		<key>augmentationPluginClasses</key>
+		<array>
+			<string>UBFCoordinatesAugmentationPlugin</string>
+			<string>UBFPlacemarkAugmentationPlugin</string>
+			<string>UBFLocationNameAugmentationPlugin</string>
+		</array>
 		<key>augmentationTimeout</key>
 		<string>15 sec</string>
 	</dict>

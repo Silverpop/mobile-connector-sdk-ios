@@ -132,7 +132,7 @@ __strong NSString* ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
     NSFetchRequest *unpostedEventsRequest = [[NSFetchRequest alloc] init];
     [unpostedEventsRequest setEntity:entityDescription];
     [unpostedEventsRequest setReturnsObjectsAsFaults:NO];
-    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus = 0) OR (eventStatus = 3)"];
+    NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"(eventStatus = %d) OR (eventStatus = %d)", NOT_POSTED, EXPIRED];
     [unpostedEventsRequest setPredicate:predicateTemplate];
     
     return [self.managedObjectContext executeFetchRequest:unpostedEventsRequest error:&error];

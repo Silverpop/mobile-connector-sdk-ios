@@ -331,6 +331,22 @@
 }
 
 
++ (void)locatedAndProcessImportantValuesInDictionary:(NSDictionary *) dictionary {
+    
+    if (dictionary) {
+        //Locate the Current Campaign value if it is present in the notification
+        NSString *currentCampaign = [UBF traverseDictionary:dictionary ForKey:[[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]];
+        
+        if (currentCampaign) {
+            long expirationTimestamp = [self expirationTimestampFromParams:dictionary];
+            [EngageConfig storeCurrentCampaign:currentCampaign withExpirationTimestamp:expirationTimestamp];
+            
+        } else {
+            NSLog(@"EngageSDK - No %@ specified in push notification", [[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]);
+        }
+    }
+}
+
 + (long)expirationTimestampFromParams:(NSDictionary *)dictionary {
     if (dictionary) {
         NSString *expiresAt = [UBF traverseDictionary:dictionary ForKey:[[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CAMPAIGN_EXPIRES_AT]];
@@ -350,23 +366,6 @@
         return expirationTimestamp;
     } else {
         return -1;
-    }
-}
-
-
-+ (void)locatedAndProcessImportantValuesInDictionary:(NSDictionary *) dictionary {
-    
-    if (dictionary) {
-        //Locate the Current Campaign value if it is present in the notification
-        NSString *currentCampaign = [UBF traverseDictionary:dictionary ForKey:[[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]];
-        
-        if (currentCampaign) {
-            long expirationTimestamp = [self expirationTimestampFromParams:dictionary];
-            [EngageConfig storeCurrentCampaign:currentCampaign withExpirationTimestamp:expirationTimestamp];
-            
-        } else {
-            NSLog(@"EngageSDK - No %@ specified in push notification", [[EngageConfigManager sharedInstance] fieldNameForParam:PLIST_PARAM_CURRENT_CAMPAIGN]);
-        }
     }
 }
 

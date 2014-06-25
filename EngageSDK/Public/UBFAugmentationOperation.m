@@ -49,7 +49,7 @@
                 mutEvent = [plugin process:mutEvent];
                 [notProcessedPlugins removeObjectAtIndex:index];
                 //Index does not need to be updated since the list size has decreased by one.
-            } else {
+            } else if (![plugin processSyncronously]) {
                 index++;
             }
         }

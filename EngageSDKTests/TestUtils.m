@@ -7,24 +7,24 @@
 //
 
 #import "TestUtils.h"
+#import "EngageConfig.h"
+#import "EngageConfigManager.h"
 
 @implementation TestUtils
 
 
-+ (NSString *)getLastCampaignFromInstalledEvent:(id)ubfEvent {
-    for (id val in [ubfEvent valueForKey:@"attributes"]) {
-        if ([[val valueForKey:@"name"] isEqualToString:@"Last Campaign"]) {
-            return [val valueForKey:@"value"];
-        }
++ (NSString *)getLastCampaignFromInstalledEvent:(UBF *)ubfEvent {
+    if (ubfEvent) {
+        NSString *lastCampaignFieldName = [[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_LAST_CAMPAIGN_NAME];
+        return [ubfEvent.attributes objectForKey:lastCampaignFieldName];
     }
     return @"";
 }
 
-+ (NSString *)getCurrentCampaignFromUBFEvent:(id)ubfEvent {
-    for (id val in [ubfEvent valueForKey:@"attributes"]) {
-        if ([[val valueForKey:@"name"] isEqualToString:@"Campaign Name"]) {
-            return [val valueForKey:@"value"];
-        }
++ (NSString *)getCurrentCampaignFromUBFEvent:(UBF *)ubfEvent {
+    if (ubfEvent) {
+        NSString *campaignFieldName = [[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
+        return [ubfEvent.attributes objectForKey:campaignFieldName];
     }
     return @"";
 }

@@ -10,7 +10,6 @@
 #import "EngageConfig.h"
 #import "XMLAPI.h"
 #import "EngageConfigManager.h"
-#import "sample-config.h"
 #import "XMLAPIManager.h"
 
 @interface XMLAPITest : XCTestCase
@@ -34,15 +33,14 @@
 - (void)testAddListColumn
 {
     NSString *lastKnownLocationColumnName = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION];
-    XMLAPI *addListColumn = [XMLAPI addColumn:lastKnownLocationColumnName toDatabase:ENGAGE_LIST_ID ofColumnType:COLUMN_TYPE_DATE];
+    XMLAPI *addListColumn = [XMLAPI addColumn:lastKnownLocationColumnName toDatabase:@"12345" ofColumnType:COLUMN_TYPE_DATE];
     NSLog(@"AddListColumn XMLAPI : %@", addListColumn);
 }
 
 - (void)testUpdateRecipientLastKnownLocation {
-    XMLAPI *addLastKnownLocation = [XMLAPI updateUserLastKnownLocation:nil listId:ENGAGE_LIST_ID];
+    XMLAPI *addLastKnownLocation = [XMLAPI updateUserLastKnownLocation:nil listId:@"12345"];
     NSString *xmlEnvelope = [addLastKnownLocation envelope];
     XCTAssertTrue(xmlEnvelope != nil);
-    
 }
 
 @end

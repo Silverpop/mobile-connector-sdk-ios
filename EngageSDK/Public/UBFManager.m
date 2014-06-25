@@ -15,6 +15,7 @@
 #import "EngageDeepLinkManager.h"
 #import "EngageEventLocationManager.h"
 #import "EngageEventWrapper.h"
+#import "UBFAugmentationManager.h"
 
 NSString * const kEngageClientInstalled = @"engageClientInstalled";
 
@@ -224,14 +225,8 @@ __strong static UBFManager *_sharedInstance = nil;
         
         engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:HOLD] intValue]];
         
-        //Ask the location Manager for the current CLLocation and CLPlacemark information
-        UBF *eventWithLocation = [self.engageEventLocationManager addLocationToUBFEvent:event withEngageEvent:engageEvent];
-        
-        //If the event information was actually populated we need to update the EngageEvent status
-        if (eventWithLocation != nil) {
-            engageEvent.eventJson = [eventWithLocation jsonValue];
-            engageEvent.eventStatus = [NSNumber numberWithInt:NOT_POSTED];
-        }
+        //Pass the UBF event through the user defined Augmentors.
+        [[UBFAugmentationManager sharedInstance] augmentUBFEvent:event withEngageEvent:engageEvent];
     } else {
         //Location Services are not enabled so continue with the normal flow.
         engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:NOT_POSTED] intValue]];
@@ -249,6 +244,7 @@ __strong static UBFManager *_sharedInstance = nil;
 }
 
 - (void)postEventCache {
+    self.eventsCached = 0;
     [[UBFClient client] postUBFEngageEvents:nil failure:nil];
 }
 

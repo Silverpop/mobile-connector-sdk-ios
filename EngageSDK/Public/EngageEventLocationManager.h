@@ -15,10 +15,18 @@
 
 @interface EngageEventLocationManager : NSObject <CLLocationManagerDelegate>
 
+@property (strong, nonatomic) NSDate *currentLocationCacheBirthday;
+@property (strong, nonatomic) CLLocation *currentLocationCache;
+@property (strong, nonatomic) CLPlacemark *currentPlacemarkCache;
+@property (strong, nonatomic) NSDate *currentPlacemarkBirthday;
+@property (strong, nonatomic) NSDate *currentPlacemarkExpirationDate;
+@property (strong, nonatomic) CLLocation *locationUsedToDeterminePlacemark;
 
 + (id)sharedInstance;
 
 - (BOOL)locationServicesEnabled;
+- (BOOL) placemarkCacheExpired;
+- (NSString *) currentPlacemarkFormattedAddress;
 - (UBF *)addLocationToUBFEvent:(UBF *)ubfEvent withEngageEvent:(EngageEvent *)engageEvent;
 
 

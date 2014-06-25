@@ -110,7 +110,11 @@
 }
 
 - (NSString *)configForAugmentationServiceFieldName:(NSString *)augmentationServiceFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"AugmentationService"] objectForKey:augmentationServiceFieldConstantName];
+    return (NSString *)[[self.configs objectForKey:@"Augmentation"] objectForKey:augmentationServiceFieldConstantName];
+}
+
+- (NSArray *)augmentationPluginClassNames {
+    return (NSArray *) [[self.configs objectForKey:@"Augmentation"] objectForKey:@"augmentationPluginClasses"];
 }
 
 

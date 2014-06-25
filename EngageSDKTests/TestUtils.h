@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UBF.h"
 
 @interface TestUtils : NSObject
 
-+ (NSString *)getLastCampaignFromInstalledEvent:(id)ubfEvent;
-
-+ (NSString *)getCurrentCampaignFromUBFEvent:(id)ubfEvent;
++ (NSString *)getLastCampaignFromInstalledEvent:(UBF *)ubfEvent;
++ (NSString *)getCurrentCampaignFromUBFEvent:(UBF *)ubfEvent;
 
 @end

@@ -15,10 +15,10 @@
 #import "EngageExpirationParser.h"
 #import "UBFAugmentationOperation.h"
 #import "EngageLocalEventStore.h"
+#import "UBFManager.h"
 
 @interface UBFAugmentationManager()
 
-@property (strong, nonatomic) NSMutableArray *augmentationPlugins;
 @property (strong, nonatomic) EngageConfigManager *ecm;
 @property (assign) long augmentationTimeoutSeconds;
 
@@ -34,23 +34,7 @@ __strong static UBFAugmentationManager *_sharedInstance = nil;
 -(id)init {
     self = [super init];
     if (self) {
-        _sharedInstance = [[UBFAugmentationManager alloc] init];
-        _sharedInstance.ecm = [EngageConfigManager sharedInstance];
         
-        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:[_sharedInstance.ecm configForAugmentationServiceFieldName:PLIST_AUGMENTATION_SERVICE_TIMEOUT] fromDate:nil];
-        _sharedInstance.augmentationTimeoutSeconds = [exp secondsParsedFromExpiration];
-        
-        _sharedInstance.augmentationPlugins = [NSMutableArray new];
-        
-        //Adds default Augmentation plugins.
-        UBFCoordinatesAugmentationPlugin *coordsPlugin = [[UBFCoordinatesAugmentationPlugin alloc] init];
-        UBFPlacemarkAugmentationPlugin *placemarkPlugin = [[UBFPlacemarkAugmentationPlugin alloc] init];
-        [_sharedInstance.augmentationPlugins addObject:coordsPlugin];
-        [_sharedInstance.augmentationPlugins addObject:placemarkPlugin];
-        
-        //Creates the Augmentation Queue.
-        _sharedInstance.augmentationQueue = [[NSOperationQueue alloc] init];
-        _sharedInstance.engageLocalEventStore = [EngageLocalEventStore sharedInstance];
     }
     return self;
 }
@@ -61,19 +45,29 @@ __strong static UBFAugmentationManager *_sharedInstance = nil;
     
     dispatch_once(&pred, ^{
         _sharedInstance = [[UBFAugmentationManager alloc] init];
+        _sharedInstance.ecm = [EngageConfigManager sharedInstance];
+        
+        EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:[_sharedInstance.ecm configForAugmentationServiceFieldName:PLIST_AUGMENTATION_SERVICE_TIMEOUT] fromDate:nil];
+        _sharedInstance.augmentationTimeoutSeconds = [exp secondsParsedFromExpiration];
+        
+        _sharedInstance.augmentationPlugins = [NSMutableArray new];
+        
+        NSArray *pluginClassNames = [[EngageConfigManager sharedInstance] augmentationPluginClassNames];
+        for (NSString *className in pluginClassNames) {
+            NSLog(@"Creating Augmentation Plugin %@", className);
+            [_sharedInstance.augmentationPlugins addObject:[[NSClassFromString(className) alloc] init]];
+        }
+        
+        //Creates the Augmentation Queue.
+        _sharedInstance.augmentationQueue = [[NSOperationQueue alloc] init];
+        _sharedInstance.engageLocalEventStore = [EngageLocalEventStore sharedInstance];
     });
     
     return _sharedInstance;
 }
 
--(void)addAugmentationPlugin:(id)augmentationPlugin {
-    if (_sharedInstance.augmentationPlugins) {
-        [_sharedInstance.augmentationPlugins addObject:augmentationPlugin];
-    }
-}
-
 -(void)augmentUBFEvent:(UBF*)ubfEvent withEngageEvent:(EngageEvent *)engageEvent {
-    if (ubfEvent && engageEvent) {
+    if (ubfEvent && engageEvent && self.augmentationPlugins) {
         
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
@@ -92,6 +86,7 @@ __strong static UBFAugmentationManager *_sharedInstance = nil;
             NSLog(@"Augmentation service timed out");
             engageEvent.eventStatus = [NSNumber numberWithInt:EXPIRED];
             [_sharedInstance.engageLocalEventStore saveEvents];
+            [[UBFManager sharedInstance] postEventCache];   //Want expired events to POST with haste
         });
         dispatch_resume(_timer);
     }

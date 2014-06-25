@@ -7,14 +7,45 @@
 //
 
 #import "UBFPlacemarkAugmentationPlugin.h"
+#import "EngageConfig.h"
+#import "EngageConfigManager.h"
+#import "EngageEventLocationManager.h"
+
+@interface UBFPlacemarkAugmentationPlugin()
+
+@property (nonatomic, strong) NSString *locationAddressUBFFieldName;
+
+@end
 
 @implementation UBFPlacemarkAugmentationPlugin
 
--(BOOL)isSupplementalDataReady {
+-(id)init {
+    self = [super init];
+    if (self) {
+        self.locationAddressUBFFieldName = [[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_LOCATION_ADDRESS];
+    }
+    return self;
+}
+
+-(BOOL)processSyncronously {
     return YES;
 }
 
+
+-(BOOL)isSupplementalDataReady {
+    EngageEventLocationManager *elm = [EngageEventLocationManager sharedInstance];
+    if (elm && ![elm placemarkCacheExpired]) {
+        return YES;
+    }
+    return NO;
+}
+
+
 -(UBF*)process:(UBF*)ubfEvent {
+    if (ubfEvent) {
+        EngageEventLocationManager *elm = [EngageEventLocationManager sharedInstance];
+        [ubfEvent setAttribute:self.locationAddressUBFFieldName value:[elm currentPlacemarkFormattedAddress]];
+    }
     return ubfEvent;
 }
 

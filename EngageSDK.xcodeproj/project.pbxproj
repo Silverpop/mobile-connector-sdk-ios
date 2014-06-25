@@ -14,7 +14,6 @@
 		191970791925030900C75CD8 /* UBFManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 191970781925030900C75CD8 /* UBFManager.m */; };
 		1919707E1925064A00C75CD8 /* EngageEventLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1919707D1925064A00C75CD8 /* EngageEventLocationManager.m */; };
 		1919708519251EA700C75CD8 /* EngageDeepLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1919708419251EA700C75CD8 /* EngageDeepLinkManager.m */; };
-		19197087192531E300C75CD8 /* XMLAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19197086192531E300C75CD8 /* XMLAPIClientTests.m */; };
 		1929A3441936197D00D3F044 /* EngageConfigManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1929A3431936197D00D3F044 /* EngageConfigManager.m */; };
 		1929A3491936714100D3F044 /* EngageExpirationParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1929A3481936714100D3F044 /* EngageExpirationParser.m */; };
 		1929A34B193675E300D3F044 /* EngageExpirationParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */; };
@@ -29,7 +28,6 @@
 		197BC00E19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BC00D19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m */; };
 		197BC01119473AF8001F925C /* UBFAugmentationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BC01019473AF8001F925C /* UBFAugmentationOperation.m */; };
 		198A2D4019466D3400FF7AD8 /* XMLAPITest.m in Sources */ = {isa = PBXBuildFile; fileRef = 198A2D3F19466D3400FF7AD8 /* XMLAPITest.m */; };
-		198A2D421946749300FF7AD8 /* UBFManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 198A2D411946749300FF7AD8 /* UBFManagerTests.m */; };
 		199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */; };
 		19BFF1E51923AC5F004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
 		19BFF1E61923AC67004686B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BFF1E41923AC5F004686B7 /* CoreLocation.framework */; };
@@ -39,11 +37,12 @@
 		19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19CAAD431935173800610253 /* EngageEventLocationManagerTests.m */; };
 		19CE433C1949717700FAC024 /* EngageEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 19CE433B1949717700FAC024 /* EngageEvent.m */; };
 		19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
+		19E19692195B04C800175A32 /* UBFLocationNameAugmentationPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E19691195B04C800175A32 /* UBFLocationNameAugmentationPlugin.m */; };
+		19E19698195B0BC300175A32 /* UBFAugmentationPluginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E19697195B0BC300175A32 /* UBFAugmentationPluginTests.m */; };
 		19EFC3851948B95C009BC128 /* EngageSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 19EFC3841948B95C009BC128 /* EngageSDK.m */; };
 		19EFC38D1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
 		19EFC38E1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
 		6F2B2C1176094E9B8BFA405A /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
-		9B2C844432B840AFAD0BB33C /* libPods-EngageSDKTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5FD0612C1554177BB0F9A4A /* libPods-EngageSDKTests.a */; };
 		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
 		B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
 		B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
@@ -92,13 +91,11 @@
 		1919707D1925064A00C75CD8 /* EngageEventLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventLocationManager.m; sourceTree = "<group>"; };
 		1919708319251EA700C75CD8 /* EngageDeepLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageDeepLinkManager.h; sourceTree = "<group>"; };
 		1919708419251EA700C75CD8 /* EngageDeepLinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManager.m; sourceTree = "<group>"; };
-		19197086192531E300C75CD8 /* XMLAPIClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIClientTests.m; sourceTree = "<group>"; };
 		1929A3421936197D00D3F044 /* EngageConfigManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageConfigManager.h; sourceTree = "<group>"; };
 		1929A3431936197D00D3F044 /* EngageConfigManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConfigManager.m; sourceTree = "<group>"; };
 		1929A3471936714100D3F044 /* EngageExpirationParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageExpirationParser.h; sourceTree = "<group>"; };
 		1929A3481936714100D3F044 /* EngageExpirationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageExpirationParser.m; sourceTree = "<group>"; };
 		1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageExpirationParserTests.m; sourceTree = "<group>"; };
-		1929D7F3192D301B00EC9B33 /* sample-config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sample-config.h"; sourceTree = "<group>"; };
 		194C94B219216084004B8851 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		194C94B41921612C004B8851 /* UBFClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFClientTests.m; sourceTree = "<group>"; };
 		194C94B619216494004B8851 /* libPods-EngageSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-EngageSDK.a"; path = "Pods/build/Debug-iphoneos/libPods-EngageSDK.a"; sourceTree = "<group>"; };
@@ -117,7 +114,6 @@
 		197BC00F19473AF8001F925C /* UBFAugmentationOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFAugmentationOperation.h; sourceTree = "<group>"; };
 		197BC01019473AF8001F925C /* UBFAugmentationOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFAugmentationOperation.m; sourceTree = "<group>"; };
 		198A2D3F19466D3400FF7AD8 /* XMLAPITest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPITest.m; sourceTree = "<group>"; };
-		198A2D411946749300FF7AD8 /* UBFManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManagerTests.m; sourceTree = "<group>"; };
 		199843981925488C000B6B6B /* EngageDeepLinkManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDeepLinkManagerTests.m; sourceTree = "<group>"; };
 		19BFF1E41923AC5F004686B7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		19BFF1E71923BFAE004686B7 /* UBFTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFTests.m; sourceTree = "<group>"; };
@@ -127,6 +123,9 @@
 		19CE433A1949717700FAC024 /* EngageEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEvent.h; sourceTree = "<group>"; };
 		19CE433B1949717700FAC024 /* EngageEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEvent.m; sourceTree = "<group>"; };
 		19D24B7219088D6900855BC7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		19E19690195B04C800175A32 /* UBFLocationNameAugmentationPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFLocationNameAugmentationPlugin.h; sourceTree = "<group>"; };
+		19E19691195B04C800175A32 /* UBFLocationNameAugmentationPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFLocationNameAugmentationPlugin.m; sourceTree = "<group>"; };
+		19E19697195B0BC300175A32 /* UBFAugmentationPluginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFAugmentationPluginTests.m; sourceTree = "<group>"; };
 		19EFC3831948B95C009BC128 /* EngageSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageSDK.h; sourceTree = "<group>"; };
 		19EFC3841948B95C009BC128 /* EngageSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageSDK.m; sourceTree = "<group>"; };
 		19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EngageConfigDefaults.plist; sourceTree = "<group>"; };
@@ -183,7 +182,6 @@
 				194C94B819216CB0004B8851 /* SystemConfiguration.framework in Frameworks */,
 				194C94B119216032004B8851 /* CoreData.framework in Frameworks */,
 				B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */,
-				9B2C844432B840AFAD0BB33C /* libPods-EngageSDKTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,7 +231,6 @@
 			isa = PBXGroup;
 			children = (
 				194C94B41921612C004B8851 /* UBFClientTests.m */,
-				19197086192531E300C75CD8 /* XMLAPIClientTests.m */,
 			);
 			name = network;
 			sourceTree = "<group>";
@@ -337,8 +334,34 @@
 				197BC00B19472B1C001F925C /* UBFAugmentationPluginProtocol.h */,
 				197BC00C19472B68001F925C /* UBFPlacemarkAugmentationPlugin.h */,
 				197BC00D19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m */,
+				19E19690195B04C800175A32 /* UBFLocationNameAugmentationPlugin.h */,
+				19E19691195B04C800175A32 /* UBFLocationNameAugmentationPlugin.m */,
 			);
 			name = plugins;
+			sourceTree = "<group>";
+		};
+		19E19693195B0B7200175A32 /* augmentation */ = {
+			isa = PBXGroup;
+			children = (
+				19E19697195B0BC300175A32 /* UBFAugmentationPluginTests.m */,
+			);
+			name = augmentation;
+			sourceTree = "<group>";
+		};
+		19E19699195B28CB00175A32 /* config */ = {
+			isa = PBXGroup;
+			children = (
+				197BBFF51946A128001F925C /* EngageConfigManagerTests.m */,
+			);
+			name = config;
+			sourceTree = "<group>";
+		};
+		19E1969A195B290500175A32 /* notification */ = {
+			isa = PBXGroup;
+			children = (
+				19BFF1E91923DE77004686B7 /* NotificationTests.m */,
+			);
+			name = notification;
 			sourceTree = "<group>";
 		};
 		19EFC38B1948BE3F009BC128 /* Resources */ = {
@@ -420,19 +443,18 @@
 		B2B18289178B59400097EE6A /* EngageSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				19E1969A195B290500175A32 /* notification */,
+				19E19699195B28CB00175A32 /* config */,
+				19E19693195B0B7200175A32 /* augmentation */,
 				19075405193BA22E00C6AE2E /* location */,
 				19075404193BA20F00C6AE2E /* util */,
 				19075403193BA1FD00C6AE2E /* model */,
 				19075402193BA1F400C6AE2E /* deeplinking */,
 				19075401193BA1EB00C6AE2E /* network */,
 				19075400193BA1E100C6AE2E /* db */,
-				19BFF1E91923DE77004686B7 /* NotificationTests.m */,
 				B2B1828A178B59400097EE6A /* Supporting Files */,
 				191970741924FB1500C75CD8 /* TestUtils.h */,
 				191970751924FB1500C75CD8 /* TestUtils.m */,
-				1929D7F3192D301B00EC9B33 /* sample-config.h */,
-				198A2D411946749300FF7AD8 /* UBFManagerTests.m */,
-				197BBFF51946A128001F925C /* EngageConfigManagerTests.m */,
 			);
 			path = EngageSDKTests;
 			sourceTree = "<group>";
@@ -600,7 +622,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-EngageSDK-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F3E8A14F3998498EB46F56E9 /* Copy Pods Resources */ = {
@@ -631,6 +653,7 @@
 				B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */,
 				1929A3491936714100D3F044 /* EngageExpirationParser.m in Sources */,
 				B2C2A90517A9919C0058311A /* EngageClient.m in Sources */,
+				19E19692195B04C800175A32 /* UBFLocationNameAugmentationPlugin.m in Sources */,
 				19CE433C1949717700FAC024 /* EngageEvent.m in Sources */,
 				1919708519251EA700C75CD8 /* EngageDeepLinkManager.m in Sources */,
 				B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */,
@@ -656,15 +679,14 @@
 			files = (
 				197BBFF61946A128001F925C /* EngageConfigManagerTests.m in Sources */,
 				19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */,
-				198A2D421946749300FF7AD8 /* UBFManagerTests.m in Sources */,
 				194C94B51921612C004B8851 /* UBFClientTests.m in Sources */,
 				19BFF1E81923BFAE004686B7 /* UBFTests.m in Sources */,
 				1929A34B193675E300D3F044 /* EngageExpirationParserTests.m in Sources */,
 				198A2D4019466D3400FF7AD8 /* XMLAPITest.m in Sources */,
 				19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */,
 				19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */,
-				19197087192531E300C75CD8 /* XMLAPIClientTests.m in Sources */,
 				199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */,
+				19E19698195B0BC300175A32 /* UBFAugmentationPluginTests.m in Sources */,
 				191970761924FB1500C75CD8 /* TestUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -746,7 +768,7 @@
 		};
 		B2B18295178B59400097EE6A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */;
+			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -764,7 +786,7 @@
 		};
 		B2B18296178B59400097EE6A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */;
+			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

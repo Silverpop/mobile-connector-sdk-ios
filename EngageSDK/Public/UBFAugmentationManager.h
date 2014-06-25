@@ -12,9 +12,9 @@
 
 @interface UBFAugmentationManager : NSObject
 
-+(instancetype)sharedInstance;
+@property (strong, nonatomic) NSMutableArray *augmentationPlugins;
 
--(void)addAugmentationPlugin:(id)augmentationPlugin;
++(instancetype)sharedInstance;
 
 -(void)augmentUBFEvent:(UBF*)eventToAugment withEngageEvent:(EngageEvent *)engageEvent;
 

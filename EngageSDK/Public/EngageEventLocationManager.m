@@ -69,16 +69,17 @@
     return self;
 }
 
+__strong static EngageEventLocationManager *_sharedInstance = nil;
+
 + (id)sharedInstance
 {
     static dispatch_once_t pred;
-    static EngageEventLocationManager *sharedInstance = nil;
     
     dispatch_once(&pred, ^{
-        sharedInstance = [[EngageEventLocationManager alloc] init];
+        _sharedInstance = [[EngageEventLocationManager alloc] init];
     });
     
-    return sharedInstance;
+    return _sharedInstance;
 }
 
 
@@ -94,25 +95,25 @@
 - (void)locationManager:(CLLocationManager *)manager
      didUpdateLocations:(NSArray *)locations {
     
-    self.currentLocationCache = [locations lastObject];
-    self.currentLocationCacheBirthday = [NSDate date];
-    NSLog(@"Longitude %f & Latitude %f", [self.currentLocationCache coordinate].longitude, [self.currentLocationCache coordinate].latitude);
+    _sharedInstance.currentLocationCache = [locations lastObject];
+    _sharedInstance.currentLocationCacheBirthday = [NSDate date];
+    NSLog(@"Longitude %f & Latitude %f", [_sharedInstance.currentLocationCache coordinate].longitude, [_sharedInstance.currentLocationCache coordinate].latitude);
     
-    if (self.currentPlacemarkCache == nil || [self placemarkCacheExpired]) {
-        [self.geoCoder reverseGeocodeLocation:self.currentLocationCache completionHandler:^(NSArray *placemarks, NSError *error) {
+    if (_sharedInstance.currentPlacemarkCache == nil || [_sharedInstance placemarkCacheExpired]) {
+        [_sharedInstance.geoCoder reverseGeocodeLocation:_sharedInstance.currentLocationCache completionHandler:^(NSArray *placemarks, NSError *error) {
             if (error) {
                 NSLog(@"Silverpop Engage Geocode failed with error: %@", [error description]);
                 return;
             }
             
             if ([placemarks count] > 0) {
-                self.currentPlacemarkCache = [placemarks objectAtIndex:0];
-                self.currentPlacemarkBirthday = [NSDate date];
+                _sharedInstance.currentPlacemarkCache = [placemarks objectAtIndex:0];
+                _sharedInstance.currentPlacemarkBirthday = [NSDate date];
                 NSString *locAcqTimeout = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LOCATION_CACHE_LIFESPAN];
-                EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:locAcqTimeout fromDate:self.currentPlacemarkBirthday];
-                self.currentPlacemarkExpirationDate = [exp expirationDate];
+                EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:locAcqTimeout fromDate:_sharedInstance.currentPlacemarkBirthday];
+                _sharedInstance.currentPlacemarkExpirationDate = [exp expirationDate];
                 
-                NSLog(@"Geo Location : %@", self.currentPlacemarkCache);
+                NSLog(@"Geo Location : %@", _sharedInstance.currentPlacemarkCache);
                 
                 //Send a system wide NSNotificationCenter message notifing interested parties that the CLPlacemark has been determined.
                 [[NSNotificationCenter defaultCenter] postNotificationName:LOCATION_UPDATED_NOTIFICATION object:nil];
@@ -120,9 +121,9 @@
                 if ([EngageConfig primaryUserId]) {
                     NSString *listId = [EngageConfig engageListId];
                     XMLAPIClient *client = [XMLAPIClient client];
-                    XMLAPI *updateUserKnownLocation = [XMLAPI updateUserLastKnownLocation:self.currentPlacemarkCache listId:listId];
+                    XMLAPI *updateUserKnownLocation = [XMLAPI updateUserLastKnownLocation:_sharedInstance.currentPlacemarkCache listId:listId];
                     [client postResource:updateUserKnownLocation success:^(ResultDictionary *ERXML) {
-                        NSLog(@"Updated user last known location to %@", self.currentPlacemarkCache);
+                        NSLog(@"Updated user last known location to %@", _sharedInstance.currentPlacemarkCache);
                     } failure:nil];
                 }
             }
@@ -134,22 +135,22 @@
 
 /*
  Determines if the placemark cache is valid or not
-*/
+ */
 - (BOOL) placemarkCacheExpired {
     BOOL expired = NO;
     
-    if (self.currentPlacemarkBirthday != nil) {
-        if (self.currentPlacemarkExpirationDate == nil) {
+    if (_sharedInstance.currentPlacemarkBirthday != nil) {
+        if (_sharedInstance.currentPlacemarkExpirationDate == nil) {
             NSString *locAcqTimeout = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LOCATION_CACHE_LIFESPAN];
-            EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:locAcqTimeout fromDate:self.currentPlacemarkBirthday];
-            self.currentPlacemarkExpirationDate = [exp expirationDate];
+            EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:locAcqTimeout fromDate:_sharedInstance.currentPlacemarkBirthday];
+            _sharedInstance.currentPlacemarkExpirationDate = [exp expirationDate];
         }
         
-        if ([[NSDate date] compare:self.currentPlacemarkExpirationDate] == NSOrderedDescending) {
+        if ([[NSDate date] compare:_sharedInstance.currentPlacemarkExpirationDate] == NSOrderedDescending) {
             expired = YES;
-            self.currentPlacemarkCache = nil;
-            self.currentPlacemarkBirthday = nil;
-            self.currentPlacemarkExpirationDate = nil;
+            _sharedInstance.currentPlacemarkCache = nil;
+            _sharedInstance.currentPlacemarkBirthday = nil;
+            _sharedInstance.currentPlacemarkExpirationDate = nil;
         }
     }
     
@@ -163,8 +164,8 @@
 }
 
 - (NSString *) currentPlacemarkFormattedAddress {
-    if (self.currentPlacemarkCache) {
-        NSString *add = [NSString stringWithFormat:@"%@, %@ %@, %@ (%@)", [[self.currentPlacemarkCache addressDictionary] objectForKey:@"City"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"State"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"ZIP"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"Country"], [[self.currentPlacemarkCache addressDictionary] objectForKey:@"CountryCode"]];
+    if (_sharedInstance.currentPlacemarkCache) {
+        NSString *add = [NSString stringWithFormat:@"%@, %@ %@, %@ (%@)", [[_sharedInstance.currentPlacemarkCache addressDictionary] objectForKey:@"City"], [[_sharedInstance.currentPlacemarkCache addressDictionary] objectForKey:@"State"], [[_sharedInstance.currentPlacemarkCache addressDictionary] objectForKey:@"ZIP"], [[_sharedInstance.currentPlacemarkCache addressDictionary] objectForKey:@"Country"], [[_sharedInstance.currentPlacemarkCache addressDictionary] objectForKey:@"CountryCode"]];
         return add;
     } else {
         return @"";

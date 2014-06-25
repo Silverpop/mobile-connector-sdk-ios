@@ -169,9 +169,6 @@ __strong static UBFManager *_sharedInstance = nil;
         engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:NOT_POSTED] intValue]];
     }
     
-    //Save and post the event.
-    [[EngageLocalEventStore sharedInstance] saveEvents];
-    
     self.eventsCached++;
     if (self.eventsCached >= self.eventsToCacheBeforePost) {
         [[UBFClient client] postUBFEngageEvents:nil failure:nil];

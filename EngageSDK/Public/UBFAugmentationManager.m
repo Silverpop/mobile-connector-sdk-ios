@@ -85,7 +85,6 @@ __strong static UBFAugmentationManager *_sharedInstance = nil;
             NSLog(@"UBF event augmentation timed out");
             engageEvent.eventStatus = [NSNumber numberWithInt:EXPIRED];
             [_sharedInstance.engageLocalEventStore saveEvents];
-            //[[UBFManager sharedInstance] postEventCache];   //Want expired events to POST with haste
             [augOperation cancel];
             dispatch_source_cancel(_timer);
         });

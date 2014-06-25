@@ -78,6 +78,12 @@ __strong static UBFClient *_sharedClient = nil;
         
         __block NSArray *unpostedUbfEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
         if (unpostedUbfEvents && [unpostedUbfEvents count] > 0) {
+            
+            //Mark all of the "unpostedUbfEvents" as in progress so they won't be picked up again if this is invoked again for HTTP response of success or failure. We don't have to "Save commit" as this in memory representation should do.
+            for (EngageEvent *intEE in unpostedUbfEvents) {
+                intEE.eventStatus = [NSNumber numberWithInt:PROCESSING];
+            }
+            
             //We need to convert the list of "tracked" EngageEvent objects back to their original format for submission
             NSMutableArray *eventsCache = [[NSMutableArray alloc] init];
             

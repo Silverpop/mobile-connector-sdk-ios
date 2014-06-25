@@ -17,6 +17,8 @@ const int SUCCESSFULLY_POSTED = 2;
 const int FAILED_POST = 3;
 const int HOLD = 4;
 const int EXPIRED = 5;
+const int PROCESSING = 6;
+
 
 @dynamic eventType;
 @dynamic eventStatus;

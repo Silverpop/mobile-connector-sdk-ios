@@ -18,6 +18,7 @@ extern const int SUCCESSFULLY_POSTED;
 extern const int FAILED_POST;
 extern const int HOLD;
 extern const int EXPIRED;
+extern const int PROCESSING;
 
 @property (nonatomic, retain) NSNumber * eventType;
 @property (nonatomic, retain) NSNumber * eventStatus;

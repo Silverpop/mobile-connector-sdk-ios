@@ -40,6 +40,10 @@
     return NO;
 }
 
+-(void)notifyOperationWhenComplete:(id)operationToNotify {
+    
+}
+
 
 -(UBF*)process:(UBF*)ubfEvent {
     if (ubfEvent) {

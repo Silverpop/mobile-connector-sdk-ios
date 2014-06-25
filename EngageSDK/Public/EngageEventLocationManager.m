@@ -115,9 +115,6 @@ __strong static EngageEventLocationManager *_sharedInstance = nil;
                 
                 NSLog(@"Geo Location : %@", _sharedInstance.currentPlacemarkCache);
                 
-                //Send a system wide NSNotificationCenter message notifing interested parties that the CLPlacemark has been determined.
-                [[NSNotificationCenter defaultCenter] postNotificationName:LOCATION_UPDATED_NOTIFICATION object:nil];
-                
                 if ([EngageConfig primaryUserId]) {
                     NSString *listId = [EngageConfig engageListId];
                     XMLAPIClient *client = [XMLAPIClient client];

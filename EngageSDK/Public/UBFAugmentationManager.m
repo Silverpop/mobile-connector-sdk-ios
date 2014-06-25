@@ -71,20 +71,23 @@ __strong static UBFAugmentationManager *_sharedInstance = nil;
         dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
         
         dispatch_source_set_timer(_timer, dispatch_time(DISPATCH_TIME_NOW,
-                    _sharedInstance.augmentationTimeoutSeconds * NSEC_PER_SEC), DISPATCH_TIME_FOREVER, 0);
+                                                        _sharedInstance.augmentationTimeoutSeconds * NSEC_PER_SEC), DISPATCH_TIME_FOREVER, 0);
         
-        UBFAugmentationOperation *augOperation = [[UBFAugmentationOperation alloc] initWithPlugins:_sharedInstance.augmentationPlugins ubfEvent:ubfEvent engageEvent:engageEvent];
+        UBFAugmentationOperation *augOperation = [[UBFAugmentationOperation alloc] initWithPlugins:_sharedInstance.augmentationPlugins
+                                                                                          ubfEvent:ubfEvent
+                                                                                       engageEvent:engageEvent
+                                                                                             timer:_timer];
         
         [_sharedInstance.augmentationQueue addOperation:augOperation];
         
         // If timer is reached then the Operation has timed out.
         dispatch_source_set_event_handler(_timer, ^{
-            dispatch_source_cancel(_timer);
-            [augOperation cancel];
-            NSLog(@"Augmentation service timed out");
+            NSLog(@"UBF event augmentation timed out");
             engageEvent.eventStatus = [NSNumber numberWithInt:EXPIRED];
             [_sharedInstance.engageLocalEventStore saveEvents];
-            [[UBFManager sharedInstance] postEventCache];   //Want expired events to POST with haste
+            //[[UBFManager sharedInstance] postEventCache];   //Want expired events to POST with haste
+            [augOperation cancel];
+            dispatch_source_cancel(_timer);
         });
         dispatch_resume(_timer);
     }

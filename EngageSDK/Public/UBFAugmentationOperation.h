@@ -12,6 +12,9 @@
 
 @interface UBFAugmentationOperation : NSOperation
 
--(id)initWithPlugins:(NSMutableArray *)augPlugins ubfEvent:(UBF *)ubfEvent engageEvent:(EngageEvent *)engageEvent;
+-(id)initWithPlugins:(NSMutableArray *)augPlugins
+            ubfEvent:(UBF *)ubfEvent
+         engageEvent:(EngageEvent *)engageEvent
+               timer:(dispatch_source_t) timeoutTimer;
 
 @end

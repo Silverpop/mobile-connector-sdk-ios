@@ -9,21 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "EngageExpirationParser.h"
 
-//#ifndef CURRENT_CAMPAIGN_PARAM_NAME
-//    #define CURRENT_CAMPAIGN_PARAM_NAME @"CurrentCampaign"
-//#endif
-//
-//#ifndef CALL_TO_ACTION_PARAM_NAME
-//    #define CALL_TO_ACTION_PARAM_NAME @"CallToAction"
-//#endif
-//
-//#ifndef CAMPAIGN_EXTERNAL_EXPIRATION_DATETIME_PARAM
-//    #define CAMPAIGN_EXTERNAL_EXPIRATION_DATETIME_PARAM @"CampaignEndTimeStamp"
-//#endif
-
-#define LOCATION_UPDATED_NOTIFICATION @"LocationUpdated"
-#define LOCATION_ACQUIRE_LOCATION_TIMEOUT @"LocationAcquisitionTimeout"
-#define LOCATION_PLACEMARK_TIMEOUT @"LocationPlacemarkTimeout"
+#define PLUGIN_SUPPLEMENTAL_DATA_AVAILABLE @"PluginSupplementalDataAvailable"
 #define ENGAGE_CONFIG_BUNDLE @"EngageConfigPlist.bundle"
 
 //Plist Param constants.

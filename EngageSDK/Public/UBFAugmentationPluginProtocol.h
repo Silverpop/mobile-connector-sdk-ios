@@ -14,6 +14,7 @@
 @required
 -(BOOL)processSyncronously;
 -(BOOL)isSupplementalDataReady;
+-(void)notifyOperationWhenComplete:(id)operationToNotify;
 -(UBF*)process:(UBF*)ubfEvent;
 
 @end

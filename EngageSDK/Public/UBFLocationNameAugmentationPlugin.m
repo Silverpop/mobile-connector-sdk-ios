@@ -40,10 +40,6 @@
     return NO;
 }
 
--(void)notifyOperationWhenComplete:(id)operationToNotify {
-    
-}
-
 
 -(UBF*)process:(UBF*)ubfEvent {
     //If the user has not already specified the Location Name then pull that information from the Placemark cache.

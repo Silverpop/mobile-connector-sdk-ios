@@ -42,10 +42,6 @@
     }
 }
 
--(void)notifyOperationWhenComplete:(id)operationToNotify {
-    
-}
-
 -(UBF*)process:(UBF*)ubfEvent {
     
     if (ubfEvent && self.longitudeUBFFieldName && self.latitudeUBFFieldName) {

@@ -48,12 +48,14 @@ __strong static UBFManager *_sharedInstance = nil;
                       secret:(NSString *)secret
                        token:(NSString *)refreshToken
                         host:(NSString *)hostUrl
+        engageDatabaseListId:(NSString *)engageListId
               connectSuccess:(void (^)(AFOAuthCredential *credential))success
                      failure:(void (^)(NSError *error))failure {
     
     static dispatch_once_t pred = 0;
     dispatch_once(&pred, ^{
         _sharedInstance = [[UBFManager alloc] init];
+        [EngageConfig storeEngageListId:engageListId];
         _sharedInstance.sessionTimeout = [[EngageConfigManager sharedInstance] longConfigForSessionValue:PLIST_SESSION_LIFECYCLE_EXPIRATION];
         
         [UBFClient createClient:clientId
@@ -95,8 +97,8 @@ __strong static UBFManager *_sharedInstance = nil;
                 NSString *lastKnownLocationColumnName = [_sharedInstance.ecm configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION];
                 NSString *lastKnownLocationTime = [_sharedInstance.ecm configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME];
                 
-                XMLAPI *addLastKnownLocationColumn = [XMLAPI addColumn:lastKnownLocationColumnName toDatabase:[_sharedInstance.ecm configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID] ofColumnType:COLUMN_TYPE_TEXT];
-                XMLAPI *addLastKnownLocationTimeColumn = [XMLAPI addColumn:lastKnownLocationTime toDatabase:[_sharedInstance.ecm configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID] ofColumnType:COLUMN_TYPE_DATE];
+                XMLAPI *addLastKnownLocationColumn = [XMLAPI addColumn:lastKnownLocationColumnName toDatabase:[EngageConfig engageListId] ofColumnType:COLUMN_TYPE_TEXT];
+                XMLAPI *addLastKnownLocationTimeColumn = [XMLAPI addColumn:lastKnownLocationTime toDatabase:[EngageConfig engageListId] ofColumnType:COLUMN_TYPE_DATE];
                 
                 [xmlApiClient postResource:addLastKnownLocationColumn success:nil failure:nil];
                 [xmlApiClient postResource:addLastKnownLocationTimeColumn success:nil failure:nil];

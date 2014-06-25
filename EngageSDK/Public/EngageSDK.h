@@ -35,6 +35,7 @@
 +(void) initializeSDKClient:(NSString *)clientId
                      secret:(NSString *)secret
                       token:(NSString *)refreshToken
-                       host:(NSString *)host;
+                       host:(NSString *)host
+       engageDatabaseListId:(NSString *)engageListId;
 
 @end

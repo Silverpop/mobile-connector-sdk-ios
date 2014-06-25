@@ -13,7 +13,8 @@
 +(void) initializeSDKClient:(NSString *)clientId
                      secret:(NSString *)secret
                       token:(NSString *)refreshToken
-                       host:(NSString *)host {
+                       host:(NSString *)host
+       engageDatabaseListId:(NSString *)engageListId {
     NSLog(@"EngageSDK - initializing SDK");
     
     NSLog(@"EngageSDK - loading configurations");
@@ -26,11 +27,11 @@
     
     //Creates the shared instance of the UBFManager and begins the underlying authentication process.
     NSLog(@"EngageSDK - initializing UBFManager shared instance");
-    [UBFManager createClient:clientId secret:secret token:refreshToken host:host connectSuccess:nil failure:nil];
+    [UBFManager createClient:clientId secret:secret token:refreshToken host:host engageDatabaseListId:engageListId connectSuccess:nil failure:nil];
     
     //Creates the shared instance of the XMLAPIManager and begins the underlying authentication process.
     NSLog(@"EngageSDK - initializing XMLAPIManager shared instance");
-    [XMLAPIManager createClient:clientId secret:secret token:refreshToken host:host connectSuccess:nil failure:nil];
+    [XMLAPIManager createClient:clientId secret:secret token:refreshToken host:host engageDatabaseListId:engageListId connectSuccess:nil failure:nil];
 }
 
 @end

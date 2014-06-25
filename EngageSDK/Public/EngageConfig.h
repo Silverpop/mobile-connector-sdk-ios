@@ -55,7 +55,7 @@
 //Plist General constants.
 #define PLIST_GENERAL_DEFAULT_CURRENT_CAMPAIGN_EXPIRATION @"defaultCurrentCampaignExpiration"
 #define PLIST_GENERAL_UBF_EVENT_CACHE_SIZE @"ubfEventCacheSize"
-#define PLIST_GENERAL_DATABASE_LIST_ID @"databaseListId"
+//#define PLIST_GENERAL_DATABASE_LIST_ID @"databaseListId"
 
 //Plist Location constants.
 #define PLIST_LOCATION_COORDINATES_ACQUISITION_TIMEOUT @"coordinatesAcquisitionTimeout"
@@ -82,6 +82,8 @@
 + (void)storeAnonymousId:(NSString *)anonymousId;
 + (NSString *)currentCampaign;
 + (NSString *)lastCampaign;
++ (void)storeEngageListId:(NSString *)engageListId;
++ (NSString *)engageListId;
 
 + (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestamp:(long)utcExpirationTimestamp;
 + (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestampString:(NSString *)expirationTimestamp;

@@ -118,7 +118,7 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:LOCATION_UPDATED_NOTIFICATION object:nil];
                 
                 if ([EngageConfig primaryUserId]) {
-                    NSString *listId = [[EngageConfigManager sharedInstance] configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID];
+                    NSString *listId = [EngageConfig engageListId];
                     XMLAPIClient *client = [XMLAPIClient client];
                     XMLAPI *updateUserKnownLocation = [XMLAPI updateUserLastKnownLocation:self.currentPlacemarkCache listId:listId];
                     [client postResource:updateUserKnownLocation success:^(ResultDictionary *ERXML) {

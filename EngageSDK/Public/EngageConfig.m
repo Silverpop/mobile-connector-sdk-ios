@@ -13,6 +13,7 @@
 @implementation EngageConfig
 
 __strong static NSDate *currentCampaignExpirationDate = nil;
+__strong static NSString *engageListId = nil;
 
 
 + (NSString *)deviceId {
@@ -134,6 +135,20 @@ __strong static NSDate *currentCampaignExpirationDate = nil;
     NSLog(@"Setting CurrentCampaign to %@ with expiration of %@", currentCampaign, currentCampaignExpirationDate);
     [defaults setObject:currentCampaign forKey:@"engageCurrentCampaign"];
     [defaults synchronize];
+}
+
+
++ (void)storeEngageListId:(NSString *)paramEngageListId {
+    engageListId = paramEngageListId;
+}
+
++ (NSString *)engageListId {
+    if (engageListId) {
+        return engageListId;
+    } else {
+        NSLog(@"WARNING : No EngageListID has been set by SDK user yet. XMLAPI operation will fail!");
+        return @"";
+    }
 }
 
 @end

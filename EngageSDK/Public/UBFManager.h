@@ -17,6 +17,7 @@
                       secret:(NSString *)secret
                        token:(NSString *)refreshToken
                         host:(NSString *)hostUrl
+        engageDatabaseListId:(NSString *)engageListId
               connectSuccess:(void (^)(AFOAuthCredential *credential))success
                      failure:(void (^)(NSError *error))failure;
 

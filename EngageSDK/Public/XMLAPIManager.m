@@ -25,12 +25,14 @@ __strong static XMLAPIManager *_sharedInstance = nil;
                       secret:(NSString *)secret
                        token:(NSString *)refreshToken
                         host:(NSString *)hostUrl
+        engageDatabaseListId:(NSString *)engageListId
               connectSuccess:(void (^)(AFOAuthCredential *credential))success
                      failure:(void (^)(NSError *error))failure {
     
     static dispatch_once_t pred = 0;
     dispatch_once(&pred, ^{
         _sharedInstance = [[XMLAPIManager alloc] init];
+        [EngageConfig storeEngageListId:engageListId];
         
         [XMLAPIClient createClient:clientId
                          secret:secret

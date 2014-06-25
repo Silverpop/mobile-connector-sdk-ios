@@ -32,7 +32,12 @@ __strong static NSString *engageDatePattern = @"yyyy'/'MM'/'dd' 'HH':'mm':'ss'";
                        fromDate:(NSDate *)date {
     self = [super init];
     
-    self.fromDate = date;
+    if (date) {
+        self.fromDate = date;
+    } else {
+        self.fromDate = [NSDate date];
+    }
+    
     self.dayValue = -1;
     self.hourValue = -1;
     self.minuteValue = -1;
@@ -92,7 +97,7 @@ __strong static NSString *engageDatePattern = @"yyyy'/'MM'/'dd' 'HH':'mm':'ss'";
             if (self.minuteValue > -1) [dateComponents setMinute:self.minuteValue];
             if (self.secondValue > -1) [dateComponents setSecond:self.secondValue];
             
-            self.expiresAtDate = [calendar dateByAddingComponents:dateComponents toDate:date options:0];
+            self.expiresAtDate = [calendar dateByAddingComponents:dateComponents toDate:self.fromDate options:0];
         }
     }
     

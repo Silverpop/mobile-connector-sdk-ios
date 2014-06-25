@@ -14,10 +14,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [EngageSDK initializeSDKClient:ENGAGE_CLIENT_ID secret:ENGAGE_SECRET token:ENGAGE_REFRESH_TOKEN host:ENGAGE_BASE_URL];
-    [EngageConfig storePrimaryUserId:@"jeremy.dyer@makenandbuild.com"];
+    [EngageSDK initializeSDKClient:ENGAGE_CLIENT_ID secret:ENGAGE_SECRET token:ENGAGE_REFRESH_TOKEN host:ENGAGE_BASE_URL engageDatabaseListId:ENGAGE_LIST_ID];
+    [EngageConfig storePrimaryUserId:@"secret@adomain.com"];
     
-    NSString *listId = [[EngageConfigManager sharedInstance] configForGeneralFieldName:PLIST_GENERAL_DATABASE_LIST_ID];
+    NSString *listId = [EngageConfig engageListId]; //Was previously stored here by "initializeSDKClient" call above.
     XMLAPI *addRecipient = [XMLAPI addRecipient:[EngageConfig primaryUserId] list:listId];
     [[XMLAPIManager sharedInstance] postXMLAPI:addRecipient];
     

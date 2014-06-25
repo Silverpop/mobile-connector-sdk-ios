@@ -27,8 +27,5 @@
 - (BOOL)locationServicesEnabled;
 - (BOOL) placemarkCacheExpired;
 - (NSString *) currentPlacemarkFormattedAddress;
-- (UBF *)addLocationToUBFEvent:(UBF *)ubfEvent withEngageEvent:(EngageEvent *)engageEvent;
-
-
 
 @end

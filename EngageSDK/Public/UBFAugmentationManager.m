@@ -9,8 +9,6 @@
 #import "UBFAugmentationManager.h"
 #import "EngageConfigManager.h"
 #import "UBFAugmentationPluginProtocol.h"
-#import "UBFCoordinatesAugmentationPlugin.h"
-#import "UBFPlacemarkAugmentationPlugin.h"
 #import "EngageConfig.h"
 #import "EngageExpirationParser.h"
 #import "UBFAugmentationOperation.h"

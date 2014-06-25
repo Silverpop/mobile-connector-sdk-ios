@@ -77,13 +77,6 @@ __strong static UBFManager *_sharedInstance = nil;
         _sharedInstance.ecm = [EngageConfigManager sharedInstance];
         _sharedInstance.eventsToCacheBeforePost = [[[EngageConfigManager sharedInstance] numberConfigForGeneralFieldName:PLIST_GENERAL_UBF_EVENT_CACHE_SIZE] intValue];
         
-        //If location services are enabled then we want to listen for location updated events.
-        if ([_sharedInstance.engageEventLocationManager locationServicesEnabled]) {
-            [self registerForLocationServiceNotifications];
-        } else {
-            NSLog(@"Notifications are not enabled so we are not setting up a location event listener");
-        }
-        
         
         //Handles the session
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -144,66 +137,6 @@ __strong static UBFManager *_sharedInstance = nil;
     });
     
     return _sharedInstance;
-}
-
-
-/**
- Registers the LocationService notifications if they are enabled for the application.
-*/
-+ (void)registerForLocationServiceNotifications {
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:LOCATION_UPDATED_NOTIFICATION
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification *note) {
-                                                      
-                                                      //Locate all events with "HOLD" status in Core Data
-                                                      NSArray *holdEngagedEvents = [_sharedInstance.engageLocalEventStore findEngageEventsWithStatus:[[NSNumber numberWithInt:HOLD] intValue]];
-                                                      
-                                                      //Update their payload to have the new coordinates.
-                                                      for (EngageEvent *ee in holdEngagedEvents) {
-                                                          
-                                                          if (ee.eventJson != nil) {
-                                                              UBF *originalEvent = [[UBF alloc] initFromJSON:ee.eventJson];
-                                                              
-                                                              //Updates the UBF event with the LocationManager.
-                                                              UBF *newEvent = [_sharedInstance.engageEventLocationManager addLocationToUBFEvent:originalEvent withEngageEvent:ee];
-                                                              
-                                                              if (newEvent) {
-                                                                  ee.eventJson = [newEvent jsonValue];
-                                                                  ee.eventStatus = [[NSNumber alloc] initWithInt:NOT_POSTED];
-                                                              } else {
-                                                                  ee.eventStatus = [[NSNumber alloc] initWithInt:NOT_POSTED];
-                                                              }
-                                                          } else {
-                                                              ee.eventStatus = [[NSNumber alloc] initWithInt:NOT_POSTED];
-                                                          }
-                                                      }
-                                                      
-                                                      [[EngageLocalEventStore sharedInstance] saveEvents];
-                                                  }];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:LOCATION_ACQUIRE_LOCATION_TIMEOUT
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification *note) {
-                                                      NSLog(@"Location Coordinate acquisition timed out. Sending UBF event without coordinates!");
-                                                      
-                                                      //Acquiring coordinates has timed out so we need to go ahead and push the UBF event to Silverpop.
-                                                      [[UBFClient client] postUBFEngageEvents:nil failure:nil];
-                                                  }];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:LOCATION_PLACEMARK_TIMEOUT
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification *note) {
-                                                      NSLog(@"Location Placemark acquisition timed out. Sending UBF event without Placemark location!");
-                                                      
-                                                      //Acquiring CLPlacemark has timed out so we need to go ahead and push the UBF event to Silverpop.
-                                                      [[UBFClient client] postUBFEngageEvents:nil failure:nil];
-                                                  }];
 }
 
 

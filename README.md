@@ -28,12 +28,83 @@ UBFManager *ubfManger = [UBFManager createClient:ENGAGE_CLIENT_ID
         NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
     }];
 ```
+####Purpose
+
+The goal of UBFManager is serve the simple purpose of posting UBF Universal Events to Engage while masking the more complicated management tasks such as (network reachability, persistence, and authentication) from the SDK user. 
+
+* tracking UBF events - Posts your individual events to Engage. Local cache is taken into consideration and events are not posted until "ubfEventCacheSize" configuration value is reached. Once that value is reached then the events are batched and sent to Engage to reduce network traffic. You may set the value of "ubfEventCacheSize" if you do not wish for local caching to take palce. 
+* handleLocalNotification - utility method invoked SDK user invokes when their application receives a local notificaiton
+* handlePushNotificationReceived - utility method for received push notification. This method also handles searching the notification for EngageSDK parameter values like Current Campaign (configurable).
+* handleNotificationOpened - utility method for opened notifications. Method handles searching the notifications for EngageSDK parameter values like Current Campaign (configurable)
+* handleExternalURLOpened - utility method for external URL opened (email or website deeplink on the device for example) and handles searching the notifications for EngageSDK parameter values like Current Campaign (configurable)
+
+####Notes
 Notes about UBFManager creation. The UBFManager transparently handles network reachability, event persistence, and client authentication. Initial creation of the UBFManager will establish the OAuth 2 connection to the Engage service using the credentials that you provide which you received from the Engage portal. UBF events may be immediately posted to the UBFManager even before a successful authentication connection has been established. UBF events that are posted to the manager are simply queued and persisted until the authentication is successful and then they are flushed to Engage. The UBFManager will also queue and persist the events locally if an event is posted while the device does not currently have network reachability. If the application is closed or the device powered down before network reachability has been regained then the events will be posted the next time the application is opened. The local events are durable under all circumstances other than the application being deleted from the device or the SDK user deleting them from the EngageLocalEventStore. 
 
 After initial UBFManager creation you may reference your singleton anytime with
 ```objective-c
 UBFManager *ubfManager = [UBFManager sharedInstance];
 ```
+
+## UBF Event Augmentation Plugin Service
+
+After a UBF event is created and sent the the UBFManager the UBF may also be further augmented with
+data received from IOS hardware or user defined external services. This functionality maintains
+maximum SDK flexibility as it allows the user to define their own Augmentation plugins that augment
+the UBF event before it is posted to the Engage API. The SDK by default uses this framework for augmenting
+the UBF events with location coordinates and location name for example. Any plugin can be created by the user
+by implementing the ```UBFAugmentationPluginProtocol``` interface. Here is a 
+simple example of a "weather UBF augmentation plugin"
+
+UBFWeatherAugmentationPlugin.h
+```objective-c
+@interface UBFWeatherAugmentationPlugin : NSObject <UBFAugmentationPluginProtocol>
+
+-(BOOL)processSyncronously;
+-(BOOL)isSupplementalDataReady;
+-(UBF*)process:(UBF*)ubfEvent;
+
+@end
+```
+
+UBFWeatherAugmentationPlugin.m
+```objective-c
+@implementation UBFWeatherAugmentationPlugin
+
+-(id)init {
+    self = [super init];
+    if (self) {
+        //Custom init logic
+    }
+    return self;
+}
+
+-(BOOL)processSyncronously {
+    return YES; //Other plugins depend on this Plugins output for processing
+}
+
+
+-(BOOL)isSupplementalDataReady {
+    // Your logic to decide if the data needed for the plugin to process is ready or not. Lets assume our fake weather data is.
+    return YES;
+}
+
+
+-(UBF*)process:(UBF*)ubfEvent {
+    if (ubfEvent) {
+        [ubfEvent setAttribute:@"Temperatue In Celsius" value:@"100"];
+        [ubfEvent setAttribute:@"Temperatue In Fahrenheit" value:@"212"];
+    }
+    return ubfEvent;
+}
+
+@end
+```
+
+To prevent UBF events from becoming stagnant or waiting indefinitely for augmentation data a configurable
+augmentation timeout is placed for a single UBF augmentation. The same timeout applies if you have 1 plugin
+or 1000 plugins so tuning to match your needs is expected. After the timeout is reached the UBF event
+will be posted to Engage API in the same state as when it was handed off to the augmentation plugin service.
 
 ## Universal Behaviors API
 
@@ -111,16 +182,6 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
 [[UBFManager sharedInstance] trackEvent:[UBF namedEvent:@"PLAYER LOADED" params:@{ @"Event Source View" : @"HomeViewController", @"Event Tags" : @"MVSTERMIND,Underground" }]];
 ```
 
-### UBFManager Operations
-
-The goal of UBFManager is serve the simple purpose of posting UBF Universal Events to Engage while masking the more complicated management tasks such as (network reachability, persistence, and authentication) from the SDK user. 
-
-* tracking UBF events - Posts your individual events to Engage. Local cache is taken into consideration and events are not posted until "ubfEventCacheSize" configuration value is reached. Once that value is reached then the events are batched and sent to Engage to reduce network traffic. You may set the value of "ubfEventCacheSize" if you do not wish for local caching to take palce. 
-* handleLocalNotification - utility method invoked SDK user invokes when their application receives a local notificaiton
-* handlePushNotificationReceived - utility method for received push notification. This method also handles searching the notification for EngageSDK parameter values like Current Campaign (configurable).
-* handleNotificationOpened - utility method for opened notifications. Method handles searching the notifications for EngageSDK parameter values like Current Campaign (configurable)
-* handleExternalURLOpened - utility method for external URL opened (email or website deeplink on the device for example) and handles searching the notifications for EngageSDK parameter values like Current Campaign (configurable)
-
 ### XMLAPIManager
 
 The XMLAPIManager manages posting XMLAPI messages to the Engage web services. A XMLAPIManager singleton instance should be created in your AppDelegate class.
@@ -147,18 +208,17 @@ XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
 
 UBF events are persisted to a local SQLite DB on the user's device. The event can have 1 of 4 status. NOT_POSTED, SUCCESSFULLY_POSTED, FAILED_POST, HOLD. 
 
-*NOT_POSTED 
-**UBF events that are ready to be sent to Engage but currently cannot due to network not being reachable or queue cache size not being met yet.
-*SUCCESSFULLY_POSTED
-**UBF events that have already been successfully posted to Engage. These events will be purged after the configurable amount of time has been reached.
-*FAILED_POST
-**UBF events that were attempted to be posted to Engage for the maximum number of retries. Once in this state no further attempts to post the UBF event will be made.
-*HOLD
-**UBF events in this state have been initially created but have still not had all of their data set by the augmentation service. UBF events that fail to be ran successfully through the augmentation service before their timeouts have been reached will be moved to the NOT_POSTED state and sent to Engage on the next flush. Providing timeouts helps ensure that the events do not become stuck in the HOLD state if certain external augmentation events are never received.
-
-## UBF Event Augmentation Plugin Service
-
-
+* NOT_POSTED 
+** UBF events that are ready to be sent to Engage but currently cannot due to network not being reachable or queue cache size not being met yet.
+* SUCCESSFULLY_POSTED
+** UBF events that have already been successfully posted to Engage. These events will be purged after the configurable amount of time has been reached.
+* FAILED_POST
+** UBF events that were attempted to be posted to Engage for the maximum number of retries. Once in this state no further attempts to post the UBF event will be made.
+* HOLD
+** UBF events in this state have been initially created but have still not had all of their data set by the augmentation service. UBF events that fail to be ran successfully through the augmentation service before their timeouts have been reached will be moved to the NOT_POSTED state and sent to Engage on the next flush. Providing timeouts helps ensure that the events do not become stuck in the HOLD state if certain external augmentation events are never received.
+* EXPIRED
+** UBF events that fail to complete their augmenation before the time out is reached are placed in the EXPIRED state. EXPIRED events are
+eligible to be POSTed to Engage just like NOT_POSTED events.
 
 ## EngageSDK Models
 

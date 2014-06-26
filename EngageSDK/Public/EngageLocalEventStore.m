@@ -299,7 +299,7 @@ __strong NSString* ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
         return _persistenceStoreCoordinator;
     }
     
-    NSURL *storeUrl = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"EngageEventLocalStore.sqlite"];
+    NSURL *storeUrl = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"EngageEventLocalStore2.sqlite"];
     
 //    NSString *modelPath = [[NSBundle mainBundle]
 //                           pathForResource:@"Engage" ofType:@"mom"];

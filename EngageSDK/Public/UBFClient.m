@@ -121,6 +121,8 @@ __strong static UBFClient *_sharedClient = nil;
             
             NSDictionary *params = @{ @"events" : eventsCache };
             
+            NSLog(@"POSTing %@", params.description);
+            
             _sharedClient.requestSerializer = [AFJSONRequestSerializer serializer];
             [_sharedClient.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
             [_sharedClient.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [_sharedClient.credential accessToken]] forHTTPHeaderField:@"Authorization"];

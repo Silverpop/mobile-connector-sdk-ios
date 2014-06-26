@@ -255,7 +255,7 @@
 
 + (NSMutableDictionary *) populateEventCommonParams:(NSDictionary *)params {
     
-    NSMutableDictionary *mutParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *mutParams = [[NSMutableDictionary alloc] initWithDictionary:params];
     if (params) {
         mutParams = [self addDelimitedTagsFromParams:params toDictionary:mutParams];
     }

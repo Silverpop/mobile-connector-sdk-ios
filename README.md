@@ -209,16 +209,15 @@ XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
 UBF events are persisted to a local SQLite DB on the user's device. The event can have 1 of 4 status. NOT_POSTED, SUCCESSFULLY_POSTED, FAILED_POST, HOLD. 
 
 * NOT_POSTED 
-** UBF events that are ready to be sent to Engage but currently cannot due to network not being reachable or queue cache size not being met yet.
+    * UBF events that are ready to be sent to Engage but currently cannot due to network not being reachable or queue cache size not being met yet.
 * SUCCESSFULLY_POSTED
-** UBF events that have already been successfully posted to Engage. These events will be purged after the configurable amount of time has been reached.
+    * UBF events that have already been successfully posted to Engage. These events will be purged after the configurable amount of time has been reached.
 * FAILED_POST
-** UBF events that were attempted to be posted to Engage for the maximum number of retries. Once in this state no further attempts to post the UBF event will be made.
-* HOLD
-** UBF events in this state have been initially created but have still not had all of their data set by the augmentation service. UBF events that fail to be ran successfully through the augmentation service before their timeouts have been reached will be moved to the NOT_POSTED state and sent to Engage on the next flush. Providing timeouts helps ensure that the events do not become stuck in the HOLD state if certain external augmentation events are never received.
+    * UBF events that were attempted to be posted to Engage for the maximum number of retries. Once in this state no further attempts to post the UBF event will be made.
+* HOLD 
+    * UBF events in this state have been initially created but have still not had all of their data set by the augmentation service. UBF events that fail to be ran successfully through the augmentation service before their timeouts have been reached will be moved to the NOT_POSTED state and sent to Engage on the next flush. Providing timeouts helps ensure that the events do not become stuck in the HOLD state if certain external augmentation events are never received.
 * EXPIRED
-** UBF events that fail to complete their augmenation before the time out is reached are placed in the EXPIRED state. EXPIRED events are
-eligible to be POSTed to Engage just like NOT_POSTED events.
+    * UBF events that fail to complete their augmenation before the time out is reached are placed in the EXPIRED state. EXPIRED events are eligible to be POSTed to Engage just like NOT_POSTED events.
 
 ## EngageSDK Models
 
@@ -230,14 +229,14 @@ Utility class for generating JSON Universal Events that are posted to the UBFMan
 
 #### UBF Core Values
 
-*Device Version
-*OS Name
-*OS Version
-*App Name
-*App Version
-*Device Id
-*Primary User Id
-*Anonymous Id
+* Device Version
+* OS Name
+* OS Version
+* App Name
+* App Version
+* Device Id
+* Primary User Id
+* Anonymous Id
 
 ### XMLAPI
 

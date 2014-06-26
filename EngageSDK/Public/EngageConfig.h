@@ -9,7 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "EngageExpirationParser.h"
 
-#define PLUGIN_SUPPLEMENTAL_DATA_AVAILABLE @"PluginSupplementalDataAvailable"
+//Defines NotificaitonCenter event names
+#define AUGMENTATION_SUCCESSFUL_EVENT @"AugmentationSuccessfulEvent"
+#define AUGMENTATION_EXPIRED_EVENT @"AugmentationExpiredEvent"
+
+
 #define ENGAGE_CONFIG_BUNDLE @"EngageConfigPlist.bundle"
 
 //Plist Param constants.

@@ -16,6 +16,7 @@
 
 +(instancetype)sharedInstance;
 
+-(void)zeroOutLocalCacheSize;
 -(void)augmentUBFEvent:(UBF*)eventToAugment withEngageEvent:(EngageEvent *)engageEvent;
 
 @end

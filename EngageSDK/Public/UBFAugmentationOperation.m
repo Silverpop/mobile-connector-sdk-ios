@@ -64,17 +64,21 @@
             }
         }
         
+        NSString *notificationMessage;
+        
         if (![self isCancelled] && [notProcessedPlugins count] == 0) {
-            self.engageEvent.eventJson = [self.ubfEvent jsonValue];
             self.engageEvent.eventStatus = [NSNumber numberWithInt:NOT_POSTED];
-            [[EngageLocalEventStore sharedInstance] saveEvents];
-            
-            //Cancel the pending timer of doom.
-            dispatch_source_cancel(self.timeoutTimer);
+            notificationMessage = AUGMENTATION_SUCCESSFUL_EVENT;
+        } else {
+            self.engageEvent.eventStatus = [NSNumber numberWithInt:EXPIRED];
+            notificationMessage = AUGMENTATION_EXPIRED_EVENT;
         }
         
-        UBFManager *ubfManager = [UBFManager sharedInstance];
-        [ubfManager postEventCache];
+        self.engageEvent.eventJson = [self.ubfEvent jsonValue];
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationMessage object:self.engageEvent];
+        
+        //Cancel the pending timer of doom.
+        dispatch_source_cancel(self.timeoutTimer);
     }
 }
 

@@ -34,7 +34,7 @@
 
 -(BOOL)isSupplementalDataReady {
     EngageEventLocationManager *elm = [EngageEventLocationManager sharedInstance];
-    if (elm && ![elm placemarkCacheExpired]) {
+    if (elm && ![elm placemarkCacheExpiredOrEmpty]) {
         return YES;
     }
     return NO;

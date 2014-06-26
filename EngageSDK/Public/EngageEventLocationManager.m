@@ -99,7 +99,7 @@ __strong static EngageEventLocationManager *_sharedInstance = nil;
     _sharedInstance.currentLocationCacheBirthday = [NSDate date];
     NSLog(@"Longitude %f & Latitude %f", [_sharedInstance.currentLocationCache coordinate].longitude, [_sharedInstance.currentLocationCache coordinate].latitude);
     
-    if (_sharedInstance.currentPlacemarkCache == nil || [_sharedInstance placemarkCacheExpired]) {
+    if (_sharedInstance.currentPlacemarkCache == nil || [_sharedInstance placemarkCacheExpiredOrEmpty]) {
         [_sharedInstance.geoCoder reverseGeocodeLocation:_sharedInstance.currentLocationCache completionHandler:^(NSArray *placemarks, NSError *error) {
             if (error) {
                 NSLog(@"Silverpop Engage Geocode failed with error: %@", [error description]);
@@ -133,7 +133,7 @@ __strong static EngageEventLocationManager *_sharedInstance = nil;
 /*
  Determines if the placemark cache is valid or not
  */
-- (BOOL) placemarkCacheExpired {
+- (BOOL) placemarkCacheExpiredOrEmpty {
     BOOL expired = NO;
     
     if (_sharedInstance.currentPlacemarkBirthday != nil) {
@@ -149,6 +149,8 @@ __strong static EngageEventLocationManager *_sharedInstance = nil;
             _sharedInstance.currentPlacemarkBirthday = nil;
             _sharedInstance.currentPlacemarkExpirationDate = nil;
         }
+    } else {
+        expired = YES;
     }
     
     return expired;

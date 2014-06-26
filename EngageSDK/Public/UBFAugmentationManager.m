@@ -23,6 +23,9 @@
 @property (strong, nonatomic) NSOperationQueue *augmentationQueue;
 @property (strong, nonatomic) EngageLocalEventStore *engageLocalEventStore;
 
+@property (assign) int eventsToCacheBeforePost;
+@property (assign) int eventsCached;
+
 @end
 
 @implementation UBFAugmentationManager
@@ -35,6 +38,10 @@ __strong static UBFAugmentationManager *_sharedInstance = nil;
         
     }
     return self;
+}
+
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -59,9 +66,39 @@ __strong static UBFAugmentationManager *_sharedInstance = nil;
         //Creates the Augmentation Queue.
         _sharedInstance.augmentationQueue = [[NSOperationQueue alloc] init];
         _sharedInstance.engageLocalEventStore = [EngageLocalEventStore sharedInstance];
+        
+        _sharedInstance.eventsCached = 0;
+        _sharedInstance.eventsToCacheBeforePost = [[[EngageConfigManager sharedInstance] numberConfigForGeneralFieldName:PLIST_GENERAL_UBF_EVENT_CACHE_SIZE] intValue];
+        
+        //Register for Augmentation events.
+        [[NSNotificationCenter defaultCenter] addObserverForName:AUGMENTATION_SUCCESSFUL_EVENT
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification *note) {
+                                                          [_sharedInstance updateCachedCounts];
+                                                      }];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:AUGMENTATION_EXPIRED_EVENT
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification *note) {
+                                                          [_sharedInstance updateCachedCounts];
+                                                      }];
     });
     
     return _sharedInstance;
+}
+
+-(void)zeroOutLocalCacheSize {
+    _sharedInstance.eventsCached = 0;
+}
+
+- (void)updateCachedCounts {
+    _sharedInstance.eventsCached++;
+    if (_sharedInstance.eventsCached >= _sharedInstance.eventsToCacheBeforePost) {
+        _sharedInstance.eventsCached = 0;
+        [[UBFManager sharedInstance] postEventCache];
+    }
 }
 
 -(void)augmentUBFEvent:(UBF*)ubfEvent withEngageEvent:(EngageEvent *)engageEvent {
@@ -84,7 +121,9 @@ __strong static UBFAugmentationManager *_sharedInstance = nil;
         dispatch_source_set_event_handler(_timer, ^{
             NSLog(@"UBF event augmentation timed out");
             engageEvent.eventStatus = [NSNumber numberWithInt:EXPIRED];
-            [_sharedInstance.engageLocalEventStore saveEvents];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:AUGMENTATION_EXPIRED_EVENT object:engageEvent];
+            
             [augOperation cancel];
             dispatch_source_cancel(_timer);
         });

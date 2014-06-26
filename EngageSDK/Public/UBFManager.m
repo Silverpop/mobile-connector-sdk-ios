@@ -24,8 +24,6 @@ NSString * const kEngageClientInstalled = @"engageClientInstalled";
 @property (strong, nonatomic) EngageLocalEventStore *engageLocalEventStore;
 @property (strong, nonatomic) EngageEventLocationManager *engageEventLocationManager;
 @property (strong, nonatomic) EngageConfigManager *ecm;
-@property (assign) int eventsToCacheBeforePost;
-@property (assign) int eventsCached;
 
 //Session Management.
 @property UBF *sessionEnded;
@@ -77,7 +75,6 @@ __strong static UBFManager *_sharedInstance = nil;
         _sharedInstance.engageEventLocationManager = [[EngageEventLocationManager alloc] init];
         _sharedInstance.engageLocalEventStore = [[EngageLocalEventStore alloc] init];
         _sharedInstance.ecm = [EngageConfigManager sharedInstance];
-        _sharedInstance.eventsToCacheBeforePost = [[[EngageConfigManager sharedInstance] numberConfigForGeneralFieldName:PLIST_GENERAL_UBF_EVENT_CACHE_SIZE] intValue];
         
         
         //Handles the session
@@ -135,6 +132,9 @@ __strong static UBFManager *_sharedInstance = nil;
                                                                                                             sinceDate:[NSDate date]];
                                                           
                                                           NSLog(@"Session paused");
+                                                          
+                                                          //Also save the EngageLocalEventStore state.
+                                                          [[EngageLocalEventStore sharedInstance] saveEvents];
                                                       }];
     });
     
@@ -154,31 +154,12 @@ __strong static UBFManager *_sharedInstance = nil;
 - (NSURL *) trackEvent:(UBF *)event {
     
     EngageEvent *engageEvent = nil;
-    
-    //Does the event need to be fired now or wait?
-    if ([self.engageEventLocationManager locationServicesEnabled]
-        && [[UBFAugmentationManager sharedInstance] augmentationPlugins]
-        && [[[UBFAugmentationManager sharedInstance] augmentationPlugins] count] > 0) {
-        
-        engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:HOLD] intValue]];
-        
-        //Pass the UBF event through the user defined Augmentors.
-        [[UBFAugmentationManager sharedInstance] augmentUBFEvent:event withEngageEvent:engageEvent];
-    } else {
-        //Location Services are not enabled so continue with the normal flow.
-        engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:NOT_POSTED] intValue]];
-    }
-    
-    self.eventsCached++;
-    if (self.eventsCached >= self.eventsToCacheBeforePost) {
-        [[UBFClient client] postUBFEngageEvents:nil failure:nil];
-    }
-    
+    engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:HOLD] intValue]];
+    [[UBFAugmentationManager sharedInstance] augmentUBFEvent:event withEngageEvent:engageEvent];
     return [[engageEvent objectID] URIRepresentation];
 }
 
 - (void)postEventCache {
-    self.eventsCached = 0;
     [[UBFClient client] postUBFEngageEvents:nil failure:nil];
 }
 

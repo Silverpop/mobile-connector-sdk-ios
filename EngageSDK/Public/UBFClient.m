@@ -9,6 +9,7 @@
 #import "UBFClient.h"
 #import "EngageEvent.h"
 #import "EngageConfigManager.h"
+#import "UBFAugmentationManager.h"
 
 @interface UBFClient ()
 
@@ -62,7 +63,7 @@ __strong static UBFClient *_sharedClient = nil;
         }
         
         //Posts all of the pending EngageEvents.
-        [self postUBFEngageEvents:nil failure:nil];
+        [self applicationStartupPostStaleEvents];
         
     } failure:^(NSError *error) {
         if (failure) {
@@ -71,12 +72,34 @@ __strong static UBFClient *_sharedClient = nil;
     }];
 }
 
+//When the application starts up there may be stale events that never completed and those need to be posted.
+- (void) applicationStartupPostStaleEvents {
+    //Lookup all of the events that are still "HOLD" meaning they didn't complete Augmentation and try again.
+    NSArray *holdEngageEvents = [[EngageLocalEventStore sharedInstance] findEngageEventsWithStatus:HOLD];
+    for (EngageEvent *engageEvent in holdEngageEvents) {
+        UBF *ubfEvent = [[UBF alloc] initFromJSON:engageEvent.eventJson];
+        [[UBFAugmentationManager sharedInstance] augmentUBFEvent:ubfEvent withEngageEvent:engageEvent];
+    }
+    
+    //Lookup all events in "PROCESSING" which means the app was killed before they were successfully POSTed to Silverpop
+    NSArray *engageEvents = [[EngageLocalEventStore sharedInstance] findEngageEventsWithStatus:PROCESSING];
+    for (EngageEvent *engageEvent in engageEvents) {
+        engageEvent.eventStatus = [NSNumber numberWithInt:NOT_POSTED];
+    }
+    
+    [[EngageLocalEventStore sharedInstance] saveEvents];
+    [self postUBFEngageEvents:nil failure:nil];
+}
+
+
 - (void) postUBFEngageEvents:(void (^)(AFHTTPRequestOperation *operation, id responseObject)) success
                      failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
     
     if (self.isAuthenticated) {
         
         __block NSArray *unpostedUbfEvents = [[EngageLocalEventStore sharedInstance] findUnpostedEvents];
+        [[UBFAugmentationManager sharedInstance] zeroOutLocalCacheSize];
+        
         if (unpostedUbfEvents && [unpostedUbfEvents count] > 0) {
             
             //Mark all of the "unpostedUbfEvents" as in progress so they won't be picked up again if this is invoked again for HTTP response of success or failure. We don't have to "Save commit" as this in memory representation should do.

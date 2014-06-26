@@ -25,7 +25,7 @@
 + (id)sharedInstance;
 
 - (BOOL)locationServicesEnabled;
-- (BOOL) placemarkCacheExpired;
+- (BOOL) placemarkCacheExpiredOrEmpty;
 - (NSString *) currentPlacemarkFormattedAddress;
 
 @end

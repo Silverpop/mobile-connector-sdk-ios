@@ -46,8 +46,16 @@
     
     if (ubfEvent && self.longitudeUBFFieldName && self.latitudeUBFFieldName) {
         EngageEventLocationManager *elm = [EngageEventLocationManager sharedInstance];
-        [ubfEvent setAttribute:self.longitudeUBFFieldName value:[[NSNumber numberWithDouble:elm.currentLocationCache.coordinate.longitude] stringValue]];
-        [ubfEvent setAttribute:self.latitudeUBFFieldName value:[[NSNumber numberWithDouble:elm.currentLocationCache.coordinate.latitude] stringValue]];
+        
+        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setMaximumFractionDigits:10];
+        [numberFormatter setRoundingMode:NSNumberFormatterRoundUp];
+        
+        NSString *roundedLongitude = [numberFormatter stringFromNumber:[NSNumber numberWithDouble:elm.currentLocationCache.coordinate.longitude]];
+        NSString *roundedLatitude = [numberFormatter stringFromNumber:[NSNumber numberWithDouble:elm.currentLocationCache.coordinate.latitude]];
+        
+        [ubfEvent setAttribute:self.longitudeUBFFieldName value:roundedLongitude];
+        [ubfEvent setAttribute:self.latitudeUBFFieldName value:roundedLatitude];
     }
     
     return ubfEvent;

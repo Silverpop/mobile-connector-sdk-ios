@@ -12,6 +12,94 @@ The goal is to provide a library that is simple to setup and use for communicati
 
 EngageSDK is a wrapper for the Engage Database XMLAPI and JSON Universal Events. The SDK assists developers in interacting with both the XMLAPI and JSON Universal Events (UBF) web services. All interaction with the Engage web services require that you first establish a secure connection with Engage via the OAuth 2 credentials you receive from the Engage Portal. Although XMLAPI and UBF share certain components the SDK divides the interaction with each module into separate components namely UBFManager and XMLAPIManager. 
 
+## Installing SDK
+
+## Before You Release Your App
+
+### Important Note: Increase Token Limits for Production Apps
+
+There are currently limits placed on the number of Access Tokens that can be generated per hour per instance of Engage.  This number is easily increased, however, before deploying your app publicly, you must contact your Relationship Manager or Sales Rep regarding your intention to use this connector and that you will need to have your OAuth Access Token rate limit increased.
+
+## Demo
+
+EngageSDK includes a sample project within the Example subdirectory. In order to build the project, you must install the dependencies via CocoaPods. To do so:
+
+    $ gem install cocoapods # If necessary
+    $ git clone git@github.com:Silverpop/engage-sdk-ios.git
+    $ cd engage-sdk-ios/Example
+    $ pod install
+    $ touch EngageSDKDemo/sample-config.h
+    $ open EngageSDKDemo.xcworkspace
+
+Open the EngageSDKDemo/sample-config.h file and paste the `#define` code from [Environment Setup](#environment-setup) below.
+
+Once installation has finished, you can build and run the EngageSDKDemo project within your simulator or iPhone device.
+
+Once you understand how the Demo project is configured via CocoaPods and implemented using the EngageSDK, you are ready to integrate the EngageSDK with your new or existing Xcode iPhone project.
+
+## Getting Started 
+The first thing you will want to do is contact your Relationship Manager at Silverpop and ask for the "Silverpop Mobile Connector".  They will assist in getting your Engage account provisioned for Universal Behaviors -- the new flexible event tracking system that is the backbone of tracked mobile app behaviors.
+
+Next, you can follow the instructions in this readme file, or as an additional offer, we've put together a short 10 minute tutorial that will walk you through the download, installation, and configuration process to get your app up and running.  [Click here](https://kb.silverpop.com/kb/engage/Silverpop_Mobile_Connector_-_***NEW***/Video_Tutorial%3A_Up_and_Running_in_10_mins!) to watch that video tutorial within our KnowledgeBase.
+
+## Environment Setup
+The best way to begin is by using [CocoaPods](https://github.com/cocoapods/cocoapods). Follow the instructions offered at the CocoaPods website to install CocoaPods using Ruby Gems. 
+
+
+Using an new or existing iPhone project within Xcode, create a new C header file. We will use this file to define important constant configuration data for the EngageSDK library. Copy and paste the following lines between `#define` and `#endif`:
+
+```objective-c
+#define ENGAGE_BASE_URL (@"YOUR ENGAGE POD API URL")
+#define ENGAGE_CLIENT_ID (@"YOUR CLIENT ID GOES HERE")
+#define ENGAGE_SECRET (@"YOUR SECRET GOES HERE")
+#define ENGAGE_REFRESH_TOKEN (@"YOUR REFRESH TOKEN HERE")
+#define ENGAGE_LIST_ID (@"YOUR LIST ID")
+```
+
+Configure the defines with your values and save changes and close your project if it is open. 
+
+Open the terminal and open the project folder. 
+
+```
+touch Podfile
+```
+
+Edit this file to add the EngageSDK dependency
+
+```
+pod 'EngageSDK', '~> 1.0.0'
+```
+
+Save and close. 
+Install the Pod dependencies.
+
+```
+pod install
+```
+
+CocoaPods clones the EngageSDK files from github and creates an Xcode workspace configured with all dependencies (AFNetworking, AFOAuth2) and linking your existing project to a 'Pods' project that organizes and manages your dependencies and builds them as static libraries linked into your project.
+
+Open the Xcode workspace and import the public headers of the EngageSDK library by adding the following line to your code:
+ 
+```
+#import "YOURSUPERSECRETCONFIGFILE.h"
+#import <EngageSDK/EngageSDK.h>
+```
+
+## Tips
+You may want to add the following lines to your .gitignore file
+
+```
+#CocoaPods
+*/Pods/*
+*/Podfile.lock
+*/YOURSUPERSECRETCONFIGFILE.h
+```
+
+Some developers may need to install Xcode Command Line Tools before installing CocoaPods
+
+If you are having trouble with ruby gems, try performing a gem system update: `gem update --system`
+
 ### UBFManager
 
 The UBFManager manages posting UBF events through the Engage JSON Universal Events web services. A UBFManager singleton instance should be created in your AppDelegate class. Failing to initialize the UBFManager in your AppDelegate and rather somewhere else in your application may lead to certain UBF events such as "installed" or "session started" from being captured since they may occur before anywhere else in your application has the opportunity to initialize an instance of the UBFManager. 
@@ -402,97 +490,6 @@ EnagageSDK interacts with a wide array of dates and expiration times. Those valu
 |15m1d0seconds|6/11/2014 00:15:00|
 |65minutes|6/10/2014 01:05:00|
 |3seconds|6/10/2014 00:00:03|
-
-
-## Installing SDK
-
-
-
-## Before You Release Your App
-
-### Important Note: Increase Token Limits for Production Apps
-
-There are currently limits placed on the number of Access Tokens that can be generated per hour per instance of Engage.  This number is easily increased, however, before deploying your app publicly, you must contact your Relationship Manager or Sales Rep regarding your intention to use this connector and that you will need to have your OAuth Access Token rate limit increased.
-
-## Demo
-
-EngageSDK includes a sample project within the Example subdirectory. In order to build the project, you must install the dependencies via CocoaPods. To do so:
-
-    $ gem install cocoapods # If necessary
-    $ git clone git@github.com:Silverpop/engage-sdk-ios.git
-    $ cd engage-sdk-ios/Example
-    $ pod install
-    $ touch EngageSDKDemo/sample-config.h
-    $ open EngageSDKDemo.xcworkspace
-
-Open the EngageSDKDemo/sample-config.h file and paste the `#define` code from [Environment Setup](#environment-setup) below.
-
-Once installation has finished, you can build and run the EngageSDKDemo project within your simulator or iPhone device.
-
-Once you understand how the Demo project is configured via CocoaPods and implemented using the EngageSDK, you are ready to integrate the EngageSDK with your new or existing Xcode iPhone project.
-
-## Getting Started 
-The first thing you will want to do is contact your Relationship Manager at Silverpop and ask for the "Silverpop Mobile Connector".  They will assist in getting your Engage account provisioned for Universal Behaviors -- the new flexible event tracking system that is the backbone of tracked mobile app behaviors.
-
-Next, you can follow the instructions in this readme file, or as an additional offer, we've put together a short 10 minute tutorial that will walk you through the download, installation, and configuration process to get your app up and running.  [Click here](https://kb.silverpop.com/kb/engage/Silverpop_Mobile_Connector_-_***NEW***/Video_Tutorial%3A_Up_and_Running_in_10_mins!) to watch that video tutorial within our KnowledgeBase.
-
-## Environment Setup
-The best way to begin is by using [CocoaPods](https://github.com/cocoapods/cocoapods). Follow the instructions offered at the CocoaPods website to install CocoaPods using Ruby Gems. 
-
-
-Using an new or existing iPhone project within Xcode, create a new C header file. We will use this file to define important constant configuration data for the EngageSDK library. Copy and paste the following lines between `#define` and `#endif`:
-
-```objective-c
-#define ENGAGE_BASE_URL (@"YOUR ENGAGE POD API URL")
-#define ENGAGE_CLIENT_ID (@"YOUR CLIENT ID GOES HERE")
-#define ENGAGE_SECRET (@"YOUR SECRET GOES HERE")
-#define ENGAGE_REFRESH_TOKEN (@"YOUR REFRESH TOKEN HERE")
-#define ENGAGE_LIST_ID (@"YOUR LIST ID")
-```
-
-Configure the defines with your values and save changes and close your project if it is open. 
-
-Open the terminal and open the project folder. 
-
-```
-touch Podfile
-```
-
-Edit this file to add the EngageSDK dependency
-
-```
-pod 'EngageSDK', '~> 0.2'
-```
-
-Save and close. 
-Install the Pod dependencies.
-
-```
-pod install
-```
-
-CocoaPods clones the EngageSDK files from github and creates an Xcode workspace configured with all dependencies (AFNetworking, AFOAuth2) and linking your existing project to a 'Pods' project that organizes and manages your dependencies and builds them as static libraries linked into your project.
-
-Open the Xcode workspace and import the public headers of the EngageSDK library by adding the following line to your code:
- 
-```
-#import "YOURSUPERSECRETCONFIGFILE.h"
-#import <EngageSDK/EngageSDK.h>
-```
-
-## Tips
-You may want to add the following lines to your .gitignore file
-
-```
-#CocoaPods
-*/Pods/*
-*/Podfile.lock
-*/YOURSUPERSECRETCONFIGFILE.h
-```
-
-Some developers may need to install Xcode Command Line Tools before installing CocoaPods
-
-If you are having trouble with ruby gems, try performing a gem system update: `gem update --system`
 
 ### Sessions
 

@@ -9,5 +9,6 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import <EngageSDK.h>
     #import "sample_config.h"
 #endif

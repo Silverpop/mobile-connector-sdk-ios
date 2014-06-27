@@ -58,6 +58,7 @@
             
             //[self.locManager startUpdatingLocation];
             [self.locManager startMonitoringSignificantLocationChanges]; //Only delivers location events for things like cell tower change MUCH lower power use.
+            [self.locManager startUpdatingLocation];
             
             self.locationServicesSupported = YES;
         } else {

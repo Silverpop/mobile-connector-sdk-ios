@@ -12,8 +12,4 @@
 
 @interface UBFLocationNameAugmentationPlugin : NSObject<UBFAugmentationPluginProtocol>
 
--(BOOL)processSyncronously;
--(BOOL)isSupplementalDataReady;
--(UBF*)process:(UBF*)ubfEvent;
-
 @end

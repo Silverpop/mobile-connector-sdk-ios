@@ -52,7 +52,7 @@
             
             id plugin = [notProcessedPlugins objectAtIndex:index];
             
-            if ([plugin isSupplementalDataReady]) {
+            if ([plugin isSupplementalDataReady:self.ubfEvent]) {
                 self.ubfEvent = [plugin process:self.ubfEvent];
                 [notProcessedPlugins removeObjectAtIndex:index];
                 //Index does not need to be updated since the list size has decreased by one.
@@ -69,6 +69,11 @@
         if (![self isCancelled] && [notProcessedPlugins count] == 0) {
             self.engageEvent.eventStatus = [NSNumber numberWithInt:NOT_POSTED];
             notificationMessage = AUGMENTATION_SUCCESSFUL_EVENT;
+            
+            //Cancel the pending timer of doom.
+            if (self.timeoutTimer) {
+                dispatch_source_cancel(self.timeoutTimer);
+            }
         } else {
             self.engageEvent.eventStatus = [NSNumber numberWithInt:EXPIRED];
             notificationMessage = AUGMENTATION_EXPIRED_EVENT;
@@ -76,9 +81,6 @@
         
         self.engageEvent.eventJson = [self.ubfEvent jsonValue];
         [[NSNotificationCenter defaultCenter] postNotificationName:notificationMessage object:self.engageEvent];
-        
-        //Cancel the pending timer of doom.
-        dispatch_source_cancel(self.timeoutTimer);
     }
 }
 

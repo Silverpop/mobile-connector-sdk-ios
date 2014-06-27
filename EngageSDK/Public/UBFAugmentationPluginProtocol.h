@@ -13,7 +13,7 @@
 
 @required
 -(BOOL)processSyncronously;
--(BOOL)isSupplementalDataReady;
+-(BOOL)isSupplementalDataReady:(UBF*)ubfEvent;
 -(UBF*)process:(UBF*)ubfEvent;
 
 @end

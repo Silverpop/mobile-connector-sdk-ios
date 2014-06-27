@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		190C8B84195D9AD400E320A4 /* UBFWeatherAugmentationPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 190C8B83195D9AD400E320A4 /* UBFWeatherAugmentationPlugin.m */; };
+		190C8B87195DA15300E320A4 /* UBFAccelerameterAugmentationPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 190C8B86195DA15300E320A4 /* UBFAccelerameterAugmentationPlugin.m */; };
+		190C8B8A195DA18700E320A4 /* UBFCalculateRealTimePromotionalOfferPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 190C8B89195DA18700E320A4 /* UBFCalculateRealTimePromotionalOfferPlugin.m */; };
+		190C8B8C195DA42100E320A4 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C8B8B195DA42100E320A4 /* CoreMotion.framework */; };
+		190C8B90195DA51200E320A4 /* EngageMotionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 190C8B8F195DA51200E320A4 /* EngageMotionManager.m */; };
+		19264B14195DC7A30017CB96 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19264B13195DC7A30017CB96 /* AudioToolbox.framework */; };
 		19E1969C195B38F000175A32 /* EngageConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19E1969B195B38F000175A32 /* EngageConfig.plist */; };
 		78E34E83989F4221A96AC3AA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54681915728D47F88A19CE32 /* libPods.a */; };
 		B26FC9E517A6E30700629BC9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B26FC9E417A6E30700629BC9 /* UIKit.framework */; };
@@ -30,6 +36,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		190C8B82195D9AD400E320A4 /* UBFWeatherAugmentationPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFWeatherAugmentationPlugin.h; sourceTree = "<group>"; };
+		190C8B83195D9AD400E320A4 /* UBFWeatherAugmentationPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFWeatherAugmentationPlugin.m; sourceTree = "<group>"; };
+		190C8B85195DA15300E320A4 /* UBFAccelerameterAugmentationPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFAccelerameterAugmentationPlugin.h; sourceTree = "<group>"; };
+		190C8B86195DA15300E320A4 /* UBFAccelerameterAugmentationPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFAccelerameterAugmentationPlugin.m; sourceTree = "<group>"; };
+		190C8B88195DA18700E320A4 /* UBFCalculateRealTimePromotionalOfferPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBFCalculateRealTimePromotionalOfferPlugin.h; sourceTree = "<group>"; };
+		190C8B89195DA18700E320A4 /* UBFCalculateRealTimePromotionalOfferPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFCalculateRealTimePromotionalOfferPlugin.m; sourceTree = "<group>"; };
+		190C8B8B195DA42100E320A4 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		190C8B8E195DA51200E320A4 /* EngageMotionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageMotionManager.h; sourceTree = "<group>"; };
+		190C8B8F195DA51200E320A4 /* EngageMotionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageMotionManager.m; sourceTree = "<group>"; };
+		19264B13195DC7A30017CB96 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		192FDFAC1921510A000BEEF0 /* sample_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sample_config.h; sourceTree = "<group>"; };
 		19E1969B195B38F000175A32 /* EngageConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EngageConfig.plist; sourceTree = "<group>"; };
 		54681915728D47F88A19CE32 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +83,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19264B14195DC7A30017CB96 /* AudioToolbox.framework in Frameworks */,
+				190C8B8C195DA42100E320A4 /* CoreMotion.framework in Frameworks */,
 				B26FC9E517A6E30700629BC9 /* UIKit.framework in Frameworks */,
 				B26FC9E717A6E30700629BC9 /* Foundation.framework in Frameworks */,
 				B26FC9E917A6E30700629BC9 /* CoreGraphics.framework in Frameworks */,
@@ -77,6 +95,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		190C8B81195D9AC000E320A4 /* augmentation */ = {
+			isa = PBXGroup;
+			children = (
+				190C8B82195D9AD400E320A4 /* UBFWeatherAugmentationPlugin.h */,
+				190C8B83195D9AD400E320A4 /* UBFWeatherAugmentationPlugin.m */,
+				190C8B85195DA15300E320A4 /* UBFAccelerameterAugmentationPlugin.h */,
+				190C8B86195DA15300E320A4 /* UBFAccelerameterAugmentationPlugin.m */,
+				190C8B88195DA18700E320A4 /* UBFCalculateRealTimePromotionalOfferPlugin.h */,
+				190C8B89195DA18700E320A4 /* UBFCalculateRealTimePromotionalOfferPlugin.m */,
+			);
+			name = augmentation;
+			sourceTree = "<group>";
+		};
+		190C8B8D195DA50400E320A4 /* motion */ = {
+			isa = PBXGroup;
+			children = (
+				190C8B8E195DA51200E320A4 /* EngageMotionManager.h */,
+				190C8B8F195DA51200E320A4 /* EngageMotionManager.m */,
+			);
+			name = motion;
+			sourceTree = "<group>";
+		};
 		B26FC9D817A6E30700629BC9 = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +138,8 @@
 		B26FC9E317A6E30700629BC9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				19264B13195DC7A30017CB96 /* AudioToolbox.framework */,
+				190C8B8B195DA42100E320A4 /* CoreMotion.framework */,
 				B26FC9E417A6E30700629BC9 /* UIKit.framework */,
 				B26FC9E617A6E30700629BC9 /* Foundation.framework */,
 				B26FC9E817A6E30700629BC9 /* CoreGraphics.framework */,
@@ -109,6 +151,8 @@
 		B26FC9EA17A6E30700629BC9 /* EngageSDKDemo */ = {
 			isa = PBXGroup;
 			children = (
+				190C8B8D195DA50400E320A4 /* motion */,
+				190C8B81195D9AC000E320A4 /* augmentation */,
 				B26FC9FC17A6E30700629BC9 /* MainStoryboard.storyboard */,
 				B2AFD8D417B920A100971C97 /* silverpop-logo@2x.jpg */,
 				B2AFD8D017B7C54A00971C97 /* UISwitch-Yes@2x.png */,
@@ -175,6 +219,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Silverpop;
+				TargetAttributes = {
+					B26FC9E017A6E30700629BC9 = {
+						DevelopmentTeam = AQK5T5K577;
+					};
+				};
 			};
 			buildConfigurationList = B26FC9DC17A6E30700629BC9 /* Build configuration list for PBXProject "EngageSDKDemo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -255,7 +304,11 @@
 				B26FC9F517A6E30700629BC9 /* AppDelegate.m in Sources */,
 				B2AFD8C117B74DF800971C97 /* InitViewController.m in Sources */,
 				B2AFD8C417B74E0600971C97 /* MenuViewController.m in Sources */,
+				190C8B8A195DA18700E320A4 /* UBFCalculateRealTimePromotionalOfferPlugin.m in Sources */,
+				190C8B87195DA15300E320A4 /* UBFAccelerameterAugmentationPlugin.m in Sources */,
+				190C8B90195DA51200E320A4 /* EngageMotionManager.m in Sources */,
 				B2AFD8C717B74E2700971C97 /* MainViewController.m in Sources */,
+				190C8B84195D9AD400E320A4 /* UBFWeatherAugmentationPlugin.m in Sources */,
 				B2AFD8CF17B7637800971C97 /* ColumnDataCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -342,10 +395,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9F6E3F3A929A4F5896031C51 /* Pods/Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDKDemo/EngageSDKDemo-Prefix.pch";
 				INFOPLIST_FILE = "EngageSDKDemo/EngageSDKDemo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -354,10 +410,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9F6E3F3A929A4F5896031C51 /* Pods/Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDKDemo/EngageSDKDemo-Prefix.pch";
 				INFOPLIST_FILE = "EngageSDKDemo/EngageSDKDemo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

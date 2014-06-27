@@ -9,6 +9,9 @@
 			<string>UBFCoordinatesAugmentationPlugin</string>
 			<string>UBFPlacemarkAugmentationPlugin</string>
 			<string>UBFLocationNameAugmentationPlugin</string>
+			<string>UBFWeatherAugmentationPlugin</string>
+			<string>UBFAccelerameterAugmentationPlugin</string>
+			<string>UBFCalculateRealTimePromotionalOfferPlugin</string>
 		</array>
 		<key>augmentationTimeout</key>
 		<string>15 sec</string>
@@ -86,7 +89,7 @@
 		<key>locationDistanceFilter</key>
 		<string>10</string>
 		<key>locationPrecisionLevel</key>
-		<string>kCLLocationAccuracyBest</string>
+		<string>kCLLocationAccuracyKilometer</string>
 		<key>locationCacheLifespan</key>
 		<string>1 hr</string>
 		<key>coordinatesPlacemarkTimeout</key>

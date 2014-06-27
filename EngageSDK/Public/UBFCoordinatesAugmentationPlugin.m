@@ -33,7 +33,7 @@
     return YES;
 }
 
--(BOOL)isSupplementalDataReady {
+-(BOOL)isSupplementalDataReady:(UBF*)ubfEvent {
     EngageEventLocationManager *elm = [EngageEventLocationManager sharedInstance];
     if (elm && elm.currentLocationCache) {
         return YES;

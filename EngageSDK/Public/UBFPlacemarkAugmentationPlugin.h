@@ -11,8 +11,4 @@
 
 @interface UBFPlacemarkAugmentationPlugin : NSObject <UBFAugmentationPluginProtocol>
 
--(BOOL)processSyncronously;
--(BOOL)isSupplementalDataReady;
--(UBF*)process:(UBF*)ubfEvent;
-
 @end

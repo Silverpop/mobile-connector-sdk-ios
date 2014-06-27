@@ -12,8 +12,4 @@
 @interface UBFCoordinatesAugmentationPlugin : NSObject <UBFAugmentationPluginProtocol>
 
 
--(BOOL)processSyncronously;
--(BOOL)isSupplementalDataReady;
--(UBF*)process:(UBF*)ubfEvent;
-
 @end

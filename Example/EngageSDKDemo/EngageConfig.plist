@@ -9,9 +9,6 @@
 			<string>UBFCoordinatesAugmentationPlugin</string>
 			<string>UBFPlacemarkAugmentationPlugin</string>
 			<string>UBFLocationNameAugmentationPlugin</string>
-			<string>UBFWeatherAugmentationPlugin</string>
-			<string>UBFAccelerameterAugmentationPlugin</string>
-			<string>UBFCalculateRealTimePromotionalOfferPlugin</string>
 		</array>
 		<key>augmentationTimeout</key>
 		<string>15 sec</string>

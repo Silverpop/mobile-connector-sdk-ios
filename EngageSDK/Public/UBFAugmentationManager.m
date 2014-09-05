@@ -128,6 +128,8 @@ __strong static UBFAugmentationManager *_sharedInstance = nil;
             dispatch_source_cancel(_timer);
         });
         dispatch_resume(_timer);
+    } else {
+        NSLog(@"DEBUG control reached due to UBFEvent, EngageEvent, or AugmentationPlugins array being nil");
     }
 }
 

@@ -20,6 +20,7 @@
 		194C94B119216032004B8851 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1916728E1907063F001F25C9 /* CoreData.framework */; };
 		194C94B51921612C004B8851 /* UBFClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 194C94B41921612C004B8851 /* UBFClientTests.m */; };
 		194C94B819216CB0004B8851 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D24B7219088D6900855BC7 /* SystemConfiguration.framework */; };
+		195EE3D019B69D0400440128 /* UBFManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 195EE3CF19B69D0400440128 /* UBFManagerTests.m */; };
 		196246921938D2990038B453 /* EngageEventWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 196246911938D2990038B453 /* EngageEventWrapper.m */; };
 		197BBFF61946A128001F925C /* EngageConfigManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BBFF51946A128001F925C /* EngageConfigManagerTests.m */; };
 		197BBFF91946A68B001F925C /* XMLAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 197BBFF81946A68B001F925C /* XMLAPIManager.m */; };
@@ -99,6 +100,7 @@
 		194C94B219216084004B8851 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		194C94B41921612C004B8851 /* UBFClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFClientTests.m; sourceTree = "<group>"; };
 		194C94B619216494004B8851 /* libPods-EngageSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-EngageSDK.a"; path = "Pods/build/Debug-iphoneos/libPods-EngageSDK.a"; sourceTree = "<group>"; };
+		195EE3CF19B69D0400440128 /* UBFManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManagerTests.m; sourceTree = "<group>"; };
 		196246901938D2990038B453 /* EngageEventWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventWrapper.h; sourceTree = "<group>"; };
 		196246911938D2990038B453 /* EngageEventWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventWrapper.m; sourceTree = "<group>"; };
 		197BBFF51946A128001F925C /* EngageConfigManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConfigManagerTests.m; sourceTree = "<group>"; };
@@ -131,7 +133,6 @@
 		19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EngageConfigDefaults.plist; sourceTree = "<group>"; };
 		3D76863C004B4A1AAEE87550 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDK.xcconfig"; path = "Pods/Pods-EngageSDK.xcconfig"; sourceTree = "<group>"; };
-		6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		A5FD0612C1554177BB0F9A4A /* libPods-EngageSDKTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EngageSDKTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B137306FE3E7425F894C838C /* Pods-EngageSDKTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDKTests.xcconfig"; path = "Pods/Pods-EngageSDKTests.xcconfig"; sourceTree = "<group>"; };
 		B26FCA3D17A9868300629BC9 /* EngageResponseXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageResponseXML.h; sourceTree = "<group>"; };
@@ -297,6 +298,14 @@
 			name = util;
 			sourceTree = "<group>";
 		};
+		195EE3CE19B69CB000440128 /* manager */ = {
+			isa = PBXGroup;
+			children = (
+				195EE3CF19B69D0400440128 /* UBFManagerTests.m */,
+			);
+			name = manager;
+			sourceTree = "<group>";
+		};
 		196246961939354E0038B453 /* model */ = {
 			isa = PBXGroup;
 			children = (
@@ -389,7 +398,6 @@
 				B2B18289178B59400097EE6A /* EngageSDKTests */,
 				B2B18271178B59400097EE6A /* Frameworks */,
 				B2B18270178B59400097EE6A /* Products */,
-				6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */,
 				58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */,
 				B137306FE3E7425F894C838C /* Pods-EngageSDKTests.xcconfig */,
 			);
@@ -443,6 +451,7 @@
 		B2B18289178B59400097EE6A /* EngageSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				195EE3CE19B69CB000440128 /* manager */,
 				19E1969A195B290500175A32 /* notification */,
 				19E19699195B28CB00175A32 /* config */,
 				19E19693195B0B7200175A32 /* augmentation */,
@@ -622,7 +631,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Pods-EngageSDK-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F3E8A14F3998498EB46F56E9 /* Copy Pods Resources */ = {
@@ -637,7 +646,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-EngageSDKTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Pods-EngageSDK-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -688,6 +697,7 @@
 				199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */,
 				19E19698195B0BC300175A32 /* UBFAugmentationPluginTests.m in Sources */,
 				191970761924FB1500C75CD8 /* TestUtils.m in Sources */,
+				195EE3D019B69D0400440128 /* UBFManagerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -768,7 +778,7 @@
 		};
 		B2B18295178B59400097EE6A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
+			baseConfigurationReference = 58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -786,7 +796,7 @@
 		};
 		B2B18296178B59400097EE6A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6162C6697CDB46879DA2D846 /* Pods/Pods.xcconfig */;
+			baseConfigurationReference = 58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -804,7 +814,7 @@
 		};
 		B2B18298178B59400097EE6A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B137306FE3E7425F894C838C /* Pods-EngageSDKTests.xcconfig */;
+			baseConfigurationReference = 58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
@@ -834,7 +844,6 @@
 					XCTest,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				"TEST_HOST[sdk=*]" = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -842,7 +851,7 @@
 		};
 		B2B18299178B59400097EE6A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B137306FE3E7425F894C838C /* Pods-EngageSDKTests.xcconfig */;
+			baseConfigurationReference = 58E88B3398DE4FB9ACCCD08F /* Pods-EngageSDK.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
@@ -872,7 +881,6 @@
 					XCTest,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;

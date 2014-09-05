@@ -9,6 +9,12 @@
 #import "EngageLocalEventStore.h"
 #import "EngageConfigManager.h"
 
+@interface EngageLocalEventStore()
+
+@property (nonatomic, strong)NSNumberFormatter *f;
+
+@end
+
 @implementation EngageLocalEventStore
 
 __strong NSString* ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
@@ -23,6 +29,8 @@ __strong NSString* ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
         //Setup core data
         [self managedObjectContext];
         
+        //Creates the NumberFormatter instance.
+        self.f = [[NSNumberFormatter alloc] init];
     }
     return self;
 }
@@ -174,15 +182,11 @@ __strong NSString* ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
 -(EngageEvent *)saveUBFEvent:(UBF *)event status:(int) status {
     EngageEvent *engageEvent = [NSEntityDescription insertNewObjectForEntityForName:@"EngageEvent" inManagedObjectContext:self.managedObjectContext];
     
-    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-    NSNumber *eventTypeNumber = [f numberFromString:[event eventTypeCode]];
-    //NSNumber *eventStatusNumber = [f num]
+    NSNumber *eventTypeNumber = [self.f numberFromString:[event eventTypeCode]];
     engageEvent.eventType = eventTypeNumber;
     engageEvent.eventJson = [event jsonValue];
     engageEvent.eventStatus = [NSNumber numberWithInt:status];
     engageEvent.eventDate = [NSDate date];
-    
-    
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {

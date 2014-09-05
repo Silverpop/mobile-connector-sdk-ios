@@ -21,6 +21,8 @@
     XMLAPI *addRecipient = [XMLAPI addRecipient:[EngageConfig primaryUserId] list:listId];
     [[XMLAPIManager sharedInstance] postXMLAPI:addRecipient];
     
+    [[UBFManager sharedInstance] trackEvent:[UBF goalCompleted:@"Checked In" params:@{@"Location Name" : @"Seth's House"}]];
+    
     // Override point for customization after application launch.
     return YES;
 }

@@ -99,6 +99,8 @@
     ubfEvent = [placemarkPlugin process:ubfEvent];
     
     XCTAssertTrue([ubfEvent.attributes objectForKey:self.locationAddressUBFFieldName], @"Expected Location Address not present in UBF event");
+    
+    NSLog(@"Something please show up ....");
 }
 
 - (void)testLocationNamePlugin

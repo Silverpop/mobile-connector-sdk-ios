@@ -67,7 +67,7 @@ __strong static XMLAPIManager *_sharedInstance = nil;
 - (void)postXMLAPI:(XMLAPI *)xmlapi
            success:(void (^)(ResultDictionary *ERXML))success
            failure:(void (^)(NSError *error))failure {
-    [[XMLAPIClient client] postResource:xmlapi success:nil failure:nil];
+    [[XMLAPIClient client] postResource:xmlapi success:success failure:failure];
 }
 
 

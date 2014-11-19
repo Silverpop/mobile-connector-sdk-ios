@@ -1,11 +1,11 @@
 PODS:
   - AFNetworking (2.2.4):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-    - AFNetworking/UIKit
+    - AFNetworking/NSURLConnection (= 2.2.4)
+    - AFNetworking/NSURLSession (= 2.2.4)
+    - AFNetworking/Reachability (= 2.2.4)
+    - AFNetworking/Security (= 2.2.4)
+    - AFNetworking/Serialization (= 2.2.4)
+    - AFNetworking/UIKit (= 2.2.4)
   - AFNetworking/NSURLConnection (2.2.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
@@ -32,4 +32,4 @@ SPEC CHECKSUMS:
   AFOAuth2Client@phoenixplatform: 9785fffb216a616da21c76e8cbefff9d7840ae6e
   MobileDeepLinking-iOS: 4a23f291977481159a22296b4a8b0b8be26b4a13
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.35.0.rc2

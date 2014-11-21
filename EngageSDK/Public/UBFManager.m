@@ -81,8 +81,9 @@ __strong static UBFManager *_sharedInstance = nil;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *installed = [defaults objectForKey:kEngageClientInstalled];
         if (![installed boolValue]) { // nil or false
-            // installed event
-            [_sharedInstance trackEvent:[UBF installed:nil]];
+
+            [UBFManager waitForLoginThenCreateInstalledEvent];
+
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             [defaults setObject:@"YES" forKey:kEngageClientInstalled];
             [defaults synchronize];
@@ -105,8 +106,8 @@ __strong static UBFManager *_sharedInstance = nil;
         }
         
         // start session
-        [_sharedInstance restartSession];
-        
+        [_sharedInstance restartSessionWaitForLoginForEvent];
+
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
@@ -141,6 +142,25 @@ __strong static UBFManager *_sharedInstance = nil;
     return _sharedInstance;
 }
 
+/**
+ * Add observer to listen for when auth happens, then create the
+ * installed event so it will include the user info.
+ */
++ (void)waitForLoginThenCreateInstalledEvent {
+    NSLog(@"Registering listener for user logged in event: Installed Event");
+    __block id installedEventComplete;
+    installedEventComplete = [[NSNotificationCenter defaultCenter] addObserverForName:USER_LOGGED_IN_EVENT
+                                                                                     object:nil
+                                                                                      queue:[NSOperationQueue mainQueue]
+                                                                                 usingBlock:^(NSNotification *note) {
+                                                                                     NSLog(@"User logged in.  Creating installed event");
+                                                                                     // now that we have a user id we can create the installed event
+                                                                                     [_sharedInstance trackEvent:[UBF installed:nil]];
+
+                                                                                     NSLog(@"Removing observer for logged in user event: Installed Event");
+                                                                                     [[NSNotificationCenter defaultCenter] removeObserver:installedEventComplete];
+                                                                                 }];
+}
 
 + (id)sharedInstance
 {
@@ -150,9 +170,15 @@ __strong static UBFManager *_sharedInstance = nil;
     return _sharedInstance;
 }
 
-
+/**
+ *  Saves event to local store and starts augmentation process for event.
+ *
+ *  @param event the event to track/save
+ *
+ *  @return unique id for the event
+ */
 - (NSURL *) trackEvent:(UBF *)event {
-    
+
     EngageEvent *engageEvent = nil;
     engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:HOLD] intValue]];
     [[UBFAugmentationManager sharedInstance] augmentUBFEvent:event withEngageEvent:engageEvent];
@@ -188,6 +214,37 @@ __strong static UBFManager *_sharedInstance = nil;
     [self trackEvent:[UBF sessionStarted:nil withCampaign:[EngageConfig currentCampaign]]];
     self.sessionBegan = [NSDate date];
     self.duration = 0.0f;
+}
+
+/**
+ * Restarts the session.  Waits until the user logs in before
+ * sending the session started event so it will include the user id.
+ */
+- (void)restartSessionWaitForLoginForEvent {
+    if (self.sessionEnded) [self trackEvent:self.sessionEnded];
+    [self waitForLoginThenCreateSessionStartedEvent];
+    self.sessionBegan = [NSDate date];
+    self.duration = 0.0f;
+}
+
+/**
+ * Add observer to listen for when auth happens, then create the
+ * installed event so it will include the user info.
+ */
+- (void)waitForLoginThenCreateSessionStartedEvent {
+    NSLog(@"Registering listener for user logged in event: Session Started Event");
+    __block id sessionStartedEventComplete;
+    sessionStartedEventComplete = [[NSNotificationCenter defaultCenter] addObserverForName:USER_LOGGED_IN_EVENT
+                                                                               object:nil
+                                                                                queue:[NSOperationQueue mainQueue]
+                                                                           usingBlock:^(NSNotification *note) {
+                                                                               NSLog(@"User logged in.  Creating session started event.");
+                                                                               // now that we have a user id we can create the session started event
+                                                                               [self trackEvent:[UBF sessionStarted:nil withCampaign:[EngageConfig currentCampaign]]];
+
+                                                                               NSLog(@"Removing observer for logged in user event: Session Started Event");
+                                                                               [[NSNotificationCenter defaultCenter] removeObserver:sessionStartedEventComplete];
+                                                                           }];
 }
 
 - (BOOL)sessionExpired {

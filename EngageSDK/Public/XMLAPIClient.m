@@ -42,8 +42,7 @@ __strong static XMLAPIClient *_sharedClient = nil;
         [_sharedClient authenticateInternal:^(AFOAuthCredential *credential) {
             _sharedClient.hasBeenInitiallyAuthenticated = YES;
             NSLog(@"Authentication refresh complete");
-            // broadcast that user is logged in now
-            [[NSNotificationCenter defaultCenter] postNotificationName:USER_LOGGED_IN_EVENT object:nil];
+
         } failure:^(NSError *error) {
             NSLog(@"Failed to refresh OAuth2 token for authentication");
             [[_sharedClient operationQueue] setSuspended:YES];

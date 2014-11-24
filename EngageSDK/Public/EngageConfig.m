@@ -67,6 +67,9 @@ __strong static NSString *engageListId = nil;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:userId forKey:@"engagePrimaryUserId"];
     [defaults synchronize];
+
+    // broadcast that the primary user id is now known
+    [[NSNotificationCenter defaultCenter] postNotificationName:PRIMARY_USER_ID_SET object:nil];
 }
 
 

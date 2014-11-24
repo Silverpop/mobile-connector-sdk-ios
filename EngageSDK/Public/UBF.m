@@ -8,10 +8,9 @@
 
 #import "UBF.h"
 #import <sys/utsname.h>
-#import <CoreLocation/CoreLocation.h>
-#import <CoreLocation/CLLocationManager.h>
 #import "EngageConfig.h"
 #import "EngageConfigManager.h"
+#import "EngageEvent.h"
 
 @implementation UBF
 
@@ -70,16 +69,18 @@
         }
         
         NSString *deviceId = [EngageConfig deviceId];
-        
-        NSDictionary *template =  @{@"Device Name" : [[UIDevice currentDevice] model],
-                                    @"Device Version" : [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding],
-                                    @"OS Name" : [[UIDevice currentDevice] systemName],
-                                    @"OS Version" : [[UIDevice currentDevice] systemVersion],
-                                    @"App Name" : appName,
-                                    @"App Version" : appVersion,
-                                    @"Device Id" : deviceId,
-                                    @"Primary User Id" : [EngageConfig primaryUserId],
-                                    @"Anonymous Id" : [EngageConfig anonymousId]};
+
+        NSDictionary *template = @{
+                UBF_CORE_VALUE_DEVICE_NAME : [[UIDevice currentDevice] model],
+                UBF_CORE_VALUE_DEVICE_VERSION : [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding],
+                UBF_CORE_VALUE_OS_NAME : [[UIDevice currentDevice] systemName],
+                UBF_CORE_VALUE_OS_VERSION : [[UIDevice currentDevice] systemVersion],
+                UBF_CORE_VALUE_APP_NAME : appName,
+                UBF_CORE_VALUE_APP_VERSION : appVersion,
+                UBF_CORE_VALUE_DEVICE_ID : deviceId,
+                UBF_CORE_VALUE_PRIMARY_USER_ID : [EngageConfig primaryUserId],
+                UBF_CORE_VALUE_ANONYMOUS_ID : [EngageConfig anonymousId]
+        };
         
         NSDate *date = [NSDate date];
         
@@ -158,7 +159,7 @@
         [mutParams setObject:[EngageConfig lastCampaign]
                       forKey:[[EngageConfigManager sharedInstance] fieldNameForUBF:PLIST_UBF_LAST_CAMPAIGN_NAME]];
     }
-    return [[UBF alloc] initEventOfType:@"12" withParams:mutParams];
+    return [[UBF alloc] initEventOfType:EVENT_TYPE_INSTALLED withParams:mutParams];
 }
 
 
@@ -175,35 +176,35 @@
     }
 
     mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
-    return [[UBF alloc] initEventOfType:@"13" withParams:mutParams];
+    return [[UBF alloc] initEventOfType:EVENT_TYPE_SESSION_STARTED withParams:mutParams];
 }
 
 
 + (UBF *)sessionEnded:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
     mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
-    return [[UBF alloc] initEventOfType:@"14" withParams:mutParams];
+    return [[UBF alloc] initEventOfType:EVENT_TYPE_SESSION_ENDED withParams:mutParams];
 }
 
 + (UBF *)goalAbandoned:(NSString *)goalName params:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
     mutParams = [self setValue:goalName forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_GOAL_NAME];
     mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
-    return [[UBF alloc] initEventOfType:@"15" withParams:mutParams];
+    return [[UBF alloc] initEventOfType:EVENT_TYPE_GOAL_ABANDONED withParams:mutParams];
 }
 
 + (UBF *)goalCompleted:(NSString *)goalName params:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
     mutParams = [self setValue:goalName forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_GOAL_NAME];
     mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
-    return [[UBF alloc] initEventOfType:@"16" withParams:mutParams];
+    return [[UBF alloc] initEventOfType:EVENT_TYPE_GOAL_COMPLETED withParams:mutParams];
 }
 
 + (UBF *)namedEvent:(NSString *)eventName params:(NSDictionary *)params {
     NSMutableDictionary *mutParams = [self populateEventCommonParams:params];
     mutParams = [self setValue:eventName forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_EVENT_NAME];
     mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
-    return [[UBF alloc] initEventOfType:@"17" withParams:mutParams];
+    return [[UBF alloc] initEventOfType:EVENT_TYPE_NAMED_EVENT withParams:mutParams];
 }
 
 + (UBF *)receivedLocalNotification:(UILocalNotification *)localNotification withParams:(NSDictionary *)params {
@@ -211,7 +212,7 @@
     locNotEvent = [self setValue:[EngageConfig currentCampaign] forDictionary:locNotEvent withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
     locNotEvent = [self setValue:[localNotification alertAction] forDictionary:locNotEvent withPlistUBFFieldName:PLIST_UBF_CALL_TO_ACTION];
     locNotEvent = [self setValue:[localNotification alertBody] forDictionary:locNotEvent withPlistUBFFieldName:PLIST_UBF_DISPLAYED_MESSAGE];
-    return [[UBF alloc] initEventOfType:@"48" withParams:locNotEvent];
+    return [[UBF alloc] initEventOfType:EVENT_TYPE_RECEIVED_LOCAL_NOTIFICATION withParams:locNotEvent];
 }
 
 + (UBF *)receivedPushNotification:(NSDictionary *)notification withParams:(NSDictionary *)params {
@@ -230,7 +231,7 @@
     mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
     //Call To Action must be provided by the SDK user in this case.
     
-    return [[UBF alloc] initEventOfType:@"48" withParams:mutParams];
+    return [[UBF alloc] initEventOfType:EVENT_TYPE_RECEIVED_PUSH_NOTIFICATION withParams:mutParams];
 }
 
 + (UBF *)openedNotification:(NSDictionary *)notification withParams:(NSDictionary *)params {
@@ -249,7 +250,7 @@
     mutParams = [self setValue:[EngageConfig currentCampaign] forDictionary:mutParams withPlistUBFFieldName:PLIST_UBF_CURRENT_CAMPAIGN_NAME];
     //Call To Action must be provided by the SDK user in this case.
     
-    return [[UBF alloc] initEventOfType:@"49" withParams:mutParams];
+    return [[UBF alloc] initEventOfType:EVENT_TYPE_OPENED_NOTIFICATION withParams:mutParams];
 }
 
 
@@ -293,7 +294,7 @@
 }
 
 //We would like to be able to use KVC for a particular KeyPath but
-//unfortunatly we don't have the luxury of knowing the full path for the key
+//unfortunately we don't have the luxury of knowing the full path for the key
 + (NSString *)traverseDictionary:(NSDictionary *)dict ForKey:(NSString *)lookingForKey {
     
     __block NSString *keyValue;
@@ -359,7 +360,7 @@
             expirationTimestamp = [exp expirationTimeStamp];
             
         } else if (validFor) {
-            //Current campaign wiht a valid for value.
+            //Current campaign with a valid for value.
             EngageExpirationParser *exp = [[EngageExpirationParser alloc] initWithExpirationString:expiresAt fromDate:[NSDate date]];
             expirationTimestamp = [exp expirationTimeStamp];
         }

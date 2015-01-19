@@ -32,4 +32,4 @@ SPEC CHECKSUMS:
   AFOAuth2Client@phoenixplatform: 9785fffb216a616da21c76e8cbefff9d7840ae6e
   MobileDeepLinking-iOS: 4a23f291977481159a22296b4a8b0b8be26b4a13
 
-COCOAPODS: 0.35.0.rc2
+COCOAPODS: 0.35.0

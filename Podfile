@@ -1,7 +1,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 link_with ["EngageSDK", "EngageSDKTests"]
 
-platform :ios, '7.0'
+platform :ios, '8.1'
 
 target 'EngageSDK' do
     pod 'AFNetworking', '~> 2.2.3'

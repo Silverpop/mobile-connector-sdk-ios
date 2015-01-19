@@ -1,4 +1,4 @@
 #pod 'EngageSDK', :git => 'https://github.com/makeandbuild/engage-sdk-ios-phase2.git'
-pod 'EngageSDK', :path => '/Users/jeremydyer/Development/IOSDevelopment/Silverpop/engage-sdk-ios-phase2'
+pod 'EngageSDK', :path => '/Users/azuercher/workspace/mobile-connector-sdk-ios'
 pod 'MBProgressHUD', '~> 0.7'
 pod 'ECSlidingViewController', '~> 0.10.0'

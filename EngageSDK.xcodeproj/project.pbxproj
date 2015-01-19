@@ -42,7 +42,6 @@
 		19EFC3851948B95C009BC128 /* EngageSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 19EFC3841948B95C009BC128 /* EngageSDK.m */; };
 		19EFC38D1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
 		19EFC38E1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
-		9FB0B60A526942083A44226B /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
 		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
 		B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
 		B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
@@ -54,6 +53,7 @@
 		B2C2A90917A9919C0058311A /* UBFClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90017A9919C0058311A /* UBFClient.m */; };
 		B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90217A9919C0058311A /* XMLAPI.m */; };
 		B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90417A9919C0058311A /* XMLAPIClient.m */; };
+		D62BCA960FEFE346B35AAAD6 /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,7 +99,6 @@
 		194C94B219216084004B8851 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		194C94B41921612C004B8851 /* UBFClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFClientTests.m; sourceTree = "<group>"; };
 		194C94B619216494004B8851 /* libPods-EngageSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-EngageSDK.a"; path = "Pods/build/Debug-iphoneos/libPods-EngageSDK.a"; sourceTree = "<group>"; };
-		195EE3CF19B69D0400440128 /* UBFManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManagerTests.m; sourceTree = "<group>"; };
 		196246901938D2990038B453 /* EngageEventWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageEventWrapper.h; sourceTree = "<group>"; };
 		196246911938D2990038B453 /* EngageEventWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageEventWrapper.m; sourceTree = "<group>"; };
 		197BBFF51946A128001F925C /* EngageConfigManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConfigManagerTests.m; sourceTree = "<group>"; };
@@ -169,6 +168,7 @@
 				19D24B7319088D6900855BC7 /* SystemConfiguration.framework in Frameworks */,
 				1916728F1907063F001F25C9 /* CoreData.framework in Frameworks */,
 				B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */,
+				D62BCA960FEFE346B35AAAD6 /* libPods-EngageSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,7 +181,6 @@
 				194C94B819216CB0004B8851 /* SystemConfiguration.framework in Frameworks */,
 				194C94B119216032004B8851 /* CoreData.framework in Frameworks */,
 				B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */,
-				9FB0B60A526942083A44226B /* libPods-EngageSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,14 +294,6 @@
 				1929A3481936714100D3F044 /* EngageExpirationParser.m */,
 			);
 			name = util;
-			sourceTree = "<group>";
-		};
-		195EE3CE19B69CB000440128 /* manager */ = {
-			isa = PBXGroup;
-			children = (
-				195EE3CF19B69D0400440128 /* UBFManagerTests.m */,
-			);
-			name = manager;
 			sourceTree = "<group>";
 		};
 		196246961939354E0038B453 /* model */ = {
@@ -458,7 +449,6 @@
 		B2B18289178B59400097EE6A /* EngageSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				195EE3CE19B69CB000440128 /* manager */,
 				19E1969A195B290500175A32 /* notification */,
 				19E19699195B28CB00175A32 /* config */,
 				19E19693195B0B7200175A32 /* augmentation */,
@@ -753,7 +743,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -776,7 +766,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -789,7 +779,7 @@
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
@@ -806,7 +796,7 @@
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
@@ -828,12 +818,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
+				GENERATE_MASTER_OBJECT_FILE = NO;
 				INFOPLIST_FILE = "EngageSDKTests/EngageSDKTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-framework",
@@ -865,12 +853,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
+				GENERATE_MASTER_OBJECT_FILE = NO;
 				INFOPLIST_FILE = "EngageSDKTests/EngageSDKTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-framework",

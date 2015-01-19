@@ -10,6 +10,7 @@
 #import "EngageEvent.h"
 #import "EngageConfigManager.h"
 #import "UBFAugmentationManager.h"
+#import "MobileIdentityManager.h"
 
 @interface UBFClient ()
 
@@ -53,10 +54,11 @@ __strong static UBFClient *_sharedClient = nil;
 - (void)authenticateInternal:(void (^)(AFOAuthCredential *credential))success
                      failure:(void (^)(NSError *error))failure {
     
-    [[_sharedClient operationQueue] setSuspended:YES];
+    //TODO: dont setSuspended
+//    [[self operationQueue] setSuspended:YES];
     
     //Perform the login to the system.
-    [_sharedClient authenticate:^(AFOAuthCredential *credential) {
+    [[MobileIdentityManager sharedInstance] authenticate:^(AFOAuthCredential *credential) {
         NSLog(@"EngageSDK UBFClient successfully authenticated");
         if (success) {
             success(credential);
@@ -123,11 +125,12 @@ __strong static UBFClient *_sharedClient = nil;
             
             NSLog(@"POSTing %@", params.description);
             
-            _sharedClient.requestSerializer = [AFJSONRequestSerializer serializer];
-            [_sharedClient.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-            [_sharedClient.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [_sharedClient.credential accessToken]] forHTTPHeaderField:@"Authorization"];
+            self.requestSerializer = [AFJSONRequestSerializer serializer];
+            [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            AFOAuthCredential *credential = [self credential];
+            [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [credential accessToken]] forHTTPHeaderField:@"Authorization"];
             
-            [_sharedClient POST:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self POST:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
                 // Mark the EngageObjects as posted in the EngageLocalEventStore.
                 for (EngageEvent *intEE in unpostedUbfEvents) {

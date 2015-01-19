@@ -42,6 +42,8 @@
 		19EFC3851948B95C009BC128 /* EngageSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 19EFC3841948B95C009BC128 /* EngageSDK.m */; };
 		19EFC38D1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
 		19EFC38E1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
+		94DD00F01A6CECB30015B8D6 /* MobileIdentityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94DD00EF1A6CECB30015B8D6 /* MobileIdentityManager.m */; };
+		94DD00F31A6D02ED0015B8D6 /* MobileIdentityManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 94DD00F21A6D02ED0015B8D6 /* MobileIdentityManagerTests.m */; };
 		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
 		B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
 		B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
@@ -132,6 +134,9 @@
 		3D76863C004B4A1AAEE87550 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		647474869DF751BA60630087 /* Pods-EngageSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EngageSDK/Pods-EngageSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		7A954E35772633A7DF373120 /* Pods-EngageSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-EngageSDK/Pods-EngageSDK.release.xcconfig"; sourceTree = "<group>"; };
+		94DD00EE1A6CECB30015B8D6 /* MobileIdentityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileIdentityManager.h; sourceTree = "<group>"; };
+		94DD00EF1A6CECB30015B8D6 /* MobileIdentityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileIdentityManager.m; sourceTree = "<group>"; };
+		94DD00F21A6D02ED0015B8D6 /* MobileIdentityManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileIdentityManagerTests.m; sourceTree = "<group>"; };
 		A5FD0612C1554177BB0F9A4A /* libPods-EngageSDKTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EngageSDKTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B26FCA3D17A9868300629BC9 /* EngageResponseXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageResponseXML.h; sourceTree = "<group>"; };
 		B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageResponseXML.m; sourceTree = "<group>"; };
@@ -461,6 +466,7 @@
 				B2B1828A178B59400097EE6A /* Supporting Files */,
 				191970741924FB1500C75CD8 /* TestUtils.h */,
 				191970751924FB1500C75CD8 /* TestUtils.m */,
+				94DD00F21A6D02ED0015B8D6 /* MobileIdentityManagerTests.m */,
 			);
 			path = EngageSDKTests;
 			sourceTree = "<group>";
@@ -491,6 +497,8 @@
 				197BBFF81946A68B001F925C /* XMLAPIManager.m */,
 				19EFC3831948B95C009BC128 /* EngageSDK.h */,
 				19EFC3841948B95C009BC128 /* EngageSDK.m */,
+				94DD00EE1A6CECB30015B8D6 /* MobileIdentityManager.h */,
+				94DD00EF1A6CECB30015B8D6 /* MobileIdentityManager.m */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -676,6 +684,7 @@
 				197BBFF91946A68B001F925C /* XMLAPIManager.m in Sources */,
 				B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */,
 				191970791925030900C75CD8 /* UBFManager.m in Sources */,
+				94DD00F01A6CECB30015B8D6 /* MobileIdentityManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -690,6 +699,7 @@
 				1929A34B193675E300D3F044 /* EngageExpirationParserTests.m in Sources */,
 				198A2D4019466D3400FF7AD8 /* XMLAPITest.m in Sources */,
 				19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */,
+				94DD00F31A6D02ED0015B8D6 /* MobileIdentityManagerTests.m in Sources */,
 				19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */,
 				199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */,
 				19E19698195B0BC300175A32 /* UBFAugmentationPluginTests.m in Sources */,
@@ -743,7 +753,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -766,7 +776,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -779,7 +789,7 @@
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
@@ -796,7 +806,7 @@
 				DSTROOT = /tmp/EngageSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
@@ -820,7 +830,7 @@
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				INFOPLIST_FILE = "EngageSDKTests/EngageSDKTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -855,7 +865,7 @@
 				GCC_PREFIX_HEADER = "EngageSDK/EngageSDK-Prefix.pch";
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				INFOPLIST_FILE = "EngageSDKTests/EngageSDKTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",

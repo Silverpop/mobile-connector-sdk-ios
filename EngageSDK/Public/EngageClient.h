@@ -23,10 +23,11 @@ typedef enum {
              token:(NSString *)refreshToken;
 
 - (BOOL)isAuthenticated;
+- (AFOAuthCredential*)credential;
 
 - (void)authenticate:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure;
 
-@property AFOAuthCredential *credential;
+//@property AFOAuthCredential *credential;
 
 @end

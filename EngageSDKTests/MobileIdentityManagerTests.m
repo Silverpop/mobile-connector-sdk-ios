@@ -32,36 +32,48 @@
     [super tearDown];
 }
 
-//- (void)testCreateMobileManagerViaClient {
-//    __block dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-//    [UBFClient createClient:self.clientId secret:self.secret token:self.refreshToken host:self.host connectSuccess:^(AFOAuthCredential *credential) {
-//        NSLog(@"yay it passed");
-//        dispatch_semaphore_signal(semaphore);
-//    } failure:^(NSError *error) {
-//        NSLog(@"boo it failed");
-//        dispatch_semaphore_signal(semaphore);
-//    }];
-//    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-//
-//    MobileIdentityManager* instance = [MobileIdentityManager sharedInstance];
-//    XCTAssert(instance != nil, @"Pass");
-//    XCTAssert(YES, @"Pass");
-//}
+- (void)testCreateMobileManagerViaClient {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Mobile Manager Created"];
+    
+    [UBFClient createClient:self.clientId secret:self.secret token:self.refreshToken host:self.host connectSuccess:^(AFOAuthCredential *credential) {
+        NSLog(@"Mobile Manager created successfully!");
+        XCTAssertNotNil([MobileIdentityManager sharedInstance]);
+        [expectation fulfill];
+        
+    } failure:^(NSError *error) {
+        NSLog(@"Mobile Manager creation failed");
+        XCTFail("@Mobile manager creation failed");
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+}
+
 - (void)testCreateMobileManagerDirect {
-    __block dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    // Create an expectation object.
+    XCTestExpectation *successfulAuthExpectation = [self expectationWithDescription:@"Auth Successful"];
+    
     [MobileIdentityManager createInstanceWithHost: self.host clientId:self.clientId secret:self.secret token:self.refreshToken];
     [[MobileIdentityManager sharedInstance] authenticate: ^(AFOAuthCredential *credential) {
-        NSLog(@"yay it passed");
-        dispatch_semaphore_signal(semaphore);
+        NSLog(@"Auth was successful!");
+        XCTAssertTrue([[MobileIdentityManager sharedInstance] isAuthenticated]);
+        [successfulAuthExpectation fulfill];
+        
     } failure:^(NSError *error) {
-        NSLog(@"boo it failed");
-        dispatch_semaphore_signal(semaphore);
+        NSLog(@"Auth failed");
+        XCTFail("Auth failed");
     }];
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
-    MobileIdentityManager* instance = [MobileIdentityManager sharedInstance];
-    XCTAssert(instance != nil, @"Pass");
-    XCTAssert(YES, @"Pass");
+    // The test will pause here, running the run loop, until the timeout is hit
+    // or all expectations are fulfilled.
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
 }
 
 @end

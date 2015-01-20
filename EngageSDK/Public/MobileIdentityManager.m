@@ -64,7 +64,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
 //                [[self operationQueue] setSuspended:NO];
 //            }
 //        }];
-//        [[self operationQueue] setSuspended:NO];
+        [[self operationQueue] setSuspended:NO];
 //        [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     }
     
@@ -108,6 +108,6 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
                                       }];
     
     //Suspend the operation queue until the login is successful
-    [[self operationQueue] setSuspended:YES];
+//    [[self operationQueue] setSuspended:YES];
 }
 @end

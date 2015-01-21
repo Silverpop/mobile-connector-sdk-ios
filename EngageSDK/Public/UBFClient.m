@@ -10,7 +10,7 @@
 #import "EngageEvent.h"
 #import "EngageConfigManager.h"
 #import "UBFAugmentationManager.h"
-#import "MobileIdentityManager.h"
+#import "EngageConnectionManager.h"
 
 @interface UBFClient ()
 
@@ -58,7 +58,7 @@ __strong static UBFClient *_sharedClient = nil;
 //    [[self operationQueue] setSuspended:YES];
     
     //Perform the login to the system.
-    [[MobileIdentityManager sharedInstance] authenticate:^(AFOAuthCredential *credential) {
+    [[EngageConnectionManager sharedInstance] authenticate:^(AFOAuthCredential *credential) {
         NSLog(@"EngageSDK UBFClient successfully authenticated");
         if (success) {
             success(credential);

@@ -7,7 +7,7 @@
 //
 
 #import "EngageClient.h"
-#import "MobileIdentityManager.h"
+#import "EngageConnectionManager.h"
 
 #define EXCEPTION(msg) \
     ([NSException exceptionWithName:NSInternalInconsistencyException \
@@ -34,7 +34,7 @@
     @throw EXCEPTION(@"%@ Failed to call designated initializer. Invoke `+createClient:secret:token:` instead.");
 }
 - (AFOAuthCredential*)credential {
-    return [MobileIdentityManager sharedInstance].credential;
+    return [EngageConnectionManager sharedInstance].credential;
 }
 
 - (id)initWithHost:(NSString *)host
@@ -50,7 +50,7 @@
         _secret = secret;
         _refreshToken = refreshToken;
         _host = host;
-        [MobileIdentityManager createInstanceWithHost:host clientId:clientId secret: secret token:refreshToken];
+        [EngageConnectionManager createInstanceWithHost:host clientId:clientId secret: secret token:refreshToken];
         
 //        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
 //            AFOAuthCredential *credential = [self credential];
@@ -66,12 +66,12 @@
 }
 
 - (BOOL)isAuthenticated {
-    return [[MobileIdentityManager sharedInstance] isAuthenticated];
+    return [[EngageConnectionManager sharedInstance] isAuthenticated];
 }
 
 - (void)authenticate:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure {
-    return [[MobileIdentityManager sharedInstance] authenticate: success failure: failure];
+    return [[EngageConnectionManager sharedInstance] authenticate: success failure: failure];
 }
 
 @end

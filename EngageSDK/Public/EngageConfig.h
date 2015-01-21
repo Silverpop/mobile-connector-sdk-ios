@@ -67,16 +67,23 @@
 @interface EngageConfig : NSUserDefaults
 
 + (NSString *) deviceId;
+
 + (NSString *)primaryUserId;
 + (void)storePrimaryUserId:(NSString *)userId;
+
 + (NSString *)anonymousId;
 + (void)storeAnonymousId:(NSString *)anonymousId;
+
 + (NSString *)currentCampaign;
++ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestamp:(long)utcExpirationTimestamp;
+
 + (NSString *)lastCampaign;
++ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestampString:(NSString *)expirationTimestamp;
+
 + (void)storeEngageListId:(NSString *)engageListId;
 + (NSString *)engageListId;
 
-+ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestamp:(long)utcExpirationTimestamp;
-+ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestampString:(NSString *)expirationTimestamp;
++ (NSString *) recipientId;
++ (void) storeRecipientId:(NSString *)recipientId;
 
 @end

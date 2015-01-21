@@ -8,7 +8,7 @@
 
 #import "XMLAPIClient.h"
 #import "EngageResponseXML.h"
-#import "MobileIdentityManager.h"
+#import "EngageConnectionManager.h"
 
 @interface XMLAPIClient()
 
@@ -64,7 +64,7 @@ __strong static XMLAPIClient *_sharedClient = nil;
     [[self operationQueue] setSuspended:YES];
     
     //Perform the login to the system.
-    [[MobileIdentityManager sharedInstance] authenticate:^(AFOAuthCredential *credential) {
+    [[EngageConnectionManager sharedInstance] authenticate:^(AFOAuthCredential *credential) {
         if (success) {
             success(credential);
         }

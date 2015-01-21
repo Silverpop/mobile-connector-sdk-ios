@@ -2,31 +2,15 @@
 //  MobileIdentityManager.h
 //  EngageSDK
 //
-//  Created by andrew zuercher on 1/19/15.
+//  Created by Lindsay Thurmond on 1/20/15.
 //  Copyright (c) 2015 Silverpop. All rights reserved.
 //
-#import "AFOAuth2Client.h"
 
-#import <Foundation/Foundation.h>
+#import "SetupRecipientResult.h"
 
-@interface MobileIdentityManager : AFOAuth2Client
+@interface MobileIdentityManager : NSObject
 
-+ (MobileIdentityManager*)sharedInstance;
-+ (MobileIdentityManager*)createInstanceWithHost:(NSString *)host
-          clientId:(NSString *)clientId
-            secret:(NSString *)secret
-             token:(NSString *)refreshToken;
-
-- (BOOL)isAuthenticated;
-
-- (void)authenticate:(void (^)(AFOAuthCredential *credential))success
-             failure:(void (^)(NSError *error))failure;
-
-- (id)initWithHost:(NSString *)host
-          clientId:(NSString *)clientId
-            secret:(NSString *)secret
-             token:(NSString *)refreshToken;
-
-@property AFOAuthCredential *credential;
+-(void)setupRecipientWithSuccess:(void (^)(SetupRecipientResult*))didSucceed
+                         failure:(void (^)(SetupRecipientResult*))didFail;
 
 @end

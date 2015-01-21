@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Silverpop. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "EngageConfigManager.h"
 
 @interface EngageConfigManager ()
@@ -15,6 +16,16 @@
 @end
 
 @implementation EngageConfigManager
+
+NSString *const LOCATION_SERVICES_GROUP = @"LocationServices";
+NSString *const UBF_FIELD_NAMES_GROUP = @"UBFFieldNames";
+NSString *const NETWORKING_GROUP = @"Networking";
+NSString *const SESSION_GROUP = @"Session";
+NSString *const PARAM_FIELD_NAMES_GROUP = @"ParamFieldNames";
+NSString *const GENERAL_GROUP = @"General";
+NSString *const LOCAL_EVENT_STORE_GROUP = @"LocalEventStore";
+NSString *const AUGMENTATION_GROUP = @"Augmentation";
+NSString *const RECIPIENT_GROUP = @"Recipient";
 
 - (id) init {
     self = [super init];
@@ -73,49 +84,62 @@
     return _configManager;
 }
 
+// private
+- propertyConfig:(NSString *)groupName :(NSString *) property {
+    return [[self plistConfigGroup:groupName] objectForKey:property];
+}
+
+// private
+- plistConfigGroup:(NSString *)key {
+    return [self.configs objectForKey:key];
+}
+
 - (BOOL)locationServicesEnabled {
-    return (BOOL)[[self.configs objectForKey:@"LocationServices"] objectForKey:@"enabled"];
+    return (BOOL)[self propertyConfig:LOCATION_SERVICES_GROUP :@"enabled"];
 }
 
 - (NSString *)fieldNameForUBF:(NSString *)ubfFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"UBFFieldNames"] objectForKey:ubfFieldConstantName];
+    return (NSString *)[self propertyConfig:UBF_FIELD_NAMES_GROUP :ubfFieldConstantName];
 }
 
 - (NSNumber *)configForNetworkValue:(NSString *)networkFieldConstantName {
-    return (NSNumber *)[[self.configs objectForKey:@"Networking"] objectForKey:networkFieldConstantName];
+    return (NSNumber *)[self propertyConfig:NETWORKING_GROUP :networkFieldConstantName];
 }
 
 - (long)longConfigForSessionValue:(NSString *)sessionFieldConstantName {
-    return (long)[[self.configs objectForKey:@"Session"] objectForKey:sessionFieldConstantName];
+    return (long)[self propertyConfig:SESSION_GROUP :sessionFieldConstantName];
 }
 
 - (NSString *)fieldNameForParam:(NSString *)paramFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"ParamFieldNames"] objectForKey:paramFieldConstantName];
+    return (NSString *)[self propertyConfig:PARAM_FIELD_NAMES_GROUP :paramFieldConstantName];
 }
 
 - (NSString *)configForGeneralFieldName:(NSString *)generalFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"General"] objectForKey:generalFieldConstantName];
+    return (NSString *)[self propertyConfig:GENERAL_GROUP :generalFieldConstantName];
 }
 
 - (NSNumber *)numberConfigForGeneralFieldName:(NSString *)generalFieldConstantName {
-    return (NSNumber *)[[self.configs objectForKey:@"General"] objectForKey:generalFieldConstantName];
+    return (NSNumber *)[self propertyConfig:GENERAL_GROUP :generalFieldConstantName];
 }
 
 - (NSString *)configForLocationFieldName:(NSString *)locationFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"LocationServices"] objectForKey:locationFieldConstantName];
+    return (NSString *)[self propertyConfig:LOCATION_SERVICES_GROUP :locationFieldConstantName];
 }
 
 - (NSNumber *)numberConfigForLocalStoreFieldName:(NSString *)localStoreFieldConstantName {
-    return (NSNumber *)[[self.configs objectForKey:@"LocalEventStore"] objectForKey:localStoreFieldConstantName];
+    return (NSNumber *)[self propertyConfig:LOCAL_EVENT_STORE_GROUP :localStoreFieldConstantName];
 }
 
 - (NSString *)configForAugmentationServiceFieldName:(NSString *)augmentationServiceFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"Augmentation"] objectForKey:augmentationServiceFieldConstantName];
+    return (NSString *)[self propertyConfig:AUGMENTATION_GROUP :augmentationServiceFieldConstantName];
 }
 
 - (NSArray *)augmentationPluginClassNames {
-    return (NSArray *) [[self.configs objectForKey:@"Augmentation"] objectForKey:@"augmentationPluginClasses"];
+    return (NSArray *) [self propertyConfig:AUGMENTATION_GROUP:@"augmentationPluginClasses"];
 }
 
+- (BOOL)autoAnonymousTrackingEnabled {
+    return (BOOL)[self propertyConfig:RECIPIENT_GROUP :@"enableAutoAnonymousTracking"];
+}
 
 @end

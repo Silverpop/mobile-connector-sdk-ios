@@ -56,6 +56,17 @@ __strong static NSString *engageListId = nil;
     [defaults synchronize];
 }
 
++ (NSString *) recipientId {
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"recipientId"];
+    return userId ? userId : @"";
+}
+
++ (void) storeRecipientId:(NSString *)recipientId {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:recipientId forKey:@"recipientId"];
+    [defaults synchronize];
+}
+
 + (NSString *)primaryUserId {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userId = [defaults objectForKey:@"engagePrimaryUserId"];

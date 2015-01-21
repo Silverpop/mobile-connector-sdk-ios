@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "MobileIdentityManager.h"
+#import "EngageConnectionManager.h"
 #import "UBFClient.h"
 
 
@@ -37,7 +37,7 @@
     
     [UBFClient createClient:self.clientId secret:self.secret token:self.refreshToken host:self.host connectSuccess:^(AFOAuthCredential *credential) {
         NSLog(@"Mobile Manager created successfully!");
-        XCTAssertNotNil([MobileIdentityManager sharedInstance]);
+        XCTAssertNotNil([EngageConnectionManager sharedInstance]);
         [expectation fulfill];
         
     } failure:^(NSError *error) {
@@ -56,10 +56,10 @@
     // Create an expectation object.
     XCTestExpectation *successfulAuthExpectation = [self expectationWithDescription:@"Auth Successful"];
     
-    [MobileIdentityManager createInstanceWithHost: self.host clientId:self.clientId secret:self.secret token:self.refreshToken];
-    [[MobileIdentityManager sharedInstance] authenticate: ^(AFOAuthCredential *credential) {
+    [EngageConnectionManager createInstanceWithHost: self.host clientId:self.clientId secret:self.secret token:self.refreshToken];
+    [[EngageConnectionManager sharedInstance] authenticate: ^(AFOAuthCredential *credential) {
         NSLog(@"Auth was successful!");
-        XCTAssertTrue([[MobileIdentityManager sharedInstance] isAuthenticated]);
+        XCTAssertTrue([[EngageConnectionManager sharedInstance] isAuthenticated]);
         [successfulAuthExpectation fulfill];
         
     } failure:^(NSError *error) {

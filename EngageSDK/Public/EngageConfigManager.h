@@ -24,5 +24,6 @@
 - (NSNumber *)numberConfigForLocalStoreFieldName:(NSString *)localStoreFieldConstantName;
 - (NSString *)configForAugmentationServiceFieldName:(NSString *)augmentationServiceFieldConstantName;
 - (NSArray *)augmentationPluginClassNames;
+- (BOOL)autoAnonymousTrackingEnabled;
 
 @end

@@ -7,10 +7,11 @@
 //
 
 #import "SetupRecipientResult.h"
+#import "SetupRecipientFailure.h"
 
 @interface MobileIdentityManager : NSObject
 
 -(void)setupRecipientWithSuccess:(void (^)(SetupRecipientResult*))didSucceed
-                         failure:(void (^)(SetupRecipientResult*))didFail;
+                         failure:(void (^)(SetupRecipientFailure*))didFail;
 
 @end

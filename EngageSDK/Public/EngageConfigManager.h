@@ -25,5 +25,9 @@
 - (NSString *)configForAugmentationServiceFieldName:(NSString *)augmentationServiceFieldConstantName;
 - (NSArray *)augmentationPluginClassNames;
 - (BOOL)autoAnonymousTrackingEnabled;
+- (NSString *) mobileUserIdGeneratorClassName;
+- (NSString *) recipientMobileUserIdColumn;
+- (NSString *) recipoientMergedRecipientIdColumn;
+- (NSString *) recipientMergedDateColumn;
 
 @end

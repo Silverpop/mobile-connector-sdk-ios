@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "EngageConfigManager.h"
+#import "EngageConfig.h"
 
 @interface EngageConfigManager ()
 
@@ -139,7 +140,23 @@ NSString *const RECIPIENT_GROUP = @"Recipient";
 }
 
 - (BOOL)autoAnonymousTrackingEnabled {
-    return (BOOL)[self propertyConfig:RECIPIENT_GROUP :@"enableAutoAnonymousTracking"];
+    return (BOOL)[self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_ENGALE_AUTO_ANONYMOUS_TRACKING];
+}
+
+- (NSString *) mobileUserIdGeneratorClassName {
+    return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MOBILE_USER_ID_CLASS_NAME];
+}
+
+- (NSString *) recipientMobileUserIdColumn {
+    return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MOBILE_USER_ID_COLUMN];
+}
+
+- (NSString *) recipoientMergedRecipientIdColumn {
+    return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MERGED_RECIPIENT_ID_COLUMN];
+}
+
+- (NSString *) recipientMergedDateColumn {
+    return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MERGED_DATE_COLUMN];
 }
 
 @end

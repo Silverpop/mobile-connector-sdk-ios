@@ -53,6 +53,10 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
     [_bodyElements addEntriesFromDictionary:param];
 }
 
+//- (void) addParam:(NSString *)key :(NSString *)value {
+//    
+//}
+
 - (void)addElements:(NSDictionary *)elements named:(NSString *)elementName {
     NSMutableDictionary *fields = [NSMutableDictionary dictionary];
     NSDictionary *existing;
@@ -70,6 +74,10 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
 - (void)addColumns:(NSDictionary *)cols {
     [self addElements:cols named:@"COLUMNS"];
 }
+
+//-(void)addColumn:(NSString *)name :(NSString *)value {
+//    
+//}
 
 - (NSString *)resource {
     return _namedResource;
@@ -134,6 +142,21 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
         @"Email" : emailAddress }
      }];
     return api;
+}
+
++ (id)addRecipientWithMobileUserIdColumnName:(NSString *)mobileUserIdColumnName
+                                mobileUserId:(NSString *)mobileUserId
+                                       list :(NSString *)listId {
+    XMLAPI *addRecipientXml = [self resourceNamed:@"AddRecipient"];
+    [addRecipientXml.bodyElements addEntriesFromDictionary:
+     @{
+       @"LIST_ID" : listId,
+       @"COLUMNS" :
+           @{
+               mobileUserIdColumnName : mobileUserId
+               }
+       }];
+    return addRecipientXml;
 }
 
 + (id)updateRecipient:(NSString *)recipientId list:(NSString *)listId {

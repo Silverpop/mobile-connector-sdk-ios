@@ -23,7 +23,7 @@
 #define PLIST_PARAM_CAMPAIGN_EXPIRES_AT @"ParamCampaignExpiresAt"
 #define PLIST_PARAM_CAMPAIGN_VALID_FOR @"ParamCampaignValidFor"
 
-//Plist Constants.
+//Plist UBF Constants.
 #define PLIST_UBF_LONGITUDE @"UBFLongitudeFieldName"
 #define PLIST_UBF_LATITUDE @"UBFLatitudeFieldName"
 #define PLIST_UBF_LOCATION_NAME @"UBFLocationNameFieldName"
@@ -63,6 +63,14 @@
 
 // Plist Augmentation services.
 #define PLIST_AUGMENTATION_SERVICE_TIMEOUT @"augmentationTimeout"
+
+// PList recipient constants
+#define PLIST_RECIPIENT_ENGALE_AUTO_ANONYMOUS_TRACKING @"enableAutoAnonymousTracking"
+#define PLIST_RECIPIENT_MOBILE_USER_ID_CLASS_NAME @"mobileUserIdGeneratorClassName"
+#define PLIST_RECIPIENT_MOBILE_USER_ID_COLUMN @"mobileUserIdColumn"
+#define PLIST_RECIPIENT_MERGED_RECIPIENT_ID_COLUMN @"mergedRecipientIdColumn"
+#define PLIST_RECIPIENT_MERGED_DATE_COLUMN @"mergedDateColumn"
+//#define PLIST_RECIPIENT_MERGE_HISTORY_IN_MERGED_MARKETING_DB @"mergeHistoryInMarketingDatabase"
 
 @interface EngageConfig : NSUserDefaults
 

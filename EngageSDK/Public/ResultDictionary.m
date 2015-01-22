@@ -91,4 +91,8 @@
     return [_proxy description];
 }
 
+- (BOOL) isSuccess {
+    return [[self valueForShortPath:@"SUCCESS"] boolValue];
+}
+
 @end

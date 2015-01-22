@@ -13,4 +13,6 @@
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (id)valueForShortPath:(NSString *)shortPath;
 
+- (BOOL) isSuccess;
+
 @end

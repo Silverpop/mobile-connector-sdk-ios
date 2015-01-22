@@ -4,6 +4,14 @@
 <dict>
 	<key>Recipient</key>
 	<dict>
+		<key>mergedDateColumn</key>
+		<string>Merged Date</string>
+		<key>mergedRecipientIdColumn</key>
+		<string>Merged Recipient Id</string>
+		<key>mobileUserIdColumn</key>
+		<string>Mobile User Id</string>
+		<key>mobileUserIdGeneratorClassName</key>
+		<string>EngageDefaultUUIDGenerator</string>
 		<key>enableAutoAnonymousTracking</key>
 		<true/>
 	</dict>

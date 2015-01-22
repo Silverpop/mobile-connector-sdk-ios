@@ -102,7 +102,7 @@ __strong static XMLAPIManager *_sharedInstance = nil;
     XMLAPI *anonymousUser = [XMLAPI updateRecipient:anonymousId list:listId];
     [anonymousUser addColumns:@{ mergeColumn : userId } ];
     [self postXMLAPI:anonymousUser success:^(ResultDictionary *ERXML) {
-        if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+        if ([ERXML isSuccess]) {
             XMLAPI *mobileUser = [XMLAPI resourceNamed:@"UpdateRecipient" params:@{ @"LIST_ID" : listId } ];
             // FIELDS TO SYNC/SEARCH BY
             [mobileUser addSyncFields:@{ primaryUserColumn : userId } ];

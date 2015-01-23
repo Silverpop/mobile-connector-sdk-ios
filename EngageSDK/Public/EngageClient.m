@@ -45,11 +45,12 @@
     
     NSURL *baseUrl = [NSURL URLWithString:host];
     
-    if (self = [super initWithBaseURL:baseUrl clientID:clientId secret:secret]) {
-        _clientId = clientId;
-        _secret = secret;
-        _refreshToken = refreshToken;
-        _host = host;
+    if (self = [super init]) {
+//        if (self = [super initWithBaseURL:baseUrl clientID:clientId secret:secret]) {
+//        _clientId = clientId;
+//        _secret = secret;
+//        _refreshToken = refreshToken;
+//        _host = host;
         [EngageConnectionManager createInstanceWithHost:host clientId:clientId secret: secret token:refreshToken];
         
 //        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {

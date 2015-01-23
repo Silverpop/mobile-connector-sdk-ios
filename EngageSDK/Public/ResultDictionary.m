@@ -95,4 +95,8 @@
     return [[self valueForShortPath:@"SUCCESS"] boolValue];
 }
 
+- (NSString *)faultString {
+    return [self valueForShortPath:@"Fault.FaultString"];
+}
+
 @end

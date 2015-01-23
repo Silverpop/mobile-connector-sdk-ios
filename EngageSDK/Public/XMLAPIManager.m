@@ -40,8 +40,14 @@ __strong static XMLAPIManager *_sharedInstance = nil;
                            host:hostUrl
                  connectSuccess:^(AFOAuthCredential *credential) {
                      NSLog(@"Successfully authenticated connection to Engage API");
+                     if (success) {
+                         success(credential);
+                     }
                  } failure:^(NSError *error) {
                      NSLog(@"Failed to authenticate connection to Engage API%@", error);
+                     if (success) {
+                         failure(error);
+                     }
                  }];
         
         _sharedInstance.ecm = [EngageConfigManager sharedInstance];        

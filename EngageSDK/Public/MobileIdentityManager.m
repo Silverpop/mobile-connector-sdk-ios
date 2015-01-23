@@ -96,10 +96,9 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
                                                        [EngageConfig storeRecipientId:recipientId];
                                                        didSucceed([[SetupRecipientResult alloc] initWithRecipientId:recipientId]);
                                                    }
-                                                   
                                                }
-                                               
-                                           } failure:^(NSError *error) {
+                                           }
+                                           failure:^(NSError *error) {
                                                NSString *message = [@"Unexpected exception making update recipient API call to silverpop" stringByAppendingString:error.description];
                                                NSLog(@"%@", message);
                                                didFail([[SetupRecipientFailure alloc] initWithMessage:message

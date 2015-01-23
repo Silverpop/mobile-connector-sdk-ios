@@ -27,6 +27,16 @@
             secret:(NSString *)secret
              token:(NSString *)refreshToken;
 
+- (void)postJsonRequest:(NSString *)URLString
+         parameters:(id)parameters
+            success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
+- (void)postXmlRequest:(NSString *)URLString
+            parameters:(id)parameters
+               success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+               failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
 @property AFOAuthCredential *credential;
 
 @end

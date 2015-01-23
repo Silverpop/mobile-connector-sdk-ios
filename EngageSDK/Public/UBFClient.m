@@ -54,24 +54,28 @@ __strong static UBFClient *_sharedClient = nil;
 - (void)authenticateInternal:(void (^)(AFOAuthCredential *credential))success
                      failure:(void (^)(NSError *error))failure {
     
-    //TODO: dont setSuspended
-//    [[self operationQueue] setSuspended:YES];
+//    if ([[EngageConnectionManager sharedInstance] isAuthenticated]) {
     
-    //Perform the login to the system.
-    [[EngageConnectionManager sharedInstance] authenticate:^(AFOAuthCredential *credential) {
-        NSLog(@"EngageSDK UBFClient successfully authenticated");
-        if (success) {
-            success(credential);
-        }
+//    }
+    
+        //TODO: dont setSuspended
+        //    [[self operationQueue] setSuspended:YES];
         
-        //Posts all of the pending EngageEvents.
-        [self applicationStartupPostStaleEvents];
-        
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+        //Perform the login to the system.
+        [[EngageConnectionManager sharedInstance] authenticate:^(AFOAuthCredential *credential) {
+            NSLog(@"EngageSDK UBFClient successfully authenticated");
+            if (success) {
+                success(credential);
+            }
+            
+            //Posts all of the pending EngageEvents.
+            [self applicationStartupPostStaleEvents];
+            
+        } failure:^(NSError *error) {
+            if (failure) {
+                failure(error);
+            }
+        }];
 }
 
 //When the application starts up there may be stale events that never completed and those need to be posted.
@@ -125,12 +129,15 @@ __strong static UBFClient *_sharedClient = nil;
             
             NSLog(@"POSTing %@", params.description);
             
-            self.requestSerializer = [AFJSONRequestSerializer serializer];
-            [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-            AFOAuthCredential *credential = [self credential];
-            [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [credential accessToken]] forHTTPHeaderField:@"Authorization"];
+//            self.requestSerializer = [AFJSONRequestSerializer serializer];
+//            [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+//            AFOAuthCredential *credential = [self credential];
+//            [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [credential accessToken]] forHTTPHeaderField:@"Authorization"];
             
-            [self POST:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            
+            
+            [[EngageConnectionManager sharedInstance] postJsonRequest:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
                 // Mark the EngageObjects as posted in the EngageLocalEventStore.
                 for (EngageEvent *intEE in unpostedUbfEvents) {

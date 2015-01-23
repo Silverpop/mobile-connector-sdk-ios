@@ -110,4 +110,53 @@ __strong static EngageConnectionManager *_sharedInstance = nil;
     //Suspend the operation queue until the login is successful
 //    [[self operationQueue] setSuspended:YES];
 }
+
+- (void)postJsonRequest:(NSString *)URLString
+                      parameters:(id)parameters
+                         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+    
+    AFOAuthCredential *credential = [self credential];
+    
+    AFHTTPRequestSerializer *requestSerializer = [AFJSONRequestSerializer serializer];
+    
+    [requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [credential accessToken]] forHTTPHeaderField:@"Authorization"];
+    
+    NSMutableURLRequest *request = [requestSerializer requestWithMethod:@"POST" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:nil];
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+    [self.operationQueue addOperation:operation];
+
+    
+//    [self POST:URLString parameters:parameters success:success failure:failure];
+}
+
+
+- (void)postXmlRequest:(NSString *)URLString
+         parameters:(id)parameters
+            success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+    
+    AFHTTPRequestSerializer *requestSerializer = [AFHTTPRequestSerializer serializer];
+    
+    AFOAuthCredential *credential = [self credential];
+    [requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [credential accessToken]] forHTTPHeaderField:@"Authorization"];
+    
+    NSMutableURLRequest *request = [requestSerializer requestWithMethod:@"POST" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:nil];
+    
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+    [operation setResponseSerializer:[AFXMLParserResponseSerializer serializer]];
+    
+    [self.operationQueue addOperation:operation];
+    
+    // original
+    
+//    AFOAuthCredential *credential = [self credential];
+//    [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [credential accessToken]] forHTTPHeaderField:@"Authorization"];
+    
+//    self.responseSerializer = [AFXMLParserResponseSerializer serializer];
+//    [self POST:URLString parameters:parameters success:success failure:failure];
+    
+}
+
 @end

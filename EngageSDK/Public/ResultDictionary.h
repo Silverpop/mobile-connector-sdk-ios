@@ -14,5 +14,6 @@
 - (id)valueForShortPath:(NSString *)shortPath;
 
 - (BOOL) isSuccess;
+- (NSString *)faultString;
 
 @end

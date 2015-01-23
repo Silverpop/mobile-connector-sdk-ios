@@ -10,25 +10,20 @@
 #import <XCTest/XCTest.h>
 #import "EngageConnectionManager.h"
 #import "UBFClient.h"
+#import "EngageBaseTest_IT.h"
 
 
-@interface MobileIdentityManagerTests : XCTestCase
-@property NSString *clientId, *secret, *refreshToken, *host;
+@interface EngageConnectionManager_IT : EngageBaseTest_IT
 
 @end
 
-@implementation MobileIdentityManagerTests
+@implementation EngageConnectionManager_IT
 
 - (void)setUp {
     [super setUp];
-    self.clientId = @"02eb567b-3674-4c48-8418-dbf17e0194fc";
-    self.secret = @"9c650c5b-bcb8-4eb3-bf0a-cc8ad9f41580";
-    self.refreshToken = @"676476e8-2d1f-45f9-9460-a2489640f41a";
-    self.host = @"https://apipilot.silverpop.com/";
 }
 
 - (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 

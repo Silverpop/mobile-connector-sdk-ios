@@ -65,7 +65,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         return;
     }
     
-    NSString *mobileUserIdColumn = [EngageConfig primaryUserId];
+    NSString *mobileUserIdColumn = [[EngageConfigManager sharedInstance] recipientMobileUserIdColumn];
     if ([mobileUserIdColumn length] == 0) {
         NSString *error = @"mobileUserIdColumn must be configured before recipient can be auto configured.";
         NSLog(@"%@", error);
@@ -96,6 +96,8 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
                                                        [EngageConfig storeRecipientId:recipientId];
                                                        didSucceed([[SetupRecipientResult alloc] initWithRecipientId:recipientId]);
                                                    }
+                                               } else {
+                                                   didFail([[SetupRecipientFailure alloc] initWithMessage:[ERXML faultString] response:ERXML]);
                                                }
                                            }
                                            failure:^(NSError *error) {

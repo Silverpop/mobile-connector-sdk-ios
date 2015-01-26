@@ -27,7 +27,7 @@
 - (BOOL)autoAnonymousTrackingEnabled;
 - (NSString *) mobileUserIdGeneratorClassName;
 - (NSString *) recipientMobileUserIdColumn;
-- (NSString *) recipoientMergedRecipientIdColumn;
+- (NSString *) recipientMergedRecipientIdColumn;
 - (NSString *) recipientMergedDateColumn;
 
 @end

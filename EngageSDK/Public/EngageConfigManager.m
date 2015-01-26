@@ -151,7 +151,7 @@ NSString *const RECIPIENT_GROUP = @"Recipient";
     return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MOBILE_USER_ID_COLUMN];
 }
 
-- (NSString *) recipoientMergedRecipientIdColumn {
+- (NSString *) recipientMergedRecipientIdColumn {
     return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MERGED_RECIPIENT_ID_COLUMN];
 }
 

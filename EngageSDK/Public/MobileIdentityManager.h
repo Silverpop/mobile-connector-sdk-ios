@@ -11,6 +11,8 @@
 
 @interface MobileIdentityManager : NSObject
 
++ (instancetype)sharedInstance;
+
 -(void)setupRecipientWithSuccess:(void (^)(SetupRecipientResult*))didSucceed
                          failure:(void (^)(SetupRecipientFailure*))didFail;
 

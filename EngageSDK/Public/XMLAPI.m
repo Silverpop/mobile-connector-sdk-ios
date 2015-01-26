@@ -49,13 +49,28 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
     return api;
 }
 
+- (void) listId:(NSString *)listId {
+    [[self bodyElements] addEntriesFromDictionary: @{@"LIST_ID" : listId}];
+}
+
+- (void) recipientId:(NSString *)recipientId {
+    [[self bodyElements] addEntriesFromDictionary:@{@"RECIPIENT_ID": recipientId}];
+}
+
 - (void)addParams:(NSDictionary *)param {
     [_bodyElements addEntriesFromDictionary:param];
 }
 
-//- (void) addParam:(NSString *)key :(NSString *)value {
-//    
-//}
+/**
+ *  Adds a single param to the existing list of params
+ *
+ *  @param key   param name
+ *  @param value param value
+ */
+- (void) addParam:(NSString *)key :(NSString *)value {
+    NSDictionary *params = @{ key : value };
+    [self addParams:params];
+}
 
 - (void)addElements:(NSDictionary *)elements named:(NSString *)elementName {
     NSMutableDictionary *fields = [NSMutableDictionary dictionary];
@@ -75,9 +90,16 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
     [self addElements:cols named:@"COLUMNS"];
 }
 
-//-(void)addColumn:(NSString *)name :(NSString *)value {
-//    
-//}
+/**
+ *  Adds a single column to the list of existing columns
+ *
+ *  @param name  column name
+ *  @param value column value
+ */
+-(void)addColumn:(NSString *)name :(NSString *)value {
+    NSDictionary *cols = @{ name : value };
+    [self addColumns:cols];
+}
 
 - (NSString *)resource {
     return _namedResource;

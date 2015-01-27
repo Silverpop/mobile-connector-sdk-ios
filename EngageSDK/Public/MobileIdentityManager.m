@@ -13,6 +13,8 @@
 #import "EngageDefaultUUIDGenerator.h"
 #import "XMLAPI.h"
 #import "XMLAPIManager.h"
+#import "XMLAPIErrorCode.h"
+#import "XMLAPIOperation.h"
 
 
 @interface MobileIdentityManager ()
@@ -164,38 +166,142 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
     [self setupRecipientWithSuccess:^(SetupRecipientResult *result) {
         
         NSString *currentRecipientId = [result recipientId];
-        NSString *listId = [EngageConfig engageListId];
-        
-        // look up recipient from Sliverpop
-        
-        XMLAPI *selectRecipientXml = [XMLAPI resourceNamed:@"SelectRecipientData"];
-        [selectRecipientXml listId:listId];
-        [selectRecipientXml addColumns:fieldsToIds];
-      
-        [[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientXml success:^(ResultDictionary *ERXML) {
-            
-            if ([ERXML isSuccess]) {
-                
-            } else {
-                
-                
-            }
-            
-        } failure:^(NSError *error) {
-            
-        }];
-        
-
-        
-        
+        [self checkForExistingRecipientAndUpdateIfNeededByIds:fieldsToIds currentRecipientId:currentRecipientId success:didSucceed failure:didFail];
         
     } failure:^(SetupRecipientFailure *failure) {
+        NSLog([@"ERROR: " stringByAppendingString:[failure errorMessage]], [failure error]);
+        if (didFail) {
+            didFail([[CheckIdentityFailure alloc] initWithMessage:[failure errorMessage] error:[failure error]]);
+        }
+    }];
+    
+}
+
+-(void)checkForExistingRecipientAndUpdateIfNeededByIds:(NSDictionary *)fieldsToIds
+                                    currentRecipientId:(NSString *)currentRecipientId
+                                               success:(void (^)(CheckIdentityResult* result))didSucceed
+                                               failure:(void (^)(CheckIdentityFailure* failure))didFail {
+    
+    NSString *listId = [EngageConfig engageListId];
+    
+    // look up recipient from Sliverpop
+    
+    XMLAPI *selectRecipientXml = [XMLAPI resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA];
+    [selectRecipientXml listId:listId];
+    [selectRecipientXml addColumns:fieldsToIds];
+    
+    [[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientXml success:^(ResultDictionary *existingRecipientResponse) {
         
-        didFail([[CheckIdentityFailure alloc] initWithMessage:[failure errorMessage] error:[failure error]]);
+        // scenario 1 - recipient not found
+        if (![existingRecipientResponse isSuccess]) {
+            
+            if ([existingRecipientResponse errorId] == XMLAPI_ERROR_RECIPIENT_NOT_LIST_MEMBER) {
+                // recipient doesn't exist
+                [self updateRecipientWithCustomIds:fieldsToIds currentRecipientId:currentRecipientId listId:listId success:didSucceed failure:didFail];
+                
+            } else {
+                // unexpected error with select recipient
+                NSLog(@"%@", [@"ERROR" stringByAppendingString:[existingRecipientResponse faultString]]);
+                if (didFail) {
+                    didFail([[CheckIdentityFailure alloc] initWithMessage:[existingRecipientResponse faultString] error:nil]);
+                }
+            }
+        }
+        // we found an existing recipient - does it have a mobileUserId?
+        else {
+            
+            NSString *existingRecipientId = [existingRecipientResponse recipientId];
+            NSString *mobileUserIdColumn = [[EngageConfigManager sharedInstance] recipientMobileUserIdColumn];
+            NSString *existingMobileUserId = [existingRecipientResponse valueForColumnName:mobileUserIdColumn];
+            
+            if ([existingRecipientId isEqualToString:[EngageConfig recipientId]]) {
+                [self handleExistingRecipientIsSameAsInAppWithMobileUserId:existingMobileUserId success:didSucceed failure:didFail];
+                
+            } else {
+                // scenario 2 - existing recipient doesn't have a mobileUserId
+                if ([existingMobileUserId length] == 0) {
+                    
+                }
+                // scenario 3 - existing recipient has a mobileUserId
+                else {
+                    
+                }
+            }
+            
+        }
+
+        
+    } failure:^(NSError *error) {
         
     }];
     
+}
+
+-(void)handleExistingRecipientIsSameAsInAppWithMobileUserId:(NSString *)existingMobileUserId
+                                                    success:(void (^)(CheckIdentityResult* result))didSucceed
+                                               failure:(void (^)(CheckIdentityFailure* failure))didFail {
     
+    // It really shouldn't be possible to get here since the first thing CheckIdentity does
+    // is call setupRecipient which would fill in the mobile user id for the recipient if
+    // it was missing before we got here - but just in case let's handle it here again
+    
+    NSString *currentRecipientId = [EngageConfig recipientId];
+    NSString *currentMobileUserId = [EngageConfig primaryUserId];
+    
+    if ([existingMobileUserId length] > 0) {
+        // recipient on server already has mobile user id, nothing to do here
+        if (didSucceed) {
+            didSucceed([[CheckIdentityResult alloc] initWithRecipientId:currentRecipientId mergedRecipientId:nil mobileUserId:currentMobileUserId]);
+        }
+        
+    } else {
+        // update with mobile user id
+        XMLAPI *updateExistingRecipientXml = [XMLAPI updateRecipient:currentRecipientId list:[EngageConfig engageListId]];
+        [updateExistingRecipientXml addColumn:[[EngageConfigManager sharedInstance] recipientMobileUserIdColumn] :currentMobileUserId];
+        [[XMLAPIManager sharedInstance] postXMLAPI:updateExistingRecipientXml success:^(ResultDictionary *ERXML) {
+            if (didSucceed) {
+                didSucceed([[CheckIdentityResult alloc] initWithRecipientId:currentRecipientId mergedRecipientId:nil mobileUserId:currentMobileUserId]);
+            }
+        } failure:^(NSError *error) {
+            NSLog(@"%@", error);
+            if (didFail) {
+                didFail([[CheckIdentityFailure alloc] initWithMessage:[error description] error:error]);
+            }
+        }];
+    }
+    
+}
+
+/**
+ *  Scenario 1 - no existing recipient
+ */
+-(void)updateRecipientWithCustomIds:(NSDictionary *)fieldsToIds
+                 currentRecipientId:(NSString *)currentRecipientId
+                             listId:(NSString *)listId
+                            success:(void (^)(CheckIdentityResult* result))didSucceed
+                            failure:(void (^)(CheckIdentityFailure* failure))didFail {
+    
+    // update recipient with custom id(s)
+    XMLAPI *updateCurrentRecipientXml = [XMLAPI updateRecipient:currentRecipientId list:listId];
+    [updateCurrentRecipientXml addColumns:fieldsToIds];
+    
+    [[XMLAPIManager sharedInstance] postXMLAPI:updateCurrentRecipientXml success:^(ResultDictionary *ERXML) {
+        
+        if ([ERXML isSuccess]) {
+            if (didSucceed) {
+                didSucceed([[CheckIdentityResult alloc] initWithRecipientId:[ERXML recipientId] mergedRecipientId:nil mobileUserId:[EngageConfig primaryUserId]]);
+            }
+            
+        } else {
+            if (didFail) {
+                didFail([[CheckIdentityFailure alloc] initWithMessage:[ERXML faultString] error:nil]);
+            }
+        }
+        
+    } failure:^(NSError *error) {
+        didFail([[CheckIdentityFailure alloc] initWithMessage:[error description] error:error]);
+    }];
+
 }
 
 @end

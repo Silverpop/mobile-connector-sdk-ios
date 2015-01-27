@@ -38,7 +38,6 @@ __strong static XMLAPIClient *_sharedClient = nil;
         _sharedClient.hasBeenInitiallyAuthenticated = NO;
         
         [[[EngageConnectionManager sharedInstance] operationQueue] setSuspended:YES];
-//        [[_sharedClient operationQueue] setSuspended:YES];
         
         //Perform the login to the system.
         [_sharedClient authenticateInternal:^(AFOAuthCredential *credential) {
@@ -50,7 +49,6 @@ __strong static XMLAPIClient *_sharedClient = nil;
 
         } failure:^(NSError *error) {
             NSLog(@"%@", [@"Failed to refresh OAuth2 token for authentication: " stringByAppendingString:[error localizedDescription]]);
-//            [[_sharedClient operationQueue] setSuspended:YES];
             [[[EngageConnectionManager sharedInstance] operationQueue] setSuspended:YES];
             if (failure) {
                 failure(error);
@@ -99,9 +97,6 @@ __strong static XMLAPIClient *_sharedClient = nil;
     
     PostResourceBlock postResource = ^(void) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[api envelope], @"xml", nil];
-//        AFOAuthCredential *credential = [self credential];
-//        [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [credential accessToken]] forHTTPHeaderField:@"Authorization"];
-//        self.responseSerializer = [AFXMLParserResponseSerializer serializer];
         
         [[EngageConnectionManager sharedInstance] postXmlRequest:@"/XMLAPI" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             ResultDictionary *ERXML = [EngageResponseXML decode:responseObject];
@@ -123,7 +118,6 @@ __strong static XMLAPIClient *_sharedClient = nil;
                 NSLog(@"Authentication refresh complete");
             } failure:^(NSError *error) {
                 NSLog(@"Failed to refresh OAuth2 token for authentication");
-//                [[self operationQueue] setSuspended:YES];
                 [[[EngageConnectionManager sharedInstance] operationQueue] setSuspended:YES];
             }];
         }

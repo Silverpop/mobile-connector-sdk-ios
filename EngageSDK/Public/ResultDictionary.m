@@ -42,7 +42,11 @@
     if ([rootPath isEqualToString:@"columns"]) {
         NSArray *columns = [_proxy valueForKeyPath:@"columns.column"];
         for (NSDictionary *col in columns) {
-            if ([[[col valueForKeyPath:@"name.text"] lowercaseString] isEqualToString:[keyPathArray objectAtIndex:1] ]) {
+            NSString *colName = [[col valueForKeyPath:@"name.text"] lowercaseString];
+            colName = [colName stringByTrimmingCharactersInSet:
+                                       [NSCharacterSet whitespaceCharacterSet]];
+            
+            if ([colName isEqualToString:[keyPathArray objectAtIndex:1] ]) {
                 return [self columnValue:col];
             }
         }
@@ -99,8 +103,16 @@
     return [self valueForShortPath:@"Fault.FaultString"];
 }
 
+- (int)errorId {
+    return [[self valueForShortPath:@"fault.detail.error.errorid"] intValue];
+}
+
 -(NSString *)recipientId {
     return [self valueForShortPath:@"recipientId"];
+}
+
+-(NSString *)valueForColumnName:(NSString *)columnName {
+    return [self valueForShortPath:[@"columns." stringByAppendingString:columnName]];
 }
 
 @end

@@ -15,5 +15,6 @@
 
 - (BOOL) isSuccess;
 - (NSString *)faultString;
+- (NSString *)recipientId;
 
 @end

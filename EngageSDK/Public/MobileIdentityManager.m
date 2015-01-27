@@ -36,8 +36,8 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
 }
 
 
-- (void)setupRecipientWithSuccess:(void (^)(SetupRecipientResult*))didSucceed
-                          failure:(void (^)(SetupRecipientFailure*))didFail
+- (void)setupRecipientWithSuccess:(void (^)(SetupRecipientResult* result))didSucceed
+                          failure:(void (^)(SetupRecipientFailure* failure))didFail
 {
     NSString* existingRecipientId = [EngageConfig recipientId];
     NSString* existingMobileUserId = [EngageConfig primaryUserId];

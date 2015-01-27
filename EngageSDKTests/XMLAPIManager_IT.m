@@ -18,16 +18,33 @@
 
 @interface XMLAPIManager_IT : EngageBaseTest_IT
 
+@property (readonly) NSMutableArray *tearDownApiCalls;
+@property (readonly) NSString *mobileUserIdColumn;
+
 @end
 
 @implementation XMLAPIManager_IT
 
 - (void)setUp {
     [super setUp];
+    
+    _tearDownApiCalls = [NSMutableArray new];
+    _mobileUserIdColumn = [[EngageConfigManager sharedInstance] recipientMobileUserIdColumn];
 }
 
 - (void)tearDown {
     [super tearDown];
+    
+    for (XMLAPI *xml in _tearDownApiCalls) {
+        [[XMLAPIManager sharedInstance] postXMLAPI:xml
+                                           success:^(ResultDictionary *ERXML) {
+                                               NSLog(@"Success running cleanup");
+                                           } failure:^(NSError *error) {
+                                               NSLog(@"Error running cleanup");
+                                           }];
+        
+    }
+    [_tearDownApiCalls removeAllObjects];
 }
 
 - (void)testAddRecipient_success {
@@ -42,8 +59,19 @@
     [[XMLAPIManager sharedInstance] postXMLAPI:addRecipientXml
                                        success:^(ResultDictionary *ERXML) {
                                            NSLog(@"Got a response");
-                                           XCTAssertTrue([ERXML isSuccess]);
+                                           
                                            NSString *recipientId = [ERXML valueForShortPath:@"recipientId"];
+                                           
+                                           if ([ERXML isSuccess]) {
+                                               //schedule cleanup
+                                               XMLAPI *removeRecipientXml = [XMLAPI resourceNamed:@"RemoveRecipient"];
+                                               [removeRecipientXml listId:listId];
+                                               [removeRecipientXml recipientId:recipientId];
+                                               [removeRecipientXml addColumn:[self mobileUserIdColumn] :[EngageConfig primaryUserId]];
+                                               [_tearDownApiCalls addObject:removeRecipientXml];
+                                           }
+                                           
+                                           XCTAssertTrue([ERXML isSuccess]);
                                            XCTAssertNotNil(recipientId);
                                            [expectation fulfill];
                                        }
@@ -57,8 +85,6 @@
             NSLog(@"Timeout Error: %@", error);
         }
     }];
-    
-    //TODO: Cleanup created recipient
 }
 
 //- (void)testAddRecipientWithMobileUserId_success {

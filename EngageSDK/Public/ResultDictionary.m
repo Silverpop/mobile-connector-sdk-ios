@@ -99,4 +99,8 @@
     return [self valueForShortPath:@"Fault.FaultString"];
 }
 
+-(NSString *)recipientId {
+    return [self valueForShortPath:@"recipientId"];
+}
+
 @end

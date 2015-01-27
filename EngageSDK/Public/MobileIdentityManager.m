@@ -8,13 +8,12 @@
 
 #import "MobileIdentityManager.h"
 #import "EngageConfig.h"
-#import "SetupRecipientResult.h"
-#import "SetupRecipientFailure.h"
 #import "EngageConfigManager.h"
 #import "EngageUUIDGenerating.h"
 #import "EngageDefaultUUIDGenerator.h"
 #import "XMLAPI.h"
 #import "XMLAPIManager.h"
+
 
 @interface MobileIdentityManager ()
 
@@ -157,6 +156,46 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         mobileUserId = [[EngageDefaultUUIDGenerator new] generateUUID];
     }
     return mobileUserId;
+}
+
+-(void)checkIdentityForIds:(NSDictionary *) fieldsToIds success:(void (^)(CheckIdentityResult* result))didSucceed
+                   failure:(void (^)(CheckIdentityFailure* failure))didFail {
+    
+    [self setupRecipientWithSuccess:^(SetupRecipientResult *result) {
+        
+        NSString *currentRecipientId = [result recipientId];
+        NSString *listId = [EngageConfig engageListId];
+        
+        // look up recipient from Sliverpop
+        
+        XMLAPI *selectRecipientXml = [XMLAPI resourceNamed:@"SelectRecipientData"];
+        [selectRecipientXml listId:listId];
+        [selectRecipientXml addColumns:fieldsToIds];
+      
+        [[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientXml success:^(ResultDictionary *ERXML) {
+            
+            if ([ERXML isSuccess]) {
+                
+            } else {
+                
+                
+            }
+            
+        } failure:^(NSError *error) {
+            
+        }];
+        
+
+        
+        
+        
+    } failure:^(SetupRecipientFailure *failure) {
+        
+        didFail([[CheckIdentityFailure alloc] initWithMessage:[failure errorMessage] error:[failure error]]);
+        
+    }];
+    
+    
 }
 
 @end

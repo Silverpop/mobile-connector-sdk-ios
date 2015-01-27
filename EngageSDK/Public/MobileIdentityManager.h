@@ -8,12 +8,18 @@
 
 #import "SetupRecipientResult.h"
 #import "SetupRecipientFailure.h"
+#import "CheckIdentityResult.h"
+#import "CheckIdentityFailure.h"
 
 @interface MobileIdentityManager : NSObject
 
 + (instancetype)sharedInstance;
 
--(void)setupRecipientWithSuccess:(void (^)(SetupRecipientResult*))didSucceed
-                         failure:(void (^)(SetupRecipientFailure*))didFail;
+-(void)setupRecipientWithSuccess:(void (^)(SetupRecipientResult* result))didSucceed
+                         failure:(void (^)(SetupRecipientFailure* failure))didFail;
+
+-(void)checkIdentityForIds:(NSDictionary *)fieldsToIds
+                   success:(void (^)(CheckIdentityResult* result))didSucceed
+                   failure:(void (^)(CheckIdentityFailure* failure))didFail;
 
 @end

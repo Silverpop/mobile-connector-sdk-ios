@@ -29,5 +29,6 @@
 - (NSString *) recipientMobileUserIdColumn;
 - (NSString *) recipientMergedRecipientIdColumn;
 - (NSString *) recipientMergedDateColumn;
+- (BOOL) recipientMergeHistoryInMarketingDatabase;
 
 @end

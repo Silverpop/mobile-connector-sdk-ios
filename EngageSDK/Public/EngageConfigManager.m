@@ -140,7 +140,7 @@ NSString *const RECIPIENT_GROUP = @"Recipient";
 }
 
 - (BOOL)autoAnonymousTrackingEnabled {
-    return (BOOL)[self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_ENGALE_AUTO_ANONYMOUS_TRACKING];
+    return (BOOL)[self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_ENABLE_AUTO_ANONYMOUS_TRACKING];
 }
 
 - (NSString *) mobileUserIdGeneratorClassName {
@@ -157,6 +157,10 @@ NSString *const RECIPIENT_GROUP = @"Recipient";
 
 - (NSString *) recipientMergedDateColumn {
     return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MERGED_DATE_COLUMN];
+}
+
+- (BOOL) recipientMergeHistoryInMarketingDatabase {
+    return (BOOL) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MERGE_HISTORY_IN_MARKETING_DB];
 }
 
 @end

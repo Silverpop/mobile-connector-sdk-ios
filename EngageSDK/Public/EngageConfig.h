@@ -65,12 +65,12 @@
 #define PLIST_AUGMENTATION_SERVICE_TIMEOUT @"augmentationTimeout"
 
 // PList recipient constants
-#define PLIST_RECIPIENT_ENGALE_AUTO_ANONYMOUS_TRACKING @"enableAutoAnonymousTracking"
+#define PLIST_RECIPIENT_ENABLE_AUTO_ANONYMOUS_TRACKING @"enableAutoAnonymousTracking"
 #define PLIST_RECIPIENT_MOBILE_USER_ID_CLASS_NAME @"mobileUserIdGeneratorClassName"
 #define PLIST_RECIPIENT_MOBILE_USER_ID_COLUMN @"mobileUserIdColumn"
 #define PLIST_RECIPIENT_MERGED_RECIPIENT_ID_COLUMN @"mergedRecipientIdColumn"
 #define PLIST_RECIPIENT_MERGED_DATE_COLUMN @"mergedDateColumn"
-//#define PLIST_RECIPIENT_MERGE_HISTORY_IN_MERGED_MARKETING_DB @"mergeHistoryInMarketingDatabase"
+#define PLIST_RECIPIENT_MERGE_HISTORY_IN_MARKETING_DB @"mergeHistoryInMarketingDatabase"
 
 @interface EngageConfig : NSUserDefaults
 

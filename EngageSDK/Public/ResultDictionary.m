@@ -43,9 +43,6 @@
         NSArray *columns = [_proxy valueForKeyPath:@"columns.column"];
         for (NSDictionary *col in columns) {
             NSString *colName = [[col valueForKeyPath:@"name.text"] lowercaseString];
-            colName = [colName stringByTrimmingCharactersInSet:
-                                       [NSCharacterSet whitespaceCharacterSet]];
-            
             if ([colName isEqualToString:[keyPathArray objectAtIndex:1] ]) {
                 return [self columnValue:col];
             }

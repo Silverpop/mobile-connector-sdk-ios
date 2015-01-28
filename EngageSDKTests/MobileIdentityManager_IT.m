@@ -475,30 +475,99 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
 
 -(void)testCheckIdentity_s3_existingRecipientWithMobileUserId_multipleCustomIds {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Check Identity Success"];
-    
+
+    [self setupScenario3WithMultipleIds:true setupResult:^(EngageRecipient *currentRecipient, EngageRecipient *existingRecipient) {
+        
+        // look for an ex existing recipient with both custom ids
+        [[MobileIdentityManager sharedInstance] checkIdentityForIds:[existingRecipient customIdFields] success:^(CheckIdentityResult *result) {
+           
+            // verify correct values passed in result
+            XCTAssertTrue([[result recipientId] isEqualToString:[EngageConfig recipientId]]);
+            XCTAssertTrue([[result mergedRecipientId] length] > 0);
+            XCTAssertFalse([[result mergedRecipientId] isEqualToString:[result recipientId]]);
+            XCTAssertTrue([[result mobileUserId] isEqualToString:[EngageConfig primaryUserId]]);
+            
+            // verify the app is now using the existing recipient
+            XCTAssertTrue([[EngageConfig primaryUserId] isEqualToString:[existingRecipient mobileUserId]]);
+            XCTAssertTrue([[EngageConfig recipientId] isEqualToString:[existingRecipient recipientId]]);
+            
+            // verify old recipient is marked as merged on the server
+            XMLAPI *selectMergedRecipientXml = [XMLAPI selectRecipientWithId:[currentRecipient recipientId] list:[self listId]];
+            [[XMLAPIManager sharedInstance] postXMLAPI:selectMergedRecipientXml success:^(ResultDictionary *mergedRecipientResult) {
+                
+                // check that properties didn't change
+                XCTAssertTrue([[mergedRecipientResult valueForColumnName:_mobileUserIdColumn] isEqualToString:[currentRecipient mobileUserId]]);
+                XCTAssertTrue([[mergedRecipientResult valueForColumnName:CUSTOM_ID_COLUMN] length] == 0);
+                XCTAssertTrue([[mergedRecipientResult valueForColumnName:CUSTOM_ID_COLUMN_2] length] == 0);
+                
+                // check marked as merged
+                XCTAssertTrue([[mergedRecipientResult valueForColumnName:_mergedRecipientIdColumn] isEqualToString:[existingRecipient recipientId]]);
+                XCTAssertTrue([[mergedRecipientResult valueForColumnName:_mergedDateColumn] length] > 0);
+
+                [expectation fulfill];
+                
+            } failure:^(NSError *error) {
+                XCTFail();
+            }];
+            
+        } failure:^(CheckIdentityFailure *failure) {
+            XCTFail();
+        }];
+        
+    }];
     
     [self waitForExpectationsWithTimeout:4.0 handler:^(NSError *error) {
         if (error) {
             NSLog(@"Timeout Error: %@", error);
         }
     }];
-    
- XCTFail();
-    
 }
 
 -(void)testCheckIdentity_selfFoundAsExistingRecipient_WithMobileUserId {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Check Identity Success"];
     
+    // setup
+    NSString *mobileUserId = [_uuidGenerator generateUUID];
+    NSString *customId = [_uuidGenerator generateUUID];
+    
+    XMLAPI *addRecipientXml = [XMLAPI addRecipientWithMobileUserIdColumnName:_mobileUserIdColumn mobileUserId:mobileUserId list:[self listId]];
+    [[XMLAPIManager sharedInstance] postXMLAPI:addRecipientXml success:^(ResultDictionary *addRecipientResult) {
+        
+        // schedule cleanup
+        XMLAPI *removeRecipientXml = [XMLAPI resourceNamed:XMLAPI_OPERATION_REMOVE_RECIPIENT];
+        [removeRecipientXml listId:[self listId]];
+        [removeRecipientXml recipientId:[addRecipientResult recipientId]];
+        [_tearDownApiCalls addObject:removeRecipientXml];
+        
+        [EngageConfig storeRecipientId:[addRecipientResult recipientId]];
+        [EngageConfig storePrimaryUserId:mobileUserId];
+        
+        // recipient setup with mobile user id and custom id, lets search for that user
+        [[MobileIdentityManager sharedInstance] checkIdentityForIds:@{ CUSTOM_ID_COLUMN : customId } success:^(CheckIdentityResult *result) {
+            
+            // nothing should have happened, no merging and EngageConfig should remain the same
+            XCTAssertTrue([[result mobileUserId] isEqualToString:mobileUserId]);
+            XCTAssertTrue([[result mobileUserId] isEqualToString:[EngageConfig primaryUserId]]);
+            XCTAssertTrue([[result mergedRecipientId] length] == 0);
+            XCTAssertTrue([[result recipientId] length] > 0);
+            XCTAssertTrue([[result recipientId] isEqualToString:[addRecipientResult recipientId]]);
+            XCTAssertTrue([[result recipientId] isEqualToString:[EngageConfig recipientId]]);
+            
+            [expectation fulfill];
+            
+        } failure:^(CheckIdentityFailure *failure) {
+            XCTFail();
+        }];
+        
+    } failure:^(NSError *error) {
+        XCTFail();
+    }];
     
     [self waitForExpectationsWithTimeout:4.0 handler:^(NSError *error) {
         if (error) {
             NSLog(@"Timeout Error: %@", error);
         }
     }];
-    
-    XCTFail();
-    
 }
 
 @end

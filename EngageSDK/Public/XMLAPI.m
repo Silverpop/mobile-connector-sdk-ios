@@ -140,6 +140,16 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
 
 #pragma mark -
 
++ (id)selectRecipientWithId:(NSString *)recipientId list:(NSString *)listId {
+    XMLAPI *api = [self resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA];
+    [api.bodyElements addEntriesFromDictionary:
+     @{
+       @"LIST_ID" : listId,
+       @"RECIPIENT_ID" : recipientId
+       }];
+    return api;
+}
+
 + (id)selectRecipientData:(NSString *)emailAddress list:(NSString *)listId {
     XMLAPI *api = [self resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA];
     [api.bodyElements addEntriesFromDictionary:

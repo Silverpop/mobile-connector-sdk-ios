@@ -37,6 +37,7 @@ extern int const COLUMN_TYPE_MULTI_SELECT;
 - (void)addColumn:(NSString *)name :(NSString *)value;
 - (NSString *)envelope;
 
++ (id)selectRecipientWithId:(NSString *)recipientId list:(NSString *)listId;
 + (id)selectRecipientData:(NSString *)emailAddress list:(NSString *)listId;
 + (id)addRecipient:(NSString *)emailAddress list:(NSString *)listId;
 + (id)addRecipientWithMobileUserIdColumnName:(NSString *)mobileUserIdColumnName

@@ -84,6 +84,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         NSString *newMobileUserId = [NSString stringWithString:existingMobileUserId];
         if ([newMobileUserId length] == 0) {
             newMobileUserId = [self generateMobileUserId];
+            [EngageConfig storePrimaryUserId:newMobileUserId];
         }
         
         XMLAPI *addRecipientXml = [XMLAPI addRecipientWithMobileUserIdColumnName:mobileUserIdColumn mobileUserId:newMobileUserId list:listId];

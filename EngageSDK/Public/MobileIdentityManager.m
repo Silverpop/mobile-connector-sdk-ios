@@ -197,29 +197,29 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
     [selectRecipientXml listId:listId];
     [selectRecipientXml addColumns:fieldsToIds];
     
-    [[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientXml success:^(ResultDictionary *existingRecipientResponse) {
+    [[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientXml success:^(ResultDictionary *existingRecipientResult) {
         
         // scenario 1 - recipient not found
-        if (![existingRecipientResponse isSuccess]) {
+        if (![existingRecipientResult isSuccess]) {
             
-            if ([existingRecipientResponse errorId] == XMLAPI_ERROR_RECIPIENT_NOT_LIST_MEMBER) {
+            if ([existingRecipientResult errorId] == XMLAPI_ERROR_RECIPIENT_NOT_LIST_MEMBER) {
                 // recipient doesn't exist
                 [self updateRecipientWithCustomIds:fieldsToIds currentRecipientId:currentRecipientId listId:listId success:didSucceed failure:didFail];
                 
             } else {
                 // unexpected error with select recipient
-                NSLog(@"%@", [@"ERROR" stringByAppendingString:[existingRecipientResponse faultString]]);
+                NSLog(@"%@", [@"ERROR" stringByAppendingString:[existingRecipientResult faultString]]);
                 if (didFail) {
-                    didFail([[CheckIdentityFailure alloc] initWithMessage:[existingRecipientResponse faultString] error:nil]);
+                    didFail([[CheckIdentityFailure alloc] initWithMessage:[existingRecipientResult faultString] error:nil]);
                 }
             }
         }
         // we found an existing recipient - does it have a mobileUserId?
         else {
             
-            NSString *existingRecipientId = [existingRecipientResponse recipientId];
+            NSString *existingRecipientId = [existingRecipientResult recipientId];
             NSString *mobileUserIdColumn = [self mobileUserIdColumn];
-            NSString *existingMobileUserId = [existingRecipientResponse valueForColumnName:mobileUserIdColumn];
+            NSString *existingMobileUserId = [existingRecipientResult valueForColumnName:mobileUserIdColumn];
             
             if ([existingRecipientId isEqualToString:[EngageConfig recipientId]]) {
                 [self handleExistingRecipientIsSameAsInAppWithMobileUserId:existingMobileUserId success:didSucceed failure:didFail];
@@ -227,26 +227,18 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
             } else {
                 // scenario 2 - existing recipient doesn't have a mobileUserId
                 if ([existingMobileUserId length] == 0) {
-                    
-                    //TODO: finish me
-//                    [self handleExistingRecipientWithoutRecipientId];
+                    [self handleExistingRecipientWithoutRecipientId:existingRecipientResult success:didSucceed failure:didFail];
                     
                 }
                 // scenario 3 - existing recipient has a mobileUserId
                 else {
-                    
-                    //TODO: finish me
-                    
+                    [self handleExistingRecipientWithRecipientId:currentRecipientId existingMobileUserId:existingMobileUserId existingRecipientResult:existingRecipientResult success:didSucceed failure:didFail];
                 }
             }
-            
         }
-
-        
     } failure:^(NSError *error) {
         //TODO: finish me
     }];
-    
 }
 
 -(void)handleExistingRecipientIsSameAsInAppWithMobileUserId:(NSString *)existingMobileUserId
@@ -348,13 +340,72 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
                 [updateCurrentRecipientXml addColumn:[[EngageConfigManager sharedInstance] recipientMergedRecipientIdColumn] :[existingRecipientResult recipientId]];
             }
             
-            //TODO: finish me
+            [[XMLAPIManager sharedInstance] postXMLAPI:updateCurrentRecipientXml success:^(ResultDictionary *updateCurrentRecipientResult) {
+               
+                NSString *oldRecipientId = [EngageConfig recipientId];
+                NSString *newRecipientId = [existingRecipientResult recipientId];
+                
+                //TODO: update audit table if needed
+                
+                if (didSucceed) {
+                    didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:[EngageConfig primaryUserId]]);
+                }
+                
+                
+            } failure:^(NSError *error) {
+                NSLog(@"%@", error);
+                if (didFail) {
+                    didFail([[CheckIdentityFailure alloc] initWithMessage:nil error:error]);
+                }
+            }];
             
         } failure:^(NSError *error) {
-            
+            NSLog(@"%@", error);
+            if (didFail) {
+                didFail([[CheckIdentityFailure alloc] initWithMessage:nil error:error]);
+            }
         }];
     }
+}
+
+/**
+ *  Scenario 3 - existing recipient has a mobileUserId
+ */
+-(void)handleExistingRecipientWithRecipientId:(NSString *)currentRecipientId
+                         existingMobileUserId:(NSString *)existingMobileUserId
+                      existingRecipientResult:(ResultDictionary *)existingRecipientResult
+                                      success:(void (^)(CheckIdentityResult* result))didSucceed
+                                      failure:(void (^)(CheckIdentityFailure* failure))didFail {
+    
+    XMLAPI *updateCurrentRecipientXml = [XMLAPI updateRecipient:currentRecipientId list:[EngageConfig engageListId]];
+    if ([[EngageConfigManager sharedInstance] recipientMergeHistoryInMarketingDatabase]) {
+        [updateCurrentRecipientXml addColumn:[[EngageConfigManager sharedInstance] recipientMergedDateColumn] :[EngageDateFormatter nowGmtString]];
+        [updateCurrentRecipientXml addColumn:[[EngageConfigManager sharedInstance] recipientMergedRecipientIdColumn] :[existingRecipientResult recipientId]];
+    }
+    
+    [[XMLAPIManager sharedInstance] postXMLAPI:updateCurrentRecipientXml success:^(ResultDictionary *ERXML) {
+        
+        // start using existing recipient id instead
+        NSString *oldRecipientId = [EngageConfig recipientId];
+        NSString *newRecipientId = [existingRecipientResult recipientId];
+        [EngageConfig storeRecipientId:newRecipientId];
+        [EngageConfig storePrimaryUserId:existingMobileUserId];
+        
+        //TODO: update audit table if needed
+        
+        if (didSucceed) {
+            didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:existingMobileUserId]);
+        }
+        
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@", error);
+        if (didFail) {
+            didFail([[CheckIdentityFailure alloc] initWithMessage:nil error:error]);
+        }
+    }];
     
 }
+
 
 @end

@@ -345,6 +345,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
                
                 NSString *oldRecipientId = [EngageConfig recipientId];
                 NSString *newRecipientId = [existingRecipientResult recipientId];
+                [EngageConfig storeRecipientId:newRecipientId];
                 
                 //TODO: update audit table if needed
                 

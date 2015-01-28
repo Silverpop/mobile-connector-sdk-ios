@@ -185,9 +185,7 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
      @{
        @"LIST_ID" : listId,
        @"COLUMNS" :
-           @{
-               mobileUserIdColumnName : mobileUserId
-               }
+           @{ mobileUserIdColumnName : mobileUserId }
        }];
     return addRecipientXml;
 }

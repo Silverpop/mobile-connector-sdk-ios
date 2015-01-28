@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Silverpop. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "EngageBaseTest_IT.h"
 #import "XMLAPIManager.h"

@@ -11,6 +11,6 @@
 
 @property NSString *recipientId;
 
--(id)initWithRecipientId :(NSString *)recipientId;
+-(instancetype)initWithRecipientId :(NSString *)recipientId;
 
 @end

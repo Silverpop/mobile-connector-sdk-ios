@@ -10,7 +10,7 @@
 
 @implementation SetupRecipientResult
 
--(id)initWithRecipientId :(NSString *)recipientId {
+-(instancetype)initWithRecipientId :(NSString *)recipientId {
     if (self = [super init]) {
         _recipientId = recipientId;
     }

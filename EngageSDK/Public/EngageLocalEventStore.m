@@ -199,7 +199,7 @@ __strong NSString* ENGAGE_EVENT_CORE_DATA = @"EngageEvent";
 
 #pragma mark - Core Data stack
 
-// Returns the managed object context for hte application.
+// Returns the managed object context for the application.
 // If the context doesn't already exist, it is create and bound to the persistent store coordinator for the application.
 - (NSManagedObjectContext *)managedObjectContext
 {

@@ -123,10 +123,20 @@
         [jsonKeyValueAttributes addObject:attribute];
     }
     
-    NSDictionary *data = @{ @"eventTypeCode" : _eventTypeCode,
-                            @"eventTimestamp" : _eventTimeStamp,
-                            @"attributes" : jsonKeyValueAttributes };
-    return data;
+    NSString* contactId = ([EngageConfig mobileUserId] != nil && ![[EngageConfig mobileUserId] isEqualToString:@""]) ? [EngageConfig mobileUserId] : [EngageConfig anonymousId];
+    NSLog(@"contactId=%@ primaryUserId=%@ anonymousId=%@", contactId, [EngageConfig mobileUserId], [EngageConfig anonymousId]);
+    if (contactId && ![contactId isEqualToString:@""]) {
+        NSLog(@"creating payload with contactId=%@", contactId);
+        return @{ @"eventTypeCode" : _eventTypeCode,
+                  @"eventTimestamp" : _eventTimeStamp,
+                  @"contactId": contactId,
+                  @"attributes" : jsonKeyValueAttributes};
+    } else {
+        NSLog(@"excluding contactId=%@", contactId);
+        return @{ @"eventTypeCode" : _eventTypeCode,
+                  @"eventTimestamp" : _eventTimeStamp,
+                  @"attributes" : jsonKeyValueAttributes};
+    }
 }
 
 - (NSString *) jsonValue {

@@ -10,6 +10,7 @@
 #import "XMLAPIClient.h"
 #import "UBFClient.h"
 #import "EngageConfigManager.h"
+#import "XMLAPIOperation.h"
 
 @interface XMLAPIManager()
 
@@ -84,13 +85,20 @@ __strong static XMLAPIManager *_sharedInstance = nil;
     // register device with Engage DB
     [self postXMLAPI:[XMLAPI addRecipientAnonymousToList:listId]
                success:^(ResultDictionary *ERXML) {
-                   if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+                   if ([ERXML isSuccess]) {
                        NSString *userId = [ERXML valueForShortPath:@"RecipientId"];
                        [EngageConfig storeAnonymousId:userId];
                        NSLog(@"Successfully created anonymous user with id %@", userId);
                    }
-                   success(ERXML);
-               } failure:failure];
+                   if (success) {
+                       success(ERXML);
+                   }
+               } failure:^(NSError *error) {
+                   NSLog(@"error posting to anonymous");
+                   if (failure) {
+                       failure(error);
+                   }
+               }];
 }
 
 - (void)updateAnonymousToPrimaryUser:(NSString *)userId
@@ -109,7 +117,7 @@ __strong static XMLAPIManager *_sharedInstance = nil;
     [anonymousUser addColumns:@{ mergeColumn : userId } ];
     [self postXMLAPI:anonymousUser success:^(ResultDictionary *ERXML) {
         if ([ERXML isSuccess]) {
-            XMLAPI *mobileUser = [XMLAPI resourceNamed:@"UpdateRecipient" params:@{ @"LIST_ID" : listId } ];
+            XMLAPI *mobileUser = [XMLAPI resourceNamed:XMLAPI_OPERATION_UPDATE_RECIPIENT params:@{ @"LIST_ID" : listId } ];
             // FIELDS TO SYNC/SEARCH BY
             [mobileUser addSyncFields:@{ primaryUserColumn : userId } ];
             // COLUMNS TO UPDATE ON OLDEST MATCH
@@ -118,7 +126,9 @@ __strong static XMLAPIManager *_sharedInstance = nil;
             [self postXMLAPI:mobileUser success:success failure:failure];
         }
         else {
-            success(ERXML);
+            if (success) {
+                success(ERXML);
+            }
         }
     } failure:failure];
 }

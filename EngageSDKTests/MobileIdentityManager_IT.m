@@ -36,7 +36,7 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
 - (void)setUp {
     // clear needed preferences
     [EngageConfig storeRecipientId:@""];
-    [EngageConfig storePrimaryUserId:@""];
+    [EngageConfig storeMobileUserId:@""];
     
     [super setUp];
     
@@ -67,7 +67,7 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Recipient Added"];
     
-    XCTAssertTrue([[EngageConfig primaryUserId] length] == 0);
+    XCTAssertTrue([[EngageConfig mobileUserId] length] == 0);
     XCTAssertTrue([[EngageConfig recipientId] length] == 0);
     
     [[MobileIdentityManager sharedInstance] setupRecipientWithSuccess:^(SetupRecipientResult *result) {
@@ -77,14 +77,14 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
         XMLAPI *removeRecipientXml = [XMLAPI resourceNamed:XMLAPI_OPERATION_REMOVE_RECIPIENT];
         [removeRecipientXml listId:[self listId]];
         [removeRecipientXml recipientId:recipientId];
-        [removeRecipientXml addColumn:[self mobileUserIdColumn] :[EngageConfig primaryUserId]];
+        [removeRecipientXml addColumn:[self mobileUserIdColumn] :[EngageConfig mobileUserId]];
         [_tearDownApiCalls addObject:removeRecipientXml];
         
         
         XCTAssertTrue([recipientId length] > 0);
         // verify recipient id and mobile user id are configured in app
         XCTAssertTrue([[EngageConfig recipientId] length] > 0);
-        XCTAssertTrue([[EngageConfig primaryUserId] length] > 0);
+        XCTAssertTrue([[EngageConfig mobileUserId] length] > 0);
         
         [expectation fulfill];
         
@@ -108,10 +108,10 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
     NSString *prevMobileUserId = [_uuidGenerator generateUUID];
     NSString *prevRecipientId = @"000000";
     
-    [EngageConfig storePrimaryUserId:prevMobileUserId];
+    [EngageConfig storeMobileUserId:prevMobileUserId];
     [EngageConfig storeRecipientId:prevRecipientId];
     
-    XCTAssertTrue([prevMobileUserId isEqualToString:[EngageConfig primaryUserId]]);
+    XCTAssertTrue([prevMobileUserId isEqualToString:[EngageConfig mobileUserId]]);
     XCTAssertTrue([prevRecipientId isEqualToString:[EngageConfig recipientId]]);
     
     [[MobileIdentityManager sharedInstance] setupRecipientWithSuccess:^(SetupRecipientResult *result) {
@@ -119,7 +119,7 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
         NSString *recipientId = [result recipientId];
         XCTAssertTrue([prevRecipientId isEqualToString: recipientId]);
         XCTAssertTrue([prevRecipientId isEqualToString:[EngageConfig recipientId]]);
-        XCTAssertTrue([prevMobileUserId isEqualToString:[EngageConfig primaryUserId]]);
+        XCTAssertTrue([prevMobileUserId isEqualToString:[EngageConfig mobileUserId]]);
         
         [expectation fulfill];
         
@@ -155,7 +155,7 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
         [_tearDownApiCalls addObject:removeRecipientXml];
 
         [EngageConfig storeRecipientId:existingRecipientId];
-        XCTAssertTrue([[EngageConfig primaryUserId] length] == 0);
+        XCTAssertTrue([[EngageConfig mobileUserId] length] == 0);
         // setup complete, we now have an existing recipient with an email and recipient id only, not a mobile user id
         
         // start actual test
@@ -164,7 +164,7 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
             NSString *recipientId = [result recipientId];
             // recipient should have been updated with mobile user id
             XCTAssertTrue([recipientId isEqualToString:existingRecipientId]);
-            XCTAssertTrue([[EngageConfig primaryUserId] length] > 0);
+            XCTAssertTrue([[EngageConfig mobileUserId] length] > 0);
             
             [expectation fulfill];
             
@@ -199,7 +199,7 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
         
         // recipient is setup, we should have recipientId and mobileUserId now
         XCTAssertTrue([createdRecipientId length] > 0);
-        XCTAssertTrue([[EngageConfig primaryUserId] length] > 0);
+        XCTAssertTrue([[EngageConfig mobileUserId] length] > 0);
         
         // look for an existing recipient with the following
         NSString *nonExistingCustomIdValue = [_uuidGenerator generateUUID];
@@ -261,7 +261,7 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
         [removeRecipientXml recipientId:createdWithMobileUserId_RecipientId];
         [_tearDownApiCalls addObject:removeRecipientXml];
         
-        NSString *originalMobileUserId = [EngageConfig primaryUserId];
+        NSString *originalMobileUserId = [EngageConfig mobileUserId];
         NSString *customId = [_uuidGenerator generateUUID];
         
         // setup existing recipient on server with custom id but not a mobile user id
@@ -310,11 +310,11 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
             XCTAssertTrue([[result recipientId] isEqualToString:[EngageConfig recipientId]]);
             XCTAssertTrue([[result mergedRecipientId] length] > 0);
             XCTAssertFalse([[result mergedRecipientId] isEqualToString:[result recipientId]]);
-            XCTAssertTrue([[result mobileUserId] isEqualToString:[EngageConfig primaryUserId]]);
+            XCTAssertTrue([[result mobileUserId] isEqualToString:[EngageConfig mobileUserId]]);
             
             // verify the app is now using the existing recipient
             XCTAssertTrue([[EngageConfig recipientId] isEqualToString:[existingRecipient recipientId]]);
-            XCTAssertTrue([[EngageConfig primaryUserId] isEqualToString:[currentRecipient mobileUserId]]);
+            XCTAssertTrue([[EngageConfig mobileUserId] isEqualToString:[currentRecipient mobileUserId]]);
             
             // check state of recipients on server
             // check first recipient
@@ -371,7 +371,7 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
         [removeRecipientXml recipientId:createdWithMobileUserId_RecipientId];
         [_tearDownApiCalls addObject:removeRecipientXml];
         
-        NSString *originalCurrentMobileUserId = [EngageConfig primaryUserId];
+        NSString *originalCurrentMobileUserId = [EngageConfig mobileUserId];
         
         NSString *customId = [_uuidGenerator generateUUID];
         NSString *originalExistingMobileUserId = [_uuidGenerator generateUUID];
@@ -436,10 +436,10 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
             XCTAssertTrue([[result recipientId] isEqualToString:[EngageConfig recipientId]]);
             XCTAssertTrue([[result mergedRecipientId] length] > 0);
             XCTAssertFalse([[result mergedRecipientId] isEqualToString:[result recipientId]]);
-            XCTAssertTrue([[result mobileUserId] isEqualToString:[EngageConfig primaryUserId]]);
+            XCTAssertTrue([[result mobileUserId] isEqualToString:[EngageConfig mobileUserId]]);
             
             // verify the app is now using the existing recipient
-            XCTAssertTrue([[EngageConfig primaryUserId] isEqualToString:[existingRecipient mobileUserId]]);
+            XCTAssertTrue([[EngageConfig mobileUserId] isEqualToString:[existingRecipient mobileUserId]]);
             XCTAssertTrue([[EngageConfig recipientId] isEqualToString:[existingRecipient recipientId]]);
             
             // verify old recipient is marked as merged on the server
@@ -485,10 +485,10 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
             XCTAssertTrue([[result recipientId] isEqualToString:[EngageConfig recipientId]]);
             XCTAssertTrue([[result mergedRecipientId] length] > 0);
             XCTAssertFalse([[result mergedRecipientId] isEqualToString:[result recipientId]]);
-            XCTAssertTrue([[result mobileUserId] isEqualToString:[EngageConfig primaryUserId]]);
+            XCTAssertTrue([[result mobileUserId] isEqualToString:[EngageConfig mobileUserId]]);
             
             // verify the app is now using the existing recipient
-            XCTAssertTrue([[EngageConfig primaryUserId] isEqualToString:[existingRecipient mobileUserId]]);
+            XCTAssertTrue([[EngageConfig mobileUserId] isEqualToString:[existingRecipient mobileUserId]]);
             XCTAssertTrue([[EngageConfig recipientId] isEqualToString:[existingRecipient recipientId]]);
             
             // verify old recipient is marked as merged on the server
@@ -540,14 +540,14 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
         [_tearDownApiCalls addObject:removeRecipientXml];
         
         [EngageConfig storeRecipientId:[addRecipientResult recipientId]];
-        [EngageConfig storePrimaryUserId:mobileUserId];
+        [EngageConfig storeMobileUserId:mobileUserId];
         
         // recipient setup with mobile user id and custom id, lets search for that user
         [[MobileIdentityManager sharedInstance] checkIdentityForIds:@{ CUSTOM_ID_COLUMN : customId } success:^(CheckIdentityResult *result) {
             
             // nothing should have happened, no merging and EngageConfig should remain the same
             XCTAssertTrue([[result mobileUserId] isEqualToString:mobileUserId]);
-            XCTAssertTrue([[result mobileUserId] isEqualToString:[EngageConfig primaryUserId]]);
+            XCTAssertTrue([[result mobileUserId] isEqualToString:[EngageConfig mobileUserId]]);
             XCTAssertTrue([[result mergedRecipientId] length] == 0);
             XCTAssertTrue([[result recipientId] length] > 0);
             XCTAssertTrue([[result recipientId] isEqualToString:[addRecipientResult recipientId]]);

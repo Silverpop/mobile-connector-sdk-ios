@@ -101,7 +101,7 @@ __strong static XMLAPIManager *_sharedInstance = nil;
                              failure:(void (^)(NSError *error))failure {
     
     // UPDATE UBF TO LOG ANALYTICS FOR THIS PREFERRED CONTACT
-    [EngageConfig storePrimaryUserId: userId];
+    [EngageConfig storeMobileUserId: userId];
     
     // update existing user with preferred contact id
     NSString *anonymousId = [EngageConfig anonymousId];

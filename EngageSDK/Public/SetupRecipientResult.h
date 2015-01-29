@@ -9,7 +9,7 @@
 
 @interface SetupRecipientResult : NSObject
 
-@property NSString *recipientId;
+@property (nonatomic) NSString *recipientId;
 
 -(instancetype)initWithRecipientId :(NSString *)recipientId;
 

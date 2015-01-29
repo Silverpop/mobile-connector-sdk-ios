@@ -76,8 +76,11 @@
 
 + (NSString *) deviceId;
 
-+ (NSString *)primaryUserId;
-+ (void)storePrimaryUserId:(NSString *)userId;
++ (NSString *)primaryUserId __deprecated_msg("Primary User Id has been renamed to Mobile User Id for clarity");
++ (void)storePrimaryUserId:(NSString *)userId __deprecated_msg("Primary User Id has been renamed to Mobile User Id for clarity");
+
++ (NSString *)mobileUserId;
++ (void)storeMobileUserId:(NSString *)userId;
 
 + (NSString *)anonymousId;
 + (void)storeAnonymousId:(NSString *)anonymousId;

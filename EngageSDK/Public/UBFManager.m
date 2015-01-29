@@ -147,7 +147,7 @@ __strong static UBFManager *_sharedInstance = nil;
  * installed event so it will include the user id info.
  */
 + (void)waitForUserIdThenCreateInstalledEvent {
-    NSString *primaryUserId = [EngageConfig primaryUserId];
+    NSString *primaryUserId = [EngageConfig mobileUserId];
     // is the primary id already set?
     if (primaryUserId && [primaryUserId length] > 0) {
         [_sharedInstance trackEvent:[UBF installed:nil]];
@@ -240,7 +240,7 @@ __strong static UBFManager *_sharedInstance = nil;
  * installed event so it will include the user info.
  */
 - (void)waitForUserIdThenCreateSessionStartedEvent {
-    NSString *primaryUserId = [EngageConfig primaryUserId];
+    NSString *primaryUserId = [EngageConfig mobileUserId];
     // is the primary id already set?
     if (primaryUserId && [primaryUserId length] > 0) {
         [self trackEvent:[UBF sessionStarted:nil withCampaign:[EngageConfig currentCampaign]]];

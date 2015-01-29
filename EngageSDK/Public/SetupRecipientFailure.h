@@ -11,9 +11,9 @@
 
 @interface SetupRecipientFailure: NSObject
 
-@property NSString* errorMessage;
-@property ResultDictionary* responseDictionary;
-@property NSError* error;
+@property (nonatomic) NSString* errorMessage;
+@property (nonatomic) ResultDictionary* responseDictionary;
+@property (nonatomic) NSError* error;
 
 -(id) initWithMessage:(NSString *)errorMessage;
 -(id) initWithMessage:(NSString *)errorMessage response:(ResultDictionary *)failureResponse;

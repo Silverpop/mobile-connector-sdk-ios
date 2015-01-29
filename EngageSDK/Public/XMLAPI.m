@@ -245,7 +245,7 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
     
     XMLAPI *api = [XMLAPI resourceNamed:XMLAPI_OPERATION_UPDATE_RECIPIENT params:@{ @"LIST_ID" : listID } ];
     // FIELDS TO SYNC/SEARCH BY
-    [api addSyncFields:@{ @"EMAIL" : [EngageConfig primaryUserId] } ];
+    [api addSyncFields:@{ @"EMAIL" : [EngageConfig mobileUserId] } ];
     // COLUMNS TO UPDATE ON OLDEST MATCH
     [api addColumns:@{ lastKnownLocationColumnName : location,
                        lastKnownLocationTime : lastKnownLocationDate} ];

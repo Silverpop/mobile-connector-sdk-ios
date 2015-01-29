@@ -67,13 +67,13 @@ __strong static NSString *engageListId = nil;
     [defaults synchronize];
 }
 
-+ (NSString *)primaryUserId {
++ (NSString *)mobileUserId {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userId = [defaults objectForKey:@"engagePrimaryUserId"];
     return userId ? userId : @"";
 }
 
-+ (void)storePrimaryUserId:(NSString *)userId {
++ (void)storeMobileUserId:(NSString *)userId {
     // store userId in NSUserDefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:userId forKey:@"engagePrimaryUserId"];
@@ -81,6 +81,14 @@ __strong static NSString *engageListId = nil;
 
     // broadcast that the primary user id is now known
     [[NSNotificationCenter defaultCenter] postNotificationName:PRIMARY_USER_ID_SET object:nil];
+}
+
++ (NSString *)primaryUserId {
+    return [self mobileUserId];
+}
+
++ (void)storePrimaryUserId:(NSString *)userId {
+    [self storeMobileUserId:userId];
 }
 
 

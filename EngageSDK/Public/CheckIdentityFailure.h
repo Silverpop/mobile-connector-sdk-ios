@@ -10,8 +10,8 @@
 
 @interface CheckIdentityFailure : NSObject
 
-@property NSError *error;
-@property NSString *message;
+@property (nonatomic) NSError *error;
+@property (nonatomic) NSString *message;
 
 -(instancetype)initWithMessage:(NSString *)message
                          error:(NSError *)error;

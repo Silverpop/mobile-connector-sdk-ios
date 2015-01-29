@@ -42,7 +42,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
                           failure:(void (^)(SetupRecipientFailure* failure))didFail
 {
     NSString* existingRecipientId = [EngageConfig recipientId];
-    NSString* existingMobileUserId = [EngageConfig primaryUserId];
+    NSString* existingMobileUserId = [EngageConfig mobileUserId];
 
     if ([existingMobileUserId length] > 0 && [existingMobileUserId length] > 0) {
         // already configured, return existing values
@@ -84,7 +84,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         NSString *newMobileUserId = [NSString stringWithString:existingMobileUserId];
         if ([newMobileUserId length] == 0) {
             newMobileUserId = [self generateMobileUserId];
-            [EngageConfig storePrimaryUserId:newMobileUserId];
+            [EngageConfig storeMobileUserId:newMobileUserId];
         }
         
         XMLAPI *addRecipientXml = [XMLAPI addRecipientWithMobileUserIdColumnName:mobileUserIdColumn mobileUserId:newMobileUserId list:listId];
@@ -119,7 +119,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         // generate new mobile user id
         NSString *newMoblieUserId = [self generateMobileUserId];
         // TODO: change to mobileUserId syntax
-        [EngageConfig storePrimaryUserId:newMoblieUserId];
+        [EngageConfig storeMobileUserId:newMoblieUserId];
         
         XMLAPI *updateRecipientXml = [XMLAPI updateRecipient:existingRecipientId list:listId];
         [updateRecipientXml addColumns:@{ mobileUserIdColumn : newMoblieUserId }];
@@ -251,7 +251,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
     // it was missing before we got here - but just in case let's handle it here again
     
     NSString *currentRecipientId = [EngageConfig recipientId];
-    NSString *currentMobileUserId = [EngageConfig primaryUserId];
+    NSString *currentMobileUserId = [EngageConfig mobileUserId];
     
     if ([existingMobileUserId length] > 0) {
         // recipient on server already has mobile user id, nothing to do here
@@ -294,7 +294,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         
         if ([ERXML isSuccess]) {
             if (didSucceed) {
-                didSucceed([[CheckIdentityResult alloc] initWithRecipientId:[ERXML recipientId] mergedRecipientId:nil mobileUserId:[EngageConfig primaryUserId]]);
+                didSucceed([[CheckIdentityResult alloc] initWithRecipientId:[ERXML recipientId] mergedRecipientId:nil mobileUserId:[EngageConfig mobileUserId]]);
             }
             
         } else {
@@ -316,7 +316,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
                                          success:(void (^)(CheckIdentityResult* result))didSucceed
                                          failure:(void (^)(CheckIdentityFailure* failure))didFail {
 
-    NSString *mobileUserIdFromApp = [EngageConfig primaryUserId];
+    NSString *mobileUserIdFromApp = [EngageConfig mobileUserId];
     if ([mobileUserIdFromApp length] == 0) {
         NSString *message = @"Cannot find mobileUserId to update the existing recipient";
         NSLog(@"%@", message);
@@ -350,7 +350,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
                 //TODO: update audit table if needed
                 
                 if (didSucceed) {
-                    didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:[EngageConfig primaryUserId]]);
+                    didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:[EngageConfig mobileUserId]]);
                 }
                 
                 
@@ -391,7 +391,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         NSString *oldRecipientId = [EngageConfig recipientId];
         NSString *newRecipientId = [existingRecipientResult recipientId];
         [EngageConfig storeRecipientId:newRecipientId];
-        [EngageConfig storePrimaryUserId:existingMobileUserId];
+        [EngageConfig storeMobileUserId:existingMobileUserId];
         
         //TODO: update audit table if needed
         

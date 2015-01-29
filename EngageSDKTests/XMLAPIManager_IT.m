@@ -66,7 +66,7 @@
                                                XMLAPI *removeRecipientXml = [XMLAPI resourceNamed:@"RemoveRecipient"];
                                                [removeRecipientXml listId:listId];
                                                [removeRecipientXml recipientId:recipientId];
-                                               [removeRecipientXml addColumn:[self mobileUserIdColumn] :[EngageConfig primaryUserId]];
+                                               [removeRecipientXml addColumn:[self mobileUserIdColumn] :[EngageConfig mobileUserId]];
                                                [_tearDownApiCalls addObject:removeRecipientXml];
                                            }
                                            

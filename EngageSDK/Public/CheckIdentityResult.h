@@ -10,9 +10,9 @@
 
 @interface CheckIdentityResult : NSObject
 
-@property NSString *recipientId;
-@property NSString *mobileUserId;
-@property NSString *mergedRecipientId;
+@property (nonatomic) NSString *recipientId;
+@property (nonatomic) NSString *mobileUserId;
+@property (nonatomic) NSString *mergedRecipientId;
 
 -(instancetype)initWithRecipientId :(NSString *)recipientId
                   mergedRecipientId:(NSString *)mergedRecipientId

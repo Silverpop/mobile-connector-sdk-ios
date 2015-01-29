@@ -78,7 +78,7 @@
                 UBF_CORE_VALUE_APP_NAME : appName,
                 UBF_CORE_VALUE_APP_VERSION : appVersion,
                 UBF_CORE_VALUE_DEVICE_ID : deviceId,
-                UBF_CORE_VALUE_PRIMARY_USER_ID : [EngageConfig primaryUserId],
+                UBF_CORE_VALUE_PRIMARY_USER_ID : [EngageConfig mobileUserId],
                 UBF_CORE_VALUE_ANONYMOUS_ID : [EngageConfig anonymousId]
         };
         

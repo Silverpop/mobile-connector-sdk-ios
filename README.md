@@ -67,7 +67,7 @@ touch Podfile
 Edit this file to add the EngageSDK dependency
 
 ```
-pod 'EngageSDK', '~> 1.0.0'
+pod 'EngageSDK', '~> 1.1.0'
 ```
 
 Save and close. 
@@ -292,9 +292,78 @@ After initial XMLAPIManager creation you may reference your singleton anytime wi
 XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
 ```
 
+### <a name="MobileIdentityManager"/>MobileIdentityManager
+
+The ```MobileIdentityManager``` can be used to manage user identities.  It can auto create new user identities 
+as well as merge existing identities if needed.  This functionality is intended to replace the 
+manual process of creating an anonymous user.
+ 
+In addition to the normal app security token configuration, the following setup must be configured prior to 
+using the ```MobileIdentityManager``` methods.
+- Recipient list should already be created and the ```listId``` should be setup in the configuration.
+- ```EngageConfig.plist``` should be configured with the columns names representing the _Mobile User Id_, _Merged Recipient Id_, and _Merged Date_.  The ```EngageConfigDefaults.plist``` defines default values if you prefer to use those.
+- The _Mobile User Id_, _Merged Recipient Id_, and _Merged Date_ columns must be created in the recipient list with names that match your ```EngageConfig.plist``` settings
+- Optional: If you prefer to save the merge history in a separate AuditRecord relational table you can 
+set ```mergeHistoryInAuditRecordTable``` to true.  If enabled you are responsible for creating the AuditRecord
+ table with the columns for _Audit Record Id_, _Old Recipient Id_, _New Recipient Id_, and _Create Date_ prior to
+ calling ```checkIdentityForIds```.
+
+##### Setup recipient identity
+
+##### Setup Recipient Usage
+
+```objective-c
+/**
+ * Checks if the mobile user id has been configured yet.  If not
+ * and the 'enableAutoAnonymousTracking' flag is set to true it is auto generated
+ * using either the {@link EngageDefaultUUIDGenerator} or
+ * the generator configured as the 'mobileUserIdGeneratorClassName'.  If
+ * 'enableAutoAnonymousTracking' is 'NO' you are responsible for
+ * manually setting the id using {@code EngageConfig#storeMobileUserId}.
+ * <p/>
+ * Once we have a mobile user id (generated or manually set) a new recipient is
+ * created with the mobile user id.
+ * <p/>
+ * On successful completion of this method the EngageConfig will contain the
+ * mobile user id and new recipient id.
+ *
+ * @param didSucceed custom behavior to run on success of this method
+ * @param didFail custom behavior to run on failure of this method
+ */
+-(void)setupRecipientWithSuccess:(void (^)(SetupRecipientResult* result))didSucceed
+                         failure:(void (^)(SetupRecipientFailure* failure))didFail;
+```
+
+##### Check identity and merge recipients
+
+```objective-c
+/**
+ * Checks for an existing recipient with all the specified ids.  If a matching recipient doesn't exist
+ * the currently configured recipient is updated with the searched ids.  If an existing recipient
+ * does exist the two recipients are merged and the engage app config is switched to the existing
+ * recipient.
+ * <p/>
+ * When recipients are merged a history of the merged recipients is recorded.  By default it uses the
+ * Mobile User Id, Merged Recipient Id, and Merged Date columns, however if you prefer to store
+ * the merge history in a separate AuditRecord table you can set you EngageConfig.plist properties accordingly.
+ * <p/>
+ * WARNING: The merge process is not currently transactional.  If this method errors the data is likely to
+ * be left in an inconsistent state.
+ *
+ * @param fieldsToIds Dictionary of column name to id value for that column.  Searches for an
+ *                             existing recipient that contains ALL of the columns in the dictionary.
+ *                             <p/>
+ *                             Examples:
+ *                             - Key: facebook_id, Value: 100
+ *                             - Key: twitter_id, Value: 9999
+ * @param didSucceed custom behavior to run on success of this method
+ * @param didFail custom behavior to run on failure of this method
+ */
+ ```
+
 ## Local Event Storage
 
-UBF events are persisted to a local SQLite DB on the user's device. The event can have 1 of 4 status. NOT_POSTED, SUCCESSFULLY_POSTED, FAILED_POST, HOLD. 
+UBF events are persisted to a local SQLite DB on the user's device. The event can have 1 of 5 statuses. ```NOT_POSTED```, ```SUCCESSFULLY_POSTED```, ```FAILED_POST```, ```HOLD```, or ```EXPIRED```. 
 
 * NOT_POSTED 
     * UBF events that are ready to be sent to Engage but currently cannot due to network not being reachable or queue cache size not being met yet.
@@ -323,8 +392,9 @@ Utility class for generating JSON Universal Events that are posted to the UBFMan
 * App Name
 * App Version
 * Device Id
-* Primary User Id
+* Mobile User Id / Primary User Id
 * Anonymous Id
+* Recipient Id
 
 ### XMLAPI
 
@@ -336,13 +406,13 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
 
 [[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientData success:^(ResultDictionary *ERXML) {
     // SUCCESS = TRUE
-    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+    if ([ERXML isSuccess]) {
         NSLog(@"SUCCESS");
     }
-    // SUCCESS != TRUE
+    // SUCCESS = FALSE
     // This is a specific XMLAPI failure, status 2xx
     else {
-        NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
+        NSLog(@"%@",[ERXML faultString]);
     }
 } failure:^(NSError *error) {
     // This is a status > 400

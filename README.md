@@ -359,6 +359,10 @@ set ```mergeHistoryInAuditRecordTable``` to true.  If enabled you are responsibl
  * @param didSucceed custom behavior to run on success of this method
  * @param didFail custom behavior to run on failure of this method
  */
+ -(void)checkIdentityForIds:(NSDictionary *)fieldsToIds
+                   success:(void (^)(CheckIdentityResult* result))didSucceed
+                   failure:(void (^)(CheckIdentityFailure* failure))didFail;
+
  ```
 
 ## Local Event Storage

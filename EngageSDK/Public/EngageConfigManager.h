@@ -24,11 +24,21 @@
 - (NSNumber *)numberConfigForLocalStoreFieldName:(NSString *)localStoreFieldConstantName;
 - (NSString *)configForAugmentationServiceFieldName:(NSString *)augmentationServiceFieldConstantName;
 - (NSArray *)augmentationPluginClassNames;
+
+// recipient
 - (BOOL)autoAnonymousTrackingEnabled;
 - (NSString *) mobileUserIdGeneratorClassName;
 - (NSString *) recipientMobileUserIdColumn;
 - (NSString *) recipientMergedRecipientIdColumn;
 - (NSString *) recipientMergedDateColumn;
 - (BOOL) recipientMergeHistoryInMarketingDatabase;
+
+// audit record
+- (NSString *) auditRecordPrimaryKeyColumnName;
+- (NSString *) auditRecordPrimaryKeyGeneratorClassName;
+- (NSString *) auditRecordOldRecipientIdColumnName;
+- (NSString *) auditRecordNewRecipientIdColumnName;
+- (NSString *) auditRecordCreateDateColumnName;
+- (BOOL) mergeHistoryInAuditRecordTableDatabase;
 
 @end

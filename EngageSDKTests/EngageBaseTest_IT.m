@@ -11,11 +11,15 @@
 #import "XMLAPIManager.h"
 #import "EngageConnectionManager.h"
 #import "EngageConfigManager.h"
+#import "EngageLocalEventStore.h"
 
 @implementation EngageBaseTest_IT
 
 - (void)setUp {
     [super setUp];
+    
+    // clear ubf database
+//    [[EngageLocalEventStore sharedInstance] deleteAllUBFEvents];
     
     //TODO: move to properties file
     self.clientId = @"02eb567b-3674-4c48-8418-dbf17e0194fc";
@@ -65,7 +69,6 @@
             NSLog(@"Authentiation Timeout Error: %@", error);
         }
     }];
-    
 }
 
 @end

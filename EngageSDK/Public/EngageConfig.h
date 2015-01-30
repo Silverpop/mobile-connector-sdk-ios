@@ -72,6 +72,14 @@
 #define PLIST_RECIPIENT_MERGED_DATE_COLUMN @"mergedDateColumn"
 #define PLIST_RECIPIENT_MERGE_HISTORY_IN_MARKETING_DB @"mergeHistoryInMarketingDatabase"
 
+// PList audit record constants
+#define PLIST_AUDIT_RECORD_PRIMARY_KEY_COLUMN_NAME @"auditRecordPrimaryKeyColumnName"
+#define PLIST_AUDIT_RECORD_PRIMARY_KEY_GENERATOR_CLASS_NAME @"auditRecordPrimaryKeyGeneratorClassName"
+#define PLIST_AUDIT_RECORD_OLD_RECIPIENT_ID_COLUMN @"oldRecipientIdColumnName"
+#define PLIST_AUDIT_RECORD_NEW_RECIPIENT_ID_COLUMN @"newRecipientIdColumnName"
+#define PLIST_AUDIT_RECORD_CREATE_DATE_COLUMN @"createDateColumnName"
+#define PLIST_AUDIT_RECORD_MERGE_HISTORY_IN_AUDIT_RECORD_TABLE @"mergeHistoryInAuditRecordTable"
+
 @interface EngageConfig : NSUserDefaults
 
 + (NSString *) deviceId;
@@ -96,5 +104,8 @@
 
 + (NSString *) recipientId;
 + (void) storeRecipientId:(NSString *)recipientId;
+
++ (NSString *) auditRecordTableId;
++ (void) storeAuditRecordTableId:(NSString *)auditRecordTableId;
 
 @end

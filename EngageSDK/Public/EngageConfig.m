@@ -50,7 +50,6 @@ __strong static NSString *engageListId = nil;
 }
 
 + (void)storeAnonymousId:(NSString *)anonymousId {
-    // store recipientId in NSUserDefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:anonymousId forKey:@"engageAnonymousId"];
     [defaults synchronize];
@@ -171,6 +170,17 @@ __strong static NSString *engageListId = nil;
         NSLog(@"WARNING : No EngageListID has been set by SDK user yet. XMLAPI operation will fail!");
         return @"";
     }
+}
+
++ (NSString *) auditRecordTableId {
+    NSString *tableId = [[NSUserDefaults standardUserDefaults] objectForKey:@"auditRecordTableId"];
+    return tableId ? tableId : @"";
+}
+
++ (void) storeAuditRecordTableId:(NSString *)auditRecordTableId {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:auditRecordTableId forKey:@"auditRecordTableId"];
+    [defaults synchronize];
 }
 
 @end

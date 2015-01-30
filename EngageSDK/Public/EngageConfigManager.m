@@ -27,6 +27,7 @@ NSString *const GENERAL_GROUP = @"General";
 NSString *const LOCAL_EVENT_STORE_GROUP = @"LocalEventStore";
 NSString *const AUGMENTATION_GROUP = @"Augmentation";
 NSString *const RECIPIENT_GROUP = @"Recipient";
+NSString *const AUDIT_RECORD_GROUP = @"AuditRecord";
 
 - (id) init {
     self = [super init];
@@ -96,7 +97,7 @@ NSString *const RECIPIENT_GROUP = @"Recipient";
 }
 
 - (BOOL)locationServicesEnabled {
-    return (BOOL)[self propertyConfig:LOCATION_SERVICES_GROUP :@"enabled"];
+    return [[self propertyConfig:LOCATION_SERVICES_GROUP :@"enabled"] boolValue];
 }
 
 - (NSString *)fieldNameForUBF:(NSString *)ubfFieldConstantName {
@@ -140,7 +141,7 @@ NSString *const RECIPIENT_GROUP = @"Recipient";
 }
 
 - (BOOL)autoAnonymousTrackingEnabled {
-    return (BOOL)[self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_ENABLE_AUTO_ANONYMOUS_TRACKING];
+    return [[self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_ENABLE_AUTO_ANONYMOUS_TRACKING] boolValue];
 }
 
 - (NSString *) mobileUserIdGeneratorClassName {
@@ -160,7 +161,31 @@ NSString *const RECIPIENT_GROUP = @"Recipient";
 }
 
 - (BOOL) recipientMergeHistoryInMarketingDatabase {
-    return (BOOL) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MERGE_HISTORY_IN_MARKETING_DB];
+    return [[self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MERGE_HISTORY_IN_MARKETING_DB] boolValue];
+}
+
+- (NSString *) auditRecordPrimaryKeyColumnName {
+    return (NSString *) [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_PRIMARY_KEY_COLUMN_NAME];
+}
+
+- (NSString *) auditRecordPrimaryKeyGeneratorClassName {
+    return (NSString *) [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_PRIMARY_KEY_GENERATOR_CLASS_NAME];
+}
+
+- (NSString *) auditRecordOldRecipientIdColumnName {
+    return (NSString *) [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_OLD_RECIPIENT_ID_COLUMN];
+}
+
+- (NSString *) auditRecordNewRecipientIdColumnName {
+    return (NSString *) [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_NEW_RECIPIENT_ID_COLUMN];
+}
+
+- (NSString *) auditRecordCreateDateColumnName {
+    return (NSString *) [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_CREATE_DATE_COLUMN];
+}
+
+- (BOOL) mergeHistoryInAuditRecordTableDatabase {
+    return [[self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_MERGE_HISTORY_IN_AUDIT_RECORD_TABLE] boolValue];
 }
 
 @end

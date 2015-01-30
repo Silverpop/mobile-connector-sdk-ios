@@ -124,6 +124,20 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
             for (id keyField in element) {
                 [syncFields appendFormat:nameValueForm,SYNC_FIELD,keyField,[element objectForKey:keyField]];
             }
+        } else if ([key isEqualToString:@"ROWS"]) {
+            [body appendString:@"<ROWS>"];
+            // iterate array of rows
+            if ([element isKindOfClass:[NSArray class]]) {
+                for (NSDictionary *row in element) {
+                    [body appendString:@"<ROW>"];
+                    // each row is a dictionary of column name value pairs
+                    for (id columnName in [row allKeys]) {
+                        [body appendFormat:@"<COLUMN name=\"%@\"><![CDATA[%@]]></COLUMN>", columnName, [row objectForKey:columnName]];
+                    }
+                    [body appendString:@"</ROW>"];
+                }
+            }
+            [body appendString:@"</ROWS>"];
         }
         else {
             [body appendFormat:@"<%1$@>%2$@</%1$@>",key,[_bodyElements objectForKey:key]];

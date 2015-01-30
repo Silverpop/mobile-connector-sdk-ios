@@ -54,10 +54,6 @@ __strong static UBFClient *_sharedClient = nil;
 - (void)authenticateInternal:(void (^)(AFOAuthCredential *credential))success
                      failure:(void (^)(NSError *error))failure {
     
-//    if ([[EngageConnectionManager sharedInstance] isAuthenticated]) {
-    
-//    }
-    
         //TODO: dont setSuspended
         //    [[self operationQueue] setSuspended:YES];
         
@@ -78,7 +74,9 @@ __strong static UBFClient *_sharedClient = nil;
         }];
 }
 
-//When the application starts up there may be stale events that never completed and those need to be posted.
+/**
+ *  When the application starts up there may be stale events that never completed and those need to be posted.
+ */
 - (void) applicationStartupPostStaleEvents {
     //Lookup all of the events that are still "HOLD" meaning they didn't complete Augmentation and try again.
     NSArray *holdEngageEvents = [[EngageLocalEventStore sharedInstance] findEngageEventsWithStatus:HOLD];
@@ -128,14 +126,6 @@ __strong static UBFClient *_sharedClient = nil;
             NSDictionary *params = @{ @"events" : eventsCache };
             
             NSLog(@"POSTing %@", params.description);
-            
-//            self.requestSerializer = [AFJSONRequestSerializer serializer];
-//            [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//            AFOAuthCredential *credential = [self credential];
-//            [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [credential accessToken]] forHTTPHeaderField:@"Authorization"];
-            
-            
-            
             
             [[EngageConnectionManager sharedInstance] postJsonRequest:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 

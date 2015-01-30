@@ -89,18 +89,18 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         
         XMLAPI *addRecipientXml = [XMLAPI addRecipientWithMobileUserIdColumnName:mobileUserIdColumn mobileUserId:newMobileUserId list:listId];
         [[XMLAPIManager sharedInstance] postXMLAPI:addRecipientXml
-                                           success:^(ResultDictionary *ERXML) {
-                                               if ([ERXML isSuccess]) {
-                                                   NSString *recipientId = [ERXML valueForShortPath:@"RecipientId"];
+                                           success:^(ResultDictionary *addRecipientResult) {
+                                               if ([addRecipientResult isSuccess]) {
+                                                   NSString *recipientId = [addRecipientResult valueForShortPath:@"RecipientId"];
                                                    
                                                    if ([recipientId length] == 0) {
-                                                       didFail([[SetupRecipientFailure alloc] initWithMessage:@"Empty recipientId returned from Silverpop" response:ERXML]);
+                                                       didFail([[SetupRecipientFailure alloc] initWithMessage:@"Empty recipientId returned from Silverpop" response:addRecipientResult]);
                                                    } else {
                                                        [EngageConfig storeRecipientId:recipientId];
                                                        didSucceed([[SetupRecipientResult alloc] initWithRecipientId:recipientId]);
                                                    }
                                                } else {
-                                                   didFail([[SetupRecipientFailure alloc] initWithMessage:[ERXML faultString] response:ERXML]);
+                                                   didFail([[SetupRecipientFailure alloc] initWithMessage:[addRecipientResult faultString] response:addRecipientResult]);
                                                }
                                            }
                                            failure:^(NSError *error) {
@@ -118,21 +118,19 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         
         // generate new mobile user id
         NSString *newMoblieUserId = [self generateMobileUserId];
-        // TODO: change to mobileUserId syntax
         [EngageConfig storeMobileUserId:newMoblieUserId];
         
         XMLAPI *updateRecipientXml = [XMLAPI updateRecipient:existingRecipientId list:listId];
         [updateRecipientXml addColumns:@{ mobileUserIdColumn : newMoblieUserId }];
         
-        [[XMLAPIManager sharedInstance] postXMLAPI:updateRecipientXml success:^(ResultDictionary *ERXML) {
-            if ([ERXML isSuccess]) {
-                NSString *recipientId = [ERXML valueForShortPath:@"RecipientId"];
+        [[XMLAPIManager sharedInstance] postXMLAPI:updateRecipientXml success:^(ResultDictionary *updateRecipientResult) {
+            if ([updateRecipientResult isSuccess]) {
+                NSString *recipientId = [updateRecipientResult valueForShortPath:@"RecipientId"];
                 didSucceed([[SetupRecipientResult alloc] initWithRecipientId:recipientId]);
             } else {
-                // TODO : pull fault string out to use as message
-                NSString *message = @"";
+                NSString *message = [updateRecipientResult faultString];
                 NSLog(@"%@", message);
-                didFail([[SetupRecipientFailure alloc] initWithMessage:message response:ERXML]);
+                didFail([[SetupRecipientFailure alloc] initWithMessage:message response:updateRecipientResult]);
             }
         } failure:^(NSError *error) {
             NSString *message = [@"Unexpected error making update recipient API call to silverpop: " stringByAppendingString:error.description];
@@ -141,9 +139,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         }];
     
     }
-    
-    //TODO: handle all unexpected exceptions
-    
+
 }
 
 - (NSString *) generateMobileUserId {
@@ -238,7 +234,9 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
             }
         }
     } failure:^(NSError *error) {
-        //TODO: finish me
+        if (didFail) {
+            didFail([[CheckIdentityFailure alloc] initWithMessage:nil error:error]);
+        }
     }];
 }
 
@@ -347,10 +345,13 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
                 NSString *newRecipientId = [existingRecipientResult recipientId];
                 [EngageConfig storeRecipientId:newRecipientId];
                 
-                //TODO: update audit table if needed
-                
-                if (didSucceed) {
-                    didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:[EngageConfig mobileUserId]]);
+                // both recipients have been updated, update audit table if needed
+                if ([[EngageConfigManager sharedInstance] mergeHistoryInAuditRecordTableDatabase]) {
+                    [self updateAuditRecordWithMergeChangesForOldRecipientId:oldRecipientId newRecipientId:newRecipientId success:didSucceed failure:didFail];
+                } else {
+                    if (didSucceed) {
+                        didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:[EngageConfig mobileUserId]]);
+                    }
                 }
                 
                 
@@ -393,12 +394,15 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         [EngageConfig storeRecipientId:newRecipientId];
         [EngageConfig storeMobileUserId:existingMobileUserId];
         
-        //TODO: update audit table if needed
-        
-        if (didSucceed) {
-            didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:existingMobileUserId]);
+        // current recipient has been updated and we are now using the existing recipient instead, update audit table if needed
+        if ([[EngageConfigManager sharedInstance] mergeHistoryInAuditRecordTableDatabase]) {
+            [self updateAuditRecordWithMergeChangesForOldRecipientId:oldRecipientId newRecipientId:newRecipientId success:didSucceed failure:didFail];
+            
+        } else {
+            if (didSucceed) {
+                didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:existingMobileUserId]);
+            }
         }
-        
         
     } failure:^(NSError *error) {
         NSLog(@"%@", error);
@@ -406,7 +410,79 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
             didFail([[CheckIdentityFailure alloc] initWithMessage:nil error:error]);
         }
     }];
+}
+
+/**
+ *  Used with Scenario 2 & 3
+ *
+ *  Should only be called if the 'mergeHistoryInAuditRecordTable' config property is YES
+ */
+- (void) updateAuditRecordWithMergeChangesForOldRecipientId:(NSString *)oldRecipientId
+                                             newRecipientId:(NSString *)newRecipientId
+                                                    success:(void (^)(CheckIdentityResult* result))didSucceed
+                                                    failure:(void (^)(CheckIdentityFailure* failure))didFail {
     
+    NSString * auditRecordTableId = [EngageConfig auditRecordTableId];
+    if ([auditRecordTableId length] == 0) {
+        NSLog(@"Cannot update audit record without audit table id");
+        if (didFail) {
+            didFail([[CheckIdentityFailure alloc] initWithMessage:@"Cannot update audit record without audit table id" error:nil]);
+        } else {
+            
+            XMLAPI *insertMergeRecordXml = [XMLAPI resourceNamed:XMLAPI_OPERATION_INSERT_UPDATE_RELATIONAL_TABLE];
+            [insertMergeRecordXml addParam:@"TABLE_ID" :auditRecordTableId];
+            
+            NSArray *rows = [[NSArray alloc] initWithObjects: @{
+                                                                 [[EngageConfigManager sharedInstance] auditRecordPrimaryKeyColumnName] : [self generateAuditRecordPrimaryKey],
+                                                                 [[EngageConfigManager sharedInstance] auditRecordOldRecipientIdColumnName] : oldRecipientId,
+                                                                 [[EngageConfigManager sharedInstance] auditRecordNewRecipientIdColumnName] : newRecipientId,
+                                                                 [[EngageConfigManager sharedInstance] auditRecordCreateDateColumnName] : [EngageDateFormatter nowGmtString]
+                                                                 }, nil];
+            [insertMergeRecordXml addParams:@{ @"ROWS" : rows }];
+            [[XMLAPIManager sharedInstance] postXMLAPI:insertMergeRecordXml success:^(ResultDictionary *insertRowResult) {
+                
+                if ([insertRowResult isSuccess]) {
+                    if (didSucceed) {
+                        didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:[EngageConfig mobileUserId]]);
+                    }
+                } else {
+                    if (didFail) {
+                        didFail([[CheckIdentityFailure alloc] initWithMessage:[insertRowResult faultString] error:nil]);
+                    }
+                }
+                
+            } failure:^(NSError *error) {
+                NSLog(@"%@", error);
+                if (didFail) {
+                    didFail([[CheckIdentityFailure alloc] initWithMessage:nil error:error]);
+                }
+            }];
+        }
+    }
+    
+}
+
+/**
+ * Generates a unique id using the class configured as the {@code auditRecordPrimaryKeyGeneratorClassName}
+ * in the EngageConfig or the {@link EngageDefaultUUIDGenerator} if a
+ * valid class isn't configured.
+ *
+ * @return a new unique id
+ */
+- (NSString *) generateAuditRecordPrimaryKey {
+    NSString *uuidClassName = [[EngageConfigManager sharedInstance] auditRecordPrimaryKeyGeneratorClassName];
+    NSString *primaryKey = nil;
+    @try {
+        primaryKey= [[[NSClassFromString(uuidClassName) alloc] init] generateUUID];
+    }
+    @catch (NSException *exception) {
+        // ignore
+    }
+    
+    if ([primaryKey length] == 0) {
+        primaryKey = [[EngageDefaultUUIDGenerator new] generateUUID];
+    }
+    return primaryKey;
 }
 
 

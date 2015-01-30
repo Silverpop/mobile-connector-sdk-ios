@@ -42,8 +42,8 @@
 		19EFC3851948B95C009BC128 /* EngageSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 19EFC3841948B95C009BC128 /* EngageSDK.m */; };
 		19EFC38D1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
 		19EFC38E1948BE3F009BC128 /* EngageConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19EFC38C1948BE3F009BC128 /* EngageConfigDefaults.plist */; };
-		94DD00F01A6CECB30015B8D6 /* MobileIdentityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94DD00EF1A6CECB30015B8D6 /* MobileIdentityManager.m */; };
-		94DD00F31A6D02ED0015B8D6 /* MobileIdentityManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 94DD00F21A6D02ED0015B8D6 /* MobileIdentityManagerTests.m */; };
+		94DD00F01A6CECB30015B8D6 /* EngageConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94DD00EF1A6CECB30015B8D6 /* EngageConnectionManager.m */; };
+		94DD00F31A6D02ED0015B8D6 /* EngageConnectionManager_IT.m in Sources */ = {isa = PBXBuildFile; fileRef = 94DD00F21A6D02ED0015B8D6 /* EngageConnectionManager_IT.m */; };
 		B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */ = {isa = PBXBuildFile; fileRef = B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */; };
 		B2B18273178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
 		B2B18285178B59400097EE6A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B18272178B59400097EE6A /* Foundation.framework */; };
@@ -56,6 +56,22 @@
 		B2C2A90A17A9919C0058311A /* XMLAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90217A9919C0058311A /* XMLAPI.m */; };
 		B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2A90417A9919C0058311A /* XMLAPIClient.m */; };
 		D62BCA960FEFE346B35AAAD6 /* libPods-EngageSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */; };
+		FD4C2A441A6EF52200C3921F /* MobileIdentityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FD4C2A431A6EF52200C3921F /* MobileIdentityManager.m */; };
+		FD7426B21A715A97008069FD /* SetupRecipientFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7426B11A715A97008069FD /* SetupRecipientFailure.m */; };
+		FD7426B41A71B1F6008069FD /* ResultDictionaryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7426B31A71B1F6008069FD /* ResultDictionaryTest.m */; };
+		FD7426B61A71C0E8008069FD /* XMLAPIManager_IT.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7426B51A71C0E8008069FD /* XMLAPIManager_IT.m */; };
+		FD7426BA1A71C7ED008069FD /* EngageBaseTest_IT.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7426B91A71C7ED008069FD /* EngageBaseTest_IT.m */; };
+		FD85682F1A7011B900B9E6A0 /* SetupRecipientResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FD85682E1A7011B900B9E6A0 /* SetupRecipientResult.m */; };
+		FD8568311A70901E00B9E6A0 /* EngageDefaultUUIDGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FD8568301A70901E00B9E6A0 /* EngageDefaultUUIDGenerator.m */; };
+		FDD2123D1A7712FB00EC4D6A /* CheckIdentityResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD2123C1A7712FB00EC4D6A /* CheckIdentityResult.m */; };
+		FDD212401A77136200EC4D6A /* CheckIdentityFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD2123F1A77136200EC4D6A /* CheckIdentityFailure.m */; };
+		FDD212431A7729EC00EC4D6A /* XMLAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD212421A7729EC00EC4D6A /* XMLAPIOperation.m */; };
+		FDD212461A77C90300EC4D6A /* XMLAPIErrorCode.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD212451A77C90300EC4D6A /* XMLAPIErrorCode.m */; };
+		FDD212491A786FCD00EC4D6A /* EngageDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD212481A786FCD00EC4D6A /* EngageDateFormatter.m */; };
+		FDD2124B1A78733700EC4D6A /* EngageDateFormatterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD2124A1A78733700EC4D6A /* EngageDateFormatterTest.m */; };
+		FDD2124E1A79426700EC4D6A /* EngageRecipient.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD2124D1A79426700EC4D6A /* EngageRecipient.m */; };
+		FDDF3DF31A72B32E00D3475D /* UBFManager_IT.m in Sources */ = {isa = PBXBuildFile; fileRef = FDDF3DF21A72B32E00D3475D /* UBFManager_IT.m */; };
+		FDDF3DF51A76778300D3475D /* MobileIdentityManager_IT.m in Sources */ = {isa = PBXBuildFile; fileRef = FDDF3DF41A76778300D3475D /* MobileIdentityManager_IT.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,9 +150,9 @@
 		3D76863C004B4A1AAEE87550 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		647474869DF751BA60630087 /* Pods-EngageSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EngageSDK/Pods-EngageSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		7A954E35772633A7DF373120 /* Pods-EngageSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EngageSDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-EngageSDK/Pods-EngageSDK.release.xcconfig"; sourceTree = "<group>"; };
-		94DD00EE1A6CECB30015B8D6 /* MobileIdentityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileIdentityManager.h; sourceTree = "<group>"; };
-		94DD00EF1A6CECB30015B8D6 /* MobileIdentityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileIdentityManager.m; sourceTree = "<group>"; };
-		94DD00F21A6D02ED0015B8D6 /* MobileIdentityManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileIdentityManagerTests.m; sourceTree = "<group>"; };
+		94DD00EE1A6CECB30015B8D6 /* EngageConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageConnectionManager.h; sourceTree = "<group>"; };
+		94DD00EF1A6CECB30015B8D6 /* EngageConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConnectionManager.m; sourceTree = "<group>"; };
+		94DD00F21A6D02ED0015B8D6 /* EngageConnectionManager_IT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageConnectionManager_IT.m; sourceTree = "<group>"; };
 		A5FD0612C1554177BB0F9A4A /* libPods-EngageSDKTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EngageSDKTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B26FCA3D17A9868300629BC9 /* EngageResponseXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngageResponseXML.h; sourceTree = "<group>"; };
 		B26FCA3E17A9868300629BC9 /* EngageResponseXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageResponseXML.m; sourceTree = "<group>"; };
@@ -162,6 +178,34 @@
 		B2C2A90317A9919C0058311A /* XMLAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAPIClient.h; sourceTree = "<group>"; };
 		B2C2A90417A9919C0058311A /* XMLAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIClient.m; sourceTree = "<group>"; };
 		B97E49D16C704E8A94EC1FC7 /* libPods-EngageSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EngageSDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD4C2A431A6EF52200C3921F /* MobileIdentityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileIdentityManager.m; sourceTree = "<group>"; };
+		FD4C2A451A6EF53800C3921F /* MobileIdentityManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobileIdentityManager.h; sourceTree = "<group>"; };
+		FD7426B01A715A8B008069FD /* SetupRecipientFailure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetupRecipientFailure.h; sourceTree = "<group>"; };
+		FD7426B11A715A97008069FD /* SetupRecipientFailure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetupRecipientFailure.m; sourceTree = "<group>"; };
+		FD7426B31A71B1F6008069FD /* ResultDictionaryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultDictionaryTest.m; sourceTree = "<group>"; };
+		FD7426B51A71C0E8008069FD /* XMLAPIManager_IT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIManager_IT.m; sourceTree = "<group>"; };
+		FD7426B81A71C7DB008069FD /* EngageBaseTest_IT.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EngageBaseTest_IT.h; sourceTree = "<group>"; };
+		FD7426B91A71C7ED008069FD /* EngageBaseTest_IT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageBaseTest_IT.m; sourceTree = "<group>"; };
+		FD85682B1A70115A00B9E6A0 /* SetupRecipientResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetupRecipientResult.h; sourceTree = "<group>"; };
+		FD85682E1A7011B900B9E6A0 /* SetupRecipientResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetupRecipientResult.m; sourceTree = "<group>"; };
+		FD8568301A70901E00B9E6A0 /* EngageDefaultUUIDGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDefaultUUIDGenerator.m; sourceTree = "<group>"; };
+		FD8568321A70902C00B9E6A0 /* EngageDefaultUUIDGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EngageDefaultUUIDGenerator.h; sourceTree = "<group>"; };
+		FD8568331A70916700B9E6A0 /* EngageUUIDGenerating.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EngageUUIDGenerating.h; sourceTree = "<group>"; };
+		FDD2123B1A7712C700EC4D6A /* CheckIdentityResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CheckIdentityResult.h; sourceTree = "<group>"; };
+		FDD2123C1A7712FB00EC4D6A /* CheckIdentityResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckIdentityResult.m; sourceTree = "<group>"; };
+		FDD2123E1A77133A00EC4D6A /* CheckIdentityFailure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CheckIdentityFailure.h; sourceTree = "<group>"; };
+		FDD2123F1A77136200EC4D6A /* CheckIdentityFailure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckIdentityFailure.m; sourceTree = "<group>"; };
+		FDD212411A7728A600EC4D6A /* XMLAPIOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XMLAPIOperation.h; sourceTree = "<group>"; };
+		FDD212421A7729EC00EC4D6A /* XMLAPIOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIOperation.m; sourceTree = "<group>"; };
+		FDD212441A77C8EE00EC4D6A /* XMLAPIErrorCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XMLAPIErrorCode.h; sourceTree = "<group>"; };
+		FDD212451A77C90300EC4D6A /* XMLAPIErrorCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAPIErrorCode.m; sourceTree = "<group>"; };
+		FDD212471A786FC000EC4D6A /* EngageDateFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EngageDateFormatter.h; sourceTree = "<group>"; };
+		FDD212481A786FCD00EC4D6A /* EngageDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDateFormatter.m; sourceTree = "<group>"; };
+		FDD2124A1A78733700EC4D6A /* EngageDateFormatterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageDateFormatterTest.m; sourceTree = "<group>"; };
+		FDD2124C1A7941C900EC4D6A /* EngageRecipient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EngageRecipient.h; sourceTree = "<group>"; };
+		FDD2124D1A79426700EC4D6A /* EngageRecipient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EngageRecipient.m; sourceTree = "<group>"; };
+		FDDF3DF21A72B32E00D3475D /* UBFManager_IT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBFManager_IT.m; sourceTree = "<group>"; };
+		FDDF3DF41A76778300D3475D /* MobileIdentityManager_IT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileIdentityManager_IT.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				1929A34A193675E300D3F044 /* EngageExpirationParserTests.m */,
+				FDD2124A1A78733700EC4D6A /* EngageDateFormatterTest.m */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -297,6 +342,11 @@
 			children = (
 				1929A3471936714100D3F044 /* EngageExpirationParser.h */,
 				1929A3481936714100D3F044 /* EngageExpirationParser.m */,
+				FD8568301A70901E00B9E6A0 /* EngageDefaultUUIDGenerator.m */,
+				FD8568321A70902C00B9E6A0 /* EngageDefaultUUIDGenerator.h */,
+				FD8568331A70916700B9E6A0 /* EngageUUIDGenerating.h */,
+				FDD212471A786FC000EC4D6A /* EngageDateFormatter.h */,
+				FDD212481A786FCD00EC4D6A /* EngageDateFormatter.m */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -314,6 +364,10 @@
 				B2C2A8FC17A9919C0058311A /* ResultDictionary.m */,
 				196246901938D2990038B453 /* EngageEventWrapper.h */,
 				196246911938D2990038B453 /* EngageEventWrapper.m */,
+				FDD212411A7728A600EC4D6A /* XMLAPIOperation.h */,
+				FDD212421A7729EC00EC4D6A /* XMLAPIOperation.m */,
+				FDD212441A77C8EE00EC4D6A /* XMLAPIErrorCode.h */,
+				FDD212451A77C90300EC4D6A /* XMLAPIErrorCode.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -355,6 +409,7 @@
 		19E19699195B28CB00175A32 /* config */ = {
 			isa = PBXGroup;
 			children = (
+				FD7426B31A71B1F6008069FD /* ResultDictionaryTest.m */,
 				197BBFF51946A128001F925C /* EngageConfigManagerTests.m */,
 			);
 			name = config;
@@ -466,7 +521,14 @@
 				B2B1828A178B59400097EE6A /* Supporting Files */,
 				191970741924FB1500C75CD8 /* TestUtils.h */,
 				191970751924FB1500C75CD8 /* TestUtils.m */,
-				94DD00F21A6D02ED0015B8D6 /* MobileIdentityManagerTests.m */,
+				94DD00F21A6D02ED0015B8D6 /* EngageConnectionManager_IT.m */,
+				FD7426B81A71C7DB008069FD /* EngageBaseTest_IT.h */,
+				FD7426B91A71C7ED008069FD /* EngageBaseTest_IT.m */,
+				FD7426B51A71C0E8008069FD /* XMLAPIManager_IT.m */,
+				FDDF3DF21A72B32E00D3475D /* UBFManager_IT.m */,
+				FDDF3DF41A76778300D3475D /* MobileIdentityManager_IT.m */,
+				FDD2124C1A7941C900EC4D6A /* EngageRecipient.h */,
+				FDD2124D1A79426700EC4D6A /* EngageRecipient.m */,
 			);
 			path = EngageSDKTests;
 			sourceTree = "<group>";
@@ -483,6 +545,7 @@
 		B2C2A8F517A9919C0058311A /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				FD85682A1A70113600B9E6A0 /* recipient */,
 				197BBFFA19472A15001F925C /* augmentation */,
 				190753FF193BA18700C6AE2E /* db */,
 				190753FE193BA16300C6AE2E /* network */,
@@ -497,10 +560,27 @@
 				197BBFF81946A68B001F925C /* XMLAPIManager.m */,
 				19EFC3831948B95C009BC128 /* EngageSDK.h */,
 				19EFC3841948B95C009BC128 /* EngageSDK.m */,
-				94DD00EE1A6CECB30015B8D6 /* MobileIdentityManager.h */,
-				94DD00EF1A6CECB30015B8D6 /* MobileIdentityManager.m */,
+				94DD00EE1A6CECB30015B8D6 /* EngageConnectionManager.h */,
+				94DD00EF1A6CECB30015B8D6 /* EngageConnectionManager.m */,
+				FD4C2A431A6EF52200C3921F /* MobileIdentityManager.m */,
+				FD4C2A451A6EF53800C3921F /* MobileIdentityManager.h */,
 			);
 			path = Public;
+			sourceTree = "<group>";
+		};
+		FD85682A1A70113600B9E6A0 /* recipient */ = {
+			isa = PBXGroup;
+			children = (
+				FD85682B1A70115A00B9E6A0 /* SetupRecipientResult.h */,
+				FD85682E1A7011B900B9E6A0 /* SetupRecipientResult.m */,
+				FD7426B01A715A8B008069FD /* SetupRecipientFailure.h */,
+				FD7426B11A715A97008069FD /* SetupRecipientFailure.m */,
+				FDD2123B1A7712C700EC4D6A /* CheckIdentityResult.h */,
+				FDD2123C1A7712FB00EC4D6A /* CheckIdentityResult.m */,
+				FDD2123E1A77133A00EC4D6A /* CheckIdentityFailure.h */,
+				FDD2123F1A77136200EC4D6A /* CheckIdentityFailure.m */,
+			);
+			name = recipient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -661,17 +741,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDD212491A786FCD00EC4D6A /* EngageDateFormatter.m in Sources */,
 				197BC00A19472AFB001F925C /* UBFCoordinatesAugmentationPlugin.m in Sources */,
 				19EFC3851948B95C009BC128 /* EngageSDK.m in Sources */,
 				197BC00E19472B68001F925C /* UBFPlacemarkAugmentationPlugin.m in Sources */,
+				FDD2123D1A7712FB00EC4D6A /* CheckIdentityResult.m in Sources */,
+				FD4C2A441A6EF52200C3921F /* MobileIdentityManager.m in Sources */,
 				B26FCA4017A9868300629BC9 /* EngageResponseXML.m in Sources */,
 				1929A3491936714100D3F044 /* EngageExpirationParser.m in Sources */,
 				B2C2A90517A9919C0058311A /* EngageClient.m in Sources */,
 				19E19692195B04C800175A32 /* UBFLocationNameAugmentationPlugin.m in Sources */,
 				19CE433C1949717700FAC024 /* EngageEvent.m in Sources */,
 				1919708519251EA700C75CD8 /* EngageDeepLinkManager.m in Sources */,
+				FDD212401A77136200EC4D6A /* CheckIdentityFailure.m in Sources */,
+				FD7426B21A715A97008069FD /* SetupRecipientFailure.m in Sources */,
 				B2C2A90617A9919C0058311A /* EngageConfig.m in Sources */,
 				1919707E1925064A00C75CD8 /* EngageEventLocationManager.m in Sources */,
+				FDD212431A7729EC00EC4D6A /* XMLAPIOperation.m in Sources */,
 				197BC00319472A8C001F925C /* UBFAugmentationManager.m in Sources */,
 				B2C2A90717A9919C0058311A /* ResultDictionary.m in Sources */,
 				B2C2A90817A9919C0058311A /* UBF.m in Sources */,
@@ -682,9 +768,12 @@
 				1929A3441936197D00D3F044 /* EngageConfigManager.m in Sources */,
 				19153DD7190817F10086631B /* EngageLocalEventStore.m in Sources */,
 				197BBFF91946A68B001F925C /* XMLAPIManager.m in Sources */,
+				FD85682F1A7011B900B9E6A0 /* SetupRecipientResult.m in Sources */,
+				FD8568311A70901E00B9E6A0 /* EngageDefaultUUIDGenerator.m in Sources */,
+				FDD212461A77C90300EC4D6A /* XMLAPIErrorCode.m in Sources */,
 				B2C2A90B17A9919C0058311A /* XMLAPIClient.m in Sources */,
 				191970791925030900C75CD8 /* UBFManager.m in Sources */,
-				94DD00F01A6CECB30015B8D6 /* MobileIdentityManager.m in Sources */,
+				94DD00F01A6CECB30015B8D6 /* EngageConnectionManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -692,6 +781,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDDF3DF51A76778300D3475D /* MobileIdentityManager_IT.m in Sources */,
 				197BBFF61946A128001F925C /* EngageConfigManagerTests.m in Sources */,
 				19BFF1EA1923DE77004686B7 /* NotificationTests.m in Sources */,
 				194C94B51921612C004B8851 /* UBFClientTests.m in Sources */,
@@ -699,11 +789,17 @@
 				1929A34B193675E300D3F044 /* EngageExpirationParserTests.m in Sources */,
 				198A2D4019466D3400FF7AD8 /* XMLAPITest.m in Sources */,
 				19BFF1EC1923ED66004686B7 /* EngageLocalEventStoreTests.m in Sources */,
-				94DD00F31A6D02ED0015B8D6 /* MobileIdentityManagerTests.m in Sources */,
+				94DD00F31A6D02ED0015B8D6 /* EngageConnectionManager_IT.m in Sources */,
 				19CAAD441935173800610253 /* EngageEventLocationManagerTests.m in Sources */,
+				FD7426BA1A71C7ED008069FD /* EngageBaseTest_IT.m in Sources */,
+				FDD2124B1A78733700EC4D6A /* EngageDateFormatterTest.m in Sources */,
 				199843991925488C000B6B6B /* EngageDeepLinkManagerTests.m in Sources */,
 				19E19698195B0BC300175A32 /* UBFAugmentationPluginTests.m in Sources */,
+				FDD2124E1A79426700EC4D6A /* EngageRecipient.m in Sources */,
 				191970761924FB1500C75CD8 /* TestUtils.m in Sources */,
+				FD7426B41A71B1F6008069FD /* ResultDictionaryTest.m in Sources */,
+				FDDF3DF31A72B32E00D3475D /* UBFManager_IT.m in Sources */,
+				FD7426B61A71C0E8008069FD /* XMLAPIManager_IT.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

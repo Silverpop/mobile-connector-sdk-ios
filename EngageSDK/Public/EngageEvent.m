@@ -38,6 +38,7 @@ NSString *const UBF_CORE_VALUE_APP_VERSION = @"App Version";
 NSString *const UBF_CORE_VALUE_DEVICE_ID = @"Device Id";
 NSString *const UBF_CORE_VALUE_PRIMARY_USER_ID = @"Primary User Id";
 NSString *const UBF_CORE_VALUE_ANONYMOUS_ID = @"Anonymous Id";
+NSString *const UBF_CORE_VALUE_RECIPIENT_ID = @"Recipient Id";
 
 
 @dynamic eventType;

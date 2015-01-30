@@ -39,6 +39,7 @@ extern NSString * const UBF_CORE_VALUE_APP_VERSION;
 extern NSString * const UBF_CORE_VALUE_DEVICE_ID;
 extern NSString * const UBF_CORE_VALUE_PRIMARY_USER_ID;
 extern NSString * const UBF_CORE_VALUE_ANONYMOUS_ID;
+extern NSString * const UBF_CORE_VALUE_RECIPIENT_ID;
 
 @property (nonatomic, retain) NSNumber * eventType;
 @property (nonatomic, retain) NSNumber * eventStatus;

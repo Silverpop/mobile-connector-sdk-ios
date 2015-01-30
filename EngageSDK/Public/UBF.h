@@ -31,6 +31,7 @@
 
 - (UBF *)initFromJSON:(NSString *)jsonString;
 - (void)setAttribute:(NSString *)attributeName value:(NSString *)attributeValue;
+- (void)setHeaderAttribute:(NSString *)attributeName value:(NSString *)attributeValue;
 - (NSDictionary *)dictionaryValue;
 - (NSString *)jsonValue;
 

@@ -101,6 +101,9 @@
         [rfc3339DateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
         
         _eventTimeStamp = [rfc3339DateFormatter stringFromDate:date];
+        _headerAttributes = [[NSMutableDictionary alloc] init];
+        [_headerAttributes setValue:_eventTimeStamp forKey:@"eventTimeStamp"];
+        [_headerAttributes setValue:_eventTypeCode forKey:@"eventTypeCode"];
         
         [_attributes addEntriesFromDictionary:template];
         if (params) {
@@ -129,15 +132,7 @@
         [jsonKeyValueAttributes addObject:attribute];
     }
     
-    NSString* contactId = ([EngageConfig mobileUserId] != nil && ![[EngageConfig mobileUserId] isEqualToString:@""]) ? [EngageConfig mobileUserId] : [EngageConfig anonymousId];
-    NSLog(@"contactId=%@ primaryUserId=%@ anonymousId=%@", contactId, [EngageConfig mobileUserId], [EngageConfig anonymousId]);
-    
-    for (id key in _headerAttributes) {
-        id attribute = @{@"name" : key,
-                         @"value" : [_attributes objectForKey:key]};
-        [jsonKeyValueAttributes addObject:attribute];
-    }
-    NSMutableDictionary *payload = [_headerAttributes copy];
+    NSMutableDictionary *payload = [[NSMutableDictionary alloc]initWithDictionary:_headerAttributes];
     [payload setValue:jsonKeyValueAttributes forKeyPath:@"attributes"];
     return payload;
 }
@@ -162,6 +157,11 @@
 - (void)setAttribute:(NSString *)attributeName value:(NSString *)attributeValue {
     if (_attributes && attributeValue && attributeName) {
         [_attributes setObject:attributeValue forKey:attributeName];
+    }
+}
+- (void)setHeaderAttribute:(NSString *)attributeName value:(NSString *)attributeValue {
+    if (_headerAttributes && attributeValue && attributeName) {
+        [_headerAttributes setObject:attributeValue forKey:attributeName];
     }
 }
 

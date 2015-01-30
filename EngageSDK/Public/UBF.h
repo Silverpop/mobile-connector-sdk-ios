@@ -14,6 +14,7 @@
 @property (readonly, nonatomic, strong) NSString *eventTypeCode;
 @property (readonly, nonatomic, strong) NSString *eventTimeStamp;
 @property (readonly, nonatomic, strong) NSMutableDictionary *attributes;
+@property (readonly, nonatomic, strong) NSMutableDictionary *headerAttributes;
 
 + (UBF *)createEventWithCode:(NSString *)code params:(NSDictionary *)params;
 + (UBF *)installed:(NSDictionary *)params;

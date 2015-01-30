@@ -15,6 +15,7 @@
 @implementation UBF
 
 @synthesize attributes = _attributes;
+@synthesize headerAttributes = _headerAttributes;
 @synthesize eventTimeStamp = _eventTimeStamp;
 @synthesize eventTypeCode = _eventTypeCode;
 
@@ -35,6 +36,10 @@
         _eventTimeStamp = [originalEventData objectForKey:@"eventTimestamp"];
         _eventTypeCode = [originalEventData objectForKey:@"eventTypeCode"];
         _attributes = [[NSMutableDictionary alloc] init];
+        _headerAttributes = [[NSMutableDictionary alloc] init];
+        [_headerAttributes setValue:_eventTimeStamp forKey:@"eventTimeStamp"];
+        [_headerAttributes setValue:_eventTypeCode forKey:@"eventTypeCode"];
+
         NSArray *keyValues = [originalEventData objectForKey:@"attributes"];
         if (keyValues) {
             for (NSDictionary *obj in keyValues) {
@@ -125,18 +130,15 @@
     
     NSString* contactId = ([EngageConfig mobileUserId] != nil && ![[EngageConfig mobileUserId] isEqualToString:@""]) ? [EngageConfig mobileUserId] : [EngageConfig anonymousId];
     NSLog(@"contactId=%@ primaryUserId=%@ anonymousId=%@", contactId, [EngageConfig mobileUserId], [EngageConfig anonymousId]);
-    if (contactId && ![contactId isEqualToString:@""]) {
-        NSLog(@"creating payload with contactId=%@", contactId);
-        return @{ @"eventTypeCode" : _eventTypeCode,
-                  @"eventTimestamp" : _eventTimeStamp,
-                  @"contactId": contactId,
-                  @"attributes" : jsonKeyValueAttributes};
-    } else {
-        NSLog(@"excluding contactId=%@", contactId);
-        return @{ @"eventTypeCode" : _eventTypeCode,
-                  @"eventTimestamp" : _eventTimeStamp,
-                  @"attributes" : jsonKeyValueAttributes};
+    
+    for (id key in _headerAttributes) {
+        id attribute = @{@"name" : key,
+                         @"value" : [_attributes objectForKey:key]};
+        [jsonKeyValueAttributes addObject:attribute];
     }
+    NSMutableDictionary *payload = [_headerAttributes copy];
+    [payload setValue:jsonKeyValueAttributes forKeyPath:@"attributes"];
+    return payload;
 }
 
 - (NSString *) jsonValue {

@@ -427,37 +427,37 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
         NSLog(@"Cannot update audit record without audit table id");
         if (didFail) {
             didFail([[CheckIdentityFailure alloc] initWithMessage:@"Cannot update audit record without audit table id" error:nil]);
-        } else {
-            
-            XMLAPI *insertMergeRecordXml = [XMLAPI resourceNamed:XMLAPI_OPERATION_INSERT_UPDATE_RELATIONAL_TABLE];
-            [insertMergeRecordXml addParam:@"TABLE_ID" :auditRecordTableId];
-            
-            NSArray *rows = [[NSArray alloc] initWithObjects: @{
-                                                                 [[EngageConfigManager sharedInstance] auditRecordPrimaryKeyColumnName] : [self generateAuditRecordPrimaryKey],
-                                                                 [[EngageConfigManager sharedInstance] auditRecordOldRecipientIdColumnName] : oldRecipientId,
-                                                                 [[EngageConfigManager sharedInstance] auditRecordNewRecipientIdColumnName] : newRecipientId,
-                                                                 [[EngageConfigManager sharedInstance] auditRecordCreateDateColumnName] : [EngageDateFormatter nowGmtString]
-                                                                 }, nil];
-            [insertMergeRecordXml addParams:@{ @"ROWS" : rows }];
-            [[XMLAPIManager sharedInstance] postXMLAPI:insertMergeRecordXml success:^(ResultDictionary *insertRowResult) {
-                
-                if ([insertRowResult isSuccess]) {
-                    if (didSucceed) {
-                        didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:[EngageConfig mobileUserId]]);
-                    }
-                } else {
-                    if (didFail) {
-                        didFail([[CheckIdentityFailure alloc] initWithMessage:[insertRowResult faultString] error:nil]);
-                    }
-                }
-                
-            } failure:^(NSError *error) {
-                NSLog(@"%@", error);
-                if (didFail) {
-                    didFail([[CheckIdentityFailure alloc] initWithMessage:nil error:error]);
-                }
-            }];
         }
+    } else {
+        
+        XMLAPI *insertMergeRecordXml = [XMLAPI resourceNamed:XMLAPI_OPERATION_INSERT_UPDATE_RELATIONAL_TABLE];
+        [insertMergeRecordXml addParam:@"TABLE_ID" :auditRecordTableId];
+        
+        NSArray *rows = [[NSArray alloc] initWithObjects: @{
+                                                            [[EngageConfigManager sharedInstance] auditRecordPrimaryKeyColumnName] : [self generateAuditRecordPrimaryKey],
+                                                            [[EngageConfigManager sharedInstance] auditRecordOldRecipientIdColumnName] : oldRecipientId,
+                                                            [[EngageConfigManager sharedInstance] auditRecordNewRecipientIdColumnName] : newRecipientId,
+                                                            [[EngageConfigManager sharedInstance] auditRecordCreateDateColumnName] : [EngageDateFormatter nowGmtString]
+                                                            }, nil];
+        [insertMergeRecordXml addParams:@{ @"ROWS" : rows }];
+        [[XMLAPIManager sharedInstance] postXMLAPI:insertMergeRecordXml success:^(ResultDictionary *insertRowResult) {
+            
+            if ([insertRowResult isSuccess]) {
+                if (didSucceed) {
+                    didSucceed([[CheckIdentityResult alloc] initWithRecipientId:newRecipientId mergedRecipientId:oldRecipientId mobileUserId:[EngageConfig mobileUserId]]);
+                }
+            } else {
+                if (didFail) {
+                    didFail([[CheckIdentityFailure alloc] initWithMessage:[insertRowResult faultString] error:nil]);
+                }
+            }
+            
+        } failure:^(NSError *error) {
+            NSLog(@"%@", error);
+            if (didFail) {
+                didFail([[CheckIdentityFailure alloc] initWithMessage:nil error:error]);
+            }
+        }];
     }
     
 }

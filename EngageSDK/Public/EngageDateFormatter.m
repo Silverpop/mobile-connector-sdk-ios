@@ -17,7 +17,7 @@
  */
 + (NSString *)nowGmtString {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss zzz";
+    dateFormatter.dateFormat = @"MM/dd/yyyy HH:mm:ss zzz";
     
     NSTimeZone *gmt = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
     [dateFormatter setTimeZone:gmt];

@@ -425,6 +425,8 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Check Identity Success"];
     
+//    [EngageConfig storeAuditRecordTableId:@"29392"];
+    
     [self setupScenario3WithMultipleIds:false setupResult:^(EngageRecipient *currentRecipient, EngageRecipient *existingRecipient) {
         
         // look for an existing recipient with customId
@@ -466,7 +468,7 @@ static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
         
     }];
     
-    [self waitForExpectationsWithTimeout:4.0 handler:^(NSError *error) {
+    [self waitForExpectationsWithTimeout:20.0 handler:^(NSError *error) {
         if (error) {
             NSLog(@"Timeout Error: %@", error);
         }

@@ -106,7 +106,7 @@ __strong static UBFManager *_sharedInstance = nil;
         }
         
         // start session
-        [_sharedInstance restartSessionWaitForPrimaryUserIdForEvent];
+        [_sharedInstance restartSessionWaitForMobileUserIdForEvent];
 
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
                                                           object:nil
@@ -143,13 +143,13 @@ __strong static UBFManager *_sharedInstance = nil;
 }
 
 /**
- * Add observer to wait until the primary user id is known, then create the
+ * Add observer to wait until the mobile user id is known, then create the
  * installed event so it will include the user id info.
  */
 + (void)waitForUserIdThenCreateInstalledEvent {
-    NSString *primaryUserId = [EngageConfig mobileUserId];
+    NSString *mobileUserId = [EngageConfig mobileUserId];
     // is the primary id already set?
-    if (primaryUserId && [primaryUserId length] > 0) {
+    if (mobileUserId && [mobileUserId length] > 0) {
         [_sharedInstance trackEvent:[UBF installed:nil]];
     }
     // otherwise, wait for it to be set
@@ -225,10 +225,10 @@ __strong static UBFManager *_sharedInstance = nil;
 }
 
 /**
- * Restarts the session.  Waits until the primary user id is known before
+ * Restarts the session.  Waits until the mobile user id is known before
  * sending the session started event so it will include the user id.
  */
-- (void)restartSessionWaitForPrimaryUserIdForEvent {
+- (void)restartSessionWaitForMobileUserIdForEvent {
     if (self.sessionEnded) [self trackEvent:self.sessionEnded];
     [self waitForUserIdThenCreateSessionStartedEvent];
     self.sessionBegan = [NSDate date];
@@ -236,13 +236,13 @@ __strong static UBFManager *_sharedInstance = nil;
 }
 
 /**
- * Add observer to wait until the primary user id is known, then create the
+ * Add observer to wait until the mobile user id is known, then create the
  * installed event so it will include the user info.
  */
 - (void)waitForUserIdThenCreateSessionStartedEvent {
-    NSString *primaryUserId = [EngageConfig mobileUserId];
+    NSString *mobileUserId = [EngageConfig mobileUserId];
     // is the primary id already set?
-    if (primaryUserId && [primaryUserId length] > 0) {
+    if (mobileUserId && [mobileUserId length] > 0) {
         [self trackEvent:[UBF sessionStarted:nil withCampaign:[EngageConfig currentCampaign]]];
     }
     // wait for it to be set

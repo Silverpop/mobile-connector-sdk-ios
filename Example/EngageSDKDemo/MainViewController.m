@@ -58,8 +58,8 @@
         [self engageConnect];
     }
     else {
-        if ([EngageConfig primaryUserId] && ![[EngageConfig primaryUserId] isEqualToString:@"_UNKNOWN_"]) {
-            [self selectEmailData:[EngageConfig primaryUserId]];
+        if ([EngageConfig mobileUserId] && ![[EngageConfig mobileUserId] isEqualToString:@"_UNKNOWN_"]) {
+            [self selectEmailData:[EngageConfig mobileUserId]];
             _upgradeAnonymousButton.hidden = YES;
         }
         else {
@@ -91,7 +91,7 @@
 - (void)engageConnect {
     [self beginHUD];
     
-    [EngageConfig storePrimaryUserId:nil];
+    [EngageConfig storeMobileUserId:nil];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -189,10 +189,10 @@
     else {
         [self beginHUD];
         
-        [EngageConfig storePrimaryUserId:_emailAddressField.text];
+        [EngageConfig storeMobileUserId:_emailAddressField.text];
         
         // updateAnonymousToPrimaryUser
-        [[XMLAPIManager sharedInstance] updateAnonymousToPrimaryUser:[EngageConfig primaryUserId]
+        [[XMLAPIManager sharedInstance] updateAnonymousToPrimaryUser:[EngageConfig mobileUserId]
                                                        list:ENGAGE_LIST_ID
                                           primaryUserColumn:@"Email"
                                                 mergeColumn:@"MERGE_CONTACT_ID"

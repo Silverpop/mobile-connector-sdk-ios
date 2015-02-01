@@ -32,7 +32,7 @@ There are currently limits placed on the number of Access Tokens that can be gen
 
 This demo app demonstrates the process of managing the mobile identity of the recipient.
 
-For more info refer to the (README)[#https://github.com/makeandbuild/mobile-connector-sdk-ios/tree/master/EngageSDK-1-1-0-Demo-ios] for the demo app.
+For more info refer to the [README](#https://github.com/makeandbuild/mobile-connector-sdk-ios/tree/master/EngageSDK-1-1-0-Demo-ios) for the demo app.
 
 ### 1.0.0 Demo
 EngageSDK includes a sample project within the Example subdirectory. In order to build the project, you must install the dependencies via CocoaPods. To do so:

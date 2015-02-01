@@ -49,7 +49,7 @@ Once installation has finished, you can build and run the EngageSDKDemo project 
 Once you understand how the Demo project is configured via CocoaPods and implemented using the EngageSDK, you are ready to integrate the EngageSDK with your new or existing Xcode iPhone project.
 
 ## Getting Started 
-The first thing you will want to do is contact your Relationship Manager at Silverpop and ask for the "Silverpop Mobile Connector".  They will assist in getting your Engage account provisioned for Universal Behaviors -- the new flexible event tracking system that is the backbone of tracked mobile app behaviors.
+The first thing you will want to do is contact your Relationship Manager at Sidlverpop and ask for the "Silverpop Mobile Connector".  They will assist in getting your Engage account provisioned for Universal Behaviors -- the new flexible event tracking system that is the backbone of tracked mobile app behaviors.
 
 Next, you can follow the instructions in this readme file, or as an additional offer, we've put together a short 10 minute tutorial that will walk you through the download, installation, and configuration process to get your app up and running.  [Click here](https://kb.silverpop.com/kb/engage/Silverpop_Mobile_Connector_-_***NEW***/Video_Tutorial%3A_Up_and_Running_in_10_mins!) to watch that video tutorial within our KnowledgeBase.
 
@@ -228,7 +228,7 @@ XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
 ```
 
 ### ~~Creating an anonymous user~~ (depreciated)
-*Depreciated in favor of recipient setup methods in (MobileIdentityManager)[#MobileIdentityManager]*
+*Depreciated in favor of recipient setup methods in *[MobileIdentityManager](#MobileIdentityManager)
 ```objective-c
 // Conveniently calls addRecipient and stores anonymousId within EngageConfig
 [[XMLAPIManager sharedInstance] createAnonymousUserToList:ENGAGE_LIST_ID success:^(ResultDictionary *ERXML) {
@@ -581,7 +581,7 @@ The configuration
 |Recipient->mobileUserIdGeneratorClassName|EngageDefaultUUIDGenerator|The class to use for auto generating mobile user ids if the ```enableAutoAnonymousTracking``` property is set to true.|Class|
 |Recipient->mobileUserIdColumn|Mobile User Id|Column name to store the mobile user id in.|String|
 |Recipient->mergedRecipientIdColumn|Merged Recipient Id|Column name to store the merged recipient id in.  The merged recipient id column is populated if needed during the check identity process.|String|
-|Recipient>mergedDateColumn|Merged Date|Column name to store the merged date in. The merged recipient id column is populated if needed during the check identity process.|String|
+|Recipient->mergedDateColumn|Merged Date|Column name to store the merged date in. The merged recipient id column is populated if needed during the check identity process.|String|
 |Recipient->mergeHistoryInMarketingDatabase|YES|If the audit history for merged recipients should be stored in the marketing database.|Boolean|
 |AuditRecord->auditRecordPrimaryKeyColumnName|Audit Record Id|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```.  The column name for the generated primary key in the audit record table.|String|
 |AuditRecord->auditRecordPrimaryKeyGeneratorClassName|EngageDefaultUUIDGenerator|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```.  The class to use to generate primary keys for the audit record table.|Class|

@@ -14,18 +14,49 @@ Most people will want to use the default settings and save the merge history in 
 
 The environment used by the demo app has already been configured with needed lists and columns.  If you switch to use your own credentials you are responsible for setting up your own environment.
 
-Before running the app the following 
-
-## Using the demo app
+## Running the Demo
 When the app is run the current recipient configuration is automatically cleared.
 
 You can use the 'Setup Recipient' button to configure the identity of the mobile device.
 
 Then you can choose one of the following Scenarios to test out:
-* Scenario 1 - There is no existing recipient on the server
-* Scenario 2 - There is an existing recipient on the server, but it doesn't have a mobile user id.
-* Scenario 3 - There is an existing recipient on the server and it does have a mobile user id.
+* [Scenario 1](#scenario1) - There is no existing recipient on the server
+* [Scenario 2](#scenario2) - There is an existing recipient on the server, but it doesn't have a mobile user id.
+* [Scenario 3](#secnario3) - There is an existing recipient on the server and it does have a mobile user id.
 
 After selecting your scenario, you can click the 'Check Identity' button and the identity of the mobile device will be updated based on the scenario.
+
+## Expected Behavior
+
+### <a name="scenario1"/>Scenario 1
+Description: There is no existing recipient on the server
+
+####Example behavior
+_Recipient Before_
+|Recipient Id|Mobile User Id|Facebook Id|Merged Recipient Id|Merged Date|
+|----------|----------|----------|----------|----------|
+|100001|123132-12312-1|nil|||
+||||||
+
+_Connector Configuration Before_
+|Mobile User Id|Recipient Id|
+|----------|----------|
+|123132-12312-1|100001|
+
+_Recipient After_
+|Recipient Id|Mobile User Id|Facebook Id|Merged Recipient Id|Merged Date|
+|----------|----------|----------|----------|----------|
+|100001|123132-12312-1|100|||
+
+_Connector Configuration After_
+|Mobile User Id|Recipient Id|
+|----------|----------|
+|123132-12312-1|100001|
+
+### <a name="scenario2"/>Scenario 2
+Description: There is an existing recipient on the server, but it doesn't have a mobile user id.
+
+### <a name="scenario3"/>Scenario 3
+Description: There is an existing recipient on the server and it does have a mobile user id.
 
 

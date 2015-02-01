@@ -20,8 +20,19 @@ EngageSDK is a wrapper for the Engage Database XMLAPI and JSON Universal Events.
 
 There are currently limits placed on the number of Access Tokens that can be generated per hour per instance of Engage.  This number is easily increased, however, before deploying your app publicly, you must contact your Relationship Manager or Sales Rep regarding your intention to use this connector and that you will need to have your OAuth Access Token rate limit increased.
 
-## Demo
+## Demos
 
+### 1.1.0 Demo
+
+    $ gem install cocoapods # If necessary
+    $ git clone git@github.com:Silverpop/engage-sdk-ios.git
+    $ cd engage-sdk-ios/EngageSDK-1-1-0-Demo-ios
+    $ pod install
+    $ open EngageSDK-1-1-0-Demo-ios.xcworkspace
+
+This demo app demonstrates the process of managing the mobile identity of the recipient.
+
+### 1.0.0 Demo
 EngageSDK includes a sample project within the Example subdirectory. In order to build the project, you must install the dependencies via CocoaPods. To do so:
 
     $ gem install cocoapods # If necessary
@@ -100,22 +111,17 @@ Some developers may need to install Xcode Command Line Tools before installing C
 
 If you are having trouble with ruby gems, try performing a gem system update: `gem update --system`
 
-### UBFManager
+### <a name="EngageSDK"/>Engage SDK
+To initalize the EngageSDK including the (XMLAPIManager)[#XMLAPIManager) and (UBFManager)[UBFManager] make the following call in your AppDelegage class.
+
+```objective-c
+[EngageSDK initializeSDKClient:ENGAGE_CLIENT_ID secret:ENGAGE_SECRET token:ENGAGE_REFRESH_TOKEN host:ENGAGE_BASE_URL engageDatabaseListId:ENGAGE_LIST_ID];
+```
+
+### <a name="UBFManager"/>UBFManager
 
 The UBFManager manages posting UBF events through the Engage JSON Universal Events web services. A UBFManager singleton instance should be created in your AppDelegate class. Failing to initialize the UBFManager in your AppDelegate and rather somewhere else in your application may lead to certain UBF events such as "installed" or "session started" from being captured since they may occur before anywhere else in your application has the opportunity to initialize an instance of the UBFManager. 
 
-Create UBFManager instance in your AppDelegate
-```objective-c
-UBFManager *ubfManger = [UBFManager createClient:ENGAGE_CLIENT_ID
-                                          secret:ENGAGE_SECRET
-                                           token:ENGAGE_REFRESH_TOKEN
-                                            host:ENGAGE_BASE_URL
-                                  connectSuccess:^(AFOAuthCredential *credential) {
-        NSLog(@"Successfully connected to Engage API : Credential %@", credential);
-    } failure:^(NSError *error) {
-        NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
-    }];
-```
 ####Purpose
 
 The goal of UBFManager is serve the simple purpose of posting UBF Universal Events to Engage while masking the more complicated management tasks such as (network reachability, persistence, and authentication) from the SDK user. 
@@ -171,12 +177,10 @@ UBFWeatherAugmentationPlugin.m
     return YES; //Other plugins depend on this Plugins output for processing
 }
 
-
 -(BOOL)isSupplementalDataReady {
     // Your logic to decide if the data needed for the plugin to process is ready or not. Lets assume our fake weather data is.
     return YES;
 }
-
 
 -(UBF*)process:(UBF*)ubfEvent {
     if (ubfEvent) {
@@ -196,18 +200,43 @@ will be posted to Engage API in the same state as when it was handed off to the 
 
 ## Universal Behaviors API
 
-Before connecting and sending Universal Behaviors, you should assume a valid user identity either "anonymous" or some other specified identity via XMLAPI.
+Before connecting and sending Universal Behaviors, you should assume a valid user identity either "anonymous" or some other specified identity via XMLAPI.  Refer to the [MobileIdentityManager](#MobileIdentityManager).
 
-### Creating an anonymous user
 
+#### Goal Completed
+```objective-c
+[[UBFManager sharedInstance] trackEvent:[UBF goalCompleted:@"LISTENED TO MVSTERMIND" params:nil]];
+```
+
+#### Goal Abandoned
+```objective-c
+[[UBFManager sharedInstance] trackEvent:[UBF goalAbandoned:@"LISTENED TO MVSTERMIND" params:nil]];
+```
+
+#### Named Event with params
+```objective-c
+[[UBFManager sharedInstance] trackEvent:[UBF namedEvent:@"PLAYER LOADED" params:@{ @"Event Source View" : @"HomeViewController", @"Event Tags" : @"MVSTERMIND,Underground" }]];
+```
+
+### <a name="XMLAPIManager"/>XMLAPIManager
+
+The XMLAPIManager manages posting XMLAPI messages to the Engage web services. A XMLAPIManager singleton instance should be created in your AppDelegate class.
+
+After initial XMLAPIManager creation (see (EngageSDK)[#EngageSDK]) you may reference your singleton anytime with
+```objective-c
+XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
+```
+
+### Creating an anonymous user (depreciated)
+*Depreciated in favor of recipient setup methods in (MobileIdentityManager)[#MobileIdentityManager]*
 ```objective-c
 // Conveniently calls addRecipient and stores anonymousId within EngageConfig
 [[XMLAPIManager sharedInstance] createAnonymousUserToList:ENGAGE_LIST_ID success:^(ResultDictionary *ERXML) {
-    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+    if ([ERXML isSuccess]) {
         NSLog(@"SUCCESS");
     }
     else {
-        NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
+        NSLog(@"%@",[ERXML faultString]);
     }
 } failure:^(NSError *error) {
     NSLog(@"SERVICE FAIL");
@@ -217,26 +246,25 @@ Before connecting and sending Universal Behaviors, you should assume a valid use
 ### Identifying a registered user
 
 ```objective-c
-
 XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.com" list:ENGAGE_LIST_ID];
 
 [[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientData success:^(ResultDictionary *ERXML) {
-        if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+        if ([ERXML isSuccess]) {
             NSLog(@"SUCCESS");
             // VERY IMPORTANT!!!
             // Universal Behaviors reads this value
-            [EngageConfig storePrimaryUserId:[ERXML valueForShortPath:@"RecipientId"]];
+            [EngageConfig storeMobileUserId:[ERXML valueForShortPath:@"RecipientId"]];
         }
         else {
-            NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
+            NSLog(@"%@",[ERXML faultString]);
         }
     } failure:^(NSError *error) {
         NSLog(@"SERVICE FAIL");
     }];
 ```
 
-### Convert anonymous user to registered user
-
+### Convert anonymous user to registered user (depreciated)
+*Depreciated in favor of recipient setup methods in (MobileIdentityManager)[#MobileIdentityManager]*
 ```objective-c
 // Conveniently links anonymous user record with the primary user record according to the mergeColumn
 [[XMLAPIManager sharedInstance] updateAnonymousToPrimaryUser:[EngageConfig primaryUserId]
@@ -255,42 +283,6 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
                                                 }];
 ```
 
-#### Goal Completed
-```objective-c
-[[UBFManager sharedInstance] trackEvent:[UBF goalCompleted:@"LISTENED TO MVSTERMIND" params:nil]];
-```
-
-#### Goal Abandoned
-```objective-c
-[[UBFManager sharedInstance] trackEvent:[UBF goalAbandoned:@"LISTENED TO MVSTERMIND" params:nil]];
-```
-
-#### Named Event with params
-```objective-c
-[[UBFManager sharedInstance] trackEvent:[UBF namedEvent:@"PLAYER LOADED" params:@{ @"Event Source View" : @"HomeViewController", @"Event Tags" : @"MVSTERMIND,Underground" }]];
-```
-
-### XMLAPIManager
-
-The XMLAPIManager manages posting XMLAPI messages to the Engage web services. A XMLAPIManager singleton instance should be created in your AppDelegate class.
-
-Create XMLAPIManager instance in your AppDelegate
-```objective-c
-XMLAPIManager *xmlapiManager = [XMLAPIManager createClient:ENGAGE_CLIENT_ID
-                                          secret:ENGAGE_SECRET
-                                           token:ENGAGE_REFRESH_TOKEN
-                                            host:ENGAGE_BASE_URL
-                                  connectSuccess:^(AFOAuthCredential *credential) {
-        NSLog(@"Successfully connected to Engage XMLAPI : Credential %@", credential);
-    } failure:^(NSError *error) {
-        NSLog(@"Failed to connect to Silverpop XMLAPI .... %@", [error description]);
-    }];
-```
-
-After initial XMLAPIManager creation you may reference your singleton anytime with
-```objective-c
-XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
-```
 
 ### <a name="MobileIdentityManager"/>MobileIdentityManager
 
@@ -309,8 +301,6 @@ set ```mergeHistoryInAuditRecordTable``` to true.  If enabled you are responsibl
  calling ```checkIdentityForIds```.
 
 ##### Setup recipient identity
-
-##### Setup Recipient Usage
 
 ```objective-c
 /**
@@ -332,6 +322,24 @@ set ```mergeHistoryInAuditRecordTable``` to true.  If enabled you are responsibl
  */
 -(void)setupRecipientWithSuccess:(void (^)(SetupRecipientResult* result))didSucceed
                          failure:(void (^)(SetupRecipientFailure* failure))didFail;
+```
+
+##### Setup Recipient Usage
+
+```objective-c
+[[MobileIdentityManager sharedInstance] setupRecipientWithSuccess:^(SetupRecipientResult *result) {
+    
+    NSString *messageFormat = @"Recipient Id: %@\nMobile User Id: %@";
+    NSString *message = [NSString stringWithFormat:messageFormat, [result recipientId], [EngageConfig mobileUserId]];
+    NSLog(@"%@", message);
+    
+    // do any other custom behavior
+    
+} failure:^(SetupRecipientFailure *failure) {
+    NSLog(@"Setup Recipient failure");
+    
+    // do any other custom behavior
+}];
 ```
 
 ##### Check identity and merge recipients

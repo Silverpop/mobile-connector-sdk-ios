@@ -33,22 +33,26 @@ Description: There is no existing recipient on the server
 
 ####Example behavior
 _Recipient Before_
+
 |Recipient Id|Mobile User Id|Facebook Id|Merged Recipient Id|Merged Date|
 |----------|----------|----------|----------|----------|
 |100001|123132-12312-1|nil|||
 ||||||
 
 _Connector Configuration Before_
+
 |Mobile User Id|Recipient Id|
 |----------|----------|
 |123132-12312-1|100001|
 
 _Recipient After_
+
 |Recipient Id|Mobile User Id|Facebook Id|Merged Recipient Id|Merged Date|
 |----------|----------|----------|----------|----------|
-|100001|123132-12312-1|100|||
+|100001|123132-12312-1|*100*|||
 
 _Connector Configuration After_
+
 |Mobile User Id|Recipient Id|
 |----------|----------|
 |123132-12312-1|100001|
@@ -56,7 +60,67 @@ _Connector Configuration After_
 ### <a name="scenario2"/>Scenario 2
 Description: There is an existing recipient on the server, but it doesn't have a mobile user id.
 
+_Recipient Before_
+
+|Recipient Id|Mobile User Id|Facebook Id|Merged Recipient Id|Merged Date|
+|----------|----------|----------|----------|----------|
+|100001|123132-12312-1|nil|||
+|100000||100|||
+
+_Connector Configuration Before_
+
+|Mobile User Id|Recipient Id|
+|----------|----------|
+|123132-12312-1|100001|
+
+_Recipient After_
+
+|Recipient Id|Mobile User Id|Facebook Id|Merged Recipient Id|Merged Date|
+|----------|----------|----------|----------|----------|
+|100001|*nil*|nil|*100000*|*now*|
+|100000|*123132-12312-1*|100|||
+
+_Connector Configuration After_
+
+|Mobile User Id|Recipient Id|
+|----------|----------|
+|123132-12312-1|*100000*|
+
+_Audit Record (if using)_
+|Primary Key|Old Recipient Id|New Recipient Id|Create Date|
+|----------|----------|----------|----------|
+|*1*|*100001*|*100000*|*now*|
+
 ### <a name="scenario3"/>Scenario 3
 Description: There is an existing recipient on the server and it does have a mobile user id.
 
+_Recipient Before_
 
+|Recipient Id|Mobile User Id|Facebook Id|Merged Recipient Id|Merged Date|
+|----------|----------|----------|----------|----------|
+|100001|123132-12312-1|nil|||
+|100000|22222-121121-1|100|||
+
+_Connector Configuration Before_
+
+|Mobile User Id|Recipient Id|
+|----------|----------|
+|123132-12312-1|100001|
+
+_Recipient After_
+
+|Recipient Id|Mobile User Id|Facebook Id|Merged Recipient Id|Merged Date|
+|----------|----------|----------|----------|----------|
+|100001|123132-12312-1|nil|*100000*|*now*|
+|100000|22222-121121-1|100|||
+
+_Connector Configuration After_
+
+|Mobile User Id|Recipient Id|
+|----------|----------|
+|*22222-121121-1*|*100000*|
+
+_Audit Record (if using)_
+|Primary Key|Old Recipient Id|New Recipient Id|Create Date|
+|----------|----------|----------|----------|
+|*1*|*100001*|*100000*|*now*|

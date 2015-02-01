@@ -228,7 +228,7 @@ XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
 ```
 
 ### ~~Creating an anonymous user~~ (depreciated)
-*Depreciated in favor of recipient setup methods in *[MobileIdentityManager](#MobileIdentityManager)
+*Depreciated in favor of recipient setup methods in* [MobileIdentityManager](#MobileIdentityManager)
 ```objective-c
 // Conveniently calls addRecipient and stores anonymousId within EngageConfig
 [[XMLAPIManager sharedInstance] createAnonymousUserToList:ENGAGE_LIST_ID success:^(ResultDictionary *ERXML) {
@@ -296,7 +296,7 @@ using the ```MobileIdentityManager``` methods.
 - ```EngageConfig.plist``` should be configured with the columns names representing the _Mobile User Id_, _Merged Recipient Id_, and _Merged Date_.  The ```EngageConfigDefaults.plist``` defines default values if you prefer to use those.
 - The _Mobile User Id_, _Merged Recipient Id_, and _Merged Date_ columns must be created in the recipient list with names that match your ```EngageConfig.plist``` settings
 - Optional: If you prefer to save the merge history in a separate AuditRecord relational table you can 
-set ```mergeHistoryInAuditRecordTable``` to true.  If enabled you are responsible for creating the AuditRecord
+set ```mergeHistoryInAuditRecordTable``` to ```YES```.  If enabled you are responsible for creating the AuditRecord
  table with the columns for _Audit Record Id_, _Old Recipient Id_, _New Recipient Id_, and _Create Date_ prior to
  calling ```checkIdentityForIds```.
 
@@ -413,11 +413,11 @@ UBF events are persisted to a local SQLite DB on the user's device. The event ca
 
 EngageSDK has 2 primary models that SDK users should concerns themselves with
 
-### UBF
+### <a name="UBF"/>UBF
 
 Utility class for generating JSON Universal Events that are posted to the UBFManager and ultimately sent to Engage. The class maintains a NSDictionary of attributes that are different depending on the event type that is created. Any NSDictionary values that you provide to the utility methods will take precedence over the values that the utility methods pull from the device.
 
-#### UBF Core Values
+#### <a name="UBFCoreValues"/>UBF Core Values
 
 * Device Version
 * OS Name
@@ -429,7 +429,7 @@ Utility class for generating JSON Universal Events that are posted to the UBFMan
 * Anonymous Id
 * Recipient Id
 
-### XMLAPI
+### <a name="XMLAPI"/>XMLAPI
 
 Post an XMLAPI resource using a helper e.g. SelectRecipientData
 
@@ -527,6 +527,8 @@ is equivalent to:
 ```objective-c
 XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"someone@adomain.com" list:@"45654"];
 ```
+### XMLAPIOperation
+For your convenience constants for the supported XMLAPI operations can be found in the ```XMLAPIOperation``` class.
 
 ## Deeplinking
 

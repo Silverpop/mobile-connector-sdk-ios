@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>312E742C-484B-4958-BF2B-2AE4CE8FABC3</string>
+	<key>IDESourceControlProjectName</key>
+	<string>EngageSDK-1-1-0-Demo-ios</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>47BE7798E292A5053FCA81FEE1AFDEC3E5D22EEF</key>
+		<string>https://github.com/makeandbuild/mobile-connector-sdk-ios.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>EngageSDK-1-1-0-Demo-ios/EngageSDK-1-1-0-Demo-ios.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>47BE7798E292A5053FCA81FEE1AFDEC3E5D22EEF</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/makeandbuild/mobile-connector-sdk-ios.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>47BE7798E292A5053FCA81FEE1AFDEC3E5D22EEF</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>47BE7798E292A5053FCA81FEE1AFDEC3E5D22EEF</string>
+			<key>IDESourceControlWCCName</key>
+			<string>mobile-connector-sdk-ios</string>
+		</dict>
+	</array>
+</dict>
+</plist>

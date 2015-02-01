@@ -1,0 +1,2 @@
+pod 'EngageSDK', :git => 'https://github.com/makeandbuild/mobile-connector-sdk-ios.git', :branch => 'master', :commit =>'cf96f5e18b57116a5f609a8936e46ef5596b93e0'
+pod 'MBProgressHUD', '~> 0.8'

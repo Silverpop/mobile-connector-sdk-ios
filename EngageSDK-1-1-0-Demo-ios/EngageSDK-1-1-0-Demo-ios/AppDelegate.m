@@ -23,27 +23,7 @@
     [EngageSDK initializeSDKClient:ENGAGE_CLIENT_ID secret:ENGAGE_SECRET token:ENGAGE_REFRESH_TOKEN host:ENGAGE_BASE_URL engageDatabaseListId:ENGAGE_LIST_ID];
     
     // do any custom setup you need, such as audit record table config
-    
-    [[MobileIdentityManager sharedInstance] setupRecipientWithSuccess:^(SetupRecipientResult *result) {
-        
-        NSLog(@"Setup Recipient SUCCESS:  Recipiend Id = %@", [result recipientId]);
 
-        // enable button with text field to enter custom id
-        
-        // setup recipient is done, time to call check identity
-//        [[MobileIdentityManager sharedInstance] checkIdentityForIds:@{@"Custom Integration Test Id" : @"non existing id 99999}" } success:^(CheckIdentityResult *result) {
-//            
-//        } failure:^(CheckIdentityFailure *failure) {
-//            
-//        }];
-
-        
-    } failure:^(SetupRecipientFailure *failure) {
-        
-        NSLog(@"Setup Recipient FAILURE: %@", [failure errorMessage]);
-        NSLog(@"Setup Recipient FAILURE: %@", [failure error]);
-    }];
-    
     
     // Override point for customization after application launch.
     return YES;

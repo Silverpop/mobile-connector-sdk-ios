@@ -23,6 +23,9 @@
     [EngageSDK initializeSDKClient:ENGAGE_CLIENT_ID secret:ENGAGE_SECRET token:ENGAGE_REFRESH_TOKEN host:ENGAGE_BASE_URL engageDatabaseListId:ENGAGE_LIST_ID];
     
     // do any custom setup you need, such as audit record table config
+    
+    // most people won't want to use a separate AuditRecord table and can skip this step, but we're demoing how you would
+    [EngageConfig storeAuditRecordTableId:ENGAGE_AUDIT_RECORD_LIST_ID];
 
     
     // Override point for customization after application launch.

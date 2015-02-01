@@ -229,7 +229,7 @@ After initial XMLAPIManager creation (see [EngageSDK](#EngageSDK)) you may refer
 XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
 ```
 
-### ~~Creating an anonymous user~~ (depreciated)
+#### ~~Creating an anonymous user~~ (depreciated)
 *Depreciated in favor of recipient setup methods in* [MobileIdentityManager](#MobileIdentityManager)
 ```objective-c
 // Conveniently calls addRecipient and stores anonymousId within EngageConfig
@@ -245,7 +245,7 @@ XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
 }];
 ```
 
-### Identifying a registered user
+#### Identifying a registered user
 
 ```objective-c
 XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.com" list:ENGAGE_LIST_ID];
@@ -265,7 +265,7 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
     }];
 ```
 
-### ~~Convert anonymous user to registered user~~ (depreciated)
+#### ~~Convert anonymous user to registered user~~ (depreciated)
 *Depreciated in favor of recipient setup methods in* [MobileIdentityManager](#MobileIdentityManager)
 ```objective-c
 // Conveniently links anonymous user record with the primary user record according to the mergeColumn

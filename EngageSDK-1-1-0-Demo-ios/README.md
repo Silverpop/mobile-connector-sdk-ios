@@ -26,6 +26,8 @@ Then you can choose one of the following Scenarios to test out:
 
 After selecting your scenario, you can click the 'Check Identity' button and the identity of the mobile device will be updated based on the scenario.
 
+Once you've completed a scenario, you can click the 'Clear Config' button to try a different scenario.
+
 ## Expected Behavior
 
 ### <a name="scenario1"/>Scenario 1
@@ -87,6 +89,7 @@ _Connector Configuration After_
 |123132-12312-1|*100000*|
 
 _Audit Record (if using)_
+
 |Primary Key|Old Recipient Id|New Recipient Id|Create Date|
 |----------|----------|----------|----------|
 |*1*|*100001*|*100000*|*now*|
@@ -121,6 +124,7 @@ _Connector Configuration After_
 |*22222-121121-1*|*100000*|
 
 _Audit Record (if using)_
+
 |Primary Key|Old Recipient Id|New Recipient Id|Create Date|
 |----------|----------|----------|----------|
 |*1*|*100001*|*100000*|*now*|

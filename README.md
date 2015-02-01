@@ -120,11 +120,11 @@ To initalize the EngageSDK including the (XMLAPIManager)[#XMLAPIManager) and (UB
 
 ### <a name="UBFManager"/>UBFManager
 
-The UBFManager manages posting UBF events through the Engage JSON Universal Events web services. A UBFManager singleton instance should be created in your AppDelegate class. Failing to initialize the UBFManager in your AppDelegate and rather somewhere else in your application may lead to certain UBF events such as "installed" or "session started" from being captured since they may occur before anywhere else in your application has the opportunity to initialize an instance of the UBFManager. 
+The ```UBFManager``` manages posting UBF events through the Engage JSON Universal Events web services. A ```UBFManager``` singleton instance should be created in your ```AppDelegate``` class. Failing to initialize the ```UBFManager``` in your ```AppDelegate``` and rather somewhere else in your application may lead to certain UBF events such as "installed" or "session started" from being captured since they may occur before anywhere else in your application has the opportunity to initialize an instance of the ```UBFManager```. 
 
 ####Purpose
 
-The goal of UBFManager is serve the simple purpose of posting UBF Universal Events to Engage while masking the more complicated management tasks such as (network reachability, persistence, and authentication) from the SDK user. 
+The goal of ```UBFManager``` is serve the simple purpose of posting UBF Universal Events to Engage while masking the more complicated management tasks such as (network reachability, persistence, and authentication) from the SDK user. 
 
 * tracking UBF events - Posts your individual events to Engage. Local cache is taken into consideration and events are not posted until "ubfEventCacheSize" configuration value is reached. Once that value is reached then the events are batched and sent to Engage to reduce network traffic. You may set the value of "ubfEventCacheSize" if you do not wish for local caching to take palce. 
 * handleLocalNotification - utility method invoked SDK user invokes when their application receives a local notificaiton
@@ -135,7 +135,7 @@ The goal of UBFManager is serve the simple purpose of posting UBF Universal Even
 ####Notes
 Notes about UBFManager creation. The UBFManager transparently handles network reachability, event persistence, and client authentication. Initial creation of the UBFManager will establish the OAuth 2 connection to the Engage service using the credentials that you provide which you received from the Engage portal. UBF events may be immediately posted to the UBFManager even before a successful authentication connection has been established. UBF events that are posted to the manager are simply queued and persisted until the authentication is successful and then they are flushed to Engage. The UBFManager will also queue and persist the events locally if an event is posted while the device does not currently have network reachability. If the application is closed or the device powered down before network reachability has been regained then the events will be posted the next time the application is opened. The local events are durable under all circumstances other than the application being deleted from the device or the SDK user deleting them from the EngageLocalEventStore. 
 
-After initial UBFManager creation you may reference your singleton anytime with
+After initial UBFManager creation (see [EngageSDK](#EngageSDK)) you may reference your singleton anytime with
 ```objective-c
 UBFManager *ubfManager = [UBFManager sharedInstance];
 ```
@@ -200,7 +200,7 @@ will be posted to Engage API in the same state as when it was handed off to the 
 
 ## Universal Behaviors API
 
-Before connecting and sending Universal Behaviors, you should assume a valid user identity either "anonymous" or some other specified identity via XMLAPI.  Refer to the [MobileIdentityManager](#MobileIdentityManager).
+Before connecting and sending Universal Behaviors, you should assume a valid user identity specified identity via XMLAPI.  Refer to the [MobileIdentityManager](#MobileIdentityManager).
 
 
 #### Goal Completed
@@ -222,12 +222,12 @@ Before connecting and sending Universal Behaviors, you should assume a valid use
 
 The XMLAPIManager manages posting XMLAPI messages to the Engage web services. A XMLAPIManager singleton instance should be created in your AppDelegate class.
 
-After initial XMLAPIManager creation (see (EngageSDK)[#EngageSDK]) you may reference your singleton anytime with
+After initial XMLAPIManager creation (see [EngageSDK](#EngageSDK)) you may reference your singleton anytime with
 ```objective-c
 XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
 ```
 
-### Creating an anonymous user (depreciated)
+### ~~Creating an anonymous user~~ (depreciated)
 *Depreciated in favor of recipient setup methods in (MobileIdentityManager)[#MobileIdentityManager]*
 ```objective-c
 // Conveniently calls addRecipient and stores anonymousId within EngageConfig
@@ -263,8 +263,8 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
     }];
 ```
 
-### Convert anonymous user to registered user (depreciated)
-*Depreciated in favor of recipient setup methods in (MobileIdentityManager)[#MobileIdentityManager]*
+### ~~Convert anonymous user to registered user~~ (depreciated)
+*Depreciated in favor of recipient setup methods in* [MobileIdentityManager](#MobileIdentityManager)
 ```objective-c
 // Conveniently links anonymous user record with the primary user record according to the mergeColumn
 [[XMLAPIManager sharedInstance] updateAnonymousToPrimaryUser:[EngageConfig primaryUserId]
@@ -370,8 +370,29 @@ set ```mergeHistoryInAuditRecordTable``` to true.  If enabled you are responsibl
  -(void)checkIdentityForIds:(NSDictionary *)fieldsToIds
                    success:(void (^)(CheckIdentityResult* result))didSucceed
                    failure:(void (^)(CheckIdentityFailure* failure))didFail;
+```
+ 
+##### Check Identity Usage
 
- ```
+```objective-c
+[[MobileIdentityManager sharedInstance] checkIdentityForIds:@{ @"facebook_id" : @"fbuser" } success:^(CheckIdentityResult *result) {
+    
+    NSString *newRecipientId = [result recipientId];
+    NSString *mergedRecipientId = [result mergedRecipientId];
+    NSString *mobileUserId = [result mobileUserId];
+    
+    NSString *messageFormat = @"Current recipient id: %@\nMerged recipient id: %@\nMobile user id: %@";
+    NSString *message = [NSString stringWithFormat:messageFormat, newRecipientId, mergedRecipientId, mobileUserId];
+    NSLog(@"%@", message);
+    
+    // do any other custom behavior
+    
+} failure:^(CheckIdentityFailure *failure) {
+    NSLog(@"Check Identity failure");
+    
+    // do any other custom behavior
+}];
+```
 
 ## Local Event Storage
 
@@ -454,7 +475,7 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
 is equivalent to:
 
 ```objective-c
-XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"
+XMLAPI *selectRecipientData = [XMLAPI resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA
                                              params:@{
                                @"LIST_ID" : @"45654",
                                @"EMAIL" : @"someone@adomain.com",
@@ -464,7 +485,7 @@ XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"
 or alternately:
 
 ```objective-c
-XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"];
+XMLAPI *selectRecipientData = [XMLAPI resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA];
 [selectRecipientData addParams:@{ @"LIST_ID" : @"45654", @"EMAIL" : @"someone@adomain.com" }];
 [selectRecipientData addColumns:@{ @"Customer Id" : @"123-45-6789" }];
 ```
@@ -485,7 +506,7 @@ XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"];
 is equivalent to:
 
 ```objective-c
-XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData" params:@{@"RECIPIENT_ID" : @"702003"}];
+XMLAPI *selectRecipientData = [XMLAPI resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA params:@{@"RECIPIENT_ID" : @"702003"}];
 ```
 
 ### Example 3
@@ -550,12 +571,24 @@ The configuration
 |LocationServices->lastKnownLocationTimestampColumn|Last Location Address Time|Engage DB column name for the last known location time|String|
 |LocationServices->lastKnownLocationColumn|Last Location Address|Engage DB column name for the last known location|String|
 |LocationServices->locationDistanceFilter|10|meters in location change before updated location information delegate is invoked|Number|
-||LocationServices->locationPrecisionLevel|kCLLocationAccuracyBest|desired level of location accuracy|String|
+|LocationServices->locationPrecisionLevel|kCLLocationAccuracyBest|desired level of location accuracy|String|
 |LocationServices->locationCacheLifespan|1 hr|lifespan of location coordinates before they are considered expired|EngageExpirationParser String|
 |LocationServices->coordinatesPlacemarkTimeout|15 sec|timeout on acquiring CLPlacemark before event is posted without that information|EngageExpirationParser String|
 |LocationServices->coordinatesAcquisitionTimeout|15 sec|timeout on acquiring CLLocation before event is posted without that information|EngageExpirationParser String|
 |LocationServices->enabled|YES|Are Location services enabled for UBF events|Boolean|
-|Augmentation->augmentationTimeout|15 sec|timeout for augmenting UBF events|EngageExpirationParser String|
+|Augmentation->augmentationTimeout|15 sec|timeout for augmenting UBF events|EngageExpirationParser|String|
+|Recipient->enableAutoAnonymousTracking|true|If set to true it allows mobile user ids to be auto generated for recipients.  If set to false you are responsible for manually setting the mobile user id.|Boolean|
+|Recipient->mobileUserIdGeneratorClassName|EngageDefaultUUIDGenerator|The class to use for auto generating mobile user ids if the ```enableAutoAnonymousTracking``` property is set to true.|Class|
+|Recipient->mobileUserIdColumn|Mobile User Id|Column name to store the mobile user id in.|String|
+|Recipient->mergedRecipientIdColumn|Merged Recipient Id|Column name to store the merged recipient id in.  The merged recipient id column is populated if needed during the check identity process.|String|
+|Recipient>mergedDateColumn|Merged Date|Column name to store the merged date in. The merged recipient id column is populated if needed during the check identity process.|String|
+|Recipient->mergeHistoryInMarketingDatabase|YES|If the audit history for merged recipients should be stored in the marketing database.|Boolean|
+|AuditRecord->auditRecordPrimaryKeyColumnName|Audit Record Id|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```.  The column name for the generated primary key in the audit record table.|String|
+|AuditRecord->auditRecordPrimaryKeyGeneratorClassName|EngageDefaultUUIDGenerator|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```.  The class to use to generate primary keys for the audit record table.|Class|
+|AuditRecord->oldRecipientIdColumnName|Old Recipient Id|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```. When a recipient is merged during the check identity process, this is the column name for old recipient id.|String|
+|AuditRecord>newRecipientIdColumnName|New Recipient Id|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```. When a recipient is merged during the check identity process, this is the column name for assumed recipient id.|String|
+|AuditRecord->createDateColumnName|Create Date|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```. When a recipient is merged during the check identity process, this is the column name for the timestamp for when the merge occurred.|String|
+|AuditRecord->mergeHistoryInAuditRecordTable|NO|If the audit history for merged recipients should be stored in a separate audit record table.|Boolean|
 
 
 ## EngageExpirationParser
@@ -582,16 +615,14 @@ Both local and push notifications require that the user of the SDK enable their 
 
 #### Local Notification Received
 ```objective-c
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     [[UBFManager sharedInstance] handleLocalNotificationReceivedEvents:notification withParams:nil];
 }
 ```
 
 #### Push Notification Received
 ```objective-c
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)pushNotification 
-{
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)pushNotification  {
     [[UBFManager sharedInstance] handlePushNotificationReceivedEvents:pushNotification];
 }
 ```

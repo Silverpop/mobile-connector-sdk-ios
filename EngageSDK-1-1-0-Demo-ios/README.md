@@ -30,7 +30,7 @@ Once you've completed a scenario, you can click the 'Clear Config' button to try
 
 ## Expected Behavior
 
-Here is some sample data for the different scenarios.  Obviously the data in these examples will not match the once in the app since it is generating new data every time.  The other obvious differece is that the example app is using a column called 'Custom Integration Test Column Id' instead of 'Facebook Id.' 
+Here is some sample data for the different scenarios.  Obviously the data in these examples will not match the ones in the app since it is generating new data every time.  The other obvious differece is that the example app is using a column called 'Custom Integration Test Column Id' instead of 'Facebook Id' - and you are free to use any id column you wish in your own app. 
 
 ### <a name="scenario1"/>Scenario 1
 Description: There is no existing recipient on the server

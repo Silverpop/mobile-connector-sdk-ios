@@ -30,6 +30,10 @@
 
 @implementation MobileIdentityManager_IT
 
+// NOTE: IF YOU RUN ALL THE TESTS IN THIS CLASS AT THE SAME TIME THEY WILL FAIL BECAUSE OF 
+// THE CONFIGURATION PROCESS NEEDED FOR SETUP.  YOU NEED TO RUN EACH TEST INDIVIDUALLY IN
+// ORDER FOR THEM ALL TO PASS.
+
 static NSString * const CUSTOM_ID_COLUMN = @"Custom Integration Test Id";
 static NSString * const CUSTOM_ID_COLUMN_2 = @"Custom Integration Test Id 2";
 

@@ -10,7 +10,7 @@ using the ```MobileIdentityManager``` methods.
 set ```mergeHistoryInAuditRecordTable``` to ```YES``` and the ```auditRecordListId``` to the corresponding list id.  If enabled you are responsible for creating the AuditRecord
  table with the columns for _Audit Record Id_, _Old Recipient Id_, _New Recipient Id_, and _Create Date_.
 
-Most people will want to use the default settings and save the merge history in the recipient list instead of a seprate Audit Record list, but for demo purposes this app has been configured to save the merge history in both places.
+Most people will want to use the default settings and save the merge history in the recipient list instead of a separate Audit Record list, but for demo purposes this app has been configured to save the merge history in both places.
 
 The environment used by the demo app has already been configured with needed lists and columns.  If you switch to use your own credentials you are responsible for setting up your own environment.
 

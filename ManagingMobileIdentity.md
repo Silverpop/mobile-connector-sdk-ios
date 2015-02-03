@@ -42,9 +42,10 @@ My recipient table is currently setup with a custom id column called "Custom Int
 
 ### Setup UI
 1. Open ```Main.storyboard```
-2. Add label for config - and set for leading and trailing spaces
+2. Add label for config - center, word wrap, 4 lines, text size 11
 3. Add button for Setup Recipient - place in center don't bother with other alignment
 4. Add button for Check Identity - place in center don't bother with other alignment
+5. Add missing constraints
 5. Open Assistant Editor (circle icon in top right corner)
 6. Ctrl + drag all three components to interface
 

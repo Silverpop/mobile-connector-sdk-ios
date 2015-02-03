@@ -3,6 +3,7 @@
 ## Setup Before Video
 
 The following steps are covered in the Up and Running Demo so we can go ahead and set them up before starting the new video.
+
 1. Created a new project with a single view
 2. Created a podfile with Engage SDK dependencies (and also a progress bar library MBProgressHUD)
 3. pod install

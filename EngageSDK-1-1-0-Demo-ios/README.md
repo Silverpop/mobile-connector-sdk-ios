@@ -7,8 +7,8 @@ using the ```MobileIdentityManager``` methods.
 - EngageConfig.json should be configured with the columns names representing the _Mobile User Id_, _Merged Recipient Id_, and _Merged Date_.  The EngageConfigDefault.json defines default values if you prefer to use those.
 - The _Mobile User Id_, _Merged Recipient Id_, and _Merged Date_ columns must be created in the recipient list with names that match your EngageConfig.json settings
 - Optional: If you prefer to save the merge history in a separate AuditRecord relational table you can 
-set ```mergeHistoryInAuditRecordTable``` to ```YES```.  If enabled you are responsible for creating the AuditRecord
- table with the columns for _Audit Record Id_, _Old Recipient Id_, _New Recipient Id_, and _Create Date_ and you must manually set the audit record table id in the app.
+set ```mergeHistoryInAuditRecordTable``` to ```YES``` and the ```auditRecordListId``` to the corresponding list id.  If enabled you are responsible for creating the AuditRecord
+ table with the columns for _Audit Record Id_, _Old Recipient Id_, _New Recipient Id_, and _Create Date_.
 
 Most people will want to use the default settings and save the merge history in the recipient list instead of a seprate Audit Record list, but for demo purposes this app has been configured to save the merge history in both places.
 

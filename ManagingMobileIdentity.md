@@ -14,7 +14,7 @@ The following steps are covered in the Up and Running Demo so we can go ahead an
 ## Video Starts Here
 
 ### Intro Script
-Today we are going to demonstrate configuring mobile idenities using the Android Engage SDK.  We are making the assumption that you've already watched the Android Up And Running video so we're going to jump right in.
+Today we are going to demonstrate configuring mobile idenities using the iOS Engage SDK.  We are making the assumption that you've already watched the iOS Up And Running in Under 10 mins video so we're going to jump right in.
 
 I've already configured my new XCode project with the needed configuration settings (show them).
 

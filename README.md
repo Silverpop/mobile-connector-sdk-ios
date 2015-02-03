@@ -593,6 +593,7 @@ The configuration
 |AuditRecord>newRecipientIdColumnName|New Recipient Id|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```. When a recipient is merged during the check identity process, this is the column name for assumed recipient id.|String|
 |AuditRecord->createDateColumnName|Create Date|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```. When a recipient is merged during the check identity process, this is the column name for the timestamp for when the merge occurred.|String|
 |AuditRecord->mergeHistoryInAuditRecordTable|NO|If the audit history for merged recipients should be stored in a separate audit record table.|Boolean|
+|AuditRecord->auditRecordListId||The list id for the Audit Record relational table. Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```.|String|
 
 
 ## EngageExpirationParser

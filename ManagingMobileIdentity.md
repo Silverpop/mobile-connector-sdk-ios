@@ -1,4 +1,4 @@
-# Android Managing Mobile Identity Script
+# iOS Managing Mobile Identity Script
 
 ## Setup Before Video
 
@@ -42,73 +42,57 @@ My recipient table is currently setup with a custom id column called "Custom Int
 
 ### Setup UI
 1. Open ```Main.storyboard```
-
-
-1. Open ```activity_main.xml```
-2. In the Design tab set the ```id``` of the Hello World ```TextView``` to ```currentConfigView```
-3. Set the ```minLines``` property to 5
-4. Set the ```layoutWidth``` to ```match_parent```
-3. Change to Text tab and verify you changed the correct settings
-4. Change the 'Hello World' text to say 'Current Config:'
-5. Add 'Setup Recipient' button with ```setupRecipientBtn``` as the id
-6. Add 'Check Identity' button with ```checkIdentityBtn``` as the id
+2. Add label for config - and set for leading and trailing spaces
+3. Add button for Setup Recipient - place in center don't bother with other alignment
+4. Add button for Check Identity - place in center don't bother with other alignment
+5. Open Assistant Editor (circle icon in top right corner)
+6. Ctrl + drag all three components to interface
 
 
 ### Add Functionality
-3. Open ```MainActivity.java``` and update it with the following
-```java
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+1.  Close assistant editor and navigate to ```ViewController.m```
+2. Add the following to the ```ViewController.h```
+```objective-c
+-(IBAction) setupRecipient:(id)sender;
+-(IBAction)checkIdentity:(id)sender;
+```
 
-    Button setupRecipientBtn = (Button)findViewById(R.id.setupRecipientBtn);
-    setupRecipientBtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            MobileIdentityManager.get().setupRecipient(new SetupRecipientHandler() {
-                @Override
-                public void onSuccess(SetupRecipientResult setupRecipientResult) {
-                    updateConfigStatus();
-                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).showToast();
-                }
-
-                @Override
-                public void onFailure(SetupRecipientFailure setupRecipientFailure) {
-                    Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).showToast();
-                }
-            });
-        }
-    });
-
-    Button checkIdentityBtn = (Button)findViewById(R.id.checkIdentityBtn);
-    checkIdentityBtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Map<String, String> ids = new HashMap<String, String>();
-            ids.put("Custom Integration Test Id", "09890809809");
-            MobileIdentityManager.get().checkIdentity(ids, new CheckIdentityHandler() {
-                @Override
-                public void onSuccess(CheckIdentityResult checkIdentityResult) {
-                    Toast.makeText(getApplicationContext(), "Check identity success", Toast.LENGTH_SHORT).showToast();
-                }
-
-                @Override
-                public void onFailure(CheckIdentityFailure checkIdentityFailure) {
-                    Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).showToast();
-                }
-            });
-        }
-    });
+3. Add the following to ```ViewController.m```
+```objective-c
+-(void)updateConfigLabel {
+    
+    NSString *currentConfig = [NSString stringWithFormat:@"Recipient Id:\n%@\nMobile User Id:\n%@", [EngageConfig recipientId], [EngageConfig mobileUserId]];
+    
+    [_configLabel setText:currentConfig];
+    
 }
 
-private void updateConfigStatus() {
-    TextView config = (TextView)findViewById(R.id.configStatusText);
-    config.setText(String.format("Config\nRecipient Id:\n%s\nMobile User Id\n%s",
-            EngageConfig.recipientId(getApplicationContext()),
-            EngageConfig.mobileUserId(getApplicationContext())));
+-(IBAction) setupRecipient:(id)sender {
+    
+    [[MobileIdentityManager sharedInstance] setupRecipientWithSuccess:^(SetupRecipientResult *result) {
+        
+        [self updateConfigLabel];
+        
+    } failure:^(SetupRecipientFailure *failure) {
+        NSLog(@"Setup Recipient Error");
+    }];
+}
+
+-(IBAction)checkIdentity:(id)sender {
+    
+    [[MobileIdentityManager sharedInstance] checkIdentityForIds:@{ @"Custom Integration Test Id" : @"98798798798" } success:^(CheckIdentityResult *result) {
+        
+        NSLog(@"Check Identity Success");
+        [self updateConfigLabel];
+        
+    } failure:^(CheckIdentityFailure *failure) {
+        NSLog(@"Check Identity Failure");
+    }];
+    
 }
 ```
+1. Open ```Main.storyboard```, open the assistant editor, and connect the methods to the buttons
+
 
 ### Run App
 1. Click the run button and wait for the emulator to start

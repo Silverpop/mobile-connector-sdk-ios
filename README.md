@@ -298,7 +298,7 @@ using the ```MobileIdentityManager``` methods.
 - ```EngageConfig.plist``` should be configured with the columns names representing the _Mobile User Id_, _Merged Recipient Id_, and _Merged Date_.  The ```EngageConfigDefaults.plist``` defines default values if you prefer to use those.
 - The _Mobile User Id_, _Merged Recipient Id_, and _Merged Date_ columns must be created in the recipient list with names that match your ```EngageConfig.plist``` settings
 - Optional: If you prefer to save the merge history in a separate AuditRecord relational table you can 
-set ```mergeHistoryInAuditRecordTable``` to ```YES```.  If enabled you are responsible for creating the AuditRecord
+set ```mergeHistoryInAuditRecordTable``` to ```YES``` and the ```auditRecordListId``` to the corresponding list id.  If enabled you are responsible for creating the AuditRecord
  table with the columns for _Audit Record Id_, _Old Recipient Id_, _New Recipient Id_, and _Create Date_ prior to
  calling ```checkIdentityForIds```.
 

@@ -4,6 +4,8 @@
 <dict>
 	<key>AuditRecord</key>
 	<dict>
+		<key>auditRecordListId</key>
+		<string>29392</string>
 		<key>mergeHistoryInAuditRecordTable</key>
 		<true/>
 		<key>createDateColumnName</key>

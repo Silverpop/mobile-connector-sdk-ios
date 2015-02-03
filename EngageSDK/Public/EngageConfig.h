@@ -79,6 +79,7 @@
 #define PLIST_AUDIT_RECORD_NEW_RECIPIENT_ID_COLUMN @"newRecipientIdColumnName"
 #define PLIST_AUDIT_RECORD_CREATE_DATE_COLUMN @"createDateColumnName"
 #define PLIST_AUDIT_RECORD_MERGE_HISTORY_IN_AUDIT_RECORD_TABLE @"mergeHistoryInAuditRecordTable"
+#define PLIST_AUDIT_RECORD_LIST_ID @"auditRecordListId"
 
 @interface EngageConfig : NSUserDefaults
 
@@ -104,8 +105,5 @@
 
 + (NSString *) recipientId;
 + (void) storeRecipientId:(NSString *)recipientId;
-
-+ (NSString *) auditRecordTableId;
-+ (void) storeAuditRecordTableId:(NSString *)auditRecordTableId;
 
 @end

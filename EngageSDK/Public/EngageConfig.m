@@ -172,15 +172,4 @@ __strong static NSString *engageListId = nil;
     }
 }
 
-+ (NSString *) auditRecordTableId {
-    NSString *tableId = [[NSUserDefaults standardUserDefaults] objectForKey:@"auditRecordTableId"];
-    return tableId ? tableId : @"";
-}
-
-+ (void) storeAuditRecordTableId:(NSString *)auditRecordTableId {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:auditRecordTableId forKey:@"auditRecordTableId"];
-    [defaults synchronize];
-}
-
 @end

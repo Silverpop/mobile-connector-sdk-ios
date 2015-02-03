@@ -40,5 +40,6 @@
 - (NSString *) auditRecordNewRecipientIdColumnName;
 - (NSString *) auditRecordCreateDateColumnName;
 - (BOOL) mergeHistoryInAuditRecordTableDatabase;
+- (NSString *) auditRecordListId;
 
 @end

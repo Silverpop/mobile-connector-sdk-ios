@@ -422,7 +422,7 @@ __strong static MobileIdentityManager *_sharedInstance = nil;
                                                     success:(void (^)(CheckIdentityResult* result))didSucceed
                                                     failure:(void (^)(CheckIdentityFailure* failure))didFail {
     
-    NSString * auditRecordTableId = [EngageConfig auditRecordTableId];
+    NSString * auditRecordTableId = [[EngageConfigManager sharedInstance] auditRecordListId];
     if ([auditRecordTableId length] == 0) {
         NSLog(@"Cannot update audit record without audit table id");
         if (didFail) {

@@ -188,4 +188,8 @@ NSString *const AUDIT_RECORD_GROUP = @"AuditRecord";
     return [[self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_MERGE_HISTORY_IN_AUDIT_RECORD_TABLE] boolValue];
 }
 
+- (NSString *) auditRecordListId {
+    return [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_LIST_ID];
+}
+
 @end

@@ -21,3 +21,5 @@ Pods
 */Pods/*
 Example/EngageSDKDemo/sample-config.h
 Example/Podfile.lock
+EngageSDK.xcodeproj/project.xcworkspace/xcshareddata
+EngageSDK.xcworkspace/xcshareddata/

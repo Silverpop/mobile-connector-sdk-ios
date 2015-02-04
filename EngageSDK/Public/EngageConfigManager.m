@@ -6,7 +6,9 @@
 //  Copyright (c) 2014 Silverpop. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "EngageConfigManager.h"
+#import "EngageConfig.h"
 
 @interface EngageConfigManager ()
 
@@ -15,6 +17,17 @@
 @end
 
 @implementation EngageConfigManager
+
+NSString *const LOCATION_SERVICES_GROUP = @"LocationServices";
+NSString *const UBF_FIELD_NAMES_GROUP = @"UBFFieldNames";
+NSString *const NETWORKING_GROUP = @"Networking";
+NSString *const SESSION_GROUP = @"Session";
+NSString *const PARAM_FIELD_NAMES_GROUP = @"ParamFieldNames";
+NSString *const GENERAL_GROUP = @"General";
+NSString *const LOCAL_EVENT_STORE_GROUP = @"LocalEventStore";
+NSString *const AUGMENTATION_GROUP = @"Augmentation";
+NSString *const RECIPIENT_GROUP = @"Recipient";
+NSString *const AUDIT_RECORD_GROUP = @"AuditRecord";
 
 - (id) init {
     self = [super init];
@@ -73,49 +86,110 @@
     return _configManager;
 }
 
+// private
+- propertyConfig:(NSString *)groupName :(NSString *) property {
+    return [[self plistConfigGroup:groupName] objectForKey:property];
+}
+
+// private
+- plistConfigGroup:(NSString *)key {
+    return [self.configs objectForKey:key];
+}
+
 - (BOOL)locationServicesEnabled {
-    return (BOOL)[[self.configs objectForKey:@"LocationServices"] objectForKey:@"enabled"];
+    return [[self propertyConfig:LOCATION_SERVICES_GROUP :@"enabled"] boolValue];
 }
 
 - (NSString *)fieldNameForUBF:(NSString *)ubfFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"UBFFieldNames"] objectForKey:ubfFieldConstantName];
+    return (NSString *)[self propertyConfig:UBF_FIELD_NAMES_GROUP :ubfFieldConstantName];
 }
 
 - (NSNumber *)configForNetworkValue:(NSString *)networkFieldConstantName {
-    return (NSNumber *)[[self.configs objectForKey:@"Networking"] objectForKey:networkFieldConstantName];
+    return (NSNumber *)[self propertyConfig:NETWORKING_GROUP :networkFieldConstantName];
 }
 
 - (long)longConfigForSessionValue:(NSString *)sessionFieldConstantName {
-    return (long)[[self.configs objectForKey:@"Session"] objectForKey:sessionFieldConstantName];
+    return (long)[self propertyConfig:SESSION_GROUP :sessionFieldConstantName];
 }
 
 - (NSString *)fieldNameForParam:(NSString *)paramFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"ParamFieldNames"] objectForKey:paramFieldConstantName];
+    return (NSString *)[self propertyConfig:PARAM_FIELD_NAMES_GROUP :paramFieldConstantName];
 }
 
 - (NSString *)configForGeneralFieldName:(NSString *)generalFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"General"] objectForKey:generalFieldConstantName];
+    return (NSString *)[self propertyConfig:GENERAL_GROUP :generalFieldConstantName];
 }
 
 - (NSNumber *)numberConfigForGeneralFieldName:(NSString *)generalFieldConstantName {
-    return (NSNumber *)[[self.configs objectForKey:@"General"] objectForKey:generalFieldConstantName];
+    return (NSNumber *)[self propertyConfig:GENERAL_GROUP :generalFieldConstantName];
 }
 
 - (NSString *)configForLocationFieldName:(NSString *)locationFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"LocationServices"] objectForKey:locationFieldConstantName];
+    return (NSString *)[self propertyConfig:LOCATION_SERVICES_GROUP :locationFieldConstantName];
 }
 
 - (NSNumber *)numberConfigForLocalStoreFieldName:(NSString *)localStoreFieldConstantName {
-    return (NSNumber *)[[self.configs objectForKey:@"LocalEventStore"] objectForKey:localStoreFieldConstantName];
+    return (NSNumber *)[self propertyConfig:LOCAL_EVENT_STORE_GROUP :localStoreFieldConstantName];
 }
 
 - (NSString *)configForAugmentationServiceFieldName:(NSString *)augmentationServiceFieldConstantName {
-    return (NSString *)[[self.configs objectForKey:@"Augmentation"] objectForKey:augmentationServiceFieldConstantName];
+    return (NSString *)[self propertyConfig:AUGMENTATION_GROUP :augmentationServiceFieldConstantName];
 }
 
 - (NSArray *)augmentationPluginClassNames {
-    return (NSArray *) [[self.configs objectForKey:@"Augmentation"] objectForKey:@"augmentationPluginClasses"];
+    return (NSArray *) [self propertyConfig:AUGMENTATION_GROUP:@"augmentationPluginClasses"];
 }
 
+- (BOOL)autoAnonymousTrackingEnabled {
+    return [[self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_ENABLE_AUTO_ANONYMOUS_TRACKING] boolValue];
+}
+
+- (NSString *) mobileUserIdGeneratorClassName {
+    return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MOBILE_USER_ID_CLASS_NAME];
+}
+
+- (NSString *) recipientMobileUserIdColumn {
+    return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MOBILE_USER_ID_COLUMN];
+}
+
+- (NSString *) recipientMergedRecipientIdColumn {
+    return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MERGED_RECIPIENT_ID_COLUMN];
+}
+
+- (NSString *) recipientMergedDateColumn {
+    return (NSString *) [self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MERGED_DATE_COLUMN];
+}
+
+- (BOOL) recipientMergeHistoryInMarketingDatabase {
+    return [[self propertyConfig:RECIPIENT_GROUP :PLIST_RECIPIENT_MERGE_HISTORY_IN_MARKETING_DB] boolValue];
+}
+
+- (NSString *) auditRecordPrimaryKeyColumnName {
+    return (NSString *) [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_PRIMARY_KEY_COLUMN_NAME];
+}
+
+- (NSString *) auditRecordPrimaryKeyGeneratorClassName {
+    return (NSString *) [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_PRIMARY_KEY_GENERATOR_CLASS_NAME];
+}
+
+- (NSString *) auditRecordOldRecipientIdColumnName {
+    return (NSString *) [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_OLD_RECIPIENT_ID_COLUMN];
+}
+
+- (NSString *) auditRecordNewRecipientIdColumnName {
+    return (NSString *) [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_NEW_RECIPIENT_ID_COLUMN];
+}
+
+- (NSString *) auditRecordCreateDateColumnName {
+    return (NSString *) [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_CREATE_DATE_COLUMN];
+}
+
+- (BOOL) mergeHistoryInAuditRecordTableDatabase {
+    return [[self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_MERGE_HISTORY_IN_AUDIT_RECORD_TABLE] boolValue];
+}
+
+- (NSString *) auditRecordListId {
+    return [self propertyConfig:AUDIT_RECORD_GROUP :PLIST_AUDIT_RECORD_LIST_ID];
+}
 
 @end

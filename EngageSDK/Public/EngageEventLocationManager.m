@@ -116,7 +116,7 @@ __strong static EngageEventLocationManager *_sharedInstance = nil;
                 
                 NSLog(@"Geo Location : %@", _sharedInstance.currentPlacemarkCache);
                 
-                if ([EngageConfig primaryUserId]) {
+                if ([EngageConfig mobileUserId]) {
                     NSString *listId = [EngageConfig engageListId];
                     XMLAPIClient *client = [XMLAPIClient client];
                     XMLAPI *updateUserKnownLocation = [XMLAPI updateUserLastKnownLocation:_sharedInstance.currentPlacemarkCache listId:listId];

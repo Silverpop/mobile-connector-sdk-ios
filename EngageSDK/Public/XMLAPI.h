@@ -28,13 +28,21 @@ extern int const COLUMN_TYPE_MULTI_SELECT;
 
 + (id)resourceNamed:(NSString *)namedResource;
 + (id)resourceNamed:(NSString *)namedResource params:(NSDictionary *)params;
+- (void)listId:(NSString *)listId;
+- (void)recipientId:(NSString *)recipientId;
 - (void)addParams:(NSDictionary *)param;
+- (void)addParam:(NSString *)key :(NSString *)value;
 - (void)addSyncFields:(NSDictionary *)fields;
 - (void)addColumns:(NSDictionary *)cols;
+- (void)addColumn:(NSString *)name :(NSString *)value;
 - (NSString *)envelope;
 
++ (id)selectRecipientWithId:(NSString *)recipientId list:(NSString *)listId;
 + (id)selectRecipientData:(NSString *)emailAddress list:(NSString *)listId;
 + (id)addRecipient:(NSString *)emailAddress list:(NSString *)listId;
++ (id)addRecipientWithMobileUserIdColumnName:(NSString *)mobileUserIdColumnName
+                                mobileUserId:(NSString *)mobileUserId
+                                       list :(NSString *)listId;
 + (id)updateRecipient:(NSString *)recipientId list:(NSString *)listId;
 + (id)addRecipientAnonymousToList:(NSString *)listId;
 

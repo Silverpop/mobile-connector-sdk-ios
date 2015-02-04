@@ -12,6 +12,7 @@
 //Defines NotificaitonCenter event names
 #define AUGMENTATION_SUCCESSFUL_EVENT @"AugmentationSuccessfulEvent"
 #define AUGMENTATION_EXPIRED_EVENT @"AugmentationExpiredEvent"
+#define PRIMARY_USER_ID_SET @"PrimaryUserIdSetEvent"
 
 
 #define ENGAGE_CONFIG_BUNDLE @"EngageConfigPlist.bundle"
@@ -22,7 +23,7 @@
 #define PLIST_PARAM_CAMPAIGN_EXPIRES_AT @"ParamCampaignExpiresAt"
 #define PLIST_PARAM_CAMPAIGN_VALID_FOR @"ParamCampaignValidFor"
 
-//Plist Constants.
+//Plist UBF Constants.
 #define PLIST_UBF_LONGITUDE @"UBFLongitudeFieldName"
 #define PLIST_UBF_LATITUDE @"UBFLatitudeFieldName"
 #define PLIST_UBF_LOCATION_NAME @"UBFLocationNameFieldName"
@@ -63,19 +64,46 @@
 // Plist Augmentation services.
 #define PLIST_AUGMENTATION_SERVICE_TIMEOUT @"augmentationTimeout"
 
+// PList recipient constants
+#define PLIST_RECIPIENT_ENABLE_AUTO_ANONYMOUS_TRACKING @"enableAutoAnonymousTracking"
+#define PLIST_RECIPIENT_MOBILE_USER_ID_CLASS_NAME @"mobileUserIdGeneratorClassName"
+#define PLIST_RECIPIENT_MOBILE_USER_ID_COLUMN @"mobileUserIdColumn"
+#define PLIST_RECIPIENT_MERGED_RECIPIENT_ID_COLUMN @"mergedRecipientIdColumn"
+#define PLIST_RECIPIENT_MERGED_DATE_COLUMN @"mergedDateColumn"
+#define PLIST_RECIPIENT_MERGE_HISTORY_IN_MARKETING_DB @"mergeHistoryInMarketingDatabase"
+
+// PList audit record constants
+#define PLIST_AUDIT_RECORD_PRIMARY_KEY_COLUMN_NAME @"auditRecordPrimaryKeyColumnName"
+#define PLIST_AUDIT_RECORD_PRIMARY_KEY_GENERATOR_CLASS_NAME @"auditRecordPrimaryKeyGeneratorClassName"
+#define PLIST_AUDIT_RECORD_OLD_RECIPIENT_ID_COLUMN @"oldRecipientIdColumnName"
+#define PLIST_AUDIT_RECORD_NEW_RECIPIENT_ID_COLUMN @"newRecipientIdColumnName"
+#define PLIST_AUDIT_RECORD_CREATE_DATE_COLUMN @"createDateColumnName"
+#define PLIST_AUDIT_RECORD_MERGE_HISTORY_IN_AUDIT_RECORD_TABLE @"mergeHistoryInAuditRecordTable"
+#define PLIST_AUDIT_RECORD_LIST_ID @"auditRecordListId"
+
 @interface EngageConfig : NSUserDefaults
 
 + (NSString *) deviceId;
-+ (NSString *)primaryUserId;
-+ (void)storePrimaryUserId:(NSString *)userId;
+
++ (NSString *)primaryUserId __deprecated_msg("Primary User Id has been renamed to Mobile User Id for clarity");
++ (void)storePrimaryUserId:(NSString *)userId __deprecated_msg("Primary User Id has been renamed to Mobile User Id for clarity");
+
++ (NSString *)mobileUserId;
++ (void)storeMobileUserId:(NSString *)userId;
+
 + (NSString *)anonymousId;
 + (void)storeAnonymousId:(NSString *)anonymousId;
+
 + (NSString *)currentCampaign;
++ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestamp:(long)utcExpirationTimestamp;
+
 + (NSString *)lastCampaign;
++ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestampString:(NSString *)expirationTimestamp;
+
 + (void)storeEngageListId:(NSString *)engageListId;
 + (NSString *)engageListId;
 
-+ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestamp:(long)utcExpirationTimestamp;
-+ (void)storeCurrentCampaign:(NSString *)currentCampaign withExpirationTimestampString:(NSString *)expirationTimestamp;
++ (NSString *) recipientId;
++ (void) storeRecipientId:(NSString *)recipientId;
 
 @end

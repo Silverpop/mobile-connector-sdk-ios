@@ -28,6 +28,17 @@
 #import "EngageConfigManager.h"
 #import "UBFManager.h"
 #import "XMLAPIManager.h"
+#import "MobileIdentityManager.h"
+#import "EngageDefaultUUIDGenerator.h"
+#import "EngageUUIDGenerating.h"
+#import "EngageDateFormatter.h"
+#import "XMLAPIOperation.h"
+#import "XMLAPIErrorCode.h"
+#import "SetupRecipientResult.h"
+#import "SetupRecipientFailure.h"
+#import "CheckIdentityResult.h"
+#import "CheckIdentityFailure.h"
+#import "EngageConnectionManager.h"
 
 @interface EngageSDK : NSObject
 

@@ -2,6 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AuditRecord</key>
+	<dict>
+		<key>auditRecordListId</key>
+		<string></string>
+		<key>mergeHistoryInAuditRecordTable</key>
+		<false/>
+		<key>createDateColumnName</key>
+		<string>Create Date</string>
+		<key>newRecipientIdColumnName</key>
+		<string>New Recipient Id</string>
+		<key>oldRecipientIdColumnName</key>
+		<string>Old Recipient Id</string>
+		<key>auditRecordPrimaryKeyGeneratorClassName</key>
+		<string>EngageDefaultUUIDGenerator</string>
+		<key>auditRecordPrimaryKeyColumnName</key>
+		<string>Audit Record Id</string>
+	</dict>
+	<key>Recipient</key>
+	<dict>
+		<key>mergeHistoryInMarketingDatabase</key>
+		<true/>
+		<key>mergedDateColumn</key>
+		<string>Merged Date</string>
+		<key>mergedRecipientIdColumn</key>
+		<string>Merged Recipient Id</string>
+		<key>mobileUserIdColumn</key>
+		<string>Mobile User Id</string>
+		<key>mobileUserIdGeneratorClassName</key>
+		<string>EngageDefaultUUIDGenerator</string>
+		<key>enableAutoAnonymousTracking</key>
+		<true/>
+	</dict>
 	<key>Augmentation</key>
 	<dict>
 		<key>augmentationPluginClasses</key>

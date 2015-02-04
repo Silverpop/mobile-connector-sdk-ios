@@ -1,0 +1,55 @@
+PODS:
+  - AFNetworking (2.2.3):
+    - AFNetworking/NSURLConnection (= 2.2.3)
+    - AFNetworking/NSURLSession (= 2.2.3)
+    - AFNetworking/Reachability (= 2.2.3)
+    - AFNetworking/Security (= 2.2.3)
+    - AFNetworking/Serialization (= 2.2.3)
+    - AFNetworking/UIKit (= 2.2.3)
+  - AFNetworking/NSURLConnection (2.2.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.2.3):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.2.3)
+  - AFNetworking/Security (2.2.3)
+  - AFNetworking/Serialization (2.2.3)
+  - AFNetworking/UIKit (2.2.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - AFOAuth2Client@phoenixplatform (0.1.1.1):
+    - AFNetworking (~> 2.0)
+  - EngageSDK (1.1.0):
+    - EngageSDK/AFNetworking (= 1.1.0)
+  - EngageSDK/AFNetworking (1.1.0):
+    - AFNetworking (= 2.2.3)
+    - AFOAuth2Client@phoenixplatform (~> 0.1)
+    - MobileDeepLinking-iOS (~> 0.2)
+  - MBProgressHUD (0.9)
+  - MobileDeepLinking-iOS (0.2.0)
+
+DEPENDENCIES:
+  - EngageSDK (from `https://github.com/makeandbuild/mobile-connector-sdk-ios.git`, commit `7d0ec323e7cd32549b5f749c96c84be669f1bfa5`, branch `master`)
+  - MBProgressHUD (~> 0.8)
+
+EXTERNAL SOURCES:
+  EngageSDK:
+    :branch: master
+    :commit: 7d0ec323e7cd32549b5f749c96c84be669f1bfa5
+    :git: https://github.com/makeandbuild/mobile-connector-sdk-ios.git
+
+CHECKOUT OPTIONS:
+  EngageSDK:
+    :branch: master
+    :commit: 7d0ec323e7cd32549b5f749c96c84be669f1bfa5
+    :git: https://github.com/makeandbuild/mobile-connector-sdk-ios.git
+
+SPEC CHECKSUMS:
+  AFNetworking: 47947303319594706f48a55185ea95a95159ab94
+  AFOAuth2Client@phoenixplatform: 9785fffb216a616da21c76e8cbefff9d7840ae6e
+  EngageSDK: a014e90c0ff43a9973523dd582e172f351527021
+  MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
+  MobileDeepLinking-iOS: 4a23f291977481159a22296b4a8b0b8be26b4a13
+
+COCOAPODS: 0.35.0

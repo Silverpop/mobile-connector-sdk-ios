@@ -31,13 +31,13 @@
 
 - (void)createAnonymousUserToList:(NSString *)listId
                           success:(void (^)(ResultDictionary *ERXML))success
-                          failure:(void (^)(NSError *error))failure;
+                          failure:(void (^)(NSError *error))failure __deprecated_msg("Depreciated in favor of recipient setup methods in MobileIdentityManager");
 
 - (void)updateAnonymousToPrimaryUser:(NSString *)userId
                                 list:(NSString *)listId
                    primaryUserColumn:(NSString *)primaryUserColumn
                          mergeColumn:(NSString *)mergeColumn
                              success:(void (^)(ResultDictionary *ERXML))success
-                             failure:(void (^)(NSError *error))failure;
+                             failure:(void (^)(NSError *error))failure __deprecated_msg("Depreciated in favor of recipient setup methods in MobileIdentityManager");
 
 @end

@@ -81,8 +81,9 @@ __strong static UBFManager *_sharedInstance = nil;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *installed = [defaults objectForKey:kEngageClientInstalled];
         if (![installed boolValue]) { // nil or false
-            // installed event
-            [_sharedInstance trackEvent:[UBF installed:nil]];
+
+            [UBFManager waitForUserIdThenCreateInstalledEvent];
+
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             [defaults setObject:@"YES" forKey:kEngageClientInstalled];
             [defaults synchronize];
@@ -105,8 +106,8 @@ __strong static UBFManager *_sharedInstance = nil;
         }
         
         // start session
-        [_sharedInstance restartSession];
-        
+        [_sharedInstance restartSessionWaitForMobileUserIdForEvent];
+
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
@@ -141,6 +142,33 @@ __strong static UBFManager *_sharedInstance = nil;
     return _sharedInstance;
 }
 
+/**
+ * Add observer to wait until the mobile user id is known, then create the
+ * installed event so it will include the user id info.
+ */
++ (void)waitForUserIdThenCreateInstalledEvent {
+    NSString *mobileUserId = [EngageConfig mobileUserId];
+    // is the primary id already set?
+    if (mobileUserId && [mobileUserId length] > 0) {
+        [_sharedInstance trackEvent:[UBF installed:nil]];
+    }
+    // otherwise, wait for it to be set
+    else {
+        NSLog(@"Registering listener for primary user id event: Installed Event");
+        __block id installedEventComplete;
+        installedEventComplete = [[NSNotificationCenter defaultCenter] addObserverForName:PRIMARY_USER_ID_SET
+                                                                                   object:nil
+                                                                                    queue:[NSOperationQueue mainQueue]
+                                                                               usingBlock:^(NSNotification *note) {
+                                                                                   NSLog(@"Primary User Id is set.  Creating installed event");
+                                                                                   // now that we have a user id we can create the installed event
+                                                                                   [_sharedInstance trackEvent:[UBF installed:nil]];
+
+                                                                                   NSLog(@"Removing observer for primary user id event: Installed Event");
+                                                                                   [[NSNotificationCenter defaultCenter] removeObserver:installedEventComplete];
+                                                                               }];
+    }
+}
 
 + (id)sharedInstance
 {
@@ -150,9 +178,15 @@ __strong static UBFManager *_sharedInstance = nil;
     return _sharedInstance;
 }
 
-
+/**
+ *  Saves event to local store and starts augmentation process for event.
+ *
+ *  @param event the event to track/save
+ *
+ *  @return unique id for the event
+ */
 - (NSURL *) trackEvent:(UBF *)event {
-    
+
     EngageEvent *engageEvent = nil;
     engageEvent = [[EngageLocalEventStore sharedInstance] saveUBFEvent:event status:[[NSNumber numberWithInt:HOLD] intValue]];
     [[UBFAugmentationManager sharedInstance] augmentUBFEvent:event withEngageEvent:engageEvent];
@@ -188,6 +222,45 @@ __strong static UBFManager *_sharedInstance = nil;
     [self trackEvent:[UBF sessionStarted:nil withCampaign:[EngageConfig currentCampaign]]];
     self.sessionBegan = [NSDate date];
     self.duration = 0.0f;
+}
+
+/**
+ * Restarts the session.  Waits until the mobile user id is known before
+ * sending the session started event so it will include the user id.
+ */
+- (void)restartSessionWaitForMobileUserIdForEvent {
+    if (self.sessionEnded) [self trackEvent:self.sessionEnded];
+    [self waitForUserIdThenCreateSessionStartedEvent];
+    self.sessionBegan = [NSDate date];
+    self.duration = 0.0f;
+}
+
+/**
+ * Add observer to wait until the mobile user id is known, then create the
+ * installed event so it will include the user info.
+ */
+- (void)waitForUserIdThenCreateSessionStartedEvent {
+    NSString *mobileUserId = [EngageConfig mobileUserId];
+    // is the primary id already set?
+    if (mobileUserId && [mobileUserId length] > 0) {
+        [self trackEvent:[UBF sessionStarted:nil withCampaign:[EngageConfig currentCampaign]]];
+    }
+    // wait for it to be set
+    else {
+        NSLog(@"Registering listener for user primary user id event: Session Started Event");
+        __block id sessionStartedEventComplete;
+        sessionStartedEventComplete = [[NSNotificationCenter defaultCenter] addObserverForName:PRIMARY_USER_ID_SET
+                                                                                        object:nil
+                                                                                         queue:[NSOperationQueue mainQueue]
+                                                                                    usingBlock:^(NSNotification *note) {
+                                                                                        NSLog(@"Primary User Id is set.  Creating session started event.");
+                                                                                        // now that we have a user id we can create the session started event
+                                                                                        [self trackEvent:[UBF sessionStarted:nil withCampaign:[EngageConfig currentCampaign]]];
+
+                                                                                        NSLog(@"Removing observer for primary user id event: Session Started Event");
+                                                                                        [[NSNotificationCenter defaultCenter] removeObserver:sessionStartedEventComplete];
+                                                                                    }];
+    }
 }
 
 - (BOOL)sessionExpired {

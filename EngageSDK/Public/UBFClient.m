@@ -10,6 +10,7 @@
 #import "EngageEvent.h"
 #import "EngageConfigManager.h"
 #import "UBFAugmentationManager.h"
+#import "EngageConnectionManager.h"
 
 @interface UBFClient ()
 
@@ -53,26 +54,29 @@ __strong static UBFClient *_sharedClient = nil;
 - (void)authenticateInternal:(void (^)(AFOAuthCredential *credential))success
                      failure:(void (^)(NSError *error))failure {
     
-    [[_sharedClient operationQueue] setSuspended:YES];
-    
-    //Perform the login to the system.
-    [_sharedClient authenticate:^(AFOAuthCredential *credential) {
-        NSLog(@"EngageSDK UBFClient successfully authenticated");
-        if (success) {
-            success(credential);
-        }
+        //TODO: dont setSuspended
+        //    [[self operationQueue] setSuspended:YES];
         
-        //Posts all of the pending EngageEvents.
-        [self applicationStartupPostStaleEvents];
-        
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+        //Perform the login to the system.
+        [[EngageConnectionManager sharedInstance] authenticate:^(AFOAuthCredential *credential) {
+            NSLog(@"EngageSDK UBFClient successfully authenticated");
+            if (success) {
+                success(credential);
+            }
+            
+            //Posts all of the pending EngageEvents.
+            [self applicationStartupPostStaleEvents];
+            
+        } failure:^(NSError *error) {
+            if (failure) {
+                failure(error);
+            }
+        }];
 }
 
-//When the application starts up there may be stale events that never completed and those need to be posted.
+/**
+ *  When the application starts up there may be stale events that never completed and those need to be posted.
+ */
 - (void) applicationStartupPostStaleEvents {
     //Lookup all of the events that are still "HOLD" meaning they didn't complete Augmentation and try again.
     NSArray *holdEngageEvents = [[EngageLocalEventStore sharedInstance] findEngageEventsWithStatus:HOLD];
@@ -123,11 +127,7 @@ __strong static UBFClient *_sharedClient = nil;
             
             NSLog(@"POSTing %@", params.description);
             
-            _sharedClient.requestSerializer = [AFJSONRequestSerializer serializer];
-            [_sharedClient.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-            [_sharedClient.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [_sharedClient.credential accessToken]] forHTTPHeaderField:@"Authorization"];
-            
-            [_sharedClient POST:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [[EngageConnectionManager sharedInstance] postJsonRequest:@"/rest/events/submission" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
                 // Mark the EngageObjects as posted in the EngageLocalEventStore.
                 for (EngageEvent *intEE in unpostedUbfEvents) {

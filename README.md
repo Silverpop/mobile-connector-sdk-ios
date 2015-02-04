@@ -20,8 +20,21 @@ EngageSDK is a wrapper for the Engage Database XMLAPI and JSON Universal Events.
 
 There are currently limits placed on the number of Access Tokens that can be generated per hour per instance of Engage.  This number is easily increased, however, before deploying your app publicly, you must contact your Relationship Manager or Sales Rep regarding your intention to use this connector and that you will need to have your OAuth Access Token rate limit increased.
 
-## Demo
+## Demos
 
+### 1.1.0 Demo
+
+    $ gem install cocoapods # If necessary
+    $ git clone git@github.com:Silverpop/engage-sdk-ios.git
+    $ cd engage-sdk-ios/EngageSDK-1-1-0-Demo-ios
+    $ pod install
+    $ open EngageSDK-1-1-0-Demo-ios.xcworkspace
+
+This demo app demonstrates the process of managing the mobile identity of the recipient.
+
+For more info refer to the [README](https://github.com/makeandbuild/mobile-connector-sdk-ios/tree/master/EngageSDK-1-1-0-Demo-ios) for the demo app.
+
+### 1.0.0 Demo
 EngageSDK includes a sample project within the Example subdirectory. In order to build the project, you must install the dependencies via CocoaPods. To do so:
 
     $ gem install cocoapods # If necessary
@@ -38,7 +51,7 @@ Once installation has finished, you can build and run the EngageSDKDemo project 
 Once you understand how the Demo project is configured via CocoaPods and implemented using the EngageSDK, you are ready to integrate the EngageSDK with your new or existing Xcode iPhone project.
 
 ## Getting Started 
-The first thing you will want to do is contact your Relationship Manager at Silverpop and ask for the "Silverpop Mobile Connector".  They will assist in getting your Engage account provisioned for Universal Behaviors -- the new flexible event tracking system that is the backbone of tracked mobile app behaviors.
+The first thing you will want to do is contact your Relationship Manager at Sidlverpop and ask for the "Silverpop Mobile Connector".  They will assist in getting your Engage account provisioned for Universal Behaviors -- the new flexible event tracking system that is the backbone of tracked mobile app behaviors.
 
 Next, you can follow the instructions in this readme file, or as an additional offer, we've put together a short 10 minute tutorial that will walk you through the download, installation, and configuration process to get your app up and running.  [Click here](https://kb.silverpop.com/kb/engage/Silverpop_Mobile_Connector_-_***NEW***/Video_Tutorial%3A_Up_and_Running_in_10_mins!) to watch that video tutorial within our KnowledgeBase.
 
@@ -67,7 +80,7 @@ touch Podfile
 Edit this file to add the EngageSDK dependency
 
 ```
-pod 'EngageSDK', '~> 1.0.0'
+pod 'EngageSDK', '~> 1.1.0'
 ```
 
 Save and close. 
@@ -100,25 +113,20 @@ Some developers may need to install Xcode Command Line Tools before installing C
 
 If you are having trouble with ruby gems, try performing a gem system update: `gem update --system`
 
-### UBFManager
+### <a name="EngageSDK"/>Engage SDK
+To initalize the EngageSDK including the (XMLAPIManager)[#XMLAPIManager) and (UBFManager)[UBFManager] make the following call in your AppDelegage class.
 
-The UBFManager manages posting UBF events through the Engage JSON Universal Events web services. A UBFManager singleton instance should be created in your AppDelegate class. Failing to initialize the UBFManager in your AppDelegate and rather somewhere else in your application may lead to certain UBF events such as "installed" or "session started" from being captured since they may occur before anywhere else in your application has the opportunity to initialize an instance of the UBFManager. 
-
-Create UBFManager instance in your AppDelegate
 ```objective-c
-UBFManager *ubfManger = [UBFManager createClient:ENGAGE_CLIENT_ID
-                                          secret:ENGAGE_SECRET
-                                           token:ENGAGE_REFRESH_TOKEN
-                                            host:ENGAGE_BASE_URL
-                                  connectSuccess:^(AFOAuthCredential *credential) {
-        NSLog(@"Successfully connected to Engage API : Credential %@", credential);
-    } failure:^(NSError *error) {
-        NSLog(@"Failed to connect to Silverpop API .... %@", [error description]);
-    }];
+[EngageSDK initializeSDKClient:ENGAGE_CLIENT_ID secret:ENGAGE_SECRET token:ENGAGE_REFRESH_TOKEN host:ENGAGE_BASE_URL engageDatabaseListId:ENGAGE_LIST_ID];
 ```
+
+### <a name="UBFManager"/>UBFManager
+
+The ```UBFManager``` manages posting UBF events through the Engage JSON Universal Events web services. A ```UBFManager``` singleton instance should be created in your ```AppDelegate``` class. Failing to initialize the ```UBFManager``` in your ```AppDelegate``` and rather somewhere else in your application may lead to certain UBF events such as "installed" or "session started" from being captured since they may occur before anywhere else in your application has the opportunity to initialize an instance of the ```UBFManager```. 
+
 ####Purpose
 
-The goal of UBFManager is serve the simple purpose of posting UBF Universal Events to Engage while masking the more complicated management tasks such as (network reachability, persistence, and authentication) from the SDK user. 
+The goal of ```UBFManager``` is serve the simple purpose of posting UBF Universal Events to Engage while masking the more complicated management tasks such as (network reachability, persistence, and authentication) from the SDK user. 
 
 * tracking UBF events - Posts your individual events to Engage. Local cache is taken into consideration and events are not posted until "ubfEventCacheSize" configuration value is reached. Once that value is reached then the events are batched and sent to Engage to reduce network traffic. You may set the value of "ubfEventCacheSize" if you do not wish for local caching to take palce. 
 * handleLocalNotification - utility method invoked SDK user invokes when their application receives a local notificaiton
@@ -129,7 +137,7 @@ The goal of UBFManager is serve the simple purpose of posting UBF Universal Even
 ####Notes
 Notes about UBFManager creation. The UBFManager transparently handles network reachability, event persistence, and client authentication. Initial creation of the UBFManager will establish the OAuth 2 connection to the Engage service using the credentials that you provide which you received from the Engage portal. UBF events may be immediately posted to the UBFManager even before a successful authentication connection has been established. UBF events that are posted to the manager are simply queued and persisted until the authentication is successful and then they are flushed to Engage. The UBFManager will also queue and persist the events locally if an event is posted while the device does not currently have network reachability. If the application is closed or the device powered down before network reachability has been regained then the events will be posted the next time the application is opened. The local events are durable under all circumstances other than the application being deleted from the device or the SDK user deleting them from the EngageLocalEventStore. 
 
-After initial UBFManager creation you may reference your singleton anytime with
+After initial UBFManager creation (see [EngageSDK](#EngageSDK)) you may reference your singleton anytime with
 ```objective-c
 UBFManager *ubfManager = [UBFManager sharedInstance];
 ```
@@ -171,12 +179,10 @@ UBFWeatherAugmentationPlugin.m
     return YES; //Other plugins depend on this Plugins output for processing
 }
 
-
 -(BOOL)isSupplementalDataReady {
     // Your logic to decide if the data needed for the plugin to process is ready or not. Lets assume our fake weather data is.
     return YES;
 }
-
 
 -(UBF*)process:(UBF*)ubfEvent {
     if (ubfEvent) {
@@ -196,47 +202,71 @@ will be posted to Engage API in the same state as when it was handed off to the 
 
 ## Universal Behaviors API
 
-Before connecting and sending Universal Behaviors, you should assume a valid user identity either "anonymous" or some other specified identity via XMLAPI.
+Before connecting and sending Universal Behaviors, you should assume a valid user identity specified identity via XMLAPI.  Refer to the [MobileIdentityManager](#MobileIdentityManager).
 
-### Creating an anonymous user
 
+#### Goal Completed
+```objective-c
+[[UBFManager sharedInstance] trackEvent:[UBF goalCompleted:@"LISTENED TO MVSTERMIND" params:nil]];
+```
+
+#### Goal Abandoned
+```objective-c
+[[UBFManager sharedInstance] trackEvent:[UBF goalAbandoned:@"LISTENED TO MVSTERMIND" params:nil]];
+```
+
+#### Named Event with params
+```objective-c
+[[UBFManager sharedInstance] trackEvent:[UBF namedEvent:@"PLAYER LOADED" params:@{ @"Event Source View" : @"HomeViewController", @"Event Tags" : @"MVSTERMIND,Underground" }]];
+```
+
+### <a name="XMLAPIManager"/>XMLAPIManager
+
+The XMLAPIManager manages posting XMLAPI messages to the Engage web services. A XMLAPIManager singleton instance should be created in your AppDelegate class.
+
+After initial XMLAPIManager creation (see [EngageSDK](#EngageSDK)) you may reference your singleton anytime with
+```objective-c
+XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
+```
+
+#### ~~Creating an anonymous user~~ (depreciated)
+*Depreciated in favor of recipient setup methods in* [MobileIdentityManager](#MobileIdentityManager)
 ```objective-c
 // Conveniently calls addRecipient and stores anonymousId within EngageConfig
 [[XMLAPIManager sharedInstance] createAnonymousUserToList:ENGAGE_LIST_ID success:^(ResultDictionary *ERXML) {
-    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+    if ([ERXML isSuccess]) {
         NSLog(@"SUCCESS");
     }
     else {
-        NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
+        NSLog(@"%@",[ERXML faultString]);
     }
 } failure:^(NSError *error) {
     NSLog(@"SERVICE FAIL");
 }];
 ```
 
-### Identifying a registered user
+#### Identifying a registered user
 
 ```objective-c
-
 XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.com" list:ENGAGE_LIST_ID];
 
 [[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientData success:^(ResultDictionary *ERXML) {
-        if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+        if ([ERXML isSuccess]) {
             NSLog(@"SUCCESS");
             // VERY IMPORTANT!!!
             // Universal Behaviors reads this value
-            [EngageConfig storePrimaryUserId:[ERXML valueForShortPath:@"RecipientId"]];
+            [EngageConfig storeMobileUserId:[ERXML valueForShortPath:@"RecipientId"]];
         }
         else {
-            NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
+            NSLog(@"%@",[ERXML faultString]);
         }
     } failure:^(NSError *error) {
         NSLog(@"SERVICE FAIL");
     }];
 ```
 
-### Convert anonymous user to registered user
-
+#### ~~Convert anonymous user to registered user~~ (depreciated)
+*Depreciated in favor of recipient setup methods in* [MobileIdentityManager](#MobileIdentityManager)
 ```objective-c
 // Conveniently links anonymous user record with the primary user record according to the mergeColumn
 [[XMLAPIManager sharedInstance] updateAnonymousToPrimaryUser:[EngageConfig primaryUserId]
@@ -255,46 +285,120 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
                                                 }];
 ```
 
-#### Goal Completed
+
+### <a name="MobileIdentityManager"/>MobileIdentityManager
+
+The ```MobileIdentityManager``` can be used to manage user identities.  It can auto create new user identities 
+as well as merge existing identities if needed.  This functionality is intended to replace the 
+manual process of creating an anonymous user.
+ 
+In addition to the normal app security token configuration, the following setup must be configured prior to 
+using the ```MobileIdentityManager``` methods.
+- Recipient list should already be created and the ```listId``` should be setup in the configuration.
+- ```EngageConfig.plist``` should be configured with the columns names representing the _Mobile User Id_, _Merged Recipient Id_, and _Merged Date_.  The ```EngageConfigDefaults.plist``` defines default values if you prefer to use those.
+- The _Mobile User Id_, _Merged Recipient Id_, and _Merged Date_ columns must be created in the recipient list with names that match your ```EngageConfig.plist``` settings
+- Optional: If you prefer to save the merge history in a separate AuditRecord relational table you can 
+set ```mergeHistoryInAuditRecordTable``` to ```YES``` and the ```auditRecordListId``` to the corresponding list id.  If enabled you are responsible for creating the AuditRecord
+ table with the columns for _Audit Record Id_, _Old Recipient Id_, _New Recipient Id_, and _Create Date_ prior to
+ calling ```checkIdentityForIds```.
+
+##### Setup recipient identity
+
 ```objective-c
-[[UBFManager sharedInstance] trackEvent:[UBF goalCompleted:@"LISTENED TO MVSTERMIND" params:nil]];
+/**
+ * Checks if the mobile user id has been configured yet.  If not
+ * and the 'enableAutoAnonymousTracking' flag is set to true it is auto generated
+ * using either the {@link EngageDefaultUUIDGenerator} or
+ * the generator configured as the 'mobileUserIdGeneratorClassName'.  If
+ * 'enableAutoAnonymousTracking' is 'NO' you are responsible for
+ * manually setting the id using {@code EngageConfig#storeMobileUserId}.
+ * <p/>
+ * Once we have a mobile user id (generated or manually set) a new recipient is
+ * created with the mobile user id.
+ * <p/>
+ * On successful completion of this method the EngageConfig will contain the
+ * mobile user id and new recipient id.
+ *
+ * @param didSucceed custom behavior to run on success of this method
+ * @param didFail custom behavior to run on failure of this method
+ */
+-(void)setupRecipientWithSuccess:(void (^)(SetupRecipientResult* result))didSucceed
+                         failure:(void (^)(SetupRecipientFailure* failure))didFail;
 ```
 
-#### Goal Abandoned
+##### Setup Recipient Usage
+
 ```objective-c
-[[UBFManager sharedInstance] trackEvent:[UBF goalAbandoned:@"LISTENED TO MVSTERMIND" params:nil]];
+[[MobileIdentityManager sharedInstance] setupRecipientWithSuccess:^(SetupRecipientResult *result) {
+    
+    NSString *messageFormat = @"Recipient Id: %@\nMobile User Id: %@";
+    NSString *message = [NSString stringWithFormat:messageFormat, [result recipientId], [EngageConfig mobileUserId]];
+    NSLog(@"%@", message);
+    
+    // do any other custom behavior
+    
+} failure:^(SetupRecipientFailure *failure) {
+    NSLog(@"Setup Recipient failure");
+    
+    // do any other custom behavior
+}];
 ```
 
-#### Named Event with params
+##### Check identity and merge recipients
+
 ```objective-c
-[[UBFManager sharedInstance] trackEvent:[UBF namedEvent:@"PLAYER LOADED" params:@{ @"Event Source View" : @"HomeViewController", @"Event Tags" : @"MVSTERMIND,Underground" }]];
+/**
+ * Checks for an existing recipient with all the specified ids.  If a matching recipient doesn't exist
+ * the currently configured recipient is updated with the searched ids.  If an existing recipient
+ * does exist the two recipients are merged and the engage app config is switched to the existing
+ * recipient.
+ * <p/>
+ * When recipients are merged a history of the merged recipients is recorded.  By default it uses the
+ * Mobile User Id, Merged Recipient Id, and Merged Date columns, however if you prefer to store
+ * the merge history in a separate AuditRecord table you can set you EngageConfig.plist properties accordingly.
+ * <p/>
+ * WARNING: The merge process is not currently transactional.  If this method errors the data is likely to
+ * be left in an inconsistent state.
+ *
+ * @param fieldsToIds Dictionary of column name to id value for that column.  Searches for an
+ *                             existing recipient that contains ALL of the columns in the dictionary.
+ *                             <p/>
+ *                             Examples:
+ *                             - Key: facebook_id, Value: 100
+ *                             - Key: twitter_id, Value: 9999
+ * @param didSucceed custom behavior to run on success of this method
+ * @param didFail custom behavior to run on failure of this method
+ */
+ -(void)checkIdentityForIds:(NSDictionary *)fieldsToIds
+                   success:(void (^)(CheckIdentityResult* result))didSucceed
+                   failure:(void (^)(CheckIdentityFailure* failure))didFail;
 ```
+ 
+##### Check Identity Usage
 
-### XMLAPIManager
-
-The XMLAPIManager manages posting XMLAPI messages to the Engage web services. A XMLAPIManager singleton instance should be created in your AppDelegate class.
-
-Create XMLAPIManager instance in your AppDelegate
 ```objective-c
-XMLAPIManager *xmlapiManager = [XMLAPIManager createClient:ENGAGE_CLIENT_ID
-                                          secret:ENGAGE_SECRET
-                                           token:ENGAGE_REFRESH_TOKEN
-                                            host:ENGAGE_BASE_URL
-                                  connectSuccess:^(AFOAuthCredential *credential) {
-        NSLog(@"Successfully connected to Engage XMLAPI : Credential %@", credential);
-    } failure:^(NSError *error) {
-        NSLog(@"Failed to connect to Silverpop XMLAPI .... %@", [error description]);
-    }];
-```
-
-After initial XMLAPIManager creation you may reference your singleton anytime with
-```objective-c
-XMLAPIManager *xmlapiManager = [XMLAPIManager sharedInstance];
+[[MobileIdentityManager sharedInstance] checkIdentityForIds:@{ @"facebook_id" : @"fbuser" } success:^(CheckIdentityResult *result) {
+    
+    NSString *newRecipientId = [result recipientId];
+    NSString *mergedRecipientId = [result mergedRecipientId];
+    NSString *mobileUserId = [result mobileUserId];
+    
+    NSString *messageFormat = @"Current recipient id: %@\nMerged recipient id: %@\nMobile user id: %@";
+    NSString *message = [NSString stringWithFormat:messageFormat, newRecipientId, mergedRecipientId, mobileUserId];
+    NSLog(@"%@", message);
+    
+    // do any other custom behavior
+    
+} failure:^(CheckIdentityFailure *failure) {
+    NSLog(@"Check Identity failure");
+    
+    // do any other custom behavior
+}];
 ```
 
 ## Local Event Storage
 
-UBF events are persisted to a local SQLite DB on the user's device. The event can have 1 of 4 status. NOT_POSTED, SUCCESSFULLY_POSTED, FAILED_POST, HOLD. 
+UBF events are persisted to a local SQLite DB on the user's device. The event can have 1 of 5 statuses. ```NOT_POSTED```, ```SUCCESSFULLY_POSTED```, ```FAILED_POST```, ```HOLD```, or ```EXPIRED```. 
 
 * NOT_POSTED 
     * UBF events that are ready to be sent to Engage but currently cannot due to network not being reachable or queue cache size not being met yet.
@@ -311,11 +415,11 @@ UBF events are persisted to a local SQLite DB on the user's device. The event ca
 
 EngageSDK has 2 primary models that SDK users should concerns themselves with
 
-### UBF
+### <a name="UBF"/>UBF
 
 Utility class for generating JSON Universal Events that are posted to the UBFManager and ultimately sent to Engage. The class maintains a NSDictionary of attributes that are different depending on the event type that is created. Any NSDictionary values that you provide to the utility methods will take precedence over the values that the utility methods pull from the device.
 
-#### UBF Core Values
+#### <a name="UBFCoreValues"/>UBF Core Values
 
 * Device Version
 * OS Name
@@ -323,10 +427,11 @@ Utility class for generating JSON Universal Events that are posted to the UBFMan
 * App Name
 * App Version
 * Device Id
-* Primary User Id
+* Mobile User Id / Primary User Id
 * Anonymous Id
+* Recipient Id
 
-### XMLAPI
+### <a name="XMLAPI"/>XMLAPI
 
 Post an XMLAPI resource using a helper e.g. SelectRecipientData
 
@@ -336,13 +441,13 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
 
 [[XMLAPIManager sharedInstance] postXMLAPI:selectRecipientData success:^(ResultDictionary *ERXML) {
     // SUCCESS = TRUE
-    if ([[ERXML valueForShortPath:@"SUCCESS"] boolValue]) {
+    if ([ERXML isSuccess]) {
         NSLog(@"SUCCESS");
     }
-    // SUCCESS != TRUE
+    // SUCCESS = FALSE
     // This is a specific XMLAPI failure, status 2xx
     else {
-        NSLog(@"%@",[ERXML valueForShortPath:@"Fault.FaultString"]);
+        NSLog(@"%@",[ERXML faultString]);
     }
 } failure:^(NSError *error) {
     // This is a status > 400
@@ -372,7 +477,7 @@ XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"somebody@somedomain.
 is equivalent to:
 
 ```objective-c
-XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"
+XMLAPI *selectRecipientData = [XMLAPI resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA
                                              params:@{
                                @"LIST_ID" : @"45654",
                                @"EMAIL" : @"someone@adomain.com",
@@ -382,7 +487,7 @@ XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"
 or alternately:
 
 ```objective-c
-XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"];
+XMLAPI *selectRecipientData = [XMLAPI resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA];
 [selectRecipientData addParams:@{ @"LIST_ID" : @"45654", @"EMAIL" : @"someone@adomain.com" }];
 [selectRecipientData addColumns:@{ @"Customer Id" : @"123-45-6789" }];
 ```
@@ -403,7 +508,7 @@ XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData"];
 is equivalent to:
 
 ```objective-c
-XMLAPI *selectRecipientData = [XMLAPI resourceNamed:@"SelectRecipientData" params:@{@"RECIPIENT_ID" : @"702003"}];
+XMLAPI *selectRecipientData = [XMLAPI resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA params:@{@"RECIPIENT_ID" : @"702003"}];
 ```
 
 ### Example 3
@@ -424,6 +529,8 @@ is equivalent to:
 ```objective-c
 XMLAPI *selectRecipientData = [XMLAPI selectRecipientData:@"someone@adomain.com" list:@"45654"];
 ```
+### XMLAPIOperation
+For your convenience constants for the supported XMLAPI operations can be found in the ```XMLAPIOperation``` class.
 
 ## Deeplinking
 
@@ -468,12 +575,25 @@ The configuration
 |LocationServices->lastKnownLocationTimestampColumn|Last Location Address Time|Engage DB column name for the last known location time|String|
 |LocationServices->lastKnownLocationColumn|Last Location Address|Engage DB column name for the last known location|String|
 |LocationServices->locationDistanceFilter|10|meters in location change before updated location information delegate is invoked|Number|
-||LocationServices->locationPrecisionLevel|kCLLocationAccuracyBest|desired level of location accuracy|String|
+|LocationServices->locationPrecisionLevel|kCLLocationAccuracyBest|desired level of location accuracy|String|
 |LocationServices->locationCacheLifespan|1 hr|lifespan of location coordinates before they are considered expired|EngageExpirationParser String|
 |LocationServices->coordinatesPlacemarkTimeout|15 sec|timeout on acquiring CLPlacemark before event is posted without that information|EngageExpirationParser String|
 |LocationServices->coordinatesAcquisitionTimeout|15 sec|timeout on acquiring CLLocation before event is posted without that information|EngageExpirationParser String|
 |LocationServices->enabled|YES|Are Location services enabled for UBF events|Boolean|
-|Augmentation->augmentationTimeout|15 sec|timeout for augmenting UBF events|EngageExpirationParser String|
+|Augmentation->augmentationTimeout|15 sec|timeout for augmenting UBF events|EngageExpirationParser|String|
+|Recipient->enableAutoAnonymousTracking|true|If set to true it allows mobile user ids to be auto generated for recipients.  If set to false you are responsible for manually setting the mobile user id.|Boolean|
+|Recipient->mobileUserIdGeneratorClassName|EngageDefaultUUIDGenerator|The class to use for auto generating mobile user ids if the ```enableAutoAnonymousTracking``` property is set to true.|Class|
+|Recipient->mobileUserIdColumn|Mobile User Id|Column name to store the mobile user id in.|String|
+|Recipient->mergedRecipientIdColumn|Merged Recipient Id|Column name to store the merged recipient id in.  The merged recipient id column is populated if needed during the check identity process.|String|
+|Recipient->mergedDateColumn|Merged Date|Column name to store the merged date in. The merged recipient id column is populated if needed during the check identity process.|String|
+|Recipient->mergeHistoryInMarketingDatabase|YES|If the audit history for merged recipients should be stored in the marketing database.|Boolean|
+|AuditRecord->auditRecordPrimaryKeyColumnName|Audit Record Id|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```.  The column name for the generated primary key in the audit record table.|String|
+|AuditRecord->auditRecordPrimaryKeyGeneratorClassName|EngageDefaultUUIDGenerator|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```.  The class to use to generate primary keys for the audit record table.|Class|
+|AuditRecord->oldRecipientIdColumnName|Old Recipient Id|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```. When a recipient is merged during the check identity process, this is the column name for old recipient id.|String|
+|AuditRecord>newRecipientIdColumnName|New Recipient Id|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```. When a recipient is merged during the check identity process, this is the column name for assumed recipient id.|String|
+|AuditRecord->createDateColumnName|Create Date|Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```. When a recipient is merged during the check identity process, this is the column name for the timestamp for when the merge occurred.|String|
+|AuditRecord->mergeHistoryInAuditRecordTable|NO|If the audit history for merged recipients should be stored in a separate audit record table.|Boolean|
+|AuditRecord->auditRecordListId||The list id for the Audit Record relational table. Only required if ```mergeHistoryInAuditRecordTable``` is set to ```YES```.|String|
 
 
 ## EngageExpirationParser
@@ -500,16 +620,14 @@ Both local and push notifications require that the user of the SDK enable their 
 
 #### Local Notification Received
 ```objective-c
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     [[UBFManager sharedInstance] handleLocalNotificationReceivedEvents:notification withParams:nil];
 }
 ```
 
 #### Push Notification Received
 ```objective-c
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)pushNotification 
-{
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)pushNotification  {
     [[UBFManager sharedInstance] handlePushNotificationReceivedEvents:pushNotification];
 }
 ```

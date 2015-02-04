@@ -7,6 +7,7 @@
 //
 
 #import "EngageClient.h"
+#import "EngageConnectionManager.h"
 
 #define EXCEPTION(msg) \
     ([NSException exceptionWithName:NSInternalInconsistencyException \
@@ -32,6 +33,9 @@
 {
     @throw EXCEPTION(@"%@ Failed to call designated initializer. Invoke `+createClient:secret:token:` instead.");
 }
+- (AFOAuthCredential*)credential {
+    return [EngageConnectionManager sharedInstance].credential;
+}
 
 - (id)initWithHost:(NSString *)host
           clientId:(NSString *)clientId
@@ -41,63 +45,34 @@
     
     NSURL *baseUrl = [NSURL URLWithString:host];
     
-    if (self = [super initWithBaseURL:baseUrl clientID:clientId secret:secret]) {
-        _clientId = clientId;
-        _secret = secret;
-        _refreshToken = refreshToken;
-        _host = host;
+    if (self = [super init]) {
+//        if (self = [super initWithBaseURL:baseUrl clientID:clientId secret:secret]) {
+//        _clientId = clientId;
+//        _secret = secret;
+//        _refreshToken = refreshToken;
+//        _host = host;
+        [EngageConnectionManager createInstanceWithHost:host clientId:clientId secret: secret token:refreshToken];
         
-        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            if (status == AFNetworkReachabilityStatusNotReachable || [self credential] == nil || [[self credential] isExpired]) {
-                [[self operationQueue] setSuspended:YES];
-            } else {
-                [[self operationQueue] setSuspended:NO];
-            }
-        }];
-        [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+//        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+//            AFOAuthCredential *credential = [self credential];
+//            if (status == AFNetworkReachabilityStatusNotReachable || credential == nil || [credential isExpired]) {
+//                [[self operationQueue] setSuspended:YES];
+//            } else {
+//                [[self operationQueue] setSuspended:NO];
+//            }
+//        }];
+//        [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     }
-    
     return self;
 }
 
 - (BOOL)isAuthenticated {
-    if (self.credential != nil && ![self.credential isExpired]) {
-        return YES;
-    } else {
-        return NO;
-    }
+    return [[EngageConnectionManager sharedInstance] isAuthenticated];
 }
 
 - (void)authenticate:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure {
-    
-    [self authenticateUsingOAuthWithURLString:[self.host stringByAppendingString:@"oauth/token"]
-                            refreshToken:_refreshToken
-                                 success:^(AFOAuthCredential *credential) {
-                                     
-                                     self.credential = credential;
-                                     
-                                     if (success) {
-                                         success(credential);
-                                     }
-                                     
-                                     //Checks the network status and if its active open up the queue.
-                                     if ([[AFNetworkReachabilityManager sharedManager] networkReachabilityStatus] == AFNetworkReachabilityStatusNotReachable) {
-                                         [[self operationQueue] setSuspended:YES];
-                                     } else {
-                                         [[self operationQueue] setSuspended:NO];
-                                     }
-                                 }
-                                failure:^(NSError *error) {
-                                    [[self operationQueue] setSuspended:YES];
-                                    
-                                    if (failure) {
-                                        failure(error);
-                                    }
-                                }];
-    
-    //Suspend the operation queue until the login is successful
-    [[self operationQueue] setSuspended:YES];
+    return [[EngageConnectionManager sharedInstance] authenticate: success failure: failure];
 }
 
 @end

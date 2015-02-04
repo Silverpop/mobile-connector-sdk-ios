@@ -13,4 +13,10 @@
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (id)valueForShortPath:(NSString *)shortPath;
 
+- (BOOL) isSuccess;
+- (NSString *)faultString;
+- (int)errorId;
+- (NSString *)recipientId;
+- (NSString *)valueForColumnName:(NSString *)columnName;
+
 @end

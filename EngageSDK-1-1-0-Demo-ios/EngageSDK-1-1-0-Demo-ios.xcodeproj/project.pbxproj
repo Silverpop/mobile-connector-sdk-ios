@@ -1,0 +1,498 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BB148FD8A19EB3B3255F37EA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19DEDF60AFB635B517015DDC /* libPods.a */; };
+		FD628FC41A7BD5E500F06A00 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD628FC31A7BD5E500F06A00 /* main.m */; };
+		FD628FC71A7BD5E500F06A00 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FD628FC61A7BD5E500F06A00 /* AppDelegate.m */; };
+		FD628FCA1A7BD5E500F06A00 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD628FC91A7BD5E500F06A00 /* ViewController.m */; };
+		FD628FCD1A7BD5E500F06A00 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD628FCB1A7BD5E500F06A00 /* Main.storyboard */; };
+		FD628FCF1A7BD5E500F06A00 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD628FCE1A7BD5E500F06A00 /* Images.xcassets */; };
+		FD628FD21A7BD5E500F06A00 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD628FD01A7BD5E500F06A00 /* LaunchScreen.xib */; };
+		FD628FDE1A7BD5E500F06A00 /* EngageSDK_1_1_0_Demo_iosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FD628FDD1A7BD5E500F06A00 /* EngageSDK_1_1_0_Demo_iosTests.m */; };
+		FDDE821E1A7E864C004DAD04 /* EngageConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = FDDE821D1A7E864C004DAD04 /* EngageConfig.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FD628FD81A7BD5E500F06A00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD628FB61A7BD5E500F06A00 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD628FBD1A7BD5E500F06A00;
+			remoteInfo = "EngageSDK-1-1-0-Demo-ios";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		19DEDF60AFB635B517015DDC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		65E5998FDBAF983C857CEBCD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		EEBD92830EAE3A3A7958EA55 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		FD5BD4891A7C016200531C10 /* sample_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sample_config.h; sourceTree = "<group>"; };
+		FD628FBE1A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "EngageSDK-1-1-0-Demo-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD628FC21A7BD5E500F06A00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FD628FC31A7BD5E500F06A00 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FD628FC51A7BD5E500F06A00 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		FD628FC61A7BD5E500F06A00 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		FD628FC81A7BD5E500F06A00 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		FD628FC91A7BD5E500F06A00 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		FD628FCC1A7BD5E500F06A00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FD628FCE1A7BD5E500F06A00 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		FD628FD11A7BD5E500F06A00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		FD628FD71A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "EngageSDK-1-1-0-Demo-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD628FDC1A7BD5E500F06A00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FD628FDD1A7BD5E500F06A00 /* EngageSDK_1_1_0_Demo_iosTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EngageSDK_1_1_0_Demo_iosTests.m; sourceTree = "<group>"; };
+		FDDE821D1A7E864C004DAD04 /* EngageConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EngageConfig.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FD628FBB1A7BD5E500F06A00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB148FD8A19EB3B3255F37EA /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD628FD41A7BD5E500F06A00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2518C8DD87C23BA3D13995B8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				65E5998FDBAF983C857CEBCD /* Pods.debug.xcconfig */,
+				EEBD92830EAE3A3A7958EA55 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		59F1686154CC1CF9B7AE9CB3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				19DEDF60AFB635B517015DDC /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FD628FB51A7BD5E500F06A00 = {
+			isa = PBXGroup;
+			children = (
+				FD628FC01A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-ios */,
+				FD628FDA1A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-iosTests */,
+				FD628FBF1A7BD5E500F06A00 /* Products */,
+				2518C8DD87C23BA3D13995B8 /* Pods */,
+				59F1686154CC1CF9B7AE9CB3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		FD628FBF1A7BD5E500F06A00 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FD628FBE1A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-ios.app */,
+				FD628FD71A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-iosTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FD628FC01A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-ios */ = {
+			isa = PBXGroup;
+			children = (
+				FD628FC51A7BD5E500F06A00 /* AppDelegate.h */,
+				FD628FC61A7BD5E500F06A00 /* AppDelegate.m */,
+				FD628FC81A7BD5E500F06A00 /* ViewController.h */,
+				FD628FC91A7BD5E500F06A00 /* ViewController.m */,
+				FD628FCB1A7BD5E500F06A00 /* Main.storyboard */,
+				FD628FCE1A7BD5E500F06A00 /* Images.xcassets */,
+				FD628FD01A7BD5E500F06A00 /* LaunchScreen.xib */,
+				FD628FC11A7BD5E500F06A00 /* Supporting Files */,
+			);
+			path = "EngageSDK-1-1-0-Demo-ios";
+			sourceTree = "<group>";
+		};
+		FD628FC11A7BD5E500F06A00 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FD628FC21A7BD5E500F06A00 /* Info.plist */,
+				FD628FC31A7BD5E500F06A00 /* main.m */,
+				FD5BD4891A7C016200531C10 /* sample_config.h */,
+				FDDE821D1A7E864C004DAD04 /* EngageConfig.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FD628FDA1A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-iosTests */ = {
+			isa = PBXGroup;
+			children = (
+				FD628FDD1A7BD5E500F06A00 /* EngageSDK_1_1_0_Demo_iosTests.m */,
+				FD628FDB1A7BD5E500F06A00 /* Supporting Files */,
+			);
+			path = "EngageSDK-1-1-0-Demo-iosTests";
+			sourceTree = "<group>";
+		};
+		FD628FDB1A7BD5E500F06A00 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FD628FDC1A7BD5E500F06A00 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FD628FBD1A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD628FE11A7BD5E500F06A00 /* Build configuration list for PBXNativeTarget "EngageSDK-1-1-0-Demo-ios" */;
+			buildPhases = (
+				8CEE663B8445E9438E0D7BE7 /* Check Pods Manifest.lock */,
+				FD628FBA1A7BD5E500F06A00 /* Sources */,
+				FD628FBB1A7BD5E500F06A00 /* Frameworks */,
+				FD628FBC1A7BD5E500F06A00 /* Resources */,
+				ABFAA50DA59A595854DA962F /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "EngageSDK-1-1-0-Demo-ios";
+			productName = "EngageSDK-1-1-0-Demo-ios";
+			productReference = FD628FBE1A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-ios.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FD628FD61A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-iosTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD628FE41A7BD5E500F06A00 /* Build configuration list for PBXNativeTarget "EngageSDK-1-1-0-Demo-iosTests" */;
+			buildPhases = (
+				FD628FD31A7BD5E500F06A00 /* Sources */,
+				FD628FD41A7BD5E500F06A00 /* Frameworks */,
+				FD628FD51A7BD5E500F06A00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FD628FD91A7BD5E500F06A00 /* PBXTargetDependency */,
+			);
+			name = "EngageSDK-1-1-0-Demo-iosTests";
+			productName = "EngageSDK-1-1-0-Demo-iosTests";
+			productReference = FD628FD71A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-iosTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FD628FB61A7BD5E500F06A00 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = Silverpop;
+				TargetAttributes = {
+					FD628FBD1A7BD5E500F06A00 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					FD628FD61A7BD5E500F06A00 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = FD628FBD1A7BD5E500F06A00;
+					};
+				};
+			};
+			buildConfigurationList = FD628FB91A7BD5E500F06A00 /* Build configuration list for PBXProject "EngageSDK-1-1-0-Demo-ios" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FD628FB51A7BD5E500F06A00;
+			productRefGroup = FD628FBF1A7BD5E500F06A00 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FD628FBD1A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-ios */,
+				FD628FD61A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-iosTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FD628FBC1A7BD5E500F06A00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD628FCD1A7BD5E500F06A00 /* Main.storyboard in Resources */,
+				FDDE821E1A7E864C004DAD04 /* EngageConfig.plist in Resources */,
+				FD628FD21A7BD5E500F06A00 /* LaunchScreen.xib in Resources */,
+				FD628FCF1A7BD5E500F06A00 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD628FD51A7BD5E500F06A00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8CEE663B8445E9438E0D7BE7 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		ABFAA50DA59A595854DA962F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FD628FBA1A7BD5E500F06A00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD628FCA1A7BD5E500F06A00 /* ViewController.m in Sources */,
+				FD628FC71A7BD5E500F06A00 /* AppDelegate.m in Sources */,
+				FD628FC41A7BD5E500F06A00 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD628FD31A7BD5E500F06A00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD628FDE1A7BD5E500F06A00 /* EngageSDK_1_1_0_Demo_iosTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FD628FD91A7BD5E500F06A00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FD628FBD1A7BD5E500F06A00 /* EngageSDK-1-1-0-Demo-ios */;
+			targetProxy = FD628FD81A7BD5E500F06A00 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FD628FCB1A7BD5E500F06A00 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FD628FCC1A7BD5E500F06A00 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FD628FD01A7BD5E500F06A00 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FD628FD11A7BD5E500F06A00 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FD628FDF1A7BD5E500F06A00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FD628FE01A7BD5E500F06A00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FD628FE21A7BD5E500F06A00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65E5998FDBAF983C857CEBCD /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "EngageSDK-1-1-0-Demo-ios/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FD628FE31A7BD5E500F06A00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EEBD92830EAE3A3A7958EA55 /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "EngageSDK-1-1-0-Demo-ios/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		FD628FE51A7BD5E500F06A00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "EngageSDK-1-1-0-Demo-iosTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EngageSDK-1-1-0-Demo-ios.app/EngageSDK-1-1-0-Demo-ios";
+			};
+			name = Debug;
+		};
+		FD628FE61A7BD5E500F06A00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "EngageSDK-1-1-0-Demo-iosTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EngageSDK-1-1-0-Demo-ios.app/EngageSDK-1-1-0-Demo-ios";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FD628FB91A7BD5E500F06A00 /* Build configuration list for PBXProject "EngageSDK-1-1-0-Demo-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD628FDF1A7BD5E500F06A00 /* Debug */,
+				FD628FE01A7BD5E500F06A00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD628FE11A7BD5E500F06A00 /* Build configuration list for PBXNativeTarget "EngageSDK-1-1-0-Demo-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD628FE21A7BD5E500F06A00 /* Debug */,
+				FD628FE31A7BD5E500F06A00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD628FE41A7BD5E500F06A00 /* Build configuration list for PBXNativeTarget "EngageSDK-1-1-0-Demo-iosTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD628FE51A7BD5E500F06A00 /* Debug */,
+				FD628FE61A7BD5E500F06A00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FD628FB61A7BD5E500F06A00 /* Project object */;
+}

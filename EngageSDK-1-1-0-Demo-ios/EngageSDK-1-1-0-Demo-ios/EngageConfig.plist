@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AuditRecord</key>
+	<dict>
+		<key>auditRecordListId</key>
+		<string>29392</string>
+		<key>mergeHistoryInAuditRecordTable</key>
+		<true/>
+		<key>createDateColumnName</key>
+		<string>Create Date</string>
+		<key>newRecipientIdColumnName</key>
+		<string>New Recipient Id</string>
+		<key>oldRecipientIdColumnName</key>
+		<string>Old Recipient Id</string>
+		<key>auditRecordPrimaryKeyGeneratorClassName</key>
+		<string>EngageDefaultUUIDGenerator</string>
+		<key>auditRecordPrimaryKeyColumnName</key>
+		<string>Audit Record Id</string>
+	</dict>
+	<key>Recipient</key>
+	<dict>
+		<key>mergeHistoryInMarketingDatabase</key>
+		<true/>
+		<key>mergedDateColumn</key>
+		<string>Merged Date</string>
+		<key>mergedRecipientIdColumn</key>
+		<string>Merged Recipient Id</string>
+		<key>mobileUserIdColumn</key>
+		<string>Mobile User Id</string>
+		<key>mobileUserIdGeneratorClassName</key>
+		<string>EngageDefaultUUIDGenerator</string>
+		<key>enableAutoAnonymousTracking</key>
+		<true/>
+	</dict>
+	<key>Augmentation</key>
+	<dict>
+		<key>augmentationPluginClasses</key>
+		<array>
+			<string>UBFCoordinatesAugmentationPlugin</string>
+			<string>UBFPlacemarkAugmentationPlugin</string>
+			<string>UBFLocationNameAugmentationPlugin</string>
+		</array>
+		<key>augmentationTimeout</key>
+		<string>15 sec</string>
+	</dict>
+	<key>LocalEventStore</key>
+	<dict>
+		<key>expireLocalEventsAfterNumDays</key>
+		<integer>30</integer>
+	</dict>
+	<key>General</key>
+	<dict>
+		<key>databaseListId</key>
+		<string>1272719</string>
+		<key>ubfEventCacheSize</key>
+		<integer>1</integer>
+		<key>defaultCurrentCampaignExpiration</key>
+		<string>1 day</string>
+	</dict>
+	<key>ParamFieldNames</key>
+	<dict>
+		<key>ParamCampaignValidFor</key>
+		<string>CampaignValidFor</string>
+		<key>ParamCampaignExpiresAt</key>
+		<string>CampaignExpiresAt</string>
+		<key>ParamCurrentCampaign</key>
+		<string>CurrentCampaign</string>
+		<key>ParamCallToAction</key>
+		<string>CallToAction</string>
+	</dict>
+	<key>Session</key>
+	<dict>
+		<key>sessionLifecycleExpiration</key>
+		<string>5 minutes</string>
+	</dict>
+	<key>Networking</key>
+	<dict>
+		<key>maxNumRetries</key>
+		<integer>3</integer>
+	</dict>
+	<key>UBFFieldNames</key>
+	<dict>
+		<key>UBFSessionDurationFieldName</key>
+		<string>Session Duration</string>
+		<key>UBFTagsFieldName</key>
+		<string>Tags</string>
+		<key>UBFDisplayedMessageFieldName</key>
+		<string>Displayed Message</string>
+		<key>UBFCallToActionFieldName</key>
+		<string>Call To Action</string>
+		<key>UBFEventNameFieldName</key>
+		<string>Event Name</string>
+		<key>UBFGoalNameFieldName</key>
+		<string>Goal Name</string>
+		<key>UBFCurrentCampaignFieldName</key>
+		<string>Campaign Name</string>
+		<key>UBFLastCampaignFieldName</key>
+		<string>Last Campaign</string>
+		<key>UBFLocationAddressFieldName</key>
+		<string>Location Address</string>
+		<key>UBFLocationNameFieldName</key>
+		<string>Location Name</string>
+		<key>UBFLatitudeFieldName</key>
+		<string>Latitude</string>
+		<key>UBFLongitudeFieldName</key>
+		<string>Longitude</string>
+	</dict>
+	<key>LocationServices</key>
+	<dict>
+		<key>lastKnownLocationDateFormat</key>
+		<string>MM&apos;-&apos;dd&apos;-&apos;yyyy</string>
+		<key>lastKnownLocationTimestampColumn</key>
+		<string>Last Location Address Time</string>
+		<key>lastKnownLocationColumn</key>
+		<string>Last Location Address</string>
+		<key>locationDistanceFilter</key>
+		<string>10</string>
+		<key>locationPrecisionLevel</key>
+		<string>kCLLocationAccuracyBest</string>
+		<key>locationCacheLifespan</key>
+		<string>1 hr</string>
+		<key>coordinatesPlacemarkTimeout</key>
+		<string>15 sec</string>
+		<key>coordinatesAcquisitionTimeout</key>
+		<string>15 sec</string>
+		<key>enabled</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

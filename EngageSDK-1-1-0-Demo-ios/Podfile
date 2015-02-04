@@ -1,0 +1,2 @@
+pod 'EngageSDK', '1.1.0'
+pod 'MBProgressHUD', '~> 0.8'

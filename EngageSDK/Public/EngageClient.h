@@ -15,7 +15,7 @@ typedef enum {
     EngageLiveSecure,
 } EngageHostConfig;
 
-@interface EngageClient : AFOAuth2Client
+@interface EngageClient : NSObject
 
 - (id)initWithHost:(NSString *)host
           clientId:(NSString *)clientId
@@ -26,7 +26,5 @@ typedef enum {
 
 - (void)authenticate:(void (^)(AFOAuthCredential *credential))success
                failure:(void (^)(NSError *error))failure;
-
-@property AFOAuthCredential *credential;
 
 @end

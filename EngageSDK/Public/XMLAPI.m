@@ -9,6 +9,7 @@
 #import "XMLAPI.h"
 #import "EngageConfig.h"
 #import "EngageConfigManager.h"
+#import "XMLAPIOperation.h"
 
 #define COLUMN (@"COLUMN")
 #define SYNC_FIELD (@"SYNC_FIELD")
@@ -49,8 +50,27 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
     return api;
 }
 
+- (void) listId:(NSString *)listId {
+    [[self bodyElements] addEntriesFromDictionary: @{@"LIST_ID" : listId}];
+}
+
+- (void) recipientId:(NSString *)recipientId {
+    [[self bodyElements] addEntriesFromDictionary:@{@"RECIPIENT_ID": recipientId}];
+}
+
 - (void)addParams:(NSDictionary *)param {
     [_bodyElements addEntriesFromDictionary:param];
+}
+
+/**
+ *  Adds a single param to the existing list of params
+ *
+ *  @param key   param name
+ *  @param value param value
+ */
+- (void) addParam:(NSString *)key :(NSString *)value {
+    NSDictionary *params = @{ key : value };
+    [self addParams:params];
 }
 
 - (void)addElements:(NSDictionary *)elements named:(NSString *)elementName {
@@ -69,6 +89,17 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
 
 - (void)addColumns:(NSDictionary *)cols {
     [self addElements:cols named:@"COLUMNS"];
+}
+
+/**
+ *  Adds a single column to the list of existing columns
+ *
+ *  @param name  column name
+ *  @param value column value
+ */
+-(void)addColumn:(NSString *)name :(NSString *)value {
+    NSDictionary *cols = @{ name : value };
+    [self addColumns:cols];
 }
 
 - (NSString *)resource {
@@ -93,6 +124,20 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
             for (id keyField in element) {
                 [syncFields appendFormat:nameValueForm,SYNC_FIELD,keyField,[element objectForKey:keyField]];
             }
+        } else if ([key isEqualToString:@"ROWS"]) {
+            [body appendString:@"<ROWS>"];
+            // iterate array of rows
+            if ([element isKindOfClass:[NSArray class]]) {
+                for (NSDictionary *row in element) {
+                    [body appendString:@"<ROW>"];
+                    // each row is a dictionary of column name value pairs
+                    for (id columnName in [row allKeys]) {
+                        [body appendFormat:@"<COLUMN name=\"%@\"><![CDATA[%@]]></COLUMN>", columnName, [row objectForKey:columnName]];
+                    }
+                    [body appendString:@"</ROW>"];
+                }
+            }
+            [body appendString:@"</ROWS>"];
         }
         else {
             [body appendFormat:@"<%1$@>%2$@</%1$@>",key,[_bodyElements objectForKey:key]];
@@ -109,8 +154,18 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
 
 #pragma mark -
 
++ (id)selectRecipientWithId:(NSString *)recipientId list:(NSString *)listId {
+    XMLAPI *api = [self resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA];
+    [api.bodyElements addEntriesFromDictionary:
+     @{
+       @"LIST_ID" : listId,
+       @"RECIPIENT_ID" : recipientId
+       }];
+    return api;
+}
+
 + (id)selectRecipientData:(NSString *)emailAddress list:(NSString *)listId {
-    XMLAPI *api = [self resourceNamed:@"SelectRecipientData"];
+    XMLAPI *api = [self resourceNamed:XMLAPI_OPERATION_SELECT_RECIPIENT_DATA];
     [api.bodyElements addEntriesFromDictionary:
      @{
      @"LIST_ID" : listId,
@@ -121,7 +176,7 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
 }
 
 + (id)addRecipient:(NSString *)emailAddress list:(NSString *)listId {
-    XMLAPI *api = [self resourceNamed:@"AddRecipient"];
+    XMLAPI *api = [self resourceNamed:XMLAPI_OPERATION_ADD_RECIPIENT];
     [api.bodyElements addEntriesFromDictionary:
      @{
      @"LIST_ID" : listId,
@@ -136,8 +191,21 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
     return api;
 }
 
++ (id)addRecipientWithMobileUserIdColumnName:(NSString *)mobileUserIdColumnName
+                                mobileUserId:(NSString *)mobileUserId
+                                       list :(NSString *)listId {
+    XMLAPI *addRecipientXml = [self resourceNamed:XMLAPI_OPERATION_ADD_RECIPIENT];
+    [addRecipientXml.bodyElements addEntriesFromDictionary:
+     @{
+       @"LIST_ID" : listId,
+       @"COLUMNS" :
+           @{ mobileUserIdColumnName : mobileUserId }
+       }];
+    return addRecipientXml;
+}
+
 + (id)updateRecipient:(NSString *)recipientId list:(NSString *)listId {
-    XMLAPI *api = [self resourceNamed:@"UpdateRecipient"];
+    XMLAPI *api = [self resourceNamed:XMLAPI_OPERATION_UPDATE_RECIPIENT];
     [api.bodyElements addEntriesFromDictionary:
      @{
      @"LIST_ID" : listId,
@@ -147,7 +215,7 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
 }
 
 + (id)addRecipientAnonymousToList:(NSString *)listId {
-    XMLAPI *api = [self resourceNamed:@"AddRecipient"];
+    XMLAPI *api = [self resourceNamed:XMLAPI_OPERATION_ADD_RECIPIENT];
     [api.bodyElements addEntriesFromDictionary:
      @{
      @"LIST_ID" : listId
@@ -157,7 +225,7 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
 
 
 + (id)addColumn:(NSString *)column toDatabase:(NSString *)listId ofColumnType:(int)columnType {
-    XMLAPI *api = [self resourceNamed:@"AddListColumn"];
+    XMLAPI *api = [self resourceNamed:XMLAPI_OPERATION_ADD_LIST_COLUMN];
     [api.bodyElements addEntriesFromDictionary:@{
                                                  @"LIST_ID" : listId,
                                                  @"COLUMN_NAME" : column,
@@ -189,9 +257,9 @@ int const COLUMN_TYPE_MULTI_SELECT = 20;
     NSString *lastKnownLocationTime = [[EngageConfigManager sharedInstance] configForLocationFieldName:PLIST_LOCATION_LAST_KNOWN_LOCATION_TIME];
     
     
-    XMLAPI *api = [XMLAPI resourceNamed:@"UpdateRecipient" params:@{ @"LIST_ID" : listID } ];
+    XMLAPI *api = [XMLAPI resourceNamed:XMLAPI_OPERATION_UPDATE_RECIPIENT params:@{ @"LIST_ID" : listID } ];
     // FIELDS TO SYNC/SEARCH BY
-    [api addSyncFields:@{ @"EMAIL" : [EngageConfig primaryUserId] } ];
+    [api addSyncFields:@{ @"EMAIL" : [EngageConfig mobileUserId] } ];
     // COLUMNS TO UPDATE ON OLDEST MATCH
     [api addColumns:@{ lastKnownLocationColumnName : location,
                        lastKnownLocationTime : lastKnownLocationDate} ];

@@ -14,6 +14,7 @@
 @property (readonly, nonatomic, strong) NSString *eventTypeCode;
 @property (readonly, nonatomic, strong) NSString *eventTimeStamp;
 @property (readonly, nonatomic, strong) NSMutableDictionary *attributes;
+@property (readonly, nonatomic, strong) NSMutableDictionary *headerAttributes;
 
 + (UBF *)createEventWithCode:(NSString *)code params:(NSDictionary *)params;
 + (UBF *)installed:(NSDictionary *)params;
@@ -30,6 +31,7 @@
 
 - (UBF *)initFromJSON:(NSString *)jsonString;
 - (void)setAttribute:(NSString *)attributeName value:(NSString *)attributeValue;
+- (void)setHeaderAttribute:(NSString *)attributeName value:(NSString *)attributeValue;
 - (NSDictionary *)dictionaryValue;
 - (NSString *)jsonValue;
 

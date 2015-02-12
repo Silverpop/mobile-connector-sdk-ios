@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version         = '1.1.0'
   s.summary         = 'Silverpop Engage SDK for iOS.'
   s.homepage        = 'https://github.com/Silverpop/mobile-connector-sdk-ios'
-  s.authors         = { 'Silverpop Development' => 'engineeringmanagement@silverpop.com' }
+  s.authors         = { 'Silverpop Development' => 'slytle@us.ibm.com' }
   s.license         = { :type => 'Apache 2.0', :file => 'License.txt' }
   s.source          = { :git => 'https://github.com/Silverpop/mobile-connector-sdk-ios.git', :tag => '1.1.0' }
   s.ios.xcconfig    = { 'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "$(SDKROOT)/Developer/Library/Frameworks" "$(DEVELOPER_LIBRARY_DIR)/Frameworks"' }

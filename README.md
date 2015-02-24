@@ -53,7 +53,7 @@ Once you understand how the Demo project is configured via CocoaPods and impleme
 ## Getting Started 
 The first thing you will want to do is contact your Relationship Manager at Sidlverpop and ask for the "Silverpop Mobile Connector".  They will assist in getting your Engage account provisioned for Universal Behaviors -- the new flexible event tracking system that is the backbone of tracked mobile app behaviors.
 
-Next, you can follow the instructions in this readme file, or as an additional offer, we've put together a short 10 minute tutorial that will walk you through the download, installation, and configuration process to get your app up and running.  [Click here](https://kb.silverpop.com/kb/engage/Silverpop_Mobile_Connector_-_***NEW***/Video_Tutorial%3A_Up_and_Running_in_10_mins!) to watch that video tutorial within our KnowledgeBase.
+Next, you can follow the instructions in this readme file, or as an additional offer, we've put together a short 10 minute tutorial that will walk you through the download, installation, and configuration process to get your app up and running.  [Click here](https://vimeo.com/120511788) to watch that video tutorial.
 
 ## Environment Setup
 The best way to begin is by using [CocoaPods](https://github.com/cocoapods/cocoapods). Follow the instructions offered at the CocoaPods website to install CocoaPods using Ruby Gems. 
@@ -301,6 +301,8 @@ using the ```MobileIdentityManager``` methods.
 set ```mergeHistoryInAuditRecordTable``` to ```YES``` and the ```auditRecordListId``` to the corresponding list id.  If enabled you are responsible for creating the AuditRecord
  table with the columns for _Audit Record Id_, _Old Recipient Id_, _New Recipient Id_, and _Create Date_ prior to
  calling ```checkIdentityForIds```.
+
+To watch a quick video that demonstrates how easy this is, just [Click here](https://vimeo.com/120511788) to see it now!
 
 ##### Setup recipient identity
 

@@ -53,7 +53,7 @@ Once you understand how the Demo project is configured via CocoaPods and impleme
 ## Getting Started 
 The first thing you will want to do is contact your Relationship Manager at Sidlverpop and ask for the "Silverpop Mobile Connector".  They will assist in getting your Engage account provisioned for Universal Behaviors -- the new flexible event tracking system that is the backbone of tracked mobile app behaviors.
 
-Next, you can follow the instructions in this readme file, or as an additional offer, we've put together a short 10 minute tutorial that will walk you through the download, installation, and configuration process to get your app up and running.  [Click here](https://vimeo.com/120511788) to watch that video tutorial.
+Next, you can follow the instructions in this readme file, or as an additional offer, we've put together a short 10 minute tutorial that will walk you through the download, installation, and configuration process to get your app up and running.  [Click here](https://vimeo.com/72851136) to watch that video tutorial.
 
 ## Environment Setup
 The best way to begin is by using [CocoaPods](https://github.com/cocoapods/cocoapods). Follow the instructions offered at the CocoaPods website to install CocoaPods using Ruby Gems. 
